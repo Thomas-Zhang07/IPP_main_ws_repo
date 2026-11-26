@@ -1,0 +1,133 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>__TITLE__ · 40 kHz field</title><style>
+:root{color-scheme:light dark;--bg:#f6f7f9;--paper:#fff;--ink:#122634;--muted:#516570;--line:#d5dfe2;--accent:#006d79;--grid:#bacbd1;--hot:#c2410c}
+@media(prefers-color-scheme:dark){:root{--bg:#10191d;--paper:#18252c;--ink:#ecf2f3;--muted:#a5b8c1;--line:#36484f;--accent:#68c9c9;--grid:#465a66;--hot:#fb923c}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,sans-serif}
+main{max-width:1120px;margin:0 auto;padding:22px 16px 40px}
+header{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 14px;margin-bottom:14px}
+h1{font-size:clamp(24px,4.6vw,34px);letter-spacing:-.035em;line-height:1.1;margin:0}
+.tag{font:600 12px/1.5 system-ui;letter-spacing:.08em;color:var(--accent)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-left:auto}
+.chip{border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-size:12px;color:var(--muted);background:var(--paper)}
+.controls{display:grid;grid-template-columns:2.2fr 1fr 1fr;gap:12px;border:1px solid var(--line);background:var(--paper);border-radius:12px;padding:12px 14px;margin-bottom:12px}
+.controls .lbl{font-size:12px;letter-spacing:.04em;color:var(--muted);text-transform:uppercase}
+.slider{width:100%;margin:10px 0 2px;accent-color:var(--accent)}
+.ticks{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+.value{font-size:22px;font-weight:650;font-variant-numeric:tabular-nums}
+.seg{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-top:8px}
+.seg button{flex:1;border:0;background:transparent;color:var(--muted);padding:7px 4px;font:600 13px system-ui;cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--accent);color:#fff}
+.grid{display:grid;grid-template-columns:1.35fr 1fr;gap:12px}
+.panel{border:1px solid var(--line);background:var(--paper);border-radius:12px;padding:12px 14px}
+.panel h2{font-size:14px;margin:0 0 2px;letter-spacing:.01em}
+.panel p{margin:2px 0;color:var(--muted);font-size:12.5px}
+canvas{width:100%;height:auto;display:block;touch-action:none;cursor:grab;margin-top:6px}
+canvas:active{cursor:grabbing}
+svg{display:block;width:100%;overflow:visible}svg text{font:11.5px system-ui;fill:var(--muted)}
+.legend{display:flex;gap:14px;font-size:12px;color:var(--muted);margin-top:2px}
+.sw{display:inline-block;width:18px;height:3px;border-radius:2px;vertical-align:middle;margin-right:5px}
+.read{display:flex;gap:18px;margin-top:8px;flex-wrap:wrap}
+.read div{font-size:12px;color:var(--muted)}
+.read b{display:block;font-size:19px;color:var(--ink);font-variant-numeric:tabular-nums}
+.bottom{display:grid;grid-template-columns:200px 1fr;gap:12px;margin-top:12px;align-items:center}
+.bottom svg{max-width:200px}
+footer{margin-top:14px;font-size:12px;color:var(--muted)}
+@media(max-width:760px){.controls{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.bottom{grid-template-columns:1fr}}
+</style></head><body><main>
+<header><div><div class="tag">40 kHz · ACOUSTIC ARRAY</div><h1>__TITLE__</h1></div>
+<div class="chips"><span class="chip">__EMITTERS__ emitters</span><span class="chip">__SPAN__</span><span class="chip">__KEY__</span></div></header>
+
+<div class="controls">
+ <div><div class="lbl" id="thetalbl">Command angle in x–z, θ</div>
+  <input id="theta" class="slider" type="range" min="0" max="__MAXI__" step="1" value="__DEFI__" aria-label="Steering angle">
+  <div class="ticks" id="ticks"></div></div>
+ <div><div class="lbl">Element model</div><div class="seg" id="model" role="group">
+  <button data-v="measured" aria-pressed="true">Datasheet</button><button data-v="isotropic" aria-pressed="false">Isotropic</button></div></div>
+ <div><div class="lbl">Observation</div><div class="seg" id="obs" role="group">
+  <button data-v="far" aria-pressed="true">Far field</button><button data-v="2m" aria-pressed="false">2 m mic</button></div></div>
+</div>
+
+<div class="grid">
+ <section class="panel"><h2>Forward radiation pattern</h2>
+  <p>Drag to rotate · radius is relative pressure in dB, not distance</p>
+  <canvas id="surface" width="660" height="430" tabindex="0" aria-label="Rotatable three-dimensional radiation pattern"></canvas>
+  <div class="legend"><span><i class="sw" style="background:#1e6f7a"></i>0 dB</span><span><i class="sw" style="background:#b45309"></i>−20 dB</span><span><i class="sw" style="background:#7c2d12"></i>−40 dB</span></div></section>
+ <section class="panel"><h2>Horizontal cut</h2>
+  <p>Signed angle from +z toward +x · dashed line: command</p>
+  <svg id="cut" viewBox="0 0 460 250" role="img" aria-label="Relative pressure versus signed angle"></svg>
+  <div class="read"><div>At the command<b id="atcmd">—</b></div><div>Strongest in cut, &gt;15°<b id="side">—</b></div></div>
+  <div class="legend"><span><i class="sw" style="background:#006d79"></i>selected model</span><span><i class="sw" style="background:#9aa7ad"></i>other model</span></div></section>
+</div>
+
+<div class="bottom"><div class="panel" style="padding:8px"><svg id="boards" viewBox="0 0 200 120" role="img" aria-label="Board placement, top view"></svg></div>
+<div><p id="details" style="font-size:13px;color:var(--muted);margin:0"></p></div></div>
+
+<footer>0 dB = ideal coherent sum of N on-axis unit emitters. At 2 m the level is 2|p|/N with individual spherical paths, spreading and local element angles; the drive is not refocused. One −50…+1 dB scale everywhere, 0.2 dB display steps. 1.5° × 3° surface sampling, 0.25° cut. Each transducer follows the measured TR4010HC pattern; the single board's flat grating orders sit at ±54.75° on x and y. Simulations only, not calibrated SPL.</footer>
+</main><script id="payload" type="application/json">__DATA__</script><script>
+"use strict";
+const D=JSON.parse(document.getElementById("payload").textContent),$=id=>document.getElementById(id),rad=Math.PI/180;
+const canvas=$("surface"),theta=$("theta");let yaw=-38,pitch=24,values,model="measured",obs="far";
+const angles=D.angles;
+theta.max=angles.length-1;$("ticks").innerHTML=angles.map(a=>"<span>"+a+"°</span>").join("");
+const def=angles.indexOf(D.default_angle);theta.value=def<0?angles.length-1:def;
+function key(){return angles[+theta.value]+"/"+model+"/"+obs}
+function col(k){return "hsl("+Math.round(205-183*k)+",64%,"+(30+24*k)+"%)"}
+function draw(){
+ const ctx=canvas.getContext("2d"),w=canvas.width,h=canvas.height,s=Math.min(w*.36,h*.68),cx=w/2,cy=h*.79;
+ const a=yaw*rad,b=pitch*rad,ca=Math.cos(a),sa=Math.sin(a),cb=Math.cos(b),sb=Math.sin(b);
+ const project=(x,y,z)=>{let side=x*ca-y*sa,depth=x*sa+y*ca;return [cx+s*side,cy+s*(sb*depth-cb*z),cb*depth+sb*z]};
+ ctx.clearRect(0,0,w,h);let pts=[],faces=[];
+ for(let i=0;i<D.nt;i++){let t=Math.PI*.5*i/(D.nt-1);for(let j=0;j<D.np;j++){
+  let id=i*D.np+j,k=Math.min(1,values[id]/250),p=2*Math.PI*j/D.np;
+  pts.push([...project(k*Math.sin(t)*Math.cos(p),k*Math.sin(t)*Math.sin(p),k*Math.cos(t)),k]);}}
+ for(let i=0;i<D.nt-1;i++)for(let j=0;j<D.np;j++){
+  let n=(j+1)%D.np,p=i*D.np,ids=[p+j,p+n,p+n+D.np,p+j+D.np];faces.push([ids.reduce((v,k)=>v+pts[k][2],0),ids]);}
+ faces.sort((q,r)=>q[0]-r[0]);
+ for(const [,ids] of faces){ctx.beginPath();ids.forEach((id,i)=>{const [x,y]=pts[id];if(i)ctx.lineTo(x,y);else ctx.moveTo(x,y)});
+  ctx.closePath();ctx.fillStyle=col(ids.reduce((v,k)=>v+pts[k][3],0)/4);ctx.fill();}
+ ctx.strokeStyle=getComputedStyle(document.body).getPropertyValue("--muted");ctx.fillStyle=ctx.strokeStyle;ctx.font="12px system-ui";
+ for(const [label,x,y,z] of [["+x",1,0,0],["+y",0,1,0],["+z",0,0,1]]){
+  let pos=project(x,y,z);ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(pos[0],pos[1]);ctx.setLineDash([2,6]);ctx.stroke();ctx.setLineDash([]);ctx.fillText(label,pos[0]+3,pos[1]-3);}
+}
+function decode(k){const b=atob(D.states[k]);return Uint8Array.from(b,c=>c.charCodeAt(0))}
+function chart(cut,other){
+ const x=a=>44+(a+90)/180*397,y=d=>16+(1-d)/51*196,cmd=angles[+theta.value];
+ let html="";for(let v=-50;v<=0;v+=10)html+='<path stroke="var(--grid)" d="M44 '+y(v)+' H441"/><text x="38" y="'+(y(v)+4)+'" text-anchor="end">'+v+'</text>';
+ for(let v=-90;v<=90;v+=30)html+='<text x="'+x(v)+'" y="226" text-anchor="middle">'+v+'°</text>';
+ const line=arr=>Array.from(arr,(v,i)=>(i?'L':'M')+x(i/4-90).toFixed(1)+' '+y(v/5-50).toFixed(1)).join('');
+ html+='<path d="M'+x(cmd)+' 16 V212" stroke="var(--muted)" stroke-dasharray="4 4"/>';
+ if(other)html+='<path d="'+line(other)+'" fill="none" stroke="#9aa7ad" stroke-width="1.1" opacity=".85"/>';
+ html+='<path d="'+line(cut)+'" fill="none" stroke="var(--accent)" stroke-width="1.9"/><text x="3" y="11">dB</text>';
+ $("cut").innerHTML=html;
+ const db=cut[(cmd+90)*4]/5-50;let side=-50;
+ for(let i=0;i<721;i++){const a=i/4-90;if(Math.abs(a-cmd)>15)side=Math.max(side,cut[i]/5-50)}
+ $("atcmd").textContent=db.toFixed(1)+" dB";$("side").textContent=side.toFixed(1)+" dB";
+ $("thetalbl").textContent="Command angle in x–z, θ = "+cmd+"°";
+}
+function update(){
+ if(!D.states[key()]){$("atcmd").textContent="not sampled";return}
+ values=decode(key());
+ const otherModel=model==="measured"?"isotropic":"measured";
+ const ok=angles[+theta.value]+"/"+otherModel+"/"+obs;
+ chart(values.subarray(D.nt*D.np),
+       D.states[ok]?decode(ok).subarray(D.nt*D.np):null);draw();
+}
+document.querySelectorAll("#model button").forEach(b=>b.onclick=()=>{model=b.dataset.v;
+ document.querySelectorAll("#model button").forEach(x=>x.setAttribute("aria-pressed",x===b));update()});
+document.querySelectorAll("#obs button").forEach(b=>b.onclick=()=>{obs=b.dataset.v;
+ document.querySelectorAll("#obs button").forEach(x=>x.setAttribute("aria-pressed",x===b));update()});
+theta.oninput=update;
+function rotate(dx,dy){yaw+=dx;pitch=Math.max(0,Math.min(86,pitch+dy));draw()}
+canvas.onpointerdown=e=>{drag=true;lastX=e.clientX;lastY=e.clientY;canvas.setPointerCapture(e.pointerId)};
+let drag=false,lastX=0,lastY=0;
+canvas.onpointermove=e=>{if(drag){rotate((e.clientX-lastX)*.5,(e.clientY-lastY)*.35);lastX=e.clientX;lastY=e.clientY}};
+canvas.onpointerup=canvas.onpointercancel=()=>drag=false;
+canvas.onkeydown=e=>{const d={ArrowLeft:[-7,0],ArrowRight:[7,0],ArrowUp:[0,5],ArrowDown:[0,-5]}[e.key];if(d){e.preventDefault();rotate(...d)}};
+(function(){const polys=D.boards.map(b=>b.map(([x,y,z])=>[x+.38*y,.28*y-z])),all=polys.flat(),
+ xmin=Math.min(...all.map(p=>p[0])),xmax=Math.max(...all.map(p=>p[0])),ymin=Math.min(...all.map(p=>p[1])),ymax=Math.max(...all.map(p=>p[1])),
+ sc=Math.min(180/(xmax-xmin||1),100/(ymax-ymin||1));
+ $("boards").innerHTML=polys.map(poly=>'<polygon points="'+poly.map(([x,y])=>[100+(x-(xmin+xmax)/2)*sc,60+(y-(ymin+ymax)/2)*sc].join(",")).join(" ")+'" fill="var(--accent)" fill-opacity=".18" stroke="var(--accent)"/>').join("");
+ $("details").textContent=D.details;})();
+update();
+</script></body></html>
