@@ -9,6 +9,8 @@ from __future__ import annotations
 
 import numpy as np
 
+import constants as C
+
 from . import model
 
 MASK_DEG = 4.0
@@ -44,23 +46,56 @@ def sl_components(mag, dirs, d0, cmd_amp, mask_deg=MASK_DEG):
             "sl_far": level(far)}
 
 
-def _state_values(cand, dirs, theta_deg, phi_deg, variant):
+def _values_fn(field_fn, dirs, theta_deg, phi_deg, exact=False, step=0.004):
     t, p = np.radians(theta_deg), np.radians(phi_deg)
     u0, v0 = np.sin(t) * np.cos(p), np.sin(t) * np.sin(p)
-    mag = np.abs(model.field_fast(cand, dirs, u0, v0, variant))
-    cmd = model.commanded_amp(cand, u0, v0, variant)
-    comp = sl_components(mag, dirs, _direction(theta_deg, phi_deg), cmd)
-    return comp
+    d0 = _direction(theta_deg, phi_deg)
+    base = np.abs(field_fn(dirs, u0, v0))
+    mag = base
+    eval_dirs = dirs
+    if exact:
+        # A coarse grid can miss narrow grating lobes, the broadside line and
+        # the peak of a narrow sidelobe. Evaluate those explicitly, then
+        # refine locally around the strongest outside-mask grid point.
+        grating = C.WAVELENGTH_M / C.PITCH_M
+        extra = [[0.0, 0.0, 1.0]]
+        for du, dv in ((grating, 0.0), (-grating, 0.0),
+                       (0.0, grating), (0.0, -grating)):
+            u, v = u0 + du, v0 + dv
+            r2 = u * u + v * v
+            if r2 <= 1.0:
+                extra.append([u, v, np.sqrt(max(0.0, 1.0 - r2))])
+        ang = _angles_to(dirs, d0)
+        outside = ang > MASK_DEG
+        if outside.any():
+            idx = np.flatnonzero(outside)[int(np.argmax(base[outside]))]
+            cu, cv = dirs[idx, 0], dirs[idx, 1]
+            span = max(float(step), 0.002)
+            grid = np.linspace(-span, span, 9)
+            LU, LV = np.meshgrid(cu + grid, cv + grid, indexing="xy")
+            ok = LU ** 2 + LV ** 2 <= 1.0
+            lu, lv = LU[ok], LV[ok]
+            extra += np.column_stack(
+                [lu, lv, np.sqrt(np.maximum(0.0, 1.0 - lu ** 2 - lv ** 2))]
+            ).tolist()
+        extra = np.asarray(extra, dtype=float)
+        eval_dirs = np.vstack([dirs, extra])
+        mag = np.concatenate([base, np.abs(field_fn(extra, u0, v0))])
+    cmd = abs(field_fn(d0[None, :], u0, v0)[0])
+    return sl_components(mag, eval_dirs, d0, cmd)
 
 
-def score_states(cand, du: float, states, variant: str = "mean",
-                 dirs=None) -> dict:
-    if dirs is None:
-        dirs, _, _, _ = model.direction_grid(du)
+def _state_values(cand, dirs, theta_deg, phi_deg, variant):
+    return _values_fn(
+        lambda d, u, v: model.field_fast(cand, d, u, v, variant),
+        dirs, theta_deg, phi_deg)
+
+
+def score_states_fn(field_fn, dirs, states, exact=False, step=0.004) -> dict:
     worst = {"SL_cmd": -np.inf, "SL_clean": -np.inf, "SL_near": -np.inf,
              "SL_far_s": -np.inf, "SL_diag": -np.inf}
     for theta, phi in states:
-        comp = _state_values(cand, dirs, theta, phi, variant)
+        comp = _values_fn(field_fn, dirs, theta, phi, exact, step)
         worst["SL_cmd"] = max(worst["SL_cmd"], comp["sl_cmd"])
         worst["SL_near"] = max(worst["SL_near"], comp["sl_near"])
         worst["SL_far_s"] = max(worst["SL_far_s"], comp["sl_far"])
@@ -69,6 +104,15 @@ def score_states(cand, du: float, states, variant: str = "mean",
         if float(phi) % 360.0 in DIAGONAL_AZIMUTHS:
             worst["SL_diag"] = max(worst["SL_diag"], comp["sl_cmd"])
     return {k: float(v) for k, v in worst.items()}
+
+
+def score_states(cand, du: float, states, variant: str = "mean",
+                 dirs=None, exact: bool = False) -> dict:
+    if dirs is None:
+        dirs, _, _, _ = model.direction_grid(du)
+    return score_states_fn(
+        lambda d, u, v: model.field_fast(cand, d, u, v, variant), dirs, states,
+        exact)
 
 
 def _contiguous(curve: dict, threshold: float) -> float:
@@ -82,15 +126,17 @@ def _contiguous(curve: dict, threshold: float) -> float:
     return out
 
 
-def srange(cand, azimuths_deg, variant: str = "mean", step_deg: float = 1.0,
-           thresholds=(0.0, -3.0), du: float = 0.012, dirs=None) -> dict:
+def srange_fn(field_fn, azimuths_deg, step_deg: float = 1.0,
+              thresholds=(0.0, -3.0), du: float = 0.012, dirs=None,
+              exact=False) -> dict:
     if dirs is None:
         dirs, _, _, _ = model.direction_grid(du)
     thetas = np.arange(0.0, 70.0 + step_deg / 2.0, step_deg)
     curves = {phi: {} for phi in azimuths_deg}
     for phi in azimuths_deg:
         for theta in thetas:
-            comp = _state_values(cand, dirs, float(theta), float(phi), variant)
+            comp = _values_fn(field_fn, dirs, float(theta), float(phi),
+                              exact, du)
             curves[phi][float(theta)] = comp["sl_cmd"]
     out = {}
     for thr in thresholds:
@@ -99,7 +145,14 @@ def srange(cand, azimuths_deg, variant: str = "mean", step_deg: float = 1.0,
     return out
 
 
-def _power_quad(cand, variant, ct_lo, ct_hi, n_ct=128, n_phi=256):
+def srange(cand, azimuths_deg, variant: str = "mean", step_deg: float = 1.0,
+           thresholds=(0.0, -3.0), du: float = 0.012, dirs=None) -> dict:
+    return srange_fn(
+        lambda d, u, v: model.field_fast(cand, d, u, v, variant),
+        azimuths_deg, step_deg, thresholds, du, dirs)
+
+
+def _power_quad_fn(field_fn, ct_lo, ct_hi, n_ct=128, n_phi=256):
     x, w = np.polynomial.legendre.leggauss(n_ct)
     ct = 0.5 * (ct_hi - ct_lo) * x + 0.5 * (ct_hi + ct_lo)
     wct = 0.5 * (ct_hi - ct_lo) * w
@@ -110,36 +163,51 @@ def _power_quad(cand, variant, ct_lo, ct_hi, n_ct=128, n_phi=256):
     dirs = np.column_stack([st.ravel() * np.cos(PH).ravel(),
                             st.ravel() * np.sin(PH).ravel(), CT.ravel()])
     weights = (np.repeat(wct[:, None], n_phi, axis=1) * dphi).ravel()
-    p = np.abs(model.field_fast(cand, dirs, 0.0, 0.0, variant)) ** 2
+    p = np.abs(field_fn(dirs, 0.0, 0.0)) ** 2
     return float(np.sum(p * weights))
 
 
-def _forward_power(cand, variant, ct_range=(0.0, 1.0)):
+def _power_quad(cand, variant, ct_lo, ct_hi, n_ct=128, n_phi=256):
+    return _power_quad_fn(
+        lambda d, u, v: model.field_fast(cand, d, u, v, variant),
+        ct_lo, ct_hi, n_ct, n_phi)
+
+
+def _forward_power_fn(field_fn, ct_range=(0.0, 1.0)):
     """Forward power with the < 1 deg main lobe on its own quadrature."""
     a, b = ct_range
     split = float(np.cos(np.radians(5.0)))
     total = 0.0
     if a < split:
-        total += _power_quad(cand, variant, a, min(b, split),
-                             n_ct=160, n_phi=256)
+        total += _power_quad_fn(field_fn, a, min(b, split),
+                                n_ct=160, n_phi=256)
     if b > split:
-        total += _power_quad(cand, variant, max(a, split), b,
-                             n_ct=96, n_phi=256)
+        total += _power_quad_fn(field_fn, max(a, split), b,
+                                n_ct=96, n_phi=256)
     return total
 
 
-def di0(cand, variant: str = "mean", fine: bool = False) -> float:
-    peak = abs(model.field_fast(cand, np.array([[0.0, 0.0, 1.0]]),
-                                0.0, 0.0, variant)[0]) ** 2
+def _forward_power(cand, variant, ct_range=(0.0, 1.0)):
+    return _forward_power_fn(
+        lambda d, u, v: model.field_fast(cand, d, u, v, variant), ct_range)
+
+
+def di0_fn(field_fn, fine: bool = False) -> float:
+    peak = abs(field_fn(np.array([[0.0, 0.0, 1.0]]), 0.0, 0.0)[0]) ** 2
     if fine:
         split = float(np.cos(np.radians(5.0)))
-        total = (_power_quad(cand, variant, 0.0, split,
-                             n_ct=192, n_phi=384)
-                 + _power_quad(cand, variant, split, 1.0,
-                               n_ct=192, n_phi=384))
+        total = (_power_quad_fn(field_fn, 0.0, split,
+                                n_ct=192, n_phi=384)
+                 + _power_quad_fn(field_fn, split, 1.0,
+                                  n_ct=192, n_phi=384))
     else:
-        total = _forward_power(cand, variant)
+        total = _forward_power_fn(field_fn)
     return float(10.0 * np.log10(4.0 * np.pi * peak / total))
+
+
+def di0(cand, variant: str = "mean", fine: bool = False) -> float:
+    return di0_fn(
+        lambda d, u, v: model.field_fast(cand, d, u, v, variant), fine)
 
 
 def bne0(cand, variant: str = "mean") -> float:

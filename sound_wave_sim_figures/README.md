@@ -197,6 +197,21 @@ optimum per board count uses the robust shortlist.
   families postpone the axial takeover (SRANGE_0dB ≈ 34–37°) but not the
   diagonal one.
 
+### V-shaped pairs (tilted)
+
+A tilted pair needs the depth-compensated drive and a per-board separable model
+(`sim/optimum_search/vshape.py`, validated against the exact solver to 1e-6).
+The sweep covers 60–180° included angle × y offsets 0 and 5.25 mm; grating,
+broadside and the strongest sidelobe are sampled exactly, so the coarse search
+grid cannot alias narrow lobes.
+
+Best: **135° with a 5.25 mm hinge offset** — SL_cmd −0.31 dB, SL_diag −0.61,
+SRANGE₀ 31°, DI0 36.6 dB; element envelope +0.35 dB. The coplanar leader is
+`+0.31 / −0.25, 34°, 39.7` (element envelope +1.4). The V is more robust to
+the element's asymmetry but ~3 dB lower gain and 3° shorter range. Without the
+y offset the unnulled y grating caps the range at 24°. `DI0` is on-axis
+forward-hemisphere directivity, not peak DI where the command is buried.
+
 ### Galleries
 
 `figures/search2/optimum_2/` and `optimum_3/` render the recommended optima at
