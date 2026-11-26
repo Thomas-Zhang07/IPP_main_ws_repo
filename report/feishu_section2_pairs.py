@@ -50,10 +50,12 @@ def figs(key):
     if key in STUDY:
         base = FIG / "steering" / STUDY[key] / "measured"
         return (lambda a: base / "3d" / f"steer_{a:02d}.png",
-                lambda a: base / "uv" / f"steer_{a:02d}.png")
+                lambda a: base / "uv" / f"steer_{a:02d}.png",
+                lambda a: base / "amplitude" / f"steer_{a:02d}.png")
     base = FIG / "search2" / SEARCH[key]
     return (lambda a: base / "3d" / f"steer_{a:02d}_000.png",
-            lambda a: base / "uv" / f"steer_{a:02d}_000.png")
+            lambda a: base / "uv" / f"steer_{a:02d}_000.png",
+            lambda a: base / "amplitude" / f"steer_{a:02d}_000.png")
 
 
 def run(text, bold=False):
@@ -77,8 +79,8 @@ def main() -> None:
     if args.dry_run:
         total = 0
         for key in ORDER:
-            f3, fuv = figs(key)
-            paths = [p for a in ANGLES for p in (f3(a), fuv(a))]
+            f3, fuv, famp = figs(key)
+            paths = [p for a in ANGLES for p in (f3(a), fuv(a), famp(a))]
             if key == "10_v135":
                 paths.append(FIG / "search2/optimum_v/uv/steer_35_045.png")
             missing = [str(p) for p in paths if not p.exists()]
@@ -181,9 +183,10 @@ def main() -> None:
         if pj.get("code") != 0:
             sys.exit(f"replace_image {path.name}: {pj.get('code')}")
 
-    intro = ("Ten layouts, far field, measured element. Each command shows the "
-             "3D pattern next to its uv map. The card at the end opens the "
-             "interactive page (0–70° in 5° steps, datasheet/isotropic, 2 m).")
+    intro = ("Ten layouts, measured element. Each command shows the 3D "
+             "pattern, its uv map and the amplitude cut through the steering "
+             "plane. The card at the end opens the interactive page (0–70° in "
+             "5° steps, datasheet/isotropic, 2 m microphone).")
     create(pos, {"block_type": 2, "text": {"elements": [run(intro)]}}, "intro")
     pos += 1
 
@@ -191,18 +194,19 @@ def main() -> None:
         create(pos, {"block_type": 5, "heading3":
                      {"elements": [run(TITLES[key], True)]}}, "h3")
         pos += 1
-        f3, fuv = figs(key)
+        f3, fuv, famp = figs(key)
         for angle in ANGLES:
             add_image(pos, f3(angle))
             add_image(pos + 1, fuv(angle))
-            if key == "10_v135" and angle == 35:
-                add_image(pos + 2,
-                          FIG / "search2/optimum_v/uv/steer_35_045.png")
-                pos += 1
-            pos += 2
-            print(f"  {key} {angle}° pair")
+            add_image(pos + 2, famp(angle))
+            pos += 3
+            print(f"  {key} {angle}° triplet")
             time.sleep(0.25)
-        note = "3D and uv at 0°, 20°, 35°, 60°"
+        if key == "10_v135":
+            add_image(pos, FIG / "search2/optimum_v/uv/steer_35_045.png")
+            pos += 1
+            print(f"  {key} 35/45 diagonal")
+        note = "3D, uv map and amplitude cut at 0°, 20°, 35°, 60°"
         if key == "10_v135":
             note += ", plus the 35°/45° diagonal uv map"
         create(pos, {"block_type": 2, "text": {
