@@ -164,10 +164,59 @@ def winners(path: Path) -> None:
     plt.close(fig)
 
 
+def mic_arc(path: Path, distance_m: float = 2.0) -> None:
+    """Level along the 2 m arc, same convention as v_microphone_2m.csv.
+
+    Broadside plane-wave drive from the z = 0 plane; the reference at every
+    angle is the element-weighted coherent bound sum(amp(cos b)/r), so the
+    value at 0 deg reproduces the table (-7.65 / -10.47 dB).
+    """
+    import field
+    import geometry as G
+    import transducer
+
+    alpha = np.linspace(-90.0, 90.0, 721)
+    a = np.radians(alpha)
+    dirs = np.column_stack([np.sin(a), np.zeros_like(a), np.cos(a)])
+    pts = distance_m * dirs
+    fig, ax = plt.subplots(figsize=(8.8, 4.2))
+    for layout, colour, label in ((G.v_pair(120.0, "v120", "V 120"), R.BLUE, "V 120°"),
+                                  (G.v_pair(150.0, "v150", "V 150"), R.ORANGE, "V 150°")):
+        pos, normals = layout.positions, layout.normals
+        weights = np.exp(-1j * C.WAVE_NUMBER * pos[:, 2])
+        pressure = field.near_field_points(pos, normals, weights, pts,
+                                           chunk=128,
+                                           element_pattern=transducer.amplitude)
+        delta = pts[:, None, :] - pos[None, :, :]
+        r = np.linalg.norm(delta, axis=2)
+        cos_beta = np.einsum("ijk,jk->ij", delta / r[..., None], normals)
+        bound = np.sum(transducer.amplitude(cos_beta) / r, axis=1)
+        level = 20.0 * np.log10(np.maximum(np.abs(pressure) / bound, 1e-9))
+        ax.plot(alpha, level, color=colour, lw=1.4, label=label)
+        i = int(np.argmin(np.abs(alpha)))
+        ax.plot([0.0], [level[i]], "o", color=colour, ms=5)
+        off = (-58, 10) if label == "V 120°" else (14, -16)
+        ax.annotate(f"{level[i]:.2f} dB", (0.0, level[i]), xytext=off,
+                    textcoords="offset points", fontsize=8.5, color=colour,
+                    arrowprops=dict(arrowstyle="->", color=colour, lw=0.8))
+    ax.axvline(0.0, color=R.MUTED, lw=0.9, ls=":")
+    ax.set_xlim(-90, 90)
+    ax.set_xlabel("angle in x–z (deg)")
+    ax.set_ylabel("level re element-weighted bound (dB)")
+    ax.set_title("2 m arc, broadside drive — amplitude vs angle", fontsize=12,
+                 fontweight="bold", loc="left")
+    ax.grid(alpha=0.25)
+    ax.legend(fontsize=9)
+    fig.tight_layout()
+    fig.savefig(path, dpi=150, bbox_inches="tight")
+    plt.close(fig)
+
+
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     element_pattern(OUT / "element_pattern.png")
     mic2m(OUT / "mic2m.png")
+    mic_arc(OUT / "mic_arc.png")
     winners(OUT / "winners.png")
     print("wrote", *(p.name for p in sorted(OUT.glob("*.png"))))
 

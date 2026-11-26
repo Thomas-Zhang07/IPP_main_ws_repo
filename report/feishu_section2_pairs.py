@@ -183,10 +183,10 @@ def main() -> None:
         if pj.get("code") != 0:
             sys.exit(f"replace_image {path.name}: {pj.get('code')}")
 
-    intro = ("Ten layouts, measured element. Each command shows the 3D "
-             "pattern, its uv map and the amplitude cut through the steering "
-             "plane. The card at the end opens the interactive page (0–70° in "
-             "5° steps, datasheet/isotropic, 2 m microphone).")
+    intro = ("Ten layouts, measured element. Each command leads with the "
+             "amplitude cut through the steering plane, then the 3D pattern "
+             "and its uv map. The card at the end opens the interactive page "
+             "(0–70° in 5° steps, datasheet/isotropic, 2 m microphone).")
     create(pos, {"block_type": 2, "text": {"elements": [run(intro)]}}, "intro")
     pos += 1
 
@@ -196,17 +196,17 @@ def main() -> None:
         pos += 1
         f3, fuv, famp = figs(key)
         for angle in ANGLES:
-            add_image(pos, f3(angle))
-            add_image(pos + 1, fuv(angle))
-            add_image(pos + 2, famp(angle))
+            add_image(pos, famp(angle))
+            add_image(pos + 1, f3(angle))
+            add_image(pos + 2, fuv(angle))
             pos += 3
-            print(f"  {key} {angle}° triplet")
+            print(f"  {key} {angle}° triplet (amp first)")
             time.sleep(0.25)
         if key == "10_v135":
             add_image(pos, FIG / "search2/optimum_v/uv/steer_35_045.png")
             pos += 1
             print(f"  {key} 35/45 diagonal")
-        note = "3D, uv map and amplitude cut at 0°, 20°, 35°, 60°"
+        note = "amplitude cut, 3D pattern and uv map at 0°, 20°, 35°, 60°"
         if key == "10_v135":
             note += ", plus the 35°/45° diagonal uv map"
         create(pos, {"block_type": 2, "text": {
