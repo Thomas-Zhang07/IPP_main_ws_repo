@@ -17,13 +17,15 @@ The workspace has two generations:
 
 ```powershell
 $env:PYTHONIOENCODING="utf-8"
-python sim/run_all.py                 # original baselines + broadside search
-python sim/run_all.py --baselines-only
 python sim/steering_study.py          # 7 layouts, isotropic vs measured, 0–70°
 cd sim
 python -m optimum_search --two --three --gallery
+cd ..
 python -m pytest tests -q
 ```
+
+The original ideal-piston run (`legacy/sim/run_all.py`) is archived; see
+`legacy/README.md`.
 
 Dependencies: Python 3.13, numpy, matplotlib, pytest, Pillow
 (`requirements.txt`).
@@ -31,21 +33,22 @@ Dependencies: Python 3.13, numpy, matplotlib, pytest, Pillow
 ## Repository layout
 
 ```
-sim/                     original model, geometry, renderers, searches
+sim/                     shared model + the current packages
   constants.py           board, element, PCB and fixture constants
   geometry.py            board layouts (single, V, coplanar, concave)
   field.py               far/near field sums and metrics
-  render_png.py          PNG figures (far field, near field, studies)
-  export_web.py          HTML 3D pages
-  run_all.py             original full run
+  render_png.py          PNG style and shared renderers
   steering_study.py      7-setup steering study (measured element)
   transducer/            digitized transducer directivity (measured)
   optimum_search/        measured-element 2-/3-board optimal search
+legacy/                  archived original ideal-piston study
+  sim/                   run_all.py, optimize.py, export_web.py, caches
+  figures/  web/  data/  docs/  metrics.csv  verdict.json
 tests/                   model, digitizer, steering, search tests
-figures/                 generated figures (per-layout, steering, search2)
-web/                     generated interactive 3D pages
-data/                    baselines, candidates, caches, search fronts
-docs/                    design notes, literature review, reports
+figures/                 current figures: steering/, search2/
+data/                    current search fronts: search2/
+docs/                    current design notes, literature review, report, plans
+literature/              downloaded papers, extracted text and setup crops
 transducers.jpg          datasheet photograph — the only element source
 ```
 
@@ -240,19 +243,19 @@ search:
 
 | Path | What |
 |---|---|
-| `figures/<key>/farfield.png` | direction-cosine map, cuts, board sketch, metrics |
-| `figures/<key>/nearfield.png` | x–z, x–y, y–z dB maps and Re(p) wavefront |
-| `web/<key>/index.html` | rotatable 3D surface, grating ring, near-field planes |
-| `web/index.html`, `web/overlay.html` | page index, two-layout overlay |
-| `figures/comparison.png` | all layouts, five measures (historical) |
-| `figures/pareto.png` | historical DI vs 50–60° band peak |
-| `figures/leak_compare.png` | cuts through the x/y lobes (historical) |
-| `figures/tolerance.png` | null depth under phase/gain errors (historical) |
-| `figures/study/*.png` | historical seam/offset/yaw scans |
 | `figures/steering/…` | 7-setup steering study (x-only batch) |
 | `figures/search2/…` | optimal search fronts, leader curves, galleries |
-| `metrics.csv`, `verdict.json` | original study numbers |
 | `data/search2/…` | search fronts, leaders, reference rows |
+| `legacy/figures/<key>/farfield.png` | historical direction-cosine map, cuts, board sketch |
+| `legacy/figures/<key>/nearfield.png` | historical near-field maps and Re(p) wavefront |
+| `legacy/web/<key>/index.html` | historical rotatable 3D surface, grating ring, planes |
+| `legacy/web/index.html`, `legacy/web/overlay.html` | historical page index, two-layout overlay |
+| `legacy/figures/comparison.png` | historical all-layout comparison |
+| `legacy/figures/pareto.png` | historical DI vs 50–60° band peak |
+| `legacy/figures/leak_compare.png` | historical x/y lobe cuts |
+| `legacy/figures/tolerance.png` | historical null tolerance |
+| `legacy/figures/study/*.png` | historical seam/offset/yaw scans |
+| `legacy/metrics.csv`, `legacy/verdict.json` | original study numbers |
 
 ## Limitations
 
@@ -269,9 +272,9 @@ search:
 
 ## Documents
 
-- `docs/2026-11-23-sound-wave-sim-design.md` — original model, layouts,
+- `legacy/docs/2026-11-23-sound-wave-sim-design.md` — original model, layouts,
   method.
-- `docs/2026-11-23-two-board-sensitivity.md` — build-error sensitivity.
+- `legacy/docs/2026-11-23-two-board-sensitivity.md` — build-error sensitivity.
 - `docs/2026-11-24-literature-review.md` — verified literature (24 papers),
   comparisons and targets; BibTeX in `docs/references.bib`.
 - `docs/2026-11-25-transducer-directivity-design.md` — measured element and
@@ -301,8 +304,9 @@ search:
 
 - Caches live in `data/cache/` (keyed by emitter positions and grid size);
   deleting them is safe.
-- `run_all.py`: ~15–25 min; `steering_study.py`: ~7 min; the optimal search
-  with galleries: ~45–60 min. All figures are regenerable from the scripts.
+- The archived original run: ~15–25 min; `steering_study.py`: ~7 min; the
+  optimal search with galleries: ~45–60 min. All figures are regenerable from
+  the scripts.
 - Random draws are seeded (`20261126`); results are deterministic.
 
 ## Review history
