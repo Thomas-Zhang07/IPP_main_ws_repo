@@ -1,0 +1,9 @@
+- **Goal:** first real acoustic measurement of the assembled pair — phase lock, the 54.75° null, main-beam width, and the >60° leak, all in relative dB.
+- **Receiver:** MA40S4R-class 40 kHz piezo + battery buffer, 0/+20 dB into the 4-channel scope; no calibrated mic needed.
+- **Setup:** lab at 2.5–3 m, array and mic ≥1.6 m high; 10 Hz gate, echo map, foam screen.
+- **Step 0:** reflash both boards with the 4 ms / 10 Hz gate (primary MISC_C → secondary MISC_F); verify board B's correction table; scope the sync.
+- **Sequence:** receiver linearity/EMI → board balance → trim sweep at ±54.75° → polar cuts (φ = 0/90/45°) → second distance → 30–60 min drift.
+- **Expectation:** ideal model −29 dB at 2 m and −34 dB at 3 m at 54.75°; the ±0.15 mm geometry sets the real floor near −27 dB.
+- **Report:** exact 54.75° depth, 50–60° band peak, >60° peak, and −3 dB width, normalised to the measured 0° peak.
+- **Open:** absolute SPL (meeting); scope model/SCPI.
+- **Design:** `measurement/design_2026-11-24.md`.

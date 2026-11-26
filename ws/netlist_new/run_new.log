@@ -1,0 +1,96 @@
+Reading pref.tcl
+
+# 2025.2
+
+# ** Note: (vsim-220) 'D:/altera/questa_fse/win64/../modelsim.ini' is used as the ini file.
+# vsim -c -t 1ps -L altera -L cycloneive -L altera_mf -L altera_lnsim -voptargs="+acc" -do "do run_new.do" work.tb_top 
+# Start time: 17:42:04 on Nov 11,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# ** Warning: (vopt-10908) Some optimizations are turned off because the +acc switch is in effect.
+# ** Note: (vopt-220) 'D:/altera/questa_fse/win64/../modelsim.ini' is used as the ini file.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# //  Questa Altera Starter FPGA Edition-64
+# //  Version 2025.2 win64 May 31 2025
+# //
+# // Unpublished work. Copyright 2025 Siemens
+# //
+# // This material contains trade secrets or otherwise confidential information
+# // owned by Siemens Industry Software Inc. or its affiliates (collectively,
+# // "SISW"), or its licensors. Access to and use of this information is strictly
+# // limited as set forth in the Customer's applicable agreements with SISW.
+# //
+# // This material may not be copied, distributed, or otherwise disclosed outside
+# // of the Customer's facilities without the express written permission of SISW,
+# // and may not be used in any way not expressly authorized by SISW.
+# //
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading ieee.vital_timing(body)
+# Loading ieee.vital_primitives(body)
+# Loading altera.dffeas_pack
+# Loading altera.altera_primitives_components
+# Loading cycloneive.cycloneive_atom_pack(body)
+# Loading cycloneive.cycloneive_components
+# Loading work.tb_top(sim)#1
+# Loading work.quadruplebuffer(structure)#1
+# Loading altera.dffeas(vital_dffeas)#1
+# Loading cycloneive.cycloneive_lcell_comb(vital_lcell_comb)#71
+# Loading cycloneive.cycloneive_lcell_comb(vital_lcell_comb)#115
+# Loading ieee.std_logic_arith(body)
+# Loading cycloneive.cycloneive_io_obuf(arch)#1
+# Loading cycloneive.cycloneive_io_ibuf(arch)#1
+# Loading cycloneive.cycloneive_pllpack(body)
+# Loading ieee.std_logic_unsigned(body)
+# Loading cycloneive.cycloneive_pll(vital_pll)#1
+# Loading cycloneive.cycloneive_mn_cntr(behave)#1
+# Loading cycloneive.cycloneive_mn_cntr(behave)#2
+# Loading cycloneive.cycloneive_scale_cntr(behave)#1
+# Loading cycloneive.cycloneive_clkctrl(vital_clkctrl)#1
+# Loading cycloneive.cycloneive_ena_reg(behave)#1
+# Loading cycloneive.cycloneive_lcell_comb(vital_lcell_comb)#276
+# Loading cycloneive.cycloneive_lcell_comb(vital_lcell_comb)#6
+# Loading cycloneive.cycloneive_lcell_comb(vital_lcell_comb)#7
+# Loading cycloneive.cycloneive_lcell_comb(vital_lcell_comb)#33
+# Loading cycloneive.cycloneive_lcell_comb(vital_lcell_comb)#13
+# Loading altera.dffeas(vital_dffeas)#2
+# Loading altera.dffeas(vital_dffeas)#3
+# Loading cycloneive.cycloneive_lcell_comb(vital_lcell_comb)#62
+# Loading cycloneive.cycloneive_lcell_comb(vital_lcell_comb)#64
+# Loading cycloneive.cycloneive_lcell_comb(vital_lcell_comb)#400
+# Loading altera.dffeas(vital_dffeas)#4
+# Loading altera.dffeas(vital_dffeas)#5
+# Loading cycloneive.cycloneive_lcell_comb(vital_lcell_comb)#79
+# Loading altera.dffeas(vital_dffeas)#6
+# Loading altera.dffeas(vital_dffeas)#7
+# Loading cycloneive.cycloneive_lcell_comb(vital_lcell_comb)#159
+# Loading cycloneive.cycloneive_jtag(architecture_jtag)#1
+# Loading altera.dffeas(vital_dffeas)#8
+# Loading altera.dffeas(vital_dffeas)#9
+# Loading altera.dffeas(vital_dffeas)#10
+# Loading altera.dffeas(vital_dffeas)#11
+# Loading altera.dffeas(vital_dffeas)#12
+# Loading altera.dffeas(vital_dffeas)#13
+# Loading altera.dffeas(vital_dffeas)#14
+# Loading cycloneive.cycloneive_ram_block(block_arch)#1
+# Loading cycloneive.cycloneive_ram_register(reg_arch)#1
+# Loading cycloneive.cycloneive_ram_register(reg_arch)#2
+# Loading cycloneive.cycloneive_ram_register(reg_arch)#3
+# Loading cycloneive.cycloneive_ram_register(reg_arch)#4
+# Loading cycloneive.cycloneive_ram_register(reg_arch)#5
+# Loading cycloneive.cycloneive_ram_pulse_generator(pgen_arch)#1
+# Loading cycloneive.cycloneive_ram_register(reg_arch)#6
+# ** Warning: (vsim-8683) Uninitialized out port /tb_top/dut/altera_internal_jtag/tdo has no driver.
+# This port will contribute value (U) to the signal network.
+# ** Warning: (vsim-8683) Uninitialized out port /tb_top/dut/altera_internal_jtag/tmsutap has no driver.
+# This port will contribute value (U) to the signal network.
+# ** Warning: (vsim-8683) Uninitialized out port /tb_top/dut/altera_internal_jtag/tckutap has no driver.
+# This port will contribute value (U) to the signal network.
+# ** Warning: (vsim-8683) Uninitialized out port /tb_top/dut/altera_internal_jtag/tdiutap has no driver.
+# This port will contribute value (U) to the signal network.
+# do run_new.do
+# ** Note: Cycloneive PLL locked to incoming clock
+#    Time: 410 ns  Iteration: 3  Instance: /tb_top/dut/\inst1|altpll_component|auto_generated|pll1\
+# ** Note: pre-frame: DATA0=16 DATA1=16 MISC_D=11 SHIFT=3069
+#    Time: 300 us  Iteration: 0  Instance: /tb_top

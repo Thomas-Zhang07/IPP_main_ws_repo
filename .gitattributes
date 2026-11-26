@@ -1,0 +1,3 @@
+# Recovery snapshot: store and check out files byte-for-byte.
+# Disables end-of-line conversion for every path.
+* -text

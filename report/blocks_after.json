@@ -1,0 +1,3363 @@
+[
+  {
+    "block_id": "Fvdld3xEGo0UY9xfKszcxU6HnGc",
+    "block_type": 1,
+    "children": [
+      "doxcnKtTvS1zVssoqZUpye3Wajb",
+      "doxcnLECNharX1sKBy2aVDMfGtf",
+      "P7AvdQRnVoNc1Rx9HTxcSBbLnPd",
+      "HpZ0dDeIZoleqexVqYccoHnUnFc",
+      "KGUvdSkcloIPJUxhBGPcrLCXnQh",
+      "RA6YduV60oys95xA8N1ce90HnJb",
+      "doxcnjdN3SSXKsFbTXvTWTBmeuf"
+    ],
+    "page": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "LUIS report",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1
+      }
+    },
+    "parent_id": ""
+  },
+  {
+    "block_id": "doxcnKtTvS1zVssoqZUpye3Wajb",
+    "block_type": 3,
+    "children": [
+      "doxcnEdXQwBdn6Lb4mHIMp79PPM",
+      "M7vedtgp8ocMJ2xqZ1wccCBKn5f",
+      "Sx6HdNh7aoqdHMxuB0lc41KQndh",
+      "CVbzdQgpOoQ7Rwx9B1TcqDySnJa",
+      "FzGOdBWbUo8sSQx6V05cG2tjn6f",
+      "V0z1dZakxooz5UxuGGHccL7Pnac",
+      "MNO9dUJQTotgG3xzHsYc5njKnkh",
+      "JALedITBkoyqd6xDScMcJ3rVnIh",
+      "doxcn01txS3oQYy4JVZaaEAGELg",
+      "doxcnCfA6bPcNBWRtIYrkFwEybb",
+      "doxcntperic6BBPSwr9o829ejob",
+      "doxcnYouvmUzA1TzfkQY0ifURKb",
+      "doxcnGvbU2NoXRealsCNz2dAJye",
+      "doxcnNvdnonBY6fsxabXIFHFh5b",
+      "doxcnNvalAKux1QqyXH4mqzdq7e",
+      "doxcnsNzTx9Zz3xwgJ31L16Qlae",
+      "doxcnYQcDDTW0evztH30XDEKhTc",
+      "doxcndmKKEyDt2kj8RYSlm5fn8g",
+      "doxcnzL3Gs4QF1UdHE1Je0rNW5b",
+      "doxcn2VDBmrrXUoGRldeHvu4hTg",
+      "doxcnKdIJM6AOy1t7DtWwS3Ygub",
+      "SgOjdbsUDog1EixdGzucseLEnQb",
+      "LkgrdFvM7oQl3jxvRhXcsCaenda",
+      "doxcn9GOmuhkFjanBTGtPT8DNRd",
+      "doxcnxVBAEDnFWEghlJCjcP1I7d",
+      "doxcniFHlu9gB5nZQFnocJ4mjEg",
+      "doxcnLvZvKe07dwvs9THPqmG0Ze",
+      "doxcnfBrwYfTMTDWgKQaVV9rZJd",
+      "doxcn7BQgtlvHIBqfyaABOe7XoC",
+      "doxcnA2ceJBpxz3psMa0W2m6gig",
+      "doxcnZvDWH3Xd5HMIX60IRwrxQw",
+      "doxcnvDmWgRtbsf3R28SI45xMzh",
+      "doxcn7RUeIYEQ0qwWUkKbkKEoed",
+      "doxcns6WXNM9oZktl5qGD1x7Aed",
+      "doxcnOlM7k7rtgZAkZlQY2qC4Qd",
+      "doxcnK5qoQw9EYJUXX6pcvEEdVb",
+      "doxcnO0r7tKxktdQodrsMs1Uc0g",
+      "doxcnOHgSKxD7czxVBcZGG741ih",
+      "doxcnkY57t8Pc2cFhSejsoMSgUe",
+      "doxcnad0SyLqWkINEXli3c87kWd",
+      "doxcnBMc8dz71aUhd0iMe6X38tb",
+      "doxcnNDApsoryGnpXyL0geCmO1c",
+      "doxcneKgrYBk8ty6yGksKxgSoXf",
+      "doxcnOSdJqQuqcDgqXvhJ40uyRf",
+      "doxcnQ2S0nUrHCrZJjYtvCUGUcT",
+      "doxcnHPa1ry9pga09yRCDAoBfrf",
+      "doxcncPEbvOmjI9ctlTL2arEmFc",
+      "doxcnPp1wpZxuHSoCv3Ut3Liw2b",
+      "doxcnLnOz9I8JpsCTYuO9Wqqo4f",
+      "doxcnKYypMcFmOY28aHFxodMABd"
+    ],
+    "heading1": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "26.11.11",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "Fvdld3xEGo0UY9xfKszcxU6HnGc"
+  },
+  {
+    "block_id": "doxcnEdXQwBdn6Lb4mHIMp79PPM",
+    "block_type": 22,
+    "divider": {},
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "M7vedtgp8ocMJ2xqZ1wccCBKn5f",
+    "block_type": 3,
+    "heading1": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "Directional Speaker Demo",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "Sx6HdNh7aoqdHMxuB0lc41KQndh",
+    "block_type": 27,
+    "image": {
+      "align": 2,
+      "height": 559,
+      "scale": 1,
+      "token": "N56UbFrI7ogreMxUyL3cfF4anVh",
+      "width": 410
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "CVbzdQgpOoQ7Rwx9B1TcqDySnJa",
+    "block_type": 2,
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb",
+    "text": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "https://www.youtube.com/watch?v=Fbphhg9ArXw&t=375s",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    }
+  },
+  {
+    "block_id": "FzGOdBWbUo8sSQx6V05cG2tjn6f",
+    "block_type": 2,
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb",
+    "text": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    }
+  },
+  {
+    "block_id": "V0z1dZakxooz5UxuGGHccL7Pnac",
+    "block_type": 27,
+    "image": {
+      "align": 2,
+      "height": 555,
+      "scale": 0.9498208614517996,
+      "token": "DBwyb4SSKoq8w4xDkwhc54wanPg",
+      "width": 837
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "MNO9dUJQTotgG3xzHsYc5njKnkh",
+    "block_type": 2,
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb",
+    "text": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "大概偏离45度 听不到",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    }
+  },
+  {
+    "block_id": "JALedITBkoyqd6xDScMcJ3rVnIh",
+    "block_type": 2,
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb",
+    "text": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "https://www.youtube.com/watch?v=GAo09JyyCIA",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    }
+  },
+  {
+    "block_id": "doxcn01txS3oQYy4JVZaaEAGELg",
+    "block_type": 4,
+    "heading2": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "1. 提升指向性",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnCfA6bPcNBWRtIYrkFwEybb",
+    "block_type": 5,
+    "heading3": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "主机 Python",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcntperic6BBPSwr9o829ejob",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "抽稀/密度加权：按 Hann/Gaussian 选阵元；栅瓣降 10–20 dB，增益 −3 dB，主瓣 ×√2。",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnYouvmUzA1TzfkQY0ifURKb",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "相位抖动：每阵元 ±1–2 档随机相位；打散栅瓣，成本最低。",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnGvbU2NoXRealsCNz2dAJye",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "相位-only 优化：坐标下降/SA；压旁瓣、加零陷；旁瓣 −5–15 dB，零深 −20–30 dB。",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnNvdnonBY6fsxabXIFHFh5b",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "相位校准：测逐通道误差，主机预补偿；主瓣 +1–3 dB。",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnNvalAKux1QqyXH4mqzdq7e",
+    "block_type": 5,
+    "heading3": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "FPGA",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": true,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnsNzTx9Zz3xwgJ31L16Qlae",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "逐通道 duty 幅度加权（DutyLine 原型；PhaseLine 加 duty + 脉冲居中）。",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": true,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnYQcDDTW0evztH30XDEKhTc",
+    "block_type": 4,
+    "heading2": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "2. 流播放",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcndmKKEyDt2kj8RYSlm5fn8g",
+    "block_type": 2,
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb",
+    "text": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "主机流单声道音频 → FPGA FIFO + sigma-delta → 现有波束",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    }
+  },
+  {
+    "block_id": "doxcnzL3Gs4QF1UdHE1Je0rNW5b",
+    "block_type": 13,
+    "ordered": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "UART：",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": "g_CLKS_PER_BIT",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": true,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": " 133→20；",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": "RSSFilter_1",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": true,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": " TAPS 8→2。",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false,
+        "sequence": "1"
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcn2VDBmrrXUoGRldeHvu4hTg",
+    "block_type": 13,
+    "ordered": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "协议：新增 ",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": "0xCC",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": true,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": " 音频包。",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false,
+        "sequence": "auto"
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnKdIJM6AOy1t7DtWwS3Ygub",
+    "block_type": 13,
+    "ordered": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "FPGA：1 kB FIFO + sigma-delta + ",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": "stream_en",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": true,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": "。",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false,
+        "sequence": "auto"
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "SgOjdbsUDog1EixdGzucseLEnQb",
+    "block_type": 2,
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb",
+    "text": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "先进先出缓冲，解耦 UART 写入和 8 kHz 读出，吸收主机抖动。",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    }
+  },
+  {
+    "block_id": "LkgrdFvM7oQl3jxvRhXcsCaenda",
+    "block_type": 2,
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb",
+    "text": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "1 kB = 1024 样本 = 128 ms @8 kHz；空则静音，满则丢包或降速。",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    }
+  },
+  {
+    "block_id": "doxcn9GOmuhkFjanBTGtPT8DNRd",
+    "block_type": 5,
+    "heading3": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "协议",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnxVBAEDnFWEghlJCjcP1I7d",
+    "block_type": 2,
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb",
+    "text": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "现有相位帧：",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    }
+  },
+  {
+    "block_id": "doxcniFHlu9gB5nZQFnocJ4mjEg",
+    "block_type": 14,
+    "code": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "0xFE | 256 × phase | 0xFD",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "language": 1,
+        "wrap": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnLvZvKe07dwvs9THPqmG0Ze",
+    "block_type": 2,
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb",
+    "text": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "新增音频包：",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    }
+  },
+  {
+    "block_id": "doxcnfBrwYfTMTDWgKQaVV9rZJd",
+    "block_type": 14,
+    "code": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "0xCC | len_hi | len_lo | N × sample | checksum",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "language": 1,
+        "wrap": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcn7BQgtlvHIBqfyaABOe7XoC",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "长度前缀避免样本字节误触发 ",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": "0xFE/0xFD/0xC8",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": true,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": "。",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnA2ceJBpxz3psMa0W2m6gig",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "包与包之间可插相位帧，实现边放边转。",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnZvDWH3Xd5HMIX60IRwrxQw",
+    "block_type": 5,
+    "heading3": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "流播放架构",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnvDmWgRtbsf3R28SI45xMzh",
+    "block_type": 14,
+    "code": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "主机音频（WAV/麦克风, 8 kHz, 8-bit）\n   │  0xCC | len | N×sample | checksum\n   ▼\nUART 256k → UARTReader → 音频包解析 → 1 kB FIFO\n                                          │ 8 kHz\n                                          ▼\n                                   sigma-delta @5.12 MHz\n                                          │ 1-bit gate\n                                          ▼\n",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": "现有相位帧 → 40 kHz 载波 ───────────────► 门控 → 32×DATA → 驱动板 → 换能器",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "language": 1,
+        "wrap": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcn7RUeIYEQ0qwWUkKbkKEoed",
+    "block_type": 4,
+    "heading2": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "附录：代码位置",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcns6WXNM9oZktl5qGD1x7Aed",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "demo/array_factor.py",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": true,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": " — 阵列因子/旁瓣",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnOlM7k7rtgZAkZlQY2qC4Qd",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "demo/acoustics.py",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": true,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": " — 相位/聚焦/偏转",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnK5qoQw9EYJUXX6pcvEEdVb",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "fpga_code/src/PhaseLine.vhd",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": true,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": " — 单通道相位",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnO0r7tKxktdQodrsMs1Uc0g",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "fpga_code/src/AllChannels.vhd",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": true,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": " — 256 通道 + mux",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnOHgSKxD7czxVBcZGG741ih",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "fpga_code/src/Distribute.vhd",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": true,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": " — 帧解析/模式",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnkY57t8Pc2cFhSejsoMSgUe",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "fpga_code/src/music_player.vhd",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": true,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": " — 音频门控",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnad0SyLqWkINEXli3c87kWd",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "fpga_code/src/RSSFilter_1.vhd",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": true,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": " — UART 滤波",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnBMc8dz71aUhd0iMe6X38tb",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "fpga_code/src/DutyLine.vhd",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": true,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": " — duty 原型",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnNDApsoryGnpXyL0geCmO1c",
+    "block_type": 3,
+    "heading1": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "PulseExpander",
+            "text_element_style": {
+              "bold": true,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": ".vhd",
+            "text_element_style": {
+              "bold": true,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcneKgrYBk8ty6yGksKxgSoXf",
+    "block_type": 2,
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb",
+    "text": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "旧代码",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    }
+  },
+  {
+    "block_id": "doxcnOSdJqQuqcDgqXvhJ40uyRf",
+    "block_type": 14,
+    "code": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "library IEEE;\nuse IEEE.STD_LOGIC_1164.ALL;\nuse IEEE.STD_LOGIC_ARITH.ALL;\nuse IEEE.STD_LOGIC_UNSIGNED.ALL;\n\nentity PulseExpander is\n\t generic(OUTPUT_LENGTH_CYCLES: integer := 8);\n    port (\n        clk_in : in  STD_LOGIC;\n\t\t  pulse_in : in STD_LOGIC;\n        pulse_out: out STD_LOGIC\n\t );\nend PulseExpander;\n\narchitecture Behavioral of PulseExpander is\n    signal sCounter : integer range 0 to OUTPUT_LENGTH_CYCLES := 0;\n\t signal s_pulse_out: STD_LOGIC := '0';\nbegin\n    pPulseExpander: process (clk_in) begin\n        if rising_edge(clk_in) then\n\t\t\t\tif (pulse_in = '1') then\n\t\t\t\t\tsCounter <= OUTPUT_LENGTH_CYCLES;\n\t\t\t\tend if;\n\t\t  \n\t\t\t\tif (sCounter = 0) then\n\t\t\t\t\ts_pulse_out <= '0';\n\t\t\t\telse\n\t\t\t\t\ts_pulse_out <= '1';\n\t\t\t\t\tsCounter <= sCounter - 1;\n\t\t\t\tend if;\n        end if;\n    end process;\n    \n    pulse_out <= s_pulse_out;\n",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": "end Behavioral;",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "wrap": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnQ2S0nUrHCrZJjYtvCUGUcT",
+    "block_type": 27,
+    "image": {
+      "align": 2,
+      "height": 597,
+      "scale": 1,
+      "token": "KVkFbYWwMoYIKDxcGZCcTkbqnaf",
+      "width": 1000
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnHPa1ry9pga09yRCDAoBfrf",
+    "block_type": 27,
+    "image": {
+      "align": 2,
+      "height": 625,
+      "scale": 1,
+      "token": "BiwwbsvXqoIgn5xpVfrc73rVnQb",
+      "width": 1000
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcncPEbvOmjI9ctlTL2arEmFc",
+    "block_type": 27,
+    "image": {
+      "align": 2,
+      "height": 625,
+      "scale": 1,
+      "token": "JPSdbcANDoRyqNxQfXGcbghvnId",
+      "width": 1000
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnPp1wpZxuHSoCv3Ut3Liw2b",
+    "block_type": 2,
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb",
+    "text": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "新代码",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    }
+  },
+  {
+    "block_id": "doxcnLnOz9I8JpsCTYuO9Wqqo4f",
+    "block_type": 14,
+    "code": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "library IEEE;\nuse IEEE.STD_LOGIC_1164.ALL;\nuse IEEE.STD_LOGIC_ARITH.ALL;\nuse IEEE.STD_LOGIC_UNSIGNED.ALL;\n\nentity PulseExpander is\n\t generic(OUTPUT_LENGTH_CYCLES: integer := 8);\n    port (\n        clk_in : in  STD_LOGIC;\n\t\t  pulse_in : in STD_LOGIC;\n        pulse_out: out STD_LOGIC\n\t );\nend PulseExpander;\n\narchitecture Behavioral of PulseExpander is\n    signal sCounter : integer range 0 to OUTPUT_LENGTH_CYCLES := 0;\n\t signal s_pulse_out: STD_LOGIC := '0';\nbegin\n    pPulseExpander: process (clk_in) begin\n        if rising_edge(clk_in) then\n\t\t\t\t-- While the input is high the output stays high and the\n\t\t\t\t-- counter is reloaded. The earlier version reloaded and\n\t\t\t\t-- decremented in the same cycle; the decrement won, so a\n\t\t\t\t-- held-high input produced a one-clock low glitch every\n\t\t\t\t-- OUTPUT_LENGTH_CYCLES+1 cycles.\n        -- good it works !\n\t\t\t\tif (pulse_in = '1') then\n\t\t\t\t\tsCounter <= OUTPUT_LENGTH_CYCLES;\n\t\t\t\t\ts_pulse_out <= '1';\n\t\t\t\telsif (sCounter = 0) then\n\t\t\t\t\ts_pulse_out <= '0';\n\t\t\t\telse\n\t\t\t\t\ts_pulse_out <= '1';\n\t\t\t\t\tsCounter <= sCounter - 1;\n\t\t\t\tend if;\n        end if;\n    end process;\n    \n    pulse_out <= s_pulse_out;\n",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": "end Behavioral;",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "wrap": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnKYypMcFmOY28aHFxodMABd",
+    "block_type": 27,
+    "image": {
+      "align": 2,
+      "height": 597,
+      "scale": 1,
+      "token": "Iko3baJCyomE0gxPygecwPVknum",
+      "width": 1000
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnLECNharX1sKBy2aVDMfGtf",
+    "block_type": 3,
+    "children": [
+      "doxcnvjNGnl6a4vKTOoRdqizDkd",
+      "doxcnoSnxo7PFTmhcr68B4oS7Kb",
+      "doxcnYocnCeHrmwS46Z4PY1tHyf",
+      "Auy9dF1oeokZdzx27xcc0xPonph",
+      "doxcnLg8LkGY0NiA6DsyQKZJrYc",
+      "SwIsdOG8loAHA7x84BhcSl3Rnug",
+      "doxcnvGclbokGfez4WUl9TQgdwf",
+      "doxcn2a3etpMCeA0b5oT6wQ8mze",
+      "doxcnjZD6o2XBpzJhrar9LCyuye",
+      "doxcndJBCnBIhDt9jmK4JfLmvu8",
+      "doxcn3YvKlN44eZoccq3gj0Zscc",
+      "doxcnzd5eR2u5rhtBb1tI74lOzf",
+      "doxcnHIBoq3qQBgbJehOgykPffb",
+      "doxcnp3zSKidGR7AYRSXvmrqGhg",
+      "Z5cAdG5gForGB9x33CAcX2ijnec",
+      "A1GgdysrkoA8GExfO7ocK6NAnyg",
+      "S7QpdysSeoGOEpxsA25cbAREnLb",
+      "OabbdVn21o51IsxlAA3cEB5SnMg",
+      "BWnud9y5ioRturx1V2McdIvGnQA",
+      "DlHCdYgMmo16xHxS95Fc4hhxnmc",
+      "L6gYdpbesoGJj0xpHyNcKp6gnqh",
+      "Ncgsd5xnYoncZRxLuJzcsQRanQd",
+      "KBdvdVZsbo15RXxlkS6cJhCengd",
+      "doxcniFdyTdqlUdhgxO5gRT5dLc",
+      "doxcnwYxSAZVOjILaUWLOnrNyrh",
+      "doxcnnggVK4WxuSpA1DxHYvPsUc",
+      "doxcn2x1geymmmLkHSNN6tgKT5c",
+      "doxcnF1ok8XEyvJwmpQJHC2cCKc",
+      "doxcndf09ediBwPptTslgl95vtf",
+      "doxcngSEvZFAYG2dmkDkjFDFiod",
+      "doxcnyj67kzsF2PRdYoDwNTUAeh",
+      "doxcn1ezWB6Qxta8iwHpUvriuuf",
+      "doxcn5si4dlKk3LcM2UCDz8hknc",
+      "doxcnCDvi9A5oK8Qqg1fqnB24Bc",
+      "MPNZdWjWJoIMBXxuVzfcA7sUnwh",
+      "doxcnVF7NGscPGaCxO2Tqgbwnaf",
+      "doxcnpSSKI2Ffqyo7g81hUppgAd",
+      "doxcnG4EwMjcAfW2byYX5QNxtbh",
+      "doxcnzCG4XOwtNeFGjedRO7RVmf",
+      "doxcnHWxEB3YpOezdRf53kAkeOf",
+      "doxcnB2dXbapvrA6FvEM0WIhYFe",
+      "doxcnZpnXA2TB106Lag9D2ofeP3"
+    ],
+    "heading1": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "26.11.21",
+            "text_element_style": {
+              "bold": true,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "Fvdld3xEGo0UY9xfKszcxU6HnGc"
+  },
+  {
+    "block_id": "doxcnvjNGnl6a4vKTOoRdqizDkd",
+    "block_type": 2,
+    "parent_id": "doxcnLECNharX1sKBy2aVDMfGtf",
+    "text": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "Progress 11.12 – 11.20",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    }
+  },
+  {
+    "block_id": "doxcnoSnxo7PFTmhcr68B4oS7Kb",
+    "block_type": 4,
+    "heading2": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "1. Calibration verified",
+            "text_element_style": {
+              "bold": true,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnLECNharX1sKBy2aVDMfGtf"
+  },
+  {
+    "block_id": "doxcnYocnCeHrmwS46Z4PY1tHyf",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "16 phase bins (相位档) verified: 1.5625 µs per bin, correct sign, matching steer_2d.",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnLECNharX1sKBy2aVDMfGtf"
+  },
+  {
+    "block_id": "Auy9dF1oeokZdzx27xcc0xPonph",
+    "block_type": 33,
+    "children": [
+      "ZjtDd747UoYalmx1pmXcIlY9nHb"
+    ],
+    "parent_id": "doxcnLECNharX1sKBy2aVDMfGtf",
+    "view": {
+      "view_type": 2
+    }
+  },
+  {
+    "block_id": "ZjtDd747UoYalmx1pmXcIlY9nHb",
+    "block_type": 23,
+    "file": {
+      "name": "clip_11.12.2_scope.mp4",
+      "token": "NyCkbinIuoEG9BxFhdZc3iG4nqb"
+    },
+    "parent_id": "Auy9dF1oeokZdzx27xcc0xPonph"
+  },
+  {
+    "block_id": "doxcnLg8LkGY0NiA6DsyQKZJrYc",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "Slot → PCB Q map measured: slot 0=Q0, 1=Q3, 2=Q2, 3=Q4, 4=Q5, 5=Q6, 6=Q7, 7=Q1.",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnLECNharX1sKBy2aVDMfGtf"
+  },
+  {
+    "block_id": "SwIsdOG8loAHA7x84BhcSl3Rnug",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "Primary-raw table is applied at the right wire bytes: group 9 slot 0 = 180°, slot 2 = 0°; group 27 slots 2 / 4 opposite. Measured at the driver pads, 40 kHz.",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnLECNharX1sKBy2aVDMfGtf"
+  },
+  {
+    "block_id": "doxcnvGclbokGfez4WUl9TQgdwf",
+    "block_type": 27,
+    "image": {
+      "align": 2,
+      "height": 925,
+      "scale": 1,
+      "token": "UzEqbp6xLoLyV3xNqEOc3UNnnmh",
+      "width": 520
+    },
+    "parent_id": "doxcnLECNharX1sKBy2aVDMfGtf"
+  },
+  {
+    "block_id": "doxcn2a3etpMCeA0b5oT6wQ8mze",
+    "block_type": 4,
+    "heading2": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "2. Per-channel duty amplitude",
+            "text_element_style": {
+              "bold": true,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnLECNharX1sKBy2aVDMfGtf"
+  },
+  {
+    "block_id": "doxcnjZD6o2XBpzJhrar9LCyuye",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "Each frame is 258 bytes: 0xFE + 256 payload bytes (one per channel) + 0xFD. The 25 µs carrier (载波) at 40 kHz is split into 16 phase bins of 1.5625 µs; 256 PhaseLine instances output high between on-step and off-step, so the width is (off − on) mod 16 bins and the fundamental amplitude (基波幅度) follows sin(π·width/16), maximum at 8 bins, i.e. 50 % duty (占空比). A full-width pulse starts at phase+1 and ends at phase+9, centred on phase+5. Narrowing the pulse without moving the start would shift that centre, so an amplitude change would drag the phase and pull the beam. The RTL therefore shifts on-step later by lead = 4 − width/2, keeping every width centred on phase+5: amplitude changes leave the phase untouched.",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnLECNharX1sKBy2aVDMfGtf"
+  },
+  {
+    "block_id": "doxcndJBCnBIhDt9jmK4JfLmvu8",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "Bits 7–4 of each byte are the amplitude code (幅度码) 0–15 and bits 3–0 are the phase bin 0–15, so one channel is exactly one byte. Codes 0 and 15 both give the full 8-bin width: 0 is kept as full scale for backward compatibility (向后兼容), otherwise old frames (high nibble 0) would go silent. Codes 1–14 map to widths 1–7 by integer division, (code + 1) / 2, two codes per width. 0x10 is a separate off code (关断码): the RTL turns it into width 0 (on = off) and PhaseLine holds the channel low — without that case 0x10 would decode as amplitude code 1.",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnLECNharX1sKBy2aVDMfGtf"
+  },
+  {
+    "block_id": "doxcn3YvKlN44eZoccq3gj0Zscc",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "Fit: primary 5,622 / 6,272 LE (90 %), secondary 5,679 / 6,272 (91 %).",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnLECNharX1sKBy2aVDMfGtf"
+  },
+  {
+    "block_id": "doxcnzd5eR2u5rhtBb1tI74lOzf",
+    "block_type": 33,
+    "children": [
+      "doxcnXKAgJyB1pILmaBIEEnj50c"
+    ],
+    "parent_id": "doxcnLECNharX1sKBy2aVDMfGtf",
+    "view": {
+      "view_type": 2
+    }
+  },
+  {
+    "block_id": "doxcnXKAgJyB1pILmaBIEEnj50c",
+    "block_type": 23,
+    "file": {
+      "name": "clip_11.12.3_setup.mp4",
+      "token": "N23nbffP9os1moxOld4cjII4nWc"
+    },
+    "parent_id": "doxcnzd5eR2u5rhtBb1tI74lOzf"
+  },
+  {
+    "block_id": "doxcnHIBoq3qQBgbJehOgykPffb",
+    "block_type": 4,
+    "heading2": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "3. Dual board",
+            "text_element_style": {
+              "bold": true,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnLECNharX1sKBy2aVDMfGtf"
+  },
+  {
+    "block_id": "doxcnp3zSKidGR7AYRSXvmrqGhg",
+    "block_type": 2,
+    "parent_id": "doxcnLECNharX1sKBy2aVDMfGtf",
+    "text": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "5 mm g",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": "ap",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    }
+  },
+  {
+    "block_id": "Z5cAdG5gForGB9x33CAcX2ijnec",
+    "block_type": 2,
+    "parent_id": "doxcnLECNharX1sKBy2aVDMfGtf",
+    "text": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "Grating lobes are unavoidable because clean sampling needs d ≤ λ/2 (4.3 mm at 40 kHz). Board B's half-pitch offset cancels the 54.75° lobe.",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    }
+  },
+  {
+    "block_id": "A1GgdysrkoA8GExfO7ocK6NAnyg",
+    "block_type": 2,
+    "parent_id": "doxcnLECNharX1sKBy2aVDMfGtf",
+    "text": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    }
+  },
+  {
+    "block_id": "S7QpdysSeoGOEpxsA25cbAREnLb",
+    "block_type": 2,
+    "parent_id": "doxcnLECNharX1sKBy2aVDMfGtf",
+    "text": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    }
+  },
+  {
+    "block_id": "OabbdVn21o51IsxlAA3cEB5SnMg",
+    "block_type": 2,
+    "parent_id": "doxcnLECNharX1sKBy2aVDMfGtf",
+    "text": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "Sim figure",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    }
+  },
+  {
+    "block_id": "BWnud9y5ioRturx1V2McdIvGnQA",
+    "block_type": 2,
+    "parent_id": "doxcnLECNharX1sKBy2aVDMfGtf",
+    "text": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    }
+  },
+  {
+    "block_id": "DlHCdYgMmo16xHxS95Fc4hhxnmc",
+    "block_type": 2,
+    "parent_id": "doxcnLECNharX1sKBy2aVDMfGtf",
+    "text": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "V shape ",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    }
+  },
+  {
+    "block_id": "L6gYdpbesoGJj0xpHyNcKp6gnqh",
+    "block_type": 2,
+    "parent_id": "doxcnLECNharX1sKBy2aVDMfGtf",
+    "text": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    }
+  },
+  {
+    "block_id": "Ncgsd5xnYoncZRxLuJzcsQRanQd",
+    "block_type": 2,
+    "parent_id": "doxcnLECNharX1sKBy2aVDMfGtf",
+    "text": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "Maybe 3 : put like \\_/ or sth else",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    }
+  },
+  {
+    "block_id": "KBdvdVZsbo15RXxlkS6cJhCengd",
+    "block_type": 27,
+    "image": {
+      "align": 2,
+      "height": 1212,
+      "scale": 1,
+      "token": "BiOwbGk2Eo3PJRxrg1GcRfJZned",
+      "width": 1951
+    },
+    "parent_id": "doxcnLECNharX1sKBy2aVDMfGtf"
+  },
+  {
+    "block_id": "doxcniFdyTdqlUdhgxO5gRT5dLc",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "When the primary's carrier counter reaches zero it sends a ~195 ns pulse on MISC_D to the secondary's MISC_A, once every 25 µs. The secondary samples it with its 50 MHz master clock; 5.12 MHz is divided from it by 128/1250 (ratio 9.77, not 10), removes metastability (亚稳态) with two flip-flops (触发器), then delays it by 0–255 trim (微调) steps of 20 ns (≈ 0.288° at 40 kHz) — sampling at 5.12 MHz alone cannot resolve sub-period timing. The delayed edge becomes a toggle and is re-synchronized into the 5.12 MHz domain by two more flip-flops, producing a one-cycle pulse; a toggle is used because a 20 ns pulse could be missed by the slow clock. That pulse reloads the carrier counter to SYNC_LOAD = 17, a constant that absorbs the fixed synchronizer latency",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": " ",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": "and replaces the 71 of the retired square-wave + majority-filter scheme. The 8-bit trim resets to 127 (01111111), the midpoint that gives zero phase error in simulation; trim 0 and 255 sit about +13 and −13 clocks away.",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnLECNharX1sKBy2aVDMfGtf"
+  },
+  {
+    "block_id": "doxcnwYxSAZVOjILaUWLOnrNyrh",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "The trim command 0xE0 0x5A value is read only between frames, so a payload byte equal to 0xE0 cannot be mistaken for it.",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnLECNharX1sKBy2aVDMfGtf"
+  },
+  {
+    "block_id": "doxcnnggVK4WxuSpA1DxHYvPsUc",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "Board select: a 0xC0 or 0xC1 byte precedes each command/frame. 0xC0 enables the primary and disables the secondary; 0xC1 does the reverse, and the disabled board ignores the payload.",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnLECNharX1sKBy2aVDMfGtf"
+  },
+  {
+    "block_id": "doxcn2x1geymmmLkHSNN6tgKT5c",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "Two independent UART links: primary CH340 (COM8), secondary FTDI (COM6), TX → port B, 38.4 kBaud.",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnLECNharX1sKBy2aVDMfGtf"
+  },
+  {
+    "block_id": "doxcnF1ok8XEyvJwmpQJHC2cCKc",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "Both boards play the same mode, and a parallel mode change restarts both music players, so Little Star starts together.",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnLECNharX1sKBy2aVDMfGtf"
+  },
+  {
+    "block_id": "doxcndf09ediBwPptTslgl95vtf",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "First verify carrier lock (载波锁定) by scoping primary MISC_D (195 ns pulse every 25 µs at counter 0) against secondary MISC_A; if it drops or jitters, the secondary stops reloading and the boards drift. Even locked, residual skew (相位偏差) leaves a static phase offset that smears the beam if trim is left at 127. Set both arrays broadside (正前方), sweep secondary trim 0–255 in steps of 8 (20 ns ≈ 0.288° per unit, so 8 units ≈ 160 ns ≈ 2.3°), and tune for the deepest null (零点) at 54.75° — null depth is far more sensitive to inter-board phase than the main-lobe (主瓣) peak. Lock that value and measure the pair at 1–3 m.",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnLECNharX1sKBy2aVDMfGtf"
+  },
+  {
+    "block_id": "doxcngSEvZFAYG2dmkDkjFDFiod",
+    "block_type": 27,
+    "image": {
+      "align": 2,
+      "height": 506,
+      "scale": 1,
+      "token": "VfavbnIxuoX7IJxD7IActLqdnoY",
+      "width": 900
+    },
+    "parent_id": "doxcnLECNharX1sKBy2aVDMfGtf"
+  },
+  {
+    "block_id": "doxcnyj67kzsF2PRdYoDwNTUAeh",
+    "block_type": 2,
+    "parent_id": "doxcnLECNharX1sKBy2aVDMfGtf",
+    "text": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "Both boards on the bench, each on its own supply.",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    }
+  },
+  {
+    "block_id": "doxcn1ezWB6Qxta8iwHpUvriuuf",
+    "block_type": 27,
+    "image": {
+      "align": 2,
+      "height": 925,
+      "scale": 1,
+      "token": "OSykbC38bogq8gxAhLtcge9VnLd",
+      "width": 520
+    },
+    "parent_id": "doxcnLECNharX1sKBy2aVDMfGtf"
+  },
+  {
+    "block_id": "doxcn5si4dlKk3LcM2UCDz8hknc",
+    "block_type": 2,
+    "parent_id": "doxcnLECNharX1sKBy2aVDMfGtf",
+    "text": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "FTDI TX wired to the secondary's port B.",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    }
+  },
+  {
+    "block_id": "doxcnCDvi9A5oK8Qqg1fqnB24Bc",
+    "block_type": 4,
+    "heading2": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "4. Fixture",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnLECNharX1sKBy2aVDMfGtf"
+  },
+  {
+    "block_id": "MPNZdWjWJoIMBXxuVzfcA7sUnwh",
+    "block_type": 27,
+    "image": {
+      "align": 2,
+      "height": 758,
+      "scale": 1,
+      "token": "VWUuberbuo5bqWxVo4dcuNY1n5d",
+      "width": 1474
+    },
+    "parent_id": "doxcnLECNharX1sKBy2aVDMfGtf"
+  },
+  {
+    "block_id": "doxcnVF7NGscPGaCxO2Tqgbwnaf",
+    "block_type": 2,
+    "parent_id": "doxcnLECNharX1sKBy2aVDMfGtf",
+    "text": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "3D layout: 5.25 mm y offset, 15.75 mm seam, 30 mm clearance.",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    }
+  },
+  {
+    "block_id": "doxcnpSSKI2Ffqyo7g81hUppgAd",
+    "block_type": 4,
+    "heading2": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "5. Next",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnLECNharX1sKBy2aVDMfGtf"
+  },
+  {
+    "block_id": "doxcnG4EwMjcAfW2byYX5QNxtbh",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "S",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": "ync path (MISC_D → MISC_A)",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnLECNharX1sKBy2aVDMfGtf"
+  },
+  {
+    "block_id": "doxcnzCG4XOwtNeFGjedRO7RVmf",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "Assemble the fixture; measure seam and y offset and coplanarity.",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnLECNharX1sKBy2aVDMfGtf"
+  },
+  {
+    "block_id": "doxcnHWxEB3YpOezdRf53kAkeOf",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "Measure the pair at 1–3 m: main-lobe width, 54.75° level, and leak above 60°.",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnLECNharX1sKBy2aVDMfGtf"
+  },
+  {
+    "block_id": "doxcnB2dXbapvrA6FvEM0WIhYFe",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "After mounting, try Hann / duty tapering to trade main-beam level for side leak.",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnLECNharX1sKBy2aVDMfGtf"
+  },
+  {
+    "block_id": "doxcnZpnXA2TB106Lag9D2ofeP3",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "Streaming (8–16 kHz) is the next milestone; plan unchanged from 26.11.11.",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnLECNharX1sKBy2aVDMfGtf"
+  },
+  {
+    "block_id": "P7AvdQRnVoNc1Rx9HTxcSBbLnPd",
+    "block_type": 2,
+    "parent_id": "Fvdld3xEGo0UY9xfKszcxU6HnGc",
+    "text": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    }
+  },
+  {
+    "block_id": "HpZ0dDeIZoleqexVqYccoHnUnFc",
+    "block_type": 2,
+    "parent_id": "Fvdld3xEGo0UY9xfKszcxU6HnGc",
+    "text": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    }
+  },
+  {
+    "block_id": "KGUvdSkcloIPJUxhBGPcrLCXnQh",
+    "block_type": 2,
+    "parent_id": "Fvdld3xEGo0UY9xfKszcxU6HnGc",
+    "text": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    }
+  },
+  {
+    "block_id": "RA6YduV60oys95xA8N1ce90HnJb",
+    "block_type": 2,
+    "parent_id": "Fvdld3xEGo0UY9xfKszcxU6HnGc",
+    "text": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "Sim radiation ",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    }
+  },
+  {
+    "block_id": "doxcnjdN3SSXKsFbTXvTWTBmeuf",
+    "block_type": 3,
+    "children": [
+      "doxcnzvyu3hmzaekqg4KQjoji0e",
+      "doxcnyurgKNYZES9r2jounux9Tc",
+      "doxcntFwpIqGnTGjEnTGATODf9b",
+      "doxcnFblDBjbMJx9vjb50QFG4Jc",
+      "doxcnsX6gF0XrBX6lOCiX8l1Whc",
+      "doxcn6J3UiBTo07X1Kjt2ZzXgTe",
+      "doxcnfVooyXZXYrAbuK4GQYGXlh",
+      "doxcnrNV8LRr1EiyjrxigWtOWrs",
+      "doxcnn9DdHVwqzwF9lrwft4uhYd",
+      "doxcnNoLJkpa5ZuNb0fBCaOV3mb",
+      "doxcnJYKtLNPuWZhccJPpNXWbRh",
+      "doxcnWEiC6xOcK1NwYzghDbXbcf",
+      "doxcnQ2DXOP8BPg216lsm5YPw1O",
+      "doxcnaGJQyfr0oncppIma9pPwSf",
+      "doxcnOAcII59unaf4408TR85yvd",
+      "doxcnXm4pv3y0hPqkTaxQumWFPb",
+      "doxcnBmVcf6xwo2YQRyFuhN8Zeb",
+      "doxcnFm185GQRnQItdyCZmxhM8e",
+      "doxcnBrIDxzVKaih4C3dzKjqYkd",
+      "doxcndpRY6NiboSFanBYoDkuhcT",
+      "doxcnw1VOuEbtu4rVyKJ7uiGwvh",
+      "doxcnO2GTU5IsCXIYp4LLBYEdAh",
+      "doxcnZiiNZCSo6PDVCgwcDagqSd",
+      "doxcnnfY1MdgCSNAx6G1OfKFN1d",
+      "doxcnSzreTcaHTjPRLstFUaxhUg",
+      "doxcnVV0FlCZhtecfvdpz05Ka4f",
+      "doxcn0dlTjDudymdEBDw5IOfeDe",
+      "doxcnouCJY5xB8jCK1BMERRIThb",
+      "doxcnXmLfJHnchUj4ukbDVxEpzd"
+    ],
+    "heading1": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "26.11.25",
+            "text_element_style": {
+              "bold": true,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "Fvdld3xEGo0UY9xfKszcxU6HnGc"
+  },
+  {
+    "block_id": "doxcnzvyu3hmzaekqg4KQjoji0e",
+    "block_type": 2,
+    "parent_id": "doxcnjdN3SSXKsFbTXvTWTBmeuf",
+    "text": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "Ideal-model simulation of the board layouts: 40 kHz, 10.5 mm pitch, 10 mm piston elements, uniform phase. Workspace E:\\LUIS\\IPP\\sound_wave_sim_figures.",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    }
+  },
+  {
+    "block_id": "doxcnyurgKNYZES9r2jounux9Tc",
+    "block_type": 2,
+    "parent_id": "doxcnjdN3SSXKsFbTXvTWTBmeuf",
+    "text": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "Read the 50–60° band peak and band energy; the exact 54.75° point null is a tuning result, not a leak metric.",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    }
+  },
+  {
+    "block_id": "doxcntFwpIqGnTGjEnTGATODf9b",
+    "block_type": 4,
+    "heading2": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "1. Layouts compared",
+            "text_element_style": {
+              "bold": true,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnjdN3SSXKsFbTXvTWTBmeuf"
+  },
+  {
+    "block_id": "doxcnFblDBjbMJx9vjb50QFG4Jc",
+    "block_type": 27,
+    "image": {
+      "align": 2,
+      "height": 201,
+      "scale": 1,
+      "token": "PgNgbQVN6oLfEsxbw7PcLJKLnKb",
+      "width": 900
+    },
+    "parent_id": "doxcnjdN3SSXKsFbTXvTWTBmeuf"
+  },
+  {
+    "block_id": "doxcnsX6gF0XrBX6lOCiX8l1Whc",
+    "block_type": 27,
+    "image": {
+      "align": 2,
+      "height": 356,
+      "scale": 1,
+      "token": "Il9XbfAmvojdmlxeuZhce7plnnf",
+      "width": 900
+    },
+    "parent_id": "doxcnjdN3SSXKsFbTXvTWTBmeuf"
+  },
+  {
+    "block_id": "doxcn6J3UiBTo07X1Kjt2ZzXgTe",
+    "block_type": 27,
+    "image": {
+      "align": 2,
+      "height": 645,
+      "scale": 1,
+      "token": "EqqybeuJFoNckwxFdelcbcdznnh",
+      "width": 900
+    },
+    "parent_id": "doxcnjdN3SSXKsFbTXvTWTBmeuf"
+  },
+  {
+    "block_id": "doxcnfVooyXZXYrAbuK4GQYGXlh",
+    "block_type": 4,
+    "heading2": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "2. Current pair vs butted pair",
+            "text_element_style": {
+              "bold": true,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnjdN3SSXKsFbTXvTWTBmeuf"
+  },
+  {
+    "block_id": "doxcnrNV8LRr1EiyjrxigWtOWrs",
+    "block_type": 27,
+    "image": {
+      "align": 2,
+      "height": 341,
+      "scale": 1,
+      "token": "L36VblKDfottLLxfzxUc9Ep6nbb",
+      "width": 900
+    },
+    "parent_id": "doxcnjdN3SSXKsFbTXvTWTBmeuf"
+  },
+  {
+    "block_id": "doxcnn9DdHVwqzwF9lrwft4uhYd",
+    "block_type": 27,
+    "image": {
+      "align": 2,
+      "height": 758,
+      "scale": 1,
+      "token": "SNTGbQiHYoD6CXxArZjcJJHDnKg",
+      "width": 900
+    },
+    "parent_id": "doxcnjdN3SSXKsFbTXvTWTBmeuf"
+  },
+  {
+    "block_id": "doxcnNoLJkpa5ZuNb0fBCaOV3mb",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "Butted (10.902 mm seam, y 0): band peak −12.7 dB, >60° 0.48 %.",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnjdN3SSXKsFbTXvTWTBmeuf"
+  },
+  {
+    "block_id": "doxcnJYKtLNPuWZhccJPpNXWbRh",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "Current (15.75 / 5.25): band peak −14.7 dB, >60° 0.74 %; the null is ≈2° wide; band energy 23.4 % (butted 24.5 %).",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnjdN3SSXKsFbTXvTWTBmeuf"
+  },
+  {
+    "block_id": "doxcnWEiC6xOcK1NwYzghDbXbcf",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "Without the null requirement, a 16.54 / 5.25 pair gives −15.4 dB.",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnjdN3SSXKsFbTXvTWTBmeuf"
+  },
+  {
+    "block_id": "doxcnQ2DXOP8BPg216lsm5YPw1O",
+    "block_type": 4,
+    "heading2": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "3. Search and 3-board optimum",
+            "text_element_style": {
+              "bold": true,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnjdN3SSXKsFbTXvTWTBmeuf"
+  },
+  {
+    "block_id": "doxcnaGJQyfr0oncppIma9pPwSf",
+    "block_type": 27,
+    "image": {
+      "align": 2,
+      "height": 544,
+      "scale": 1,
+      "token": "OrECbqRDjo9dz6xcqf6cKNMmnHc",
+      "width": 900
+    },
+    "parent_id": "doxcnjdN3SSXKsFbTXvTWTBmeuf"
+  },
+  {
+    "block_id": "doxcnOAcII59unaf4408TR85yvd",
+    "block_type": 27,
+    "image": {
+      "align": 2,
+      "height": 593,
+      "scale": 1,
+      "token": "LZcSbQXXKoQ3G3xtZAlci9YXnpe",
+      "width": 900
+    },
+    "parent_id": "doxcnjdN3SSXKsFbTXvTWTBmeuf"
+  },
+  {
+    "block_id": "doxcnXm4pv3y0hPqkTaxQumWFPb",
+    "block_type": 27,
+    "image": {
+      "align": 2,
+      "height": 630,
+      "scale": 1,
+      "token": "SadYbTKVCouiB5xEIB8cEDYlnpe",
+      "width": 900
+    },
+    "parent_id": "doxcnjdN3SSXKsFbTXvTWTBmeuf"
+  },
+  {
+    "block_id": "doxcnBmVcf6xwo2YQRyFuhN8Zeb",
+    "block_type": 27,
+    "image": {
+      "align": 2,
+      "height": 356,
+      "scale": 1,
+      "token": "DRHFbQhd6owM2JxSVMHcCP8mn4b",
+      "width": 900
+    },
+    "parent_id": "doxcnjdN3SSXKsFbTXvTWTBmeuf"
+  },
+  {
+    "block_id": "doxcnFm185GQRnQItdyCZmxhM8e",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "2-board: the current pair is the only one that nulls all four 54.75° lobes; 16.54 / 5.25 is the best without a null.",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnjdN3SSXKsFbTXvTWTBmeuf"
+  },
+  {
+    "block_id": "doxcnBrIDxzVKaih4C3dzKjqYkd",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "3-board optimum: seams 12.48 / 17.20 mm, offsets 0 / 5.25 / 0; DI 40.3 dB, band peak −16.0 dB, band energy 23.8 %, span 502 mm.",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnjdN3SSXKsFbTXvTWTBmeuf"
+  },
+  {
+    "block_id": "doxcndpRY6NiboSFanBYoDkuhcT",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "It buys +1.8 dB DI and 1.6 dB band peak, not less total band energy.",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnjdN3SSXKsFbTXvTWTBmeuf"
+  },
+  {
+    "block_id": "doxcnw1VOuEbtu4rVyKJ7uiGwvh",
+    "block_type": 4,
+    "heading2": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "4. Tolerance",
+            "text_element_style": {
+              "bold": true,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnjdN3SSXKsFbTXvTWTBmeuf"
+  },
+  {
+    "block_id": "doxcnO2GTU5IsCXIYp4LLBYEdAh",
+    "block_type": 27,
+    "image": {
+      "align": 2,
+      "height": 334,
+      "scale": 1,
+      "token": "Wj1ib5AeXoLnXOxa1Shc3fiFnpg",
+      "width": 900
+    },
+    "parent_id": "doxcnjdN3SSXKsFbTXvTWTBmeuf"
+  },
+  {
+    "block_id": "doxcnZiiNZCSo6PDVCgwcDagqSd",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "Random phase/gain errors: the null stays below −52 dB at 15° RMS.",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnjdN3SSXKsFbTXvTWTBmeuf"
+  },
+  {
+    "block_id": "doxcnnfY1MdgCSNAx6G1OfKFN1d",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "Systematic 0.35 % shift in k (≈ ±2 °C): the null lifts to −38 dB.",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnjdN3SSXKsFbTXvTWTBmeuf"
+  },
+  {
+    "block_id": "doxcnSzreTcaHTjPRLstFUaxhUg",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "Mechanical ±1–2 mm: DI unchanged, band peak ±1.4 dB; 1 mm raises the null to −23 dB. Details in docs/2026-11-23-two-board-sensitivity.md.",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnjdN3SSXKsFbTXvTWTBmeuf"
+  },
+  {
+    "block_id": "doxcnVV0FlCZhtecfvdpz05Ka4f",
+    "block_type": 4,
+    "heading2": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "5. Interactive pages",
+            "text_element_style": {
+              "bold": true,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnjdN3SSXKsFbTXvTWTBmeuf"
+  },
+  {
+    "block_id": "doxcn0dlTjDudymdEBDw5IOfeDe",
+    "block_type": 33,
+    "children": [
+      "doxcnGGTIiOI3XY8CO7Wd7ZRqQf"
+    ],
+    "parent_id": "doxcnjdN3SSXKsFbTXvTWTBmeuf",
+    "view": {
+      "view_type": 1
+    }
+  },
+  {
+    "block_id": "doxcnGGTIiOI3XY8CO7Wd7ZRqQf",
+    "block_type": 23,
+    "file": {
+      "name": "overlay.html",
+      "token": "ZS2LbFvyKolBr4xzgTPc8Qg5nLb"
+    },
+    "parent_id": "doxcn0dlTjDudymdEBDw5IOfeDe"
+  },
+  {
+    "block_id": "doxcnouCJY5xB8jCK1BMERRIThb",
+    "block_type": 33,
+    "children": [
+      "doxcnSkLyRppcRNIQYd5N8HYTqq"
+    ],
+    "parent_id": "doxcnjdN3SSXKsFbTXvTWTBmeuf",
+    "view": {
+      "view_type": 1
+    }
+  },
+  {
+    "block_id": "doxcnSkLyRppcRNIQYd5N8HYTqq",
+    "block_type": 23,
+    "file": {
+      "name": "index.html",
+      "token": "FBnRbZYsKo25aVxlFTDckGexnZe"
+    },
+    "parent_id": "doxcnouCJY5xB8jCK1BMERRIThb"
+  },
+  {
+    "block_id": "doxcnXmLfJHnchUj4ukbDVxEpzd",
+    "block_type": 2,
+    "parent_id": "doxcnjdN3SSXKsFbTXvTWTBmeuf",
+    "text": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "Open in a browser with internet (three.js CDN). The overlay page compares any two layouts with independent opacity; each layout page carries its numbers, a lobe cut and labelled grating lobes.",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    }
+  }
+]

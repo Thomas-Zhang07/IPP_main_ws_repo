@@ -1,0 +1,850 @@
+                                        Received 29 September 2021; revised 26 November 2021; accepted 5 January 2022.
+                                            Date of publication 12 January 2022; date of current version 14 February 2022.
+                                                                             Digital Object Identifier 10.1109/OJUFFC.2022.3142710
+
+     Air-Coupled Ultrasonic Spiral Phased Array
+    for High-Precision Beamforming and Imaging
+
+                                    GIANNI ALLEVATO , (Student Member, IEEE),
+                              MATTHIAS RUTSCH, (Graduate Student Member, IEEE),
+
+                                JAN HINRICHS , (Graduate Student Member, IEEE),
+                CHRISTOPH HAUGWITZ , (Student Member, IEEE), RAPHAEL MÜLLER ,
+
+                                   MARIUS PESAVENTO , (Senior Member, IEEE),
+                                    AND MARIO KUPNIK , (Senior Member, IEEE)
+
+          Department of Electrical Engineering and Information Technology, Technische Universität Darmstadt, 64289 Darmstadt, Germany
+                                           CORRESPONDING AUTHOR: G. ALLEVATO (gianni.allevato@tu-darmstadt.de)
+
+    ABSTRACT Sparse spiral phased arrays are advantageous for many emerging air-coupled ultrasonic
+    applications, since grating lobes are prevented without being constrained to the half-wavelength element
+    spacing requirement of well-known dense arrays. As a result, the limitation on the maximum transducer
+    diameter is omitted and the aperture can be enlarged for improving the beamforming precision without
+    requiring the number of transducers to be increased. We demonstrate that in-air imaging, in particular, benefits
+    from these features, enabling large-volume, unambiguous and high-resolution image formation. Therefore,
+    we created an air-coupled ultrasonic phased array based on the Fermat spiral, capable of transmit, receive
+    and pulse-echo operation, as well as 3D imaging. The array consists of 64 piezoelectric 40-kHz transducers
+    (Murata MA40S4S), spanning an aperture of 200 mm. First, we provide an application-independent numerical
+    and experimental characterization of the conventional beamforming performance of all operation modes
+    for varying focal directions and distances. Second, we examine the resulting imaging capabilities using
+    the single line transmission technique. Apart from the high maximum sound pressure level of 152 dB,
+    we validate that unambiguous high-accuracy 3D imaging is possible in a wide field of view (±80), long range
+    (20 cm to 5 m+) and with a high angular resolution of up to 2.3. Additionally, we demonstrate that object
+    shapes and patterns of multiple reflectors are recognizable in the images generated using a simple threshold
+    for separation. In total, the imaging capabilities achieved are promising to open up further possibilities,
+    e.g. robust object classification in harsh environments based on ultrasonic images.
+
+    INDEX TERMS Air-coupled, ultrasound, sparse array, spiral array, phased array, imaging, sonar.
+
+I. INTRODUCTION                                                  spacing is required to be at maximum half wavelength (/2).
+                                                                 Otherwise, grating lobes are formed, leading to ambiguous
+A IR-COUPLED ultrasound is applied in a wide variety             beamforming, resulting in high-intensity sound emission in
+      of areas such as agriculture [1], [2], food analysis [3],  undesired directions. Consequently, two design limitations
+[4], power transfer [5]­[7], communications [8], [9], range      arise from the /2 criterion of dense arrays. First, the achiev-
+finding [10]­[12] and non-destructive testing [13]­[15].         able array aperture size is constrained by the number of
+Here, ultrasonic phased arrays become increasingly popular       transducers used. Second, the diameter of the transducer type
+due to their high achievable sound intensity and their ability   must not be wider than /2.
+to steer and focus the sound beam. By utilizing ultrasonic
+arrays, further applications have emerged such as tactile           However, many of the air-coupled array applications men-
+displays [16]­[18], particle levitation [19]­[21], parametric    tioned use too large piezoelectric transducers (e.g. Murata
+loudspeakers [22]­[24] and in-air imaging [25]­[29].             MA40S4S, Prowave 400ST), since they have excellent char-
+                                                                 acteristics for operation in air. They provide a high sound
+   In these applications, dense regular-grid array geome-        pressure level with a low operating frequency of 40 kHz,
+tries are most commonly used. Therefore, the inter-element
+
+    This work is licensed under a Creative Commons Attribution 4.0 License. For more information, see https://creativecommons.org/licenses/by/4.0/
+
+40                                                                                                                                                  VOLUME 2, 2022
+Allevato et al.: Air-Coupled Ultrasonic Spiral Phased Array for High-Precision Beamforming and Imaging
+
+resulting in lower attenuation by the medium [30]. Addition-     an application-independent characterization of the TX, RX,
+ally, they are easy to drive, thus reducing the complexity and   and PE performance is conducted to analyze the beamform-
+cost of the overall array electronics. Still, the benefits come  ing precision and accuracy, and to identify the main differ-
+at the expense of grating lobe formation.                        ences between measurements and simulations. These results
+                                                                 further provide a starting point for future works investigating
+   We addressed this problem in previous work by creating        other applications. Second, the general findings are put into
+a 3D-printed waveguide containing 64 acoustic ducts into         application context by examining the resulting in-air imaging
+which the piezoelectric transducers are inserted [31]­[36].      capabilities with a high angular resolution of up to 2.3,
+In this way, the effective inter-element spacing is reduced to   extending our preliminary work [57].
+/2, enabling grating lobe free beamforming while providing
+additional protection in harsh environments [37]. However,          The article is structured as follows: Section II outlines the
+as the effective array aperture is reduced as well, the -3 dB    phased array system architecture and describes the control
+main lobe width (MLW) is widened, thus lowering the beam-        and processing of the three operation modes plus the image
+forming precision.                                               formation. In addition, the simulation model for referencing
+                                                                 the experiments is explained. In Section III, we elaborate the
+   In order to overcome both design limitations of dense         abovementioned experimental characterization and discuss
+arrays on the allowed transducer diameter and achievable         the results. We draw the conclusions and provide an outlook
+array aperture size, sparse array geometries are a viable        for future work in Section IV.
+option. Due to their irregular aperiodic element position-
+ing, the formation of grating lobes is prevented even at         II. METHODS
+greater inter-element spacings. As a result, the array aper-     In this section, we introduce the four main components of
+ture can be enlarged for improving the beamforming pre-          the phased array system and describe the processing of the
+cision without requiring the number of transducers to be         different operation modes, i.e. TX, RX and PE, as well as
+increased [38]­[40].                                             the image generation. In addition, the simulation model, used
+                                                                 as a reference for the subsequent experiments in Section III,
+   In particular, sparse spiral arrays based on the Fermat       is presented.
+spiral feature advantageous properties [41]­[43]. First, the
+simple deterministic design allows a flexible customization      A. ARRAY AND SYSTEM DESIGN
+to the requirements of the application. Second, the MLW
+and maximum side lobe level (MSLL) can additionally be           The system consists of the ultrasonic phased array, cus-
+fine-tuned by density tapering [42]. Third, the suppression      tom transceiver electronics, an FPGA system-on-chip board
+of grating lobes is independent of the frequency used, thus      (Avnet MicroZed) and an external PC.
+unambiguous beamforming is ensured for narrow- and broad-
+band signals [43].                                                  The phased array is composed of M = 64 piezoelec-
+                                                                 tric air-coupled ultrasonic transducers (Murata MA40S4S,
+   Spiral phased arrays have been increasingly investi-          10 mm) with a resonant frequency of 40 kHz and a narrow
+gated in various domains ranging from satellite commu-           bandwidth of 1.2 kHz. The transducers are arranged on the
+nication [42], radar [44], microwave imaging [45] and            xy-plane on a single PCB along the Fermat spiral spanning an
+optical phased arrays [46], over noise source localiza-          overall aperture with a diameter of Dap = 200 mm (Fig. 1).
+tion [47], [48] to medical ultrasound [49]­[52]. For air-        The position of the m-th transducer rm is defined by sampling
+coupled ultrasonic applications, they have been examined         the Fermat spiral, that is
+for the transmit-only generation of haptic feedback [53],
+for NDT using receive-only microphone arrays [54] and for                                                          
+the detection of pasture biomass and grape clusters using
+two dedicated transmit and receive arrays without beam           (Rm, m) =                              Rap  m , 2m 1 + V  , and (1)
+steering [55], [56].                                                                                         M -1  2
+
+   In this article, we demonstrate that ultrasonic in-air imag-  rm = Rm [cos(m), sin(m), 0] ,                             (2)
+ing, in particular, benefits from the advantages of spiral
+geometries allowing unambiguous high-resolution image for-       where M = 64 is the number of transducers,
+mation. Therefore, we created an air-coupled fully-steerable     m  [0, . . . , M - 1] is the transducer index, Rm is the
+spiral phased array supporting transmit (TX), receive (RX)       radius to the aperture center and m is the corresponding
+and pulse-echo (PE) operation, as well as 3D imaging. The        angle, Rap = Dap/2 is the maximum aperture radius and
+array consists of 64 Murata MA40S4S transducers, whose           V = 5 is a design parameter that determines the angular
+inter-element spacings are all greater than /2, thus span-       distance between two successive elements and therefore the
+ning an enlarged aperture of 200 mm for demonstrating the        number and position of the spiral arms. By choosing V =
+grating lobe suppression and high beamforming precision.         5, the angular distances correspond to the Golden Angle,
+We investigate its real-world beamforming behavior and           resulting in the so-called sunflower pattern. This pattern
+the resulting in-air imaging capabilities by providing an        features a uniform spatial density of the transducer positions
+in-depth experimental and simulated characterization. The        where all angles m are unique due to the Golden Angle
+main contributions are grouped into two categories. First,       being an irrational number [42], [50]. In [43], spiral array
+                                                                 configurations with different V values are analyzed with
+VOLUME 2, 2022
+                                                                                                                           41
+                                                                 unfocused beams for far-field beamforming, focused beams
+                                                                 are considered as well, due to the large aperture and the result-
+                                                                 ing near-field, ranging from 0 m to approximately 1.16 m.
+                                                                 In the right-handed coordinate system used, the origin is at
+                                                                 the array center, all array elements are in the xy-plane, the
+                                                                 transducer apertures are facing in the positive z direction, and
+                                                                 the xz-plane is horizontal (Fig. 1). A point r in the coordinate
+                                                                 system is described by
+
+                                                                 r = R [sin() cos(), sin(), cos() cos()] , (3)
+
+                                                                 where R is the Euclidean distance from the array center,  is
+                                                                 the azimuth, and  is the elevation angle.
+
+                                                                    Focused TX beamforming to a specific point rfoc in
+                                                                 the region of interest (ROI) is performed by driving all
+                                                                 transducers with individually time-delayed square-wave sig-
+                                                                 nals, where the time delay of the m-th transducers signal
+                                                                 sTX,m(t) = sTX (t - tfoc,m) is calculated with
+
+FIGURE 1. The spiral phased array consists of 64 ultrasonic      tfoc,m(rfoc) = (Rfoc - Rfoc,m)/c,          (4)
+40-kHz narrow-band transducers. Each transducer can be used
+for transmit, receive and pulse-echo operation. Although the     where Rfoc = rfoc 2 is the focal distance from the array
+inter-element spacings are greater than /2, the spiral geometry  center, c is the speed of sound and Rfoc,m = rfoc - rm 2 is
+prevents the formation of grating lobes. The enlarged aperture   the distance from the m-th transducer center to the focal
+enables high-precision beamforming.
+                                                                 point [58].
+the conclusion that V = 5 gives Pareto optimal results in
+terms of MLW and MSLL. Density and amplitude tapering,              For unfocused TX beamforming, the beam is not directed
+as proposed in [42], [43], [50], are not applied to maintain
+a balanced ratio between MLW and MSLL and to avoid               to a specific point, but in a specific direction (foc, foc). The
+limiting the radiation power and sensitivity. With the selected  focal distance consequently lies at infinity. The calculation of
+diameter of Dap = 200 mm (23.3 ), the expected MLW is
+halved from 5.2 to 2.6, compared to the smallest possible        the time delay of the m-th transducer tfoc,m is given without
+aperture diameter Dap, min = 100 mm (11.7 ), limited by          focal distance Rfoc, that is
+the size of the transducers. However, a further halving of the
+MLW requires a further doubling of the aperture diameter.              tfoc,m = xm sin(foc) cos(foc) + ym sin(foc) /c, (5)
+Therefore, a reasonable trade-off between the achievable
+MLW and simple manufacturing as well as integrability into       where (xm, ym) are the coordinates of the m-th transducer
+our existing measurement setup is found.                         corresponding to (2). For both methods, focused and unfo-
+                                                                 cused TX beamforming, the respective minimum values are
+   The remaining system components, i.e. transceiver elec-       subtracted from the time delays of all transducers, so that all
+tronics, the FPGA board and the PC, are described in detail      values are positive, thus causal.
+in [36] and are summarized with the key aspects hereafter.
+The transceiver electronics provides a dedicated transmit and       In RX mode, first the (M × N ) raw signal matrix SRX is
+receive channel for each of the 64 transducers, allowing         obtained, where M is the number of transducers and N is the
+individual time-delayed excitation with unipolar square-wave     number of samples acquired. The frequency spectrum S^ RX of
+burst signals (1 ms, 20 Vpp, 40 kHz) and individual sampling     each transducer signal is formed and multiplied element-wise
+of the transducer signals (195 kSa/s, 12 bit). The FPGA SoC      with the frequency response of the matched filter h^ corre-
+(Xilinx Zynq 7010) is used for sequence control, signal gen-     sponding to the transmitted pulse for pre-processing, that is
+eration and acquisition, and ethernet communication with
+the PC, where the signals are processed and analyzed using       S^ RX, (m,:) = FN SRX, (m,:) h^ ,          (6)
+Matlab. All together, the system described supports fully
+steerable TX and RX beamforming, and therefore in com-           for m = 0, . . . , M - 1. Using narrow-band conventional
+bination, also acoustic imaging using PE detection.              beamforming, we obtain the spatially filtered spectrum for
+                                                                 a given focal point, that is
+B. OPERATION MODES AND IMAGE FORMATION
+Next, we explain the specific control and processing of the      s^foc(rfoc) = wfHoc(rfoc) S^ RX,           (7)
+three operation modes TX, RX and PE. For this, apart from
+                                                                 where wHfoc is the (1 × M ) beamforming vector [59] whose
+42                                                               m-th element is given by
+
+                                                                 wHfoc,m(rfoc) = exp -j2 f0 tfoc,m(rfoc) ,  (8)
+
+                                                                 where f0 = 40 kHz is the resonance frequency of the trans-
+                                                                 ducers. In order to obtain the unfocused beamforming vector,
+                                                                 in (8) tfoc,m is replaced with tfoc,m. Subsequently, the
+
+                                                                                                    VOLUME 2, 2022
+Allevato et al.: Air-Coupled Ultrasonic Spiral Phased Array for High-Precision Beamforming and Imaging
+
+spatially filtered analytic spectrum is transformed back into     where pm(rP) is the discretized integral over the mesh points
+the time domain using IFFT and its envelope is generated by       of the m-th transducer aperture, RP,(m,l) = rP - r(m,l) 2 is
+forming the absolute value of each element, that is               the distance from the point receiver or source rP to the l-th
+                                                                  mesh point position of the m-th transducer r(m,l) and wfHoc,m is
+                sfoc(rfoc) = FN-1 s^foc(rfoc) .           (9)     the beamforming factor of the m-th transducer (8). Therefore,
+                                                                  with this model, the results obtained from the real mea-
+   In PE mode, the TX and RX beamforming modes are                surement setups with a specific microphone or transmitter
+combined. For this purpose, a focused or unfocused 40-kHz         position rP and selected focal point rfoc can be relatively
+pulse with a length of Tpulse = 1 ms is transmitted to the focal  referenced.
+point or direction by driving all transducers with time-delayed
+signals according to (4) and (5), respectively. After the pulse   III. EXPERIMENTAL RESULTS AND DISCUSSION
+transmission, the T/R switches activate the RX mode, the          The experiments are grouped into two categories. First, gen-
+received signals SRX are acquired by all transducers, pre-        eral application-independent characterizations of the TX,
+processed and spatially filtered by focused or unfocused RX       RX, and PE operation modes are conducted and compared
+beamforming, as in (7), to the same focal point or direction,     to the simulation model. For each mode, we examine the
+respectively.                                                     2D directivity patterns, the sectional directivity patterns for
+                                                                  varying focal points in the near- and far-field, and the radial
+   For imaging, we use the PE mode described and sequen-          on-axis patterns for varying focal distances. From these pat-
+tially scan the discretized ROI line-by-line, i.e. single line    terns, we extract and discuss the most significant parameters,
+transmission (SLT). The ROI is defined with a field of view,      i.e. the magnitude at the focal point, the position of the focal
+i.e. a set of K focal points or directions, and a range of view   peak, the MWL or focal length, and the angular or radial
+Rv, which determines the number of acquired samples N =           MSLL. Second, we address the more specific use case of
+ 2 (Rv/c) fs . For each focal point or direction, a pulse-echo    acoustic imaging. Here, we validate the angular resolution
+event is performed. The spatially filtered envelopes obtained     and evaluate the imaging of multi-reflector scenarios in both,
+are then color coded, rendered at their corresponding origin      the far- and near-field.
+position and linearly interpolated to produce 2D or 3D scans.
+More information about the generation of the acoustic images      A. MEASUREMENT SETUPS
+is provided in [33].                                              All measurements are performed in an anechoic chamber.
+                                                                  The spiral array including a rigid baffle is mounted on two
+   The SLT imaging method is applicable in the near-field         rotational axes (Fig. 2). The rigid baffle is aligned with
+and far-field and is suitable for long-range imaging due to the   the output surfaces of the transducers. Therefore, the setup
+array gains during transmission and reception. In addition, the   resembles the simulation model more accurately, for which
+two-fold spatial filtering lowers the MSLL, thus, improves        an infinite rigid baffle is assumed. In front of the array, there is
+the suppression of side lobe artifacts. Other imaging methods,    a linear axis (length of 6 m) with a movable slide onto which
+e.g. synthetic aperture focusing [60], diverging waves [61],      different targets can be mounted. Using the linear axis and
+multi line acquisition [62], used to improve the frame rate,      the two rotational axes, the target can be freely positioned
+are part of future work and are not considered in this article.   in the coordinate system of the array. The selection of the
+                                                                  specific target depends on the array operation mode being
+C. SIMULATION MODEL                                               examined. In TX mode the calibrated microphone (B&K
+                                                                  Type 4138 and B&K Type 2670 preamplifier), in RX mode
+In order to evaluate the results of the subsequent experiments    a pre-characterized ultrasonic transducer (Murata MA40S4S)
+(Section III) and to identify differences from the expecta-       and in PE mode either the corner reflector or one of the sphere
+tions, we provide a model for the real measurements. The          reflectors is used as target (Fig. 2). Overall, the setup allows
+model is based on the discretized and normalized well-known       the automated and independent positioning of the target and
+Rayleigh integral, which computes the superimposed mag-           focal point.
+nitude p(rP, rfoc) for a specific spatial position of a point
+receiver or source rP in dependence of a particular beam-         B. 2D DIRECTIVITY PATTERNS
+forming focal point rfoc. Apart from the array geometry itself,   The 2D directivity patterns show the direction-dependent
+the effective aperture of each transducer (Dap,m = 7 mm) is       magnitude distribution of the main and side lobes when beam-
+considered as well by generating a mesh using DistMesh [63],      forming, i.e. the main characteristics of the spatial filtering.
+which consists of L = 362 mesh points on a circular disk with     We measure the far-field patterns of all three modes (TX,
+an average spacing of 0.05 . In this way, the directivity of the  RX, PE) and compare them to the simulated pattern (Sim),
+single transducers is included. The model equations are given     (Fig. 3).
+by
+                                                                     In TX mode, we use the calibrated microphone [Fig. 2(a)]
+p(rP, rfoc) =   1  M -1                      ,   and      (10)    as target positioned at a fixed distance of 5 m. The array
+                M                                                 sequentially transmits unfocused pulses (40 kHz, 1 ms)
+                        pm(rP)wHfoc,m(rfoc)
+                                                                                                                                                                       43
+                   m=0
+
+            1 L-1 1          -j2  f0         RP,(m,l)  ,  (11)
+pm(rP) = L l=0 RP,(m,l) exp       c
+
+VOLUME 2, 2022
+FIGURE 2. The measurement setup in the anechoic chamber allows the different targets to be positioned three-dimensionally in the
+coordinate system of the array. The positioning of the target and the focal point is fully-automated and independently controllable.
+The respective targets used are for TX mode measurements the calibrated microphone (B&K Type 4138) (a), for RX mode the
+pre-characterized ultrasonic transducer (Murata MA40S4S) (b) and for PE mode the corner reflector (c) or one of the sphere
+reflectors (d),(e). The double sphere setup on the transverse profile is used to measure the angular resolution (f).
+
+steered to the fixed direction (0, 0). After each pulse trans-     where  2 + 2 > 70, there is a major drop in side lobe
+mission, the array is mechanically rotated in steps of 1           level caused by the directivity of the individual transducers
+using the two rotational axes. The microphone aperture is not      themselves. Since the color scale of the PE pattern is adjusted,
+rotated, but always points to the array center. This way, the      the noise floor and scattering reflections of the room become
+microphone is positioned at different directions of the array      visible in this zone.
+coordinate system until pulses from all angles of [Fig. 3(b)]
+are obtained. The corresponding maximum magnitude of the              In summary, primarily the exact positions and levels of the
+pulses received are plotted and linearly interpolated in the       side lobes are different from the expected simulated patterns.
+directivity pattern.                                               The differences are caused by interfering room reflections,
+                                                                   as well as relative amplitude and phase deviations between
+   In RX mode, the same procedure is used, however the             the individual transducers, which will be examined in future
+microphone is replaced with the pre-characterized ultra-           work. Nevertheless, all directivity patterns measured agree
+sonic transducer [Fig. 2(b)], sequentially transmitting pulses     well with the prediction of the model and confirm the grating
+(40 kHz, 1 ms) to the array. The array signals are spatially       lobe free beamforming capability with high precision.
+filtered for direction (0, 0) using unfocused receive beam-
+forming, while the array is mechanically rotated.                  C. SECTIONAL DIRECTIVITY PATTERNS FOR VARYING
+                                                                   FOCAL ANGLES
+   For measuring the PE directivity pattern, the corner reflec-    Next, the sectional directivity patterns with varying focal
+tor [Fig. 2(c)] is used as target and the unfocused TX and RX      angles are measured to analyze the influence on the mag-
+modes described are combined, i.e. two-fold spatial filtering      nitude at the focal angle, the angle of the focal peak, the
+is applied. The corner reflector has been selected as target as    MLW and MSLL. The parameters examined indicate the
+it creates a stronger echo compared to the spheres. Therefore,     direction-dependent precision and accuracy of the beamform-
+despite the doubled length of the propagation path (10 m), the     ing. All three modes (TX, RX and PE) are considered in the
+echo of the reflector stands out from interfering echoes of the    far-field (5 m) and in the near-field (0.2 m), and are compared
+environment, caused by the sound absorbers at the walls, rail      to the simulation (Sim). A similar measurement procedure
+and mountings for example.                                         as in Section III-B is used with the following differences.
+                                                                   First, for each mechanical rotation the focal angle is varied
+   In all measured and simulated patterns (Fig. 3), there is       sequentially between 0 and 90 in steps of 5. Second, the
+a single narrow main lobe at the expected center direction         focal distance is either at infinity (unfocused) for the far-field
+(0, 0) and grating lobes do not form. The MLWs of the              measurement or focused at the target distance (0.2 m) for the
+single patterns differ only slightly (3 for Sim, TX, RX and        near-field measurement. Third, the step size of the mechani-
+2.5 for PE). There is a side-lobe-reduced zone surrounding         cal rotation is reduced to 0.5, but limited to the horizontal
+the main lobe followed by a concentric ring of side lobes          plane (azimuth) due to the high amount of data generated
+at approximately  2 + 2 = 30. This ring contains the               and increased measurement duration. All measurements are
+highest side lobes for all patterns, thus defining the respective  repeated five times to identify possible deviations of the
+MSLL, which also differs only slightly from the expected           parameters examined. The targets used for the respective
+value, i.e. in dB for Sim -15, for TX -17, for RX -15.9,           modes are the microphone (TX) [Fig. 2(a)], the transducer
+and for PE -26.7. The side lobe level of the PE pattern is         (RX) [Fig. 2(b)], the corner reflector (far-field PE) [Fig. 2(c)]
+overall lower and the MLW is slightly narrower, due to the
+two-fold spatial filtering. At the periphery of the patterns,                                                                                                        VOLUME 2, 2022
+
+44
+Allevato et al.: Air-Coupled Ultrasonic Spiral Phased Array for High-Precision Beamforming and Imaging
+
+                                                                       FIGURE 4. Sectional directivity patterns of the TX mode, as an
+                                                                       example (non-averaged), for varying focal angles in the near-
+                                                                       and far-field. The MLW widens, the MSLL rises, and the
+                                                                       magnitude of the focal peak lowers for increasing focal angles.
+                                                                       The angle of the focal peak deviates from desired high focal
+                                                                       angles (80, 90). Thus, the beamforming precision and
+                                                                       accuracy in the periphery is reduced. The parameters labeled
+                                                                       are compared in (Fig. 5) for all operation modes.
+
+FIGURE 3. The 2D directivity patterns are measured in the              than centrally located side lobes. All these effects additionally
+far-field (5 m) and show the magnitude distribution of the main        cause a mismatch between the angle of the focal peak and the
+and side lobes for a steering angle of (0,0), i.e. the main            desired focal angle, so that the accuracy of the beamforming
+characteristics of the spatial filtering. The targets used are the     decreases with increasing focal angle.
+microphone for TX, the ultrasonic transducer for RX and the
+corner reflector for PE [Fig. 2(a),(b),(c)]. All directivity patterns     For easy comparison, instead of presenting the directivity
+measured (b)-(d) agree well with the prediction of the simulation      patterns of all operation modes and focal angles, we only
+(a) and confirm the grating lobe free high-precision                   extract the key parameters, i.e. the magnitude at the focal
+beamforming capability. For easy comparison, the color scale of        angle, the angle of the focal peak, MLW and MSLL, as a
+the PE pattern is adjusted by 0.5 due to two-fold spatial filtering.   function of focal angle for the near- and far-field (Fig. 5).
+
+and the small sphere (near-field PE) [Fig. 2(e)]. In the near-            The magnitudes at the focal angle decrease for all operation
+field measurement, the small sphere is advantageous due to             modes, in the near-field and far-field with increasing focal
+its smaller retroreflective area, so that the measurement of           angle [Fig. 5(a1),(b1)]. The decrease measured mostly agrees
+the MLW is less influenced by the reflector dimension.                 well with the prediction of the simulation, as it includes
+                                                                       the aperture of the single transducers. However, there are
+   The sectional directivity patterns of the TX mode mea-              differences to the simulation, primarily for peripheral focal
+sured in the far- and near-field are shown as an example               angles | | > 80, where the magnitudes measured drop more
+for selected focal angles in (Fig. 4). For both measurements,          severely. The cause is the housing of the transducer elements,
+the -3 dB main lobe width widens with increasing focal                 which is not taken into account by the simulation model. The
+angle, thus decreasing the precision and selectivity of the            PE magnitudes at the focal angle show a significantly steeper
+beamforming. In addition, the magnitude at the focal angle             drop, since the pulse is affected twice by the directivity of
+decreases, mainly due to the directivity of the individual             the single transducers, when transmitting and when receiving.
+transducers. As a result, the MSLL degrades as well, since             Overall, the transducer directivity causes a slightly higher
+peripheral main lobes are more attenuated by the directivity           attenuation of the magnitudes at the focal angle in the far-field
+                                                                       than in the near-field.
+VOLUME 2, 2022
+                                                                                                                                                                            45
+   The angle of the focal peak agrees well with the desired       angular resolution is approximately constant with distance,
+focal angle for all measurements and the simulation up            objects can be imaged with improved absolute resolution if
+to | | < 75, confirming a high beamforming accuracy               they are close to the array, as demonstrated in Section III-F.
+[Fig. 5(a2),(b2)]. For focal angles higher than 75, the angle
+of the focal peak is lower than the desired focal angle and          The deviations between the selected focal angle and the
+is limited to approximately 80 and 83 for the far-field           resulting angle of the focal peak cause peripherally located
+and near-field measurements, respectively. This limitation        reflectors to be imaged at an incorrect angle. For example,
+is again caused by the directivity of the single transduc-        reflectors located at ±80 will additionally be rendered to an
+ers, which strongly attenuates the magnitude for high focal       angle of ±90 in the image.
+angles. Therefore, the simulated angle of the focal peak
+reaches a higher limit (86), since the increased attenuation         Furthermore, the decrease of the magnitude at the focal
+by the transducer housing is not included. In summary, these      angle causes two identical reflectors to be imaged with dif-
+results imply that the beamforming capability for TX, RX and      ferent magnitudes despite the same reflectivity, if one is
+PE is accurate but constrained to the respective limits for the   placed centrally and one peripherally. In conjunction with
+near- and far-field.                                              the increasing MSLL, the detected echo of the peripheral
+                                                                  reflector stands out less prominently from the side lobe arti-
+   The MLW widens with increasing focal angle, thus reduc-        facts caused by the centrally located reflector. Therefore,
+ing the beamforming precision [Fig. 5(a3),(b3)]. All measure-     the dynamic range in the peripheral region is reduced: If a
+ments are close to the expected values from the simulation.       reflector is located in the center of the ROI, weaker peripheral
+The MLW is between 2 and 5 up to a focal angle of                 reflectors are particularly difficult to detect. In addition, when
+| | < 55 followed by a more pronounced widening with              many reflectors are present in the ROI, their side lobe artifacts
+increasing focal angle. The PE MLW is slightly narrower           will superimpose, thus reducing the dynamic range in the
+for all focal angles due to the two-fold spatial filtering. The   entire image, which can result in false detections. This effect
+difference for the TX and RX modes to the simulated MLW           is investigated in Section III-F with multi-reflector setups.
+is within ±1 up to a focal angle of | | < 80. In the far-
+field, the MLWs of all modes and the simulation reach a           D. RADIAL ON-AXIS PATTERN FOR VARYING FOCAL
+plateau at approximately | | = 80 above which the MLW             DISTANCES
+widens only slightly. The plateau is mainly caused by the         Similar to the sectional directivity patterns for different focal
+directivity from [Fig. 5(b1)], which attenuates the main lobe     angles, we examine the radial on-axis patterns for different
+for high focal angles preventing further widening. A similar      focal distances. All three operation modes (TX, RX, PE) are
+characteristic is observed in the near-field, but the plateau is  considered and compared with the simulation model (Sim).
+followed by a narrowing. The narrowing is primarily due to        Instead of mechanically rotating the array, only the distance
+the notch in the directivity at 80 [Fig. 5(a1)], where the main   to the target is increased sequentially in steps of 1 cm from
+lobe is selectively attenuated, thus affecting the -3 dB width.   3 cm up to 3 m using the linear axis. For each target distance,
+However, the overall differences in MLW between the near-         the beamforming focal distance is varied from 10 cm to 3 m
+and far-field measurements are only minor.                        in steps of 10 cm. In addition, the focal distance at infin-
+                                                                  ity (unfocused beamforming) is considered. The targets of
+   The MSLL degrades with increasing focal angle, as a result     the respective modes are the microphone [Fig. 2(a)], receiv-
+of the directivity of the single transducers [Fig. 5(a4),(b4)].   ing pulses from the array (TX), the ultrasonic transducer
+The TX and RX MSLL measurements in the near- and                  [Fig. 2(b)], transmitting pulses to the array (RX) and the
+far-field show only a slight deviation from the simulation of     sphere (100 mm) [Fig. 2(d)], reflecting the pulses back to
+approximately ±2 dB. The PE MSLL is in general approx-            the array (PE). The larger sphere (100 mm) has been chosen
+imately two times lower in dB scale than the TX and RX            for the PE measurement as it provides a higher echo ampli-
+MSLL due to the two-fold spatial filtering, as expected.          tude than the small sphere (50 mm) and is therefore suitable
+In order to obtain accurate MSLL results, the suppression         in the near- and far-field, since it stands out more from inter-
+of interfering reflections by covering mountings with foam        fering room reflections. Moreover, unlike the corner reflector,
+absorbers is mandatory. Otherwise, false sidelobes can be cre-    the sphere has a well-defined reflection point.
+ated impairing the measurement. For all extracted parameters,
+the standard deviations obtained from five measurements do           The maximum magnitudes of the received pulses are evalu-
+not show significant irregularities.                              ated, which all have a duration of 1 ms, a frequency of 40 kHz
+                                                                  and are excited using 20 Vpp. All measurements are repeated
+   In the context of acoustic imaging with the PE method,         five times to identify possible deviations of the parameters
+the parameters measured have the following effects. The           examined. From the radial on-axis patterns obtained, we ana-
+MLW significantly determines the angular resolution, indi-        lyze the four key parameters, i.e. magnitude at the focal
+cating the minimum angular distance between two reflectors        distance, the distance of the focal peak, the focal length, and
+required, such that they can be imaged separately. Therefore,     the MSLL out of the focal point. These parameters provide
+two peripherally positioned reflectors are required to have       information on the distance-dependent precision and accu-
+a greater angular distance from each other for separability,      racy of the focused beamforming.
+compared to two centrally positioned reflectors. Since the
+                                                                                                                                                                    VOLUME 2, 2022
+46
+Allevato et al.: Air-Coupled Ultrasonic Spiral Phased Array for High-Precision Beamforming and Imaging
+
+FIGURE 5. Extracted key parameters from the sectional directivity patterns as shown in (Fig. 4) for all operation modes and the
+simulation. All values shown are averaged over five measurements. The error bars and shading indicate the corresponding
+standard deviation. The microphone is used for characterizing the TX mode, the ultrasonic transducer for the RX mode, the
+small sphere (50 mm) for the near-field PE mode, and the corner reflector for the far-field PE mode [Fig. 2(a),(b),(c),(e)]. The
+directivity of the single transducers affects all parameters with increasing focal angles, i.e. the magnitude at the focal angle is
+reduced (a1),(b1), the angle of the focal peak deviates for focal angles | | > 80 (a2),(b2), the MLW reaches a plateau for focal
+angles | | > 80 (a3),(b3), and the MSLL rises (a4),(b4). Major differences between measurements and expected values mainly
+occur for high focal angles > 80 due to the transducer housing which is not included in the simulation. The housing causes
+an additional attenuation in the peripheral transducer directivity, evident in (a1),(b1) between 80 to 90. Likewise, this causes
+simulation mismatches in the other parameter measurements in the same angular range. The measurements and simulations
+of the MSLL are in good agreement. In general, the values of the PE measurements are approximately two times lower in dB
+scale due to the two-fold spatial filtering. Overall, the highest beamforming accuracy is achieved for focal angles up to
+75 (a2),(b2) and the highest precision for focal angles up to 55 (a3),(b3).
+
+VOLUME 2, 2022                                                                                                                       47
+   The radial magnitude distributions measured are shown           FIGURE 6. Radial on-axis patterns (non-averaged) of the TX
+for the TX mode and selected focal distances in [Fig. 6(a)]        mode as an example (a) for varying focal distances in direction
+as an example. With increasing focal distance, the following       (0, 0). The parameters marked are extracted and compared for
+effects are observed. First, the maximum magnitude at the          all operation modes in (b)-(e). The values in (b)-(e) are averaged
+respective focal distance decreases due to the attenuation of      over five measurements. The error bars and shading indicate
+the medium. As a result, the MSLL out of the focal point           the corresponding standard deviation. The microphone is used
+steadily increases. The -3 dB focal length widens, reducing        for characterizing the TX mode, the ultrasonic transducer for
+the distance selectivity of the focal point. Furthermore, the      the RX mode, the sphere (100 mm) for the PE mode
+distance of the focal peak to the desired focal distance starts    [Fig. 2(a),(b),(d)]. Since the close-range magnitudes measured
+to diverge for focal distances higher than 0.5 m.                  (b) are affected by the shape of the respective targets, they are
+                                                                   normalized to the value at a distance of 1 m for easy
+   Next, the key parameters extracted from the radial on-axis      comparison. Additionally, the dB values of the PE measurement
+patterns are analyzed, i.e. the magnitude at the focal distance,   are adjusted by a factor of 0.5 to account for the doubled
+the distance of focal peak, focal length and MSLL. First, the      propagation path.
+magnitude at the focal distance is examined [Fig. 6(b)]. For
+easy comparison, the respective measurements were normal-
+ized to their corresponding value at a distance of 1 m. In addi-
+tion, the dB values of the PE measurement are adjusted by a
+factor of 0.5 to account for the doubled propagation path. Due
+to the measurement setup and the extension of the sphere, the
+closest focal distance of the PE measurement is 20 cm. The
+magnitudes at the focal distance of all measurement modes
+and the simulation are in good agreement. For each mode,
+a global magnitude maximum exists at different distances, i.e.
+10 cm (TX, RX), 28 cm (PE) and 5 cm (Sim). The position of
+the corresponding maximum is affected by the shape of the
+respective target. For example, the dimension of the sphere
+reflector influences the PE measurement for close distances,
+whereas the simulation assumes an infinitely small target.
+
+   The decrease in magnitude for focal points closer to the
+array than the main maximum is primarily due to the direc-
+tivity of the individual transducers. With increasing focal
+distance, the magnitude at the focal distance decreases as well
+caused by the attenuation of the medium. The PE measure-
+ment is attenuated the most due to the doubled propagation
+path. The differences of the measurements to the simula-
+tion arise from atmospheric absorption effects, influenced
+by temperature, air pressure and humidity [30], which are
+not represented in the model. Despite the attenuation by the
+medium, high sound pressure levels are measured by the
+calibrated microphone in TX mode, i.e. max. 152 dBSPL at
+10 cm to min. 119 dBSPL at 5 m distance.
+
+   The distance of the focal peak in relation to the desired
+focal distance indicates the accuracy of the focused beam-
+forming [Fig. 6(c)]. The overall characteristics of all modes
+are very similar to the simulation. The distance of the focal
+peak matches the desired focal distance only up to 0.5 m and
+diverges increasingly for larger distances. Therefore, in order
+to position the focal peak at a specific distance, a larger focal
+distance must be selected. However, the focal peak cannot be
+positioned further than approximately 1 m, as expected for the
+200-mm aperture.
+
+   The focal length is the range between the -3 dB limits
+surrounding the focal peak and determines the precision of
+the focused beamforming, which degrades with increasing
+focal distance [Fig. 6(d)]. The values measured are in good
+
+48                                                                 VOLUME 2, 2022
+Allevato et al.: Air-Coupled Ultrasonic Spiral Phased Array for High-Precision Beamforming and Imaging
+
+agreement with the simulation. The focal length of the PE          FIGURE 7. Results of the angular resolution measurement using
+measurement is significantly lower than the other measure-         the two spheres [Fig. 2(f)] whose angular spacing is gradually
+ments for all focal distances primarily due to the two-fold        increased at a distance of 2 m. In the B-scans (top), the echoes
+spatial filtering. Depending on the specific application, the      of the spheres are imaged as two distinct local maxima starting
+focal length characteristics measured can be used to deter-        from an angular distance of 2.3. The lower the minimum
+mine whether focusing at a certain distance is feasible or         magnitude between the echo maxima (bottom), the more
+generally required.                                                reliably they are distinguished by separation algorithms. The
+                                                                   values shown are averaged over 20 measurements. The error
+   Finally, the MSLL is analyzed, i.e. the ratio between the       bars indicate the corresponding standard deviation, which rises
+magnitude of the focal peak and the corresponding highest          with decreasing magnitude starting from -30 dB due to the
+local maximum outside the focal zone [Fig. 6(e)]. Therefore,       noise floor.
+a high MSLL implies a degraded selectivity of the focused
+beamforming as well. Compared to the simulation, the qual-         small spheres (50 mm) [Fig. 2(e)] are used as targets. Their
+itative characteristics of all measurements are similar. The       reflection points are positioned at a distance of 2 m in front
+MSLL of the TX and RX measurements are approximately               of the array center. The spheres are mounted on a transverse
+3 dB higher than the simulation values, whereas the PE MSLL        profile to allow the spacing between the sphere reflection
+is generally lower due to the two-fold spatial filtering. The      points to be increased symmetrically relative to the z-axis in
+general differences between simulation and measurement             steps of 2 cm from 6 to 20 cm. For each sphere spacing, a 2D
+are additionally caused by amplitude and phase deviations          scan is performed from -10 to +10 with an angular step
+between the single transducers. For all extracted parameters,      size of 0.2 and a focal distance of 2 m. Each measurement is
+the standard deviations obtained from five measurements do         repeated 20 times to determine the mean level and standard
+not show significant irregularities.                               deviation of the local minimum.
+
+   Next, the parameters examined are interpreted for an imag-         With a spacing of 6 cm, corresponding to an angular dis-
+ing application using the PE mode. First, it is possible to        tance of 1.7, the spheres are not yet separable, as they appear
+detect the test sphere (100 mm) [Fig. 2(d)] in the entire          as joint echo without a local minimum (Fig. 7). Starting
+measurement range between 20 cm to 5 m with an appropriate         from a spacing of 10 cm (2.3) a local minimum with a
+focal distance [Fig. 6(b)]. For imaging, it is often preferred to  relative level of -0.78 dBmax (90%) is formed. Therefore,
+scan the complete ROI using as few transmission events as          the determined angular resolution is in good agreement with
+possible in order to reduce the measurement time. Therefore,       the -3 dB main lobe width measured [Fig. 5(b3)]. However
+a long and uniform focal zone is advantageous, since objects       in practice, often a higher margin between local minimum
+in a larger range can be detected by a single pulse. Using         and maxima is required for a reliable separation, depending
+unfocused beamforming, the longest focal length is achieved        on the separation algorithm and additional image processing
+and thus the largest range is covered. However, objects with       used. Overall, the results are in good agreement with the
+a distance of less than 1 m can not be detected with this          expected values from the simulation and the previous MLW
+method, as its radial on-axis pattern shows several notches        measurements.
+in this range [Fig. 6(a)]. Therefore, a reliable detection in
+the near-field can only be ensured using additional focused        F. MULTI-REFLECTOR SCENES IN THE
+pulses with appropriately close focal distances. Due to the        FAR- AND NEAR-FIELD
+decreasing focal length with decreasing focal distance, mul-       In order to provide a more vivid interpretation of the mea-
+tiple sequential pulse transmissions with different focal dis-     surement data obtained and the resulting imaging capabilities,
+tances are required. For example, in order to cover a viewing
+range from 20 cm to 5 m, pulses must be focused at least                                                                                                                49
+to the distances 0.3 m and 0.5 m in addition to unfocused
+beamforming. In summary, although the large aperture of
+the spiral array is advantageous for the achievable angular
+resolution, additional transmission events are required for
+detection in the extended near-field.
+
+E. ANGULAR RESOLUTION
+The achievable angular resolution using the PE method is
+experimentally validated. The angular resolution specifies
+the minimum angular distance between two objects required
+so that they appear separated in the image generated. For
+separation, the echoes in the image must create two distinct
+local maxima. In this experiment, we analyze the relative
+level of the local minimum between the echo maxima as
+a function of angular distance between two objects. Two
+
+VOLUME 2, 2022
+FIGURE 8. Multi-reflector setup consisting of 28 corner reflectors  FIGURE 9. Experimental setup for examining the imaging of
+for analyzing the separability and the accumulation of side         object shapes in the near-field at 20 cm using focused
+lobes in the far-field (top). The angular resolution, the           beamforming. The angular resolution is sufficient to recognize
+accumulated MSLL and the echo intensities of all reflectors are     the shape of the hand in the 3D scan. However, the magnitudes
+sufficient to correctly separate and visualize the reflector        of several accumulated side lobes are to some extent higher
+echoes without side lobe artifacts in the OpenGL-rendered           than the desired echo levels, causing minor artifacts between
+3D-Scan by using a threshold for separation (bottom).               the fingers. Therefore, if a threshold is used for separation,
+                                                                    a trade-off must be found between the level of detail and
+                                                                    tolerable artifacts.
+
+we conduct two experiments with multiple reflectors in the          TABLE 1. Main characteristics of the spiral and waveguide array.
+far- and near-field. In addition to analyzing the separability,
+we also investigate the creation of artifacts due to the accu-      separation threshold between -4 and -5 dBmax, all reflector
+mulation of side lobes.                                             echoes in this example scene can be separated correctly and
+                                                                    no false detections due to side lobe artifacts occur. The exper-
+   In the far-field experiment, we use a test pattern consisting    iment illustrates that the accumulated MSLL can increase
+of 28 corner reflectors positioned at a distance of 2 m in          significantly compared to a single reflector scenario (approx.
+front of the array (Fig. 8). The entire pattern covers a width      -28 dBmax), making a clear separation more difficult. There-
+of 850 mm and is thus located within an angular range of            fore, in the presence of multiple reflectors, the dynamic range
+±12 of the ROI. The corner reflectors are identical trihe-          is limited, which can lead to either false detections or weaker
+drals with a front edge length of 140 mm, arranged with a           reflections not being detectable, depending on the separation
+minimum spacing of 120 mm. The spacing corresponds to a             algorithm and additional image processing used.
+minimum angular distance of (3.4) and is thus slightly above
+the measured required angular resolution of approximately              The improved angular resolution due to the larger array
+(2.3). The scene is scanned line by line using unfocused            aperture enables especially close objects to be visualized
+beamforming in PE mode with an angular step size of 0.5             with high detail. This is demonstrated in another experiment,
+and visualized in a 3D scan. The total duration for the image
+generation including data acquisition, processing and render-                                                                                                         VOLUME 2, 2022
+ing is 2 min.
+
+   In the image generated, the relative echo magnitudes of
+the individual reflectors vary between -4 and 0 dBmax. The
+highest minimum between two reflectors is -5 dBmax. Due to
+the accumulation of the side lobes of the individual reflectors,
+the MSLL is -7.3 dBmax. Therefore, by using a simple
+
+50
+Allevato et al.: Air-Coupled Ultrasonic Spiral Phased Array for High-Precision Beamforming and Imaging
+
+                FIGURE 10. 2D sectional image of the hand for different threshold levels. The top left
+                graphic shows the unprocessed raw image of the hand using a dB scale normalized
+                to the highest amplitude received. Only a threshold is used for separating the hand
+                reflections from side lobe artifacts. Amplitudes below the threshold are removed from
+                the image (black color). The higher the threshold is set, the more side lobe artifacts
+                are removed. However, since there are strong and weak hand reflections, some parts
+                of the hand will be removed as well if the threshold is set too high. Therefore, in
+                scenes with a high dynamic range, a trade-off between the level of detail and the
+                accepted artifacts must be found.
+
+where a hand is scanned using focused beamforming at a        an angular range of ±25. The length of the fingers is 6 to
+distance of 20 cm with an angular step size of 0.5 and dis-   8.5 cm with a spacing between them of min. 1 cm to max.
+played as a 3D scan (Fig. 9). Compared to the previous mea-   5 cm, corresponding to 2.9 to 14 angular distance. The total
+surement setup, the number of retroreflective surfaces can    time required for generating the image is 2.5 min.
+not be exactly defined. The stretched hand has a maximum
+extension of 19 cm in both dimensions and is thus located in     Although the shape of the hand is recognizable in the 3D
+                                                              scan, especially the ring finger and the lower palm are weak
+
+VOLUME 2, 2022                                                                                          51
+reflectors, since their surface normals partially point away      REFERENCES
+from the array, thus deflecting a large portion of the sound.
+As a result, the magnitudes of several accumulated side            [1] D. Sancho-Knapik, ``Air-coupled ultrasonic resonant spectroscopy for the
+lobes are to some extent higher (MSLL -5.7 dBmax) than the               study of the relationship between plant leaves' elasticity and their water
+desired reflections (e.g. -7.2 dBmax at the ring finger center).         content,'' IEEE Trans. Ultrason., Ferroelectr., Freq. Control, vol. 59, no. 2,
+Therefore, in scenes with a high dynamic range, a trade-off              pp. 319­325, Feb. 2012.
+between the level of detail and the accepted artifacts must be
+found. In the 3D scan shown, a simple separation approach          [2] B. C. Barry, L. Verstraten, F. T. Butler, P. M. Whelan, and W. M. D. Wright,
+with an example threshold level of -7.5 dBmax is used, so that           ``The use of airborne ultrasound for varroa destructor mite control in
+few artifacts are visible, but the hand is displayed in more             beehives,'' in Proc. IEEE Int. Ultrason. Symp. (IUS), Oct. 2018, pp. 1­9.
+detail. The image processed with different threshold levels
+is included in the appendix. Overall, the two multi-reflector      [3] A. M. Ginel and T. G. Alvarez-Arenas, ``Air-coupled transducers for
+experiments demonstrated that the array is capable of imag-              quality control in the food industry,'' in Proc. IEEE Int. Ultrason. Symp.
+ing object shapes and patterns in both the near-field and                (IUS), Oct. 2019, pp. 803­806.
+far-field.
+                                                                   [4] L. Fariñas, M. Contreras, V. Sanchez-Jimenez, J. Benedito, and
+   Finally, we put the main characteristics of the sparse spiral         J. V. Garcia-Perez, ``Use of air-coupled ultrasound for the non-invasive
+array in relation to our previous dense uniform rectangu-                characterization of the textural properties of pork burger patties,'' J. Food
+lar waveguide array which also consists of 64 MA40S4S                    Eng., vol. 297, May 2021, Art. no. 110481.
+transducers and the identical electronic hardware (Table 1).
+All values, except the field of view, are given for a steering     [5] S. Surappa, M. Tao, and F. L. Degertekin, ``Analysis and design of capaci-
+angle of (0, 0). At the cost of a larger overall aperture, the           tive parametric ultrasonic transducers for efficient ultrasonic power trans-
+MLW, angular resolution and MSLL of the spiral array are                 fer based on a 1-D lumped model,'' IEEE Trans. Ultrason., Ferroelectr.,
+significantly improved compared to the uniform rectangular               Freq. Control, vol. 65, no. 11, pp. 2103­2112, Nov. 2018.
+approach. On the other hand, the waveguide array offers
+additional protection of the transducers and a larger field of     [6] A. S. Rekhi, B. T. Khuri-Yakub, and A. Arbabian, ``Wireless power transfer
+view due to the smaller effective element apertures.                     to millimeter-sized nodes using airborne ultrasound,'' IEEE Trans. Ultra-
+                                                                         son., Ferroelectr., Freq. Control, vol. 64, no. 10, pp. 1526­1541, Oct. 2017.
+IV. CONCLUSION AND FUTURE WORK
+We presented an air-coupled spiral ultrasonic phased array         [7] D. Yosra et al., ``Contactless acoustic power transmission through air/skin
+system capable of transmit, receive, and pulse-echo oper-                interface: A feasibility study,'' in Proc. IEEE Int. Ultrason. Symp.,
+ation, as well as 3D imaging. We showed that the                         Sep. 2020, pp. 1­3.
+large-aperture spiral geometry provides grating lobe free,
+high-accuracy and high-precision beamforming in all oper-          [8] A. Ens and L. M. Reindl, ``Multicarrier airborne ultrasound transmission
+ation modes and is thus valuable for many ultrasonic                     with piezoelectric transducers,'' IEEE Trans. Ultrason., Ferroelectr., Freq.
+applications. Especially in-air imaging benefits from these              Control, vol. 62, no. 5, pp. 905­914, May 2015.
+features as they allow unambiguous, high-resolution images
+to be generated without requiring an increased system com-         [9] W. Jiang and W. M. D. Wright, ``Indoor airborne ultrasonic wireless com-
+plexity or computational load. The SLT technique and the                 munication using OFDM methods,'' IEEE Trans. Ultrason., Ferroelectr.,
+resulting array gains enable a high range of view, so that               Freq. Control, vol. 64, no. 9, pp. 1345­1353, Sep. 2017.
+a large volume can be imaged, spanning the near- and far-
+field. We demonstrated that even object shapes and patterns       [10] S. Kumar and H. Furuhashi, ``Long-range measurement system using ultra-
+of multiple reflectors are recognizable in the images gener-             sonic range sensor with high-power transmitter array in air,'' Ultrasonics,
+ated, opening up further possibilities, e.g. ultrasonic object           vol. 74, pp. 186­195, Feb. 2017.
+classification in harsh environments using deep learning tech-
+niques. We found that a more uniform transducer directivity       [11] Y. Yoshikawa, Y. Yasuda, I. Toru, S. Izumi, and H. Kawaguchi,
+can improve the beamforming and imaging performance, as it               ``12.5-m distance measurement in high-interference environment using
+increases the field of view, the accuracy and dynamic range              ultrasonic array sensors,'' in Proc. IEEE Int. Instrum. Meas. Technol. Conf.,
+for high steering angles. Future work is aimed at improv-                May 2021, pp. 1­6.
+ing the frame rate and reducing the MSLL to prevent side
+lobe artifacts in scenes with multiple reflectors of varying      [12] G.-L. Luo, Y. Kusano, and D. A. Horsley, ``Airborne piezoelectric micro-
+strengths.                                                               machined ultrasonic transducers for long-range detection,'' J. Microelec-
+                                                                         tromech. Syst., vol. 30, no. 1, pp. 81­89, Feb. 2021.
+APPENDIX
+See Fig. 10.                                                      [13] B. W. Drinkwater and P. D. Wilcox, ``Ultrasonic arrays for non-destructive
+                                                                         evaluation: A review,'' NDT E Int., vol. 39, pp. 525­541, Oct. 2006.
+52
+                                                                  [14] S. N. Ramadas, J. C. Jackson, J. Dziewierz, R. O'Leary, and A. Gachagan,
+                                                                         ``Application of conformal map theory for design of 2-D ultrasonic
+                                                                         array structure for ndt imaging application: A feasibility study,'' IEEE
+                                                                         Trans. Ultrason., Ferroelectr., Freq. Control, vol. 61, no. 3, pp. 496­504,
+                                                                         Mar. 2014.
+
+                                                                  [15] T. Marhenke et al., ``Air-coupled ultrasound time reversal (ACU-TR) for
+                                                                         subwavelength nondestructive imaging,'' IEEE Trans. Ultrason., Ferro-
+                                                                         electr., Freq. Control, vol. 67, no. 3, pp. 651­663, Mar. 2020.
+
+                                                                  [16] K. Hasegawa and H. Shinoda, ``Aerial vibrotactile display based on mul-
+                                                                         tiunit ultrasound phased array,'' IEEE Trans. Haptics, vol. 11, no. 6,
+                                                                         pp. 367­377, Jul. 2018.
+
+                                                                  [17] R. Hirayama, D. Martinez Plasencia, N. Masuda, and S. Subramanian,
+                                                                         ``A volumetric display for visual, tactile and audio presentation using
+                                                                         acoustic trapping,'' Nature, vol. 575, pp. 320­323, Nov. 2019.
+
+                                                                  [18] R. Morales, I. Ezcurdia, J. Irisarri, M. A. B. Andrade, and A. Marzo,
+                                                                         ``Generating airborne ultrasonic amplitude patterns using an open hard-
+                                                                         ware phased array,'' Appl. Sci., vol. 11, p. 2981, Mar. 2021.
+
+                                                                  [19] A. Marzo, S. A. Seah, B. W. Drinkwater, D. R. Sahoo, B. Long, and
+                                                                         S. Subramanian, ``Holographic acoustic elements for manipulation of lev-
+                                                                         itated objects,'' Nature Commun., vol. 6, Dec. 2015, Art. no. 8661.
+
+                                                                  [20] A. Watanabe, K. Hasegawa, and Y. Abe, ``Contactless fluid manipulation
+                                                                         in air: Droplet coalescence and active mixing by acoustic levitation,'' Sci.
+                                                                         Rep., vol. 8, Dec. 2018, Art. no. 10221.
+
+                                                                  [21] T. Kasai, T. Furumoto, and H. Shinoda, ``Rotation and position control of
+                                                                         a cubic object using airborne ultrasound,'' in Proc. IEEE Int. Ultrason.
+                                                                         Symp., Sep. 2020, pp. 1­4.
+
+                                                                  [22] I. Wygant et al., ``50 kHz capacitive micromachined ultrasonic transducers
+                                                                         for generation of highly directional sound with parametric arrays,'' IEEE
+                                                                         Trans. Ultrason. Ferroelectr., Freq. Control, vol. 56, no. 1, pp. 193­203,
+                                                                         Jan. 2009.
+
+                                                                                                                                                                    VOLUME 2, 2022
+Allevato et al.: Air-Coupled Ultrasonic Spiral Phased Array for High-Precision Beamforming and Imaging
+
+[23] K. Nakagawa, C. Shi, and Y. Kajikawa, ``Beam steering of portable para-            [47] Z. Lei, ``Sound sources localization using compressive beamforming with
+       metric array loudspeaker,'' in Proc. Asia­Pacific Signal Inf. Process. Assoc.           a spiral array,'' in Proc. Int. Conf. Inf. Commun. Technol., Apr. 2015,
+       Annu. Summit Conf., Nov. 2019, pp. 1824­1827.                                           pp. 1­5.
+
+[24] Z. Shao, S. Pala, Y. Liang, Y. Peng, and L. Lin, ``A single chip directional       [48] S. Luesutthiviboon, A. Malgoezar, M. Snellen, P. Sijtsma, and D. Simons,
+       loudspeaker based on PMUTS,'' in Proc. IEEE Int. Conf. Micro Electro                    ``Improving source discrimination performance by using an optimized
+       Mechan. Syst., Jan. 2021, pp. 895­898.                                                  acoustic array and adaptive high-resolution CLEAN-SC beamforming,''
+                                                                                               in Proc. Berlin Beamforming Conf., 2018, pp. 1­27.
+[25] V. Kunin, M. Turqueti, J. Saniie, and E. Oruklu, ``Direction of arrival
+       estimation and localization using acoustic sensor arrays,'' J. Sens. Technol.,   [49] O. Martínez-Graullera, C. J. Martín, G. Godoy, and L. G. Ullate, ``2D
+       vol. 1, Oct. 2011, Art. no. 7657.                                                       array design based on Fermat spiral for ultrasound imaging,'' Ultrasonics,
+                                                                                               vol. 50, pp. 280­289, Feb. 2010.
+[26] G. Allevato, M. Rutsch, J. Hinrichs, M. Pesavento, and M. Kupnik,
+       ``Embedded air-coupled ultrasonic 3d sonar system with GPU accelera-             [50] A. Ramalli, E. Boni, A. S. Savoia, and P. Tortoli, ``Density-tapered spiral
+       tion,'' in Proc. IEEE Sens., Oct. 2020, pp. 1­4.                                        arrays for ultrasound 3-D imaging,'' IEEE Trans. Ultrason. Ferroelectr.,
+                                                                                               Freq. Control, vol. 62, no. 8, pp. 1580­1588, Aug. 2015.
+[27] T. Verellen, R. Kerstens, and J. Steckel, ``High-resolution ultrasound sens-
+       ing for robotics using dense microphone arrays,'' IEEE Access, vol. 8,           [51] H. Yoon and T.-K. Song, ``Sparse rectangular and spiral array designs for
+       pp. 190083­190093, 2020.                                                                3D medical ultrasound imaging,'' Sensors, vol. 20, p. 173, Dec. 2019.
+
+[28] H. Zhang, D. Liang, Z. Wang, L. Ye, X. Rui, and X. Zhang, ``Fabrication            [52] A. Ramalli et al., ``Real-time 3-D spectral Doppler analysis with a sparse
+       and characterization of a wideband low-frequency CMUT array for air-                    spiral array,'' IEEE Trans. Ultrason. Ferroelectr., Freq. Control, vol. 68,
+       coupled imaging,'' IEEE Sensors J., vol. 20, no. 23, pp. 14090­14100,                   no. 5, pp. 1742­1751, May 2021.
+       Dec. 2020.
+                                                                                        [53] A. Price and B. Long, ``Fibonacci spiral arranged ultrasound phased array
+[29] O. J. Adelegan, Z. A. Coutant, X. Wu, F. Y. Yamaner, and O. Oralkan,                      for mid-air haptics,'' in Proc. IEEE Int. Ultrason. Symp., Oct. 2018,
+       ``Design and fabrication of wideband air-coupled capacitive microma-                    pp. 1­4.
+       chined ultrasonic transducers with varying width annular-ring and spiral
+       cell structures,'' IEEE Trans. Ultrason., Ferroelectr., Freq. Control, vol. 68,  [54] A. Movahed, T. Waschkies, and U. Rabe, ``Air ultrasonic signal localization
+       no. 8, pp. 2749­2759, Aug. 2021.                                                        with a beamforming microphone array,'' Adv. Acoust. Vib., vol. 2019,
+                                                                                               Feb. 2019, Art. no. 7691645.
+[30] H. E. Bass, L. C. Sutherland, and A. J. Zuckerwar, ``Atmospheric
+       absorption of sound: Update,'' J. Acoust. Soc. Amer., vol. 88, no. 4,            [55] M. Legg and S. Bradley, ``Ultrasonic arrays for remote sensing of pasture
+       pp. 2019­2021, Oct. 1990.                                                               biomass,'' Remote Sens., vol. 12, p. 111, Dec. 2019.
+
+[31] M. Rutsch et al., ``Waveguide for air-coupled ultrasonic phased-arrays with        [56] B. Parr, M. Legg, S. Bradley, and F. Alam, ``Occluded grape cluster
+       propagation time compensation and plug-in assembly,'' J. Acoust. Soc.                   detection and vine canopy visualisation using an ultrasonic phased array,''
+       Amer., vol. 150, no. 5, pp. 3228­3237, Nov. 2021.                                       Sensors, vol. 21, p. 2182, Mar. 2021.
+
+[32] A. Jäger et al., ``Air-coupled 40 kHz ultrasonic 2D-phased array based on          [57] G. Allevato, M. Rutsch, J. Hinrichs, E. Sarradj, M. Pesavento, and
+       a 3D-printed waveguide structure,'' in Proc. IEEE Int. Ultrason. Symp.,                 M. Kupnik, ``Spiral air-coupled ultrasonic phased array for high resolution
+       Sep. 2017, pp. 1­4.                                                                     3D imaging,'' in Proc. IEEE Int. Ultrason. Symp., Sep. 2020, pp. 1­4.
+
+[33] G. Allevato et al., ``3D imaging method for an air-coupled 40 kHz ultra-           [58] T. L. Szabo, Diagnostic Ultrasound Imaging: Inside Out, 2nd ed. Amster-
+       sound phased-array,'' in Proc. Int. Congr. Acoust., 2019, pp. 1­8.                      dam, The Netherlands: Elsevier, 2014.
+
+[34] C. Haugwitz et al., ``Flow metering of gases using ultrasonic phased-              [59] A. M. Zoubir, M. Viberg, R. Chellappa, and S. Theodoridis, Array and Sta-
+       arrays at high velocities,'' in Proc. IEEE Int. Ultrason. Symp., Oct. 2019,             tistical Signal Processing, 1st ed. Amsterdam, The Netherlands: Elsevier
+       pp. 1129­1132.                                                                          Academic Press, 2014.
+
+[35] A. Jäger et al., ``Non-contact ultrasound with optimum electronic steering         [60] J. A. Jensen, S. I. Nikolov, K. L. Gammelmark, and M. H. Pedersen,
+       angle to excite Lamb waves in thin metal sheets for mechanical stress                   ``Synthetic aperture ultrasound imaging,'' Ultrasonics, vol. 44, p. e15,
+       measurements,'' in Proc. Int. Ultrason. Symp., Oct. 2019, pp. 924­927.                  Dec. 2006.
+
+[36] G. Allevato et al., ``Real-time 3-D imaging using an air-coupled ultrasonic        [61] H. Hasegawa and H. Kanai, ``High-frame-rate echocardiography using
+       phased-array,'' IEEE Trans. Ultrason. Ferroelectr., Freq. Control, vol. 68,             diverging transmit beams and parallel receive beamforming,'' J. Med.
+       no. 3, pp. 796­806, Mar. 2021.                                                          Ultrason., vol. 38, no. 3, pp. 129­140, Jul. 2011.
+
+[37] M. Rutsch, G. Allevato, J. Hinrichs, and M. Kupnik, ``Protection layer             [62] S. Smith, H. Pavy, and O. Von Ramm, ``High-speed ultrasound volu-
+       for air-coupled waveguide ultrasonic phased arrays,'' in Proc. IEEE Int.                metric imaging system. I. Transducer design and beam steering,'' IEEE
+       Ultrason. Symp., Sep. 2020, pp. 1­4.                                                    Trans. Ultrason. Ferroelectr. Freq. Control, vol. 38, no. 2, pp. 100­108,
+                                                                                               Mar. 1991.
+[38] P. Weber, R. Schmitt, B. Tylkowski, and J. Steck, ``Optimization of ran-
+       dom sparse 2-D transducer arrays for 3-D electronic beam steering and            [63] P.-O. Persson and G. Strang, ``A simple mesh generator in MATLAB,''
+       focusing,'' in Proc. IEEE Ultrason. Symp., Oct. 1994, pp. 1503­1506.                    SIAM Rev., vol. 46, pp. 329­345, Jan. 2004.
+
+[39] R. Davidsen, ``Two-dimensional random arrays for real time volumetric                                             GIANNI ALLEVATO (Student Member, IEEE)
+       imaging,'' Ultrason. Imag., vol. 16, pp. 143­163, Jul. 1994.                                                    received the M.Sc. degree in electrical engi-
+                                                                                                                       neering from Technische Universtität Darmstadt
+[40] A. Austeng and S. Holm, ``Sparse 2-D arrays for 3-D phased array                                                  (TU Darmstadt), Germany, in 2018. Since 2018,
+       imaging-design methods,'' IEEE Trans. Ultrason. Ferroelectr., Freq. Con-                                        he has been a Research Associate with the
+       trol, vol. 49, no. 8, pp. 1073­1086, Aug. 2002.                                                                 Measurement and Sensor Technology Group,
+                                                                                                                       TU Darmstadt. His research interests include elec-
+[41] D. W. Boeringer, ``Phased array including a logarithmic spiral                                                    tronics and embedded system design, software
+       lattice of uniformly spaced radiating and receiving elements,''                                                 development, and parallel signal processing for
+       U.S. Patent 6 433 754 B1, Aug. 13, 2002.                                                                        imaging with air-coupled ultrasonic phased arrays
+                                                                                                                       and its applications.
+[42] M. C. Viganó, G. Toso, G. Caille, C. Mangenot, and I. E. Lager, ``Sunflower
+       array antenna with adjustable density taper,'' Int. J. Antennas Propag.,                                                                                                              53
+       vol. 2009, Apr. 2009, Art. no. 624035.
+
+[43] E. Sarradj, ``A generic approach to synthesize optimal array microphone
+       arrangements,'' in Proc. Berlin Beamforming Conf., 2016, pp. 1­4.
+
+[44] A. Vallecchi, M. Cerretelli, M. Linari, and G. B. Gentili, ``Investigation of
+       optimal array configurations for full azimuth scan HF skywave radars,'' in
+       Proc. 6th Eur. Radar Conf., Oct. 2009, pp. 200­203.
+
+[45] Q. Cheng, Y. Liu, H. Zhang, and Y. Hao, ``A generic spiral MIMO array
+       design method for short-range UWB imaging,'' IEEE IEEE Antennas
+       Wireless Propag. Lett., vol. 19, no. 5, pp. 851­855, May 2020.
+
+[46] L. H. Gabrielli and H. E. Hernandez-Figueroa, ``Aperiodic antenna array
+       for secondary lobe suppression,'' IEEE Photon. Technol. Lett., vol. 28,
+       no. 2, pp. 209­212, Jan. 15, 2016.
+
+VOLUME 2, 2022
+                               MATTHIAS RUTSCH (Graduate Student                                                    RAPHAEL MÜLLER received the M.Sc.
+                               Member, IEEE) received the B.Sc. degree                                              degree in electrical engineering from Tech-
+                               from Brandenburgische Technische Universität                                         nische Universität Darmstadt (TU Darmstadt),
+                               Cottbus­Senftenberg, Germany, in 2014, and the                                       Germany, in 2020. Since then, he has been a
+                               M.Sc. degree in electrical engineering from Tech-                                    Research Associate at the Communication Sys-
+                               nische Universität Darmstadt, in 2017. Since then,                                   tems Group, TU Darmstadt. His research interests
+                               he has been a Research Associate at the Mea-                                         include statistical signal processing and especially
+                               surement and Sensor Technology Group, Technis-                                       high-resolution sensor array processing and its
+                               che Universität Darmstadt. His research interests                                    application to radar and ultrasound.
+                               include simulation and characterization of duct
+acoustics for air-coupled ultrasound applications.                                                                  MARIUS PESAVENTO (Senior Member,
+                                                                                                                    IEEE) received the Dipl-Ing. degree from Ruhr-
+                               JAN HINRICHS (Graduate Student Member,                                               Universität Bochum, Bochum, Germany, in 1999,
+                               IEEE) received the M.Sc. degree in electrical                                        the M.Eng. degree from McMaster University,
+                               engineering from Technische Universität Darm-                                        Hamilton, ON, Canada, in 2000, and the Dr.-Ing.
+                               stadt (TU Darmstadt), Germany, in 2017. Since                                        degree in electrical engineering from Ruhr-
+                               then, he has been a Research Associate with                                          Universität Bochum, in 2005. From 2005 to 2009,
+                               the Measurement and Sensor Technology Group,                                         he was a Research Engineer with two startup
+                               TU Darmstadt. His research interests include sen-                                    companies. In 2010, he was an Assistant Professor
+                               sor design, sensor electronics, acoustoelastic sens-                                 of robust signal processing and a Full Professor of
+                               ing, and non-destructive examination using Lamb       communication systems, in 2013, with the Department of Electrical Engi-
+                               waves.                                                neering and Information Technology, Technische Universität Darmstadt,
+                                                                                     Darmstadt, Germany. His research interests include robust signal processing
+                               CHRISTOPH HAUGWITZ (Student Member,                   and adaptive beamforming, high-resolution sensor array processing, multi-
+                               IEEE) received the M.Sc. degree in electrical         antenna and multi-user communication systems, distributed, sparse, mixed-
+                               engineering from Technische Universität Darm-         integer optimization techniques for signal processing and communications,
+                               stadt (TU Darmstadt), Germany, in 2021. Since         statistical signal processing, spectral analysis, and parameter estimation.
+                               then, he has been a Research Associate with
+                               the Measurement and Sensor Technology Group,                                         MARIO KUPNIK (Senior Member, IEEE)
+                               TU Darmstadt. His research interests include ultra-                                  received the Dipl.-Ing. degree in electrical engi-
+                               sonic flow metering and air-coupled ultrasonic                                       neering from the Graz University of Technol-
+                               phased arrays and its applications.                                                  ogy, Graz, Austria, in 2000, and the Ph.D.
+                                                                                                                    degree in electrical engineering from the Uni-
+                                                                                                                    versity of Leoben, Leoben, Austria, in 2004.
+                                                                                                                    From 2005 to 2011, he was a Postdoctoral
+                                                                                                                    Researcher, a Research Associate, and a Senior
+                                                                                                                    Research Scientist at the Edward L. Ginzton Lab-
+                                                                                                                    oratory, Stanford University, Stanford, CA, USA.
+                                                                                     From 2011 to 2014, he was a Full Professor of electrical engineering at
+                                                                                     the Brandenburg University of Technology, Cottbus, Germany. Since 2015,
+                                                                                     he has been a Full Professor at Technische Universität Darmstadt, Darmstadt,
+                                                                                     Germany, where he is currently the Head of the Measurement and Sensor
+                                                                                     Technology Group. His research interests include micro-machined sensors
+                                                                                     and actuators, multi-physics simulations, flow-metering of gases and liquids,
+                                                                                     ultrasound, electroacoustics, and harsh-environment instrumentation.
+
+54                                                                                   VOLUME 2, 2022
+

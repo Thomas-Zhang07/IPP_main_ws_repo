@@ -1,0 +1,8 @@
+Reading pref.tcl
+
+# 2025.2
+
+# waves_old.wlf opened as dataset "waves_old"
+# do view_waves.do
+# ** Error: <EOF> reached in ./view_waves.do with incomplete command at line 2
+#  quit -f

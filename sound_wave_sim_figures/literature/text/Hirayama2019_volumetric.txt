@@ -1,0 +1,674 @@
+Article
+
+A volumetric display for visual, tactile and
+audio presentation using acoustic trapping
+
+https://doi.org/10.1038/s41586-019-1739-5  Ryuji Hirayama1*, Diego Martinez Plasencia1, Nobuyuki Masuda2 & Sriram Subramanian1
+Received: 31 January 2019
+Accepted: 15 August 2019                   Science-fiction movies portray volumetric systems that provide not only visual but
+Published online: 13 November 2019         also tactile and audible three-dimensional (3D) content. Displays based on swept-
+                                           volume surfaces1,2, holography3, optophoretics4, plasmonics5 or lenticular lenslets6
+                                           can create 3D visual content without the need for glasses or additional
+                                           instrumentation. However, they are slow, have limited persistence-of-vision
+                                           capabilities and, most importantly, rely on operating principles that cannot produce
+                                           tactile and auditive content as well. Here we present the multimodal acoustic trap
+                                           display (MATD): a levitating volumetric display that can simultaneously deliver visual,
+                                           auditory and tactile content, using acoustophoresis as the single operating principle.
+                                           Our system traps a particle acoustically and illuminates it with red, green and blue
+                                           light to control its colour as it quickly scans the display volume. Using time
+                                           multiplexing with a secondary trap, amplitude modulation and phase minimization,
+                                           the MATD delivers simultaneous auditive and tactile content. The system
+                                           demonstrates particle speeds of up to 8.75 metres per second and 3.75 metres
+                                           per second in the vertical and horizontal directions, respectively, offering particle
+                                           manipulation capabilities superior to those of other optical or acoustic approaches
+                                           demonstrated until now. In addition, our technique offers opportunities for non-
+                                           contact, high-speed manipulation of matter, with applications in computational
+                                           fabrication7 and biomedicine8.
+
+Holographic and lenslet displays rely on a two-dimensional (2D) display           points at a hardware level using a field-programmable gate array
+modulator, constraining the visibility of 3D content to the volume                (FPGA). This enables position and amplitude updates of the trap in
+between the observer's eyes and the display surface (that is, the direct          a volume of 10 × 10 × 10 cm3, at a rate limited only by the transducer
+line of sight). Volumetric approaches are based on light-scattering,              frequency. By contrast, spatial light modulators are limited to update
+-emitting or -absorbing surfaces9. They offer unconstrained visibility            rates of hundreds of hertz, whereas galvanometers usually have update
+anywhere around the display and can be created using rotating surfaces            rates of up to about 20 kHz. Existing acoustic modulators are limited
+(active1 or passive2), plasmonics5,10, air displays11 and photophoretic           to hundreds of hertz14 and displacement speeds well below 1 m s-1. Our
+traps4. However, none of these approaches rely on operating principles            current MATD implementation enables update rates of up to 40 kHz
+that can also recreate touch and sound. Acoustic levitation displays              and particle displacement speeds of up to 8.75 m s-1 and 3.75 m s-1 in
+reported so far12­14 have only demonstrated control of a reduced num-             the vertical and horizontal direction, respectively. By exploiting such
+ber of points at reduced speeds and do not involve touch or audible               high modulation rates and the mechanical nature of ultrasound, our
+sound. By contrast, our MATD provides a volumetric display, where                 control techniques (described below and detailed in Methods) allow the
+users can simultaneously see visual content in mid-air from any point             delivery of tactile and auditive content in addition to 3D persistence-
+around the display volume and receive auditive and tactile feedback               of-vision (POV) content.
+from that volume (as shown in Supplementary Video 1).
+                                                                                  Operating principles of the MATD
+   Our system is based on acoustic tweezers, which use ultrasound radia-
+tion forces to trap particles14­17. Trapping has been demonstrated in             To create visual content, we levitate a 1-mm-radius, white, expanded
+media such as air12,13,18,19 and water16 and for particle sizes ranging from the  polystyrene (EPS) particle as a good approximation to a Lambertian
+micrometre to the centimetre scale. For spherical particles considerably          surface. Such a particle allows the use of predictive models of acous-
+smaller than the wavelength and operating in the far-field regime (that           tic trapping forces, as well as a simple analytical model to describe
+is, such as those used by our MATD), the forces exerted are governed by           the perceived colour under controlled illumination (see Methods,
+the gradient of the Gor'kov potential17. Several trap morphologies have           `Illumination control'). The hardware-embedded computation of the
+been demonstrated until now, including twin traps, vortex traps and               twin trap (see Methods, `Embedded computation of twin levitation
+bottle beams20­22, which can be analytically computed with efficiency22.          traps and focusing points') provides controlled and fast levitation of
+                                                                                  our scanning particle and is synchronized with a diffuse illumination
+   Our device (illustrated in Fig. 1a and detailed in Methods) exploits
+these advances, analytically computing single twin traps or focusing
+
+1School of Engineering and Informatics, University of Sussex, Brighton, UK. 2Department of Applied Electronics, Tokyo University of Science, Tokyo, Japan. *e-mail: r.hirayama@sussex.ac.uk
+
+320|Nature|Vol 575|14 November 2019
+a                                                                           FPGA                                                      Twin trap
+   Visual stimuli                                                                                  RGB
+                                                                                                   illumination
+                         3D           Position multiplex
+                   position                                                                                                       Focusing point
+
+Tactile stimuli    3D                                                                         Audible sound
+                                                                                                         e
+                   position
+
+              Modulation                                        40 kHz
+               frequency
+                                      Combined signal
+                                                         40 kHz
+
+   Sound signal
+
+                   Audio
+
+                                                               16 × 16 transducer
+                                                                        array
+
+b                                            c                                       d
+
+   2 cm
+
+                                                          1.8 cm                        6 cm  2 cm
+
+Fig. 1 | Main elements of the MATD. a, A geometrical description of the visual       audible sound. b, c, Example POV images (visible by the naked eye) scanned at
+and tactile stimuli, along with sound, are used as input. The system multiplexes     12.5 Hz and 10 Hz (Supplementary Video 1). d, Multicolour 2D raster image
+the position of levitation and tactile traps. A quick-scanning levitated particle    (exposure time, 20 s; peak speed, 0.6 m s-1). e, Example 3D POV content (3:2
+and RGB illumination provide visual content (POV method); modulated                  torus knot) scanned at 10 Hz (Supplementary Video 2).
+acoustic pressure gives tactile feedback and amplitude modulation provides
+
+module (RGB light-emitting diodes, LEDs). This allows the creation of                trapping forces) as conservative reference values that allow content
+a POV display with accurate control of the perceived colour (gamma-                  reproduction independently of the particle direction.
+corrected with  = 2.2) that can deliver 2D or 3D vector contents by
+POV (Fig. 1b, c, e) or fully rasterized contents (Fig. 1d; exposure time,               The parameters in Table 1 are used to compute and plan paths to
+20 s), even under conventional indoor illumination conditions (see                   create POV content visible to the naked eye. Human eyes can integrate
+Supplementary Video 4).                                                              different light stimuli under a single percept (that is, a single shape or
+                                                                                     geometry) during short periods of time (0.1 s is usually accepted as
+   Our tests (see Methods, `Linear speed tests' and `Acceleration, sharp             a conservative estimation, even in bright environments23), and thus
+corners and minimum radius of curvature') revealed high scanning                     our particle needs to scan the content in less than this time (0.1 s).
+speeds and accelerations, much higher than those of optical4 or acous-               Our parameters allow us to determine feasible paths (particle speed,
+tic14 setups demonstrated until now. The most critical display param-                acceleration and curvature within the limits identified), which can be
+eters are summarized in Table 1 according to the various modes of                    revealed in less than 0.1 s by exploiting only a fraction of the display's
+operation of the MATD: single particle with no amplitude modulation                  capabilities. The example letter in Fig. 1b (traced at 12.5 Hz, 1 × 2 cm2)
+(visual content only), single particle with minimum amplitude (in the                requires particle speeds of up to 0.8 m s-1, whereas the face and 3D torus
+worst-case scenario, displaying visual and audio content) and time-                  knot in Fig. 1c (10 Hz, 1.8 cm diameter) and Fig. 1e (10 Hz, 2 cm side)
+multiplexed dual trap with minimum amplitude (in the worst-case                      require speeds of 1.3 m s-1. Our volumetric contents showed no sub-
+scenario, delivering all visual, audio and tactile content). The trapping            stantial flicker and good colour reproduction (Fig. 2a), independently
+forces and achievable speeds and accelerations vary with the direc-                  of the viewer's location (Fig. 3a, b). Figure 2a shows examples of colour
+tion of motion of the particle (that is, they are highest in the vertical            tests performed with vector images (numbers, as in a seven-segment
+direction). Table 1 provides the maximum displacement parameters                     display) and good colour saturation. Brighter images can be obtained
+along the horizontal direction (in the worst-case scenario, with weaker              by adding extra illumination modules or more powerful LEDs (details
+                                                                                     in Methods, `Illumination control').
+Table 1 | Main parameters of the MATD
+                                                                                        Figure 2b shows the ability of the MATD to create additive and gray-
+                                                Visual Visual Visual,                scale colours, and Figs. 1d, 2c, 3c show examples of raster colour con-
+                                                only and audio audio and             tent in two and three dimensions, similar to those created by Smalley
+                                                                                     et al.4, using particle speeds of up to 0.6, 0.2 and 0.9 m s-1, respectively.
+                                                                            tactile  The effects of the particle scattering properties (that is, the perceived
+                                                                                     colour around the particle), the particle speed (that is, the illuminance
+Highest speed recorded, vmax (m s-1)            3.75 3.375              2.5          affected by the path length) and the human response (that is, nonlinear
+                                                                                     luminance response) must be considered for accurate colour reproduc-
+Highest acceleration recorded, amax (m s-2)     141       122           62           tion (see Methods, `Illumination control').
+
+Highest speed for corner features, vcorner (m s-1) 0.75 0.5             0.375           Mid-air tactile feedback at controlled locations (for example, the
+                                                                                     user's hand) is created by using a secondary focusing trap and custom
+Highest image frame rate until now (Hz)         12.5 10.0               10.0         multiplexing policy (position, but not amplitude, multiplexing with
+
+Colour (bpp)                                    24        24            24
+
+                                                                                              Nature|Vol 575|14 November 2019|321
+Article
+
+a                                                             c                                     Fig. 2 | Colour reproduction of the
+                                                                                                    MATD display. a, Example POV
+b                                                                                                   content (visible by the naked eye) with
+                                                        1 cm                                        simultaneous sound (see
+                                                                                                    Supplementary Video 1), showing
+                               5 cm                                                                 highly saturated colours. b, Additive
+                                                                                                    colour reproduction of the CIE colour
+       5 cm                                                                                         space and grayscale (exposure, 8 s;
+                                                                                                    peak scanning speeds, 0.4 m s-1 for CIE
+                                                                                                    and 0.1 m s-1 for grayscale; non-POV).
+                                                                                                    c, Raster image with simultaneous
+                                                                                                    tactile stimuli (exposure, 8 s; peak
+                                                                                                    scanning speed, 0.2 m s-1; non-POV).
+
+                                                                           3.2 cm
+
+phase-difference minimization; details in Methods, `Operational modes              examples of visual content with simultaneous audible content of 60 dB.
+and multiplexing strategies for single and dual traps'). Well differen-            For simultaneous auditive and tactile stimulation, we combine the
+tiated tactile feedback was delivered using only a 25% duty cycle for              40-kHz multifrequency audio signal with the tactile modulation sig-
+tactile content. Thus, 75% of the cycles could still be used to position           nal (250 Hz), maintaining the sampling frequency of the individual
+the primary trap, and the tactile content resulted in minimum loss of              signals and reducing losses in audio quality (Supplementary Video 1).
+scanning speed. For our experiments, we chose a modulation frequency               The MATD supports two modes for audio generation (see Methods,
+of 250 Hz, avoiding the primary range of human auditive perception24               `Audio modes supported'). The first mode uses the trapped particle
+(2 kHz­5 kHz) to minimize parasitic noise, but remaining well within               as a scattering medium that implicitly provides spatialized audio29
+the optimum perceptual threshold of skin Lamellar corpuscles for                   (that is, sound coming from the content displayed), but in our experi-
+vibration25. The 10-kHz update rate for tactile stimulation is sufficient          ence, such directional cues are weak (most of the sound comes from
+for spatio-temporal multiplexing strategies to maximize the fidelity of            the centre of our working volume). The second mode uses the sec-
+mid-air tactile content26. Our results (see Methods, `Tactile generation           ondary trap to steer sound towards the user, resulting into a stronger
+and quality') show accurate positioning and focusing of the tactile                directional component and higher sound levels. However, the use
+points and sound pressure levels greater than 150 dB, well above the               of directional audio currently comes at the expense of delivering
+threshold of 72 dB required for tactile stimulation27 (illustrated in Sup-         simultaneous tactile feedback (simultaneous visual, tactile and direc-
+plementary Video 5).                                                               tional audio would require multiplexing of three traps--one for each
+                                                                                   modality).
+   Audible sound is created by ultrasound demodulation using
+upper-sideband amplitude modulation28 of the traps. Our sampling                   Performance of the MATD
+at 40 kHz encodes most of the auditive spectrum (44.1 kHz), and the
+high-power transducer array produces audible sound even for a rela-                Our instantiation of the MATD presented here was created using low-
+tively small modulation index (a = 0.2) while still modulating particle            cost, commercially available components, making it easy to reproduce
+positions and tactile points at the 40-kHz rate. Figure 2a shows three
+
+a                                                             c                                                    Fig. 3 | Rendering of volumetric
+                                                                                                                   contents. a, b, Example pyramid
+               4 cm                                                                                                visible from all angles around the
+                                                                                                                   display (4 cm side, 2 s exposure
+         4 cm                                                                                                      (non-POV), 0.5 m s-1 scanning speed).
+                                                                                                                   c, Example 3D raster image with rich
+b                                                                Y                                                 colour information (6.4 cm diameter,
+                                                                        X                                          20 s exposure (non-POV), 0.9 m s-1
+                                                                                                                   peak scanning speed).
+
+                                                                                                    Y
+
+                                                                                                          X
+
+                                                                                           Y
+                                                                                                 X
+
+                              4 cm                                                 6.4 cm
+322|Nature|Vol 575|14 November 2019
+but also introducing limitations. Our tests were performed at a trans-      displays, our device and techniques enable positioning and amplitude
+ducer voltage allowing continued usage (12 V peak to peak). Tests at        modulation of acoustic traps at the sound-field frequency rate (that is,
+higher voltages (15 V peak to peak, duration <1 h) indicate that increas-   40 kHz), providing also an interesting experimental setup for chemis-
+ing the transducer power can result in better performance parameters        try or laboratory-on-a-chip applications (for example, multi-particle
+(for example, maximum horizontal speed of 4 m s-1) and more complex         levitation and mode oscillations demonstrated in Extended Data Fig. 10
+content. Increased power would also allow operation of the MATD at a        and Supplementary Video 6).
+50% duty cycle, further reducing audio artefacts (see Extended Data
+Fig. 7d). Similarly, transducers operating at higher frequencies (that is,  Online content
+80 kHz) can also improve audio quality and, combined with a reduced
+transducer pitch, would improve the spatial resolution of the levitation    Any methods, additional references, Nature Research reporting sum-
+traps (more accurate paths of the scanning particle).                       maries, source data, extended data, supplementary information,
+                                                                            acknowledgements, peer review information; details of author con-
+   The MATD demonstrated the possibility to manipulate particles by         tributions and competing interests; and statements of data and code
+retaining them in a dynamic equilibrium (rather than a static one, as       availability are available at https://doi.org/10.1038/s41586-019-1739-5.
+most other levitation approaches; see Methods, `Linear test speeds'),
+enabling the high accelerations and speeds observed. The use of models      1. Sawalha, L. et al. A large 3D swept-volume video display. J. Disp. Technol. 8, 256­268
+that accurately predict the dynamics of the particle (that is, in terms            (2012).
+of acoustic forces, drag, gravity and centrifugal forces, but also con-
+sidering interference from secondary traps and transient effects in         2. Langhans, K., Oltmann, K., Reil, S., Goldberg, L. & Hatecke, H. in Lecture Notes in
+the transducer phase updates) would allow better exploitation of the               Computer Science Vol. 3805 (ed. Subsol, G.) 22­31 (Springer 2005).
+observed maximum speeds and accelerations, enabling larger and
+more complex visual content. Alternatively, they could enable a more        3. Blanche, P. A. et al. An updatable holographic display for 3D visualization. J. Disp.
+efficient use of the acoustic pressure, providing similar speeds and               Technol. 4 424­430 (2008).
+accelerations to those of the MATD, but allocating a lower duty cycle
+to the primary trap. This power could then be dedicated to achieving        4. Smalley, D. E. et al. A photophoretic-trap volumetric display. Nature 553, 486­490 (2018).
+stronger tactile content or supporting a greater number of simultane-       5. Ochiai, Y. et al. Fairy lights in femtoseconds: aerial and volumetric graphics rendered by
+ous traps (for example, the three traps required for the simultaneous
+visual, tactile and directional audio scenario).                                   focused femtosecond laser combined with computational holographic fields. ACM Trans.
+                                                                                   Graph. 35, 17 (2016).
+   More advanced illumination approaches (for example, with gal-            6. Gao, X. et al. High brightness three-dimensional light field display based on the aspheric
+vanometers4 or beam-steering mechanisms11) would allow the use of                  substrate Fresnel-lens-array with eccentric pupils. Opt. Commun. 361, 47­54 (2016).
+focused light and brighter displays. The use of several illumination        7. Foresti, D. et al. Acoustophoretic printing. Sci. Adv. 4, eaat1659 (2018).
+modules around the display would provide greater control on the visual      8. Watanabe, A., Hasegawa, K. & Abe, Y. Contactless fluid manipulation in air: droplet
+properties of the content displayed. For instance, four illumination               coalescence and active mixing by acoustic levitation. Sci. Rep. 8, 10221 (2018).
+modules, one at each corner of the MATD, would allow us to illuminate       9. Smalley, D. E. OSA Display Technical Group Illumiconclave I. (OSA, 2015); http://
+only the outside part of the globe in Fig. 3c. The hidden parts of the             holography.byu.edu/Illumiconclave1.html.
+globe would be minimally visible, independently of the user location.       10. Saito, H., et al. Laser-plasma scanning 3D display for putting digital contents in free
+                                                                                   space. Proc. SPIE 6803, 680309 (2008).
+   Combining a denser illumination array (for example, a ring of light      11. Perlin, K. & Han, J. Y. Volumetric display with dust as the participating medium. US patent
+sources) and the predicted light-scattering pattern of our particle, the           6,997,558 (2006).
+total scattered field from the particle can be computed as the linear       12. Sahoo, D. R. et al. JOLED: a mid-air display based on electrostatic rotation of levitated
+combination of the scattered fields from each light source. This could             Janus objects. In Proc. of the 29th Annual Symposium on User Interface Software and
+be used, for instance, to create visual content approximating various              Technology 437­448 (ACM, 2016).
+material properties (for example, to make content look metallic or          13. Norasikin, M. A. et al. SoundBender: dynamic acoustic control behind obstacles. In Proc. of
+matte), simulating different lighting conditions or even delivering                the 31st Annual Symposium on User Interface Software and Technology 247­259 (ACM, 2018).
+different contents in different viewing directions.                         14. Marzo, A. & Drinkwater, B. W. Holographic acoustic tweezers. Proc. Natl Acad. Sci. USA
+                                                                                   116 84­89 (2018).
+   The presence of the user's hands can distort the acoustic field          15. Brandt, E. H. Acoustic physics: suspended by sound. Nature 413, 474­475 (2001).
+owing to scattering from the hand's surface. The power and top­down         16. Wu, J. Acoustical tweezers. J. Acoust. Soc. Am. 89, 2140­2143 (1991).
+arrangement of our array provide stable operation as the user's hand        17. Bruus, H. Acoustofluidics 7: the acoustic radiation force on small particles. Lab Chip 12
+approaches from the sides or front (see Supplementary Video 4). Plac-              1014­1021 (2012).
+ing the hand below or above the location of the primary trap (occluding     18. Omirou, T., Marzo, A., Seah, S. A. & Subramanian, S. Levipath: modular acoustic levitation
+one array) is much more likely to produce failures (that is, the scanning          for 3D path visualisations. In Proc. of the 2015 CHI Conference on Human Factors in
+particle being dropped). Close proximity of the secondary trap to the              Computing Systems 309­312 (ACM, 2015).
+primary trap can also distort the trapping of the scanning particle. We     19. Memoli, G. et al. Metamaterial bricks and quantization of meta-surfaces. Nat. Commun. 8,
+successfully reproduced curvature tests at the maximum speed with the              14608 (2017).
+tactile point at 2 cm from the circle; this suggests that whereas tactile   20. Baresch, D., Thomas, J. L. & Marchiano, R. Observation of a single-beam gradient force
+feedback cannot be reproduced directly on top of the visual content (to            acoustical trap for elastic particles: acoustical tweezers. Phys. Rev. Lett. 116, 024301 (2016).
+avoid scattering from or directly colliding with the scanning particle),    21. Whymark, R. R. Acoustic field positioning for containerless processing. Ultrasonics 13,
+tactile feedback can be created in close proximity to the visual content.          251­261 (1975).
+                                                                            22. Marzo, A. et al. Holographic acoustic elements for manipulation of levitated objects.
+   Our study demonstrates an approach to creating volumetric POV                   Nat. Commun. 6, 8661 (2015).
+displays with simultaneous delivery of auditive and tactile feedback and    23. Bowen, R. W., Pola, J. & Matin, L. Visual persistence: effects of flash luminance, duration
+with capabilities that exceed those of alternative optical approaches4.            and energy. Vision Res. 14 295­303 (1974).
+Polarization-based photophoretic approaches30 could match the               24. Gelfand, S. A. Essentials of Audiology 3rd edn (Thieme, 2010).
+potential for particle manipulation (that is, speeds and accelerations)     25. Makous, J. C., Friedman, R. M. & Vierck, C. J. A critical band filter in touch. J. Neurosci. 15,
+demonstrated in this study, but they would still be unable to include              2808­2818 (1995).
+sound and touch. The demonstrated MATD prototype hence brings us            26. Frier, W., Pittera, D., Ablart, D., Obrist, M. & Subramanian, S. Sampling strategy for
+closer to volumetric displays providing a full sensorial reproduction              ultrasonic mid-air haptics. In Proc. of the 2019 CHI Conference on Human Factors in
+of virtual content. Beyond opening a new avenue for multimodal 3D                  Computing Systems 121 (ACM, 2019).
+                                                                            27. Carter, T., Seah, S. A., Long, B., Drinkwater, B. & Subramanian, S. UltraHaptics: multi-point
+                                                                                   mid-air haptic feedback for touch surfaces. In Proc. of the 26th Annual ACM Symposium
+                                                                                   on User interface Software and Technology 505­514 (ACM, 2013).
+                                                                            28. Gan, W. S., Yang, J. & Kamakura, T. A review of parametric acoustic array in air. Appl.
+                                                                                   Acoust. 73, 1211­1219 (2012).
+                                                                            29. Ochiai, Y., Hoshi, T. & Suzuki, I. Holographic whisper: rendering audible sound spots in
+                                                                                   three-dimensional space by focusing ultrasonic waves. In Proc. of the 2017 CHI
+                                                                                   Conference on Human Factors in Computing Systems 4314­4325 (ACM, 2017).
+                                                                            30. Shvedov, V., Davoyan, A. R., Hnatovsky, C., Engheta, N. & Krolikowski, W. A long-range
+                                                                                   polarization-controlled optical tractor beam. Nat. Photon. 8, 846­850 (2014).
+
+                                                                            Publisher's note Springer Nature remains neutral with regard to jurisdictional claims in
+                                                                            published maps and institutional affiliations.
+
+                                                                            © The Author(s), under exclusive licence to Springer Nature Limited 2019
+
+                                                                            Nature|Vol 575|14 November 2019|323
+Article                                                                        The twin traps were computed by combining a high-intensity
+                                                                            focus point (as in equation (2)) and a levitation signature. The levita-
+Methods                                                                     tion signature was implemented by adding a phase delay of  rad to
+                                                                            the transducers in the top array, as used by Marzo et al.14, thus
+Experimental setup overview                                                 producing traps that maximize vertical forces. The transducer posi-
+                                                                            tions and discretized phase delays relative to the distance were stored
+Experiments were performed using two opposed arrays of 16 × 16 trans-       in two look-up tables in the FPGA, simplifying the computation of the
+ducers, aligned on top of each other and with a separation of 23.4 cm       focus point and levitation signature.
+(see Extended Data Fig. 1). We used Murata MA40S4S transducers
+(40 kHz, 1 cm diameter (about 1.2; , wavelength), 12 V peak to peak,        Illumination control. We used one illumination module equipped with
+delivering about 1.98 Pa at 1 m distance) for the two arrays and high-      high-intensity RGB LEDs (OptoSupply, OSTCWBTHC1S), which was
+intensity RGB LEDs (OptoSupply, OSTCWBTHC1S) to illuminate the              placed on the top right corner of our MATD prototype. The LEDs were
+particle.                                                                   driven according to the manufacturer's parameters (current, 150 mA;
+                                                                            voltage, 2.5 V (R) and 3.3 V (G/B)), and gave luminous fluxes of 22 lm
+   A Waveshare CoreEP4CE6 FPGA board was used to receive updates            (red), 35 lm (green) and 12 lm (blue).
+from the CPU (3D position, RGB colour, phase and amplitude), using
+10 bits to encode each (X, Y, Z) position (0.25 mm resolution), 24 bits        The resulting perceived luminance of the particle (for example, a
+for colour (RGB) and 8 bits for the amplitude and phase of the trap,        point in our visual content) for an observer around the MATD can be
+requiring 18 bytes for each update (9 bytes per array of transducers).      analytically approximated using the definition of the bidirectional
+An FTDI FT245 protocol at 12 Mbps was used for communication,               reflectance distribution function (BRDF) as shown in equation (3), and
+allowing 40 × 103 updates per second. The following sections provide        it only depends on the angle  between the observer, the particle and
+details on the relevant aspects of our setup, such as operational modes,    the light. The white and diffuse surface of our particle enables us to
+technical characterization, multiplexing strategies and experimental        approximate its BRDF as a Lambertian surface. The small diameter of
+tests.                                                                      the particle compared to the distance to the light source allows us to
+                                                                            assume that the incoming illuminance (the amount of perceived radiant
+Driving parameters                                                          energy emitted per unit area and unit time) is almost constant across
+                                                                            the illuminated surface of the particle and has a constant incoming
+Transducer operation (phase and amplitude control). The trans-              direction (that is, the light source approximated as a directional light).
+ducers were driven using a 12 V peak-to-peak square wave signal at          Similarly, because of the large distance to the observer (compared to
+40 kHz, producing a sinusoidal output owing to their narrowband             the particle diameter), we can assume that the direction of the rays from
+response. Phase delays were implemented by temporal shifting of the         the particle to the observer are also parallel. The perceived luminance
+40-kHz square wave (see Extended Data Fig. 2a), whereas amplitude           is then the summation of the luminances that are scattered towards the
+control was achieved by reducing the duty cycle of the square wave          direction of the observer from each fraction of the sphere illuminated
+(that is, reducing the duration of the high period, as in the lower row in  by the source and that are visible to the observer, as in equation (3). In
+Extended Data Fig. 2a). The complex amplitude of the transducers did        the equation, dEi represents the differential of the incoming illuminance
+not vary linearly with duty cycle (that is, a control signal with 25% duty  hitting the particle, dL denotes the differential of the luminance towards
+cycle did not result in half the amplitude of a control signal using a 50%  the observer at each point of the particle surface, dS represents the
+duty cycle; see Extended Data Fig. 2b). We performed this mapping by        differential of the surface and  and  represent spherical coordinates:
+using one transducer and a microphone placed 4 cm in front of it. We
+used a GW INSTEK AFG-2225 signal generator to drive the transducer                                      
+(that is, its square wave, varying phases and duty cycle, as per Extended                       
+Data Fig. 2a) and a Brüel & Kjær 4138-A-015 microphone connected to a                                   2        dL(, , , dEi)dS
+PicoScope 4262 oscilloscope to measure the differences between the                            = =0
+received and reference signals. This allowed us to assess the sinusoidal    dLobs(, dEi)                =  -  
+response of our transducers (no harmonics introduced by the square                                            2
+wave used to drive them; see Extended Data Fig. 2c) and to register how
+the amplitude changed with duty cycle. We experimentally matched                                                    +  
+the duty cycle to the effective amplitude using equation (1), and the                                                  2
+overall behaviour is shown in Extended Data Fig. 2b.                                                                         dS   (3)
+                                                                                                           =0       =  -  
+                                                                                                                          2
+
+                                                                                          =  dEi  1  -  sin      -     
+                                                                                             4                      2  
+
+               At =   sin2   duty              (1)                             Finally, the incoming illuminance needs to be corrected for the frac-
+                             100                                            tion of time that the particle is actually present in each discretized part
+                                                                            of the visual content. The nonlinear human response to luminance
+   We stored this function as a look-up table in the FPGA (to map the       (for example, Steven's power law) needs to be considered; we used a
+amplitude to the duty cycle) for efficient computation of the updates       gamma-correction method ( = 2.2), similar to the one used in cathode-
+at the required rate (40 kHz). This resulted in a modulator providing       ray tube monitors, to correct for these effects.
+64 levels of phase (resolution of /32 rad) and 33 levels of amplitude
+resolution.                                                                 Operating configurations of the MATD, multiplexing strategy
+                                                                            and local phase updates
+Embedded computation of twin levitation traps and focusing points.
+The computation of the focus points and twin levitation traps is embed-     Operational modes and multiplexing strategies for single and dual
+ded into the FPGA. For a focus point at position p and with phase p, the    traps. The hardware can provide individual phase and amplitude up-
+phase of each transducer (t) was discretized as follows:                    dates at 40 kHz and time multiplexing to simultaneously create several
+                                                                            levitation traps (Extended Data Fig. 10a). However, our MATD prototype
+         t  =  -  32  kd(p,  pt)  +  p  mod64  (2)                          only requires the use of up to two time-multiplexed traps, a primary
+                                                                            twin trap and a secondary focus point, according to two main operat-
+                                                                            ing configurations:
+where k represents the wave number for the frequency used
+(k = 2/  726.4 rad m-1), pt represents the position of each transducer         (I) Single-trap mode. Only the primary twin trap is present (100%
+and d represents the Euclidean distance function.                           duty cycle, 40 × 103 updates per second) and loaded with an EPS particle
+                                                                            of about 1 mm radius. This levitation trap is used to scan the volume,
+                                                                            which, synchronized with our illumination modules, provides the visual
+component of the display. Audible sound is generated by sampling            amplitude (ASSB = 0.83). The secondary (tactile) trap has a fixed loca-
+the intended 40-kHz audio signal (for example, from a file), which is       tion, placed horizontally at the edge of the array and at a height equal
+then used to modulate the amplitude of the transducers in our array.        to that of the centre of the array.
+
+   A single-sided band-modulation method (modulation index, a = 0.2)        Technical characterization: particle control, visual, audio and
+is used, resulting in audible sound of >60 dB (that is, at the level of a   tactile modalities
+conventional human conversation; see Methods, `Audio modes sup-             Preliminary characterization: particle sizes and update rates. Parti-
+ported'). We modulate the amplitude while the particle is levitated         cle sizes influence the performance of the MATD owing to differences
+to create audible sound at the levitation point. Specifically, we use an    in weight and drag effects. From a selection of highly spherical EPS
+upper-sideband modulation (see equation (4)), which avoids harmonic         particles of varying sizes (seven categories, with diameters of 1­4 mm),
+distortion and enables simultaneous levitation and audible sound            we initially assessed each particle for sphericity defects and then used
+(see Supplementary Video 1).The modulated signal is computed as:            a measuring setup to characterize them.
+
+ASSB = [1 + ag(t)]2 + [ag^ (t)]2  (4)                                          Our setup (see Extended Data Fig. 3a) uses a Logitech HD Pro c920
+                                                                            camera located 24 cm above a 10 × 6 cm2 measuring bed. Our software
+where g(t) represents the audio signal required to be created at time t     automatically detects the measuring bed and uses homography to cor-
+and g^(t)represents a Hilbert transform of g(t). The signal was sampled     rect for perspective distortion. This provided a corrected pixel accuracy
+at 40 kHz and the resulting amplitude ASSB (from equation (4)) was sent     of <0.1 mm. We then computed the circularity as the ratio of the area
+to the FPGA, together with the remaining parameters required for the        to the perimeter (circularity = 4(area)/(perimeter)2), accepting only
+current update (that is, position, colour and phase), implicitly retain-    particles with circularity >0.9. Each particle was dropped on the bed
+ing the synchronization between the visual (position and colour) and        five times (to capture different angles of the particle) and was accepted
+tactile content with the audio.                                             only if the circularity test was successful in all five measurements. Our
+                                                                            software also returned the diameter of the particle, which we used to
+   (II) Dual-trap mode. This mode is used for cases where tactile feed-     classify the particles in seven binned categories (with diameters from
+back needs to be delivered (for example, only in the presence of the        1 mm to 4 mm, ±0.2 mm tolerance for each category). Twenty particles
+user's hand). In this case, the primary trap can be set up as above, but    were collected for each category and used during our tests.
+it needs to be multiplexed with a secondary trap, which creates the
+tactile stimulation. Two main parameters need to be considered for             We used these initial sets of particles to choose an optimum particle
+this multiplexing: amplitude multiplexing and position multiplexing.        size for our MATD. Extended Data Fig. 3b shows the preliminary speed
+                                                                            tests (experimental procedure, as described in Methods section `Linear
+   First, amplitude multiplexing relates to the recreation of tactile tex-  speed tests') identifying the maximum horizontal-displacement speed
+tures, which involves a modulation frequency that can be detected           for each category. This initial assessment shows an optimum peak speed
+by the skin's Lamellar corpuscles (we used an example modulation            for particle diameters between 1.5 and 2.5 mm. Although various sizes
+frequency of 250 Hz). A naive approach would be to multiplex between        could successfully be used to create volumetric representations with
+the amplitude of the tactile signal (250 Hz) and the auditive signal (mul-  the MATD (Extended Data Fig. 3c), we chose the curated set of 2-mm-
+tiple frequencies) at the expense of the frequency of each individual       diameter particles for our remaining experiments. The particle size
+signal. We instead combine the tactile and audible signals into a single    distribution and sphericity of the set is shown in Extended Data Fig. 3d.
+signal at 40 kHz, thus avoiding amplitude multiplexing (see Methods,        The particle density and speed of sound in EPS are approximated as
+`Audio generation and quality').                                            19 kg m-3 and 900 m s-1, respectively.
+
+   Second, the location of the levitation and tactile traps also requires      Finally, we explored the effects of the update rate of the MATD on
+multiplexing, which we refer to as `position multiplexing' to reflect       the achievable particle speeds. Specifically, we performed speed tests
+the fact that the traps are created at different spatial locations. Unlike  (procedure as in Methods section `Linear speed tests') along the vertical
+amplitude multiplexing, position multiplexing affects only the phases       direction, identifying the maximum particle speeds for a range of MATD
+of the transducers, and it cannot be avoided in such dual-trap scenarios.   update rates between 156 Hz and 40 kHz. Our results are summarized
+In our MATD system, we allocate 75% of the updates (three contiguous        in Extended Data Fig. 3e, illustrating the benefits of the high update
+updates or 75 s; update rate, 30 kHz) to recreate the levitation trap and   rate of the MATD (higher update rates allow higher particle speeds)
+25% for the tactile stimulation (one update or 25 s; update rate, 10 kHz).  and that PDTM could not be supported at rates below 2.5 kHz (that is,
+                                                                            when operated at 2.5 kHz, the 3:1 time multiplexing rate from our PDTM
+   These high-frequency changes of location (that is, 104 changes           required 400 s every 1,600 s to create the tactile point--during which
+between the tactile and the levitation trap per second) introduce sud-      time the levitated particle would fall).
+den changes in the transducer phases, which might force them to oper-
+ate at sub-optimal frequencies. To alleviate this problem, the phase of     Linear speed tests. The trapping forces depend on the direction owing
+the next update (p in equation (2)) is set to the value that minimizes      to the type of levitation trap that we use. Our trap maximizes vertical
+the summation of the absolute phase differences between the phase           trapping forces, whereas forces along the horizontal plane are weaker,
+distribution of the current transducer and that of the previous one.        which affects the accelerations and speeds that can be imparted on the
+                                                                            particle in each direction. This section describes our exploration of
+Testing of experimental conditions. The inclusion of the features           the speeds that can be achieved with the MATD. Particularly, we used
+discussed above (amplitude modulation for sound and multiplexing            our chosen particles (about 2 mm diameter) and performed tests to
+in the dual-trap mode) has implications for the performance of the          characterize the maximum displacement speeds for each of our three
+system. During our tests, we explored three fixed experimental condi-       experimental conditions (OSTM, PSTM and PDTM) for particles mov-
+tions characterizing the operating performance of the MATD in both          ing along three directions: along the vertical axis Y (both in the upward
+optimistic and worst-case scenarios.                                        and downward directions) and the horizontal axis X. Given our MATD
+                                                                            setup, axes X and Z are equivalent (for example, 90° rotation). The speed
+   (i) Optimistic single-trap mode (OSTM), with only the main trap and      results along Z are similar to those along X and are not reported here.
+fixed maximum amplitude (ASSB = 1).
+                                                                               Linear paths of 10 cm were used for these tests, with the particles
+   (ii) Pessimistic single-trap mode (PSTM), with only the main trap        starting at 5 cm to the left and stopping at 5 cm to the right of the centre
+and minimum amplitude (ASSB = 0.83, equivalent to using the silent          of the MATD (for the vertical tests, 5 cm above or below the centre).
+section of an audio file).
+
+   (iii) Pessimistic dual-trap mode (PDTM), with both traps (75% duty
+cycle for the primary trap; 25% for the secondary trap) and minimum
+Article
+
+Particles started at rest and were constantly accelerated to reach the        and starts receiving negative forces (decelerating), becoming engaged
+maximum speed at the centre of the array. They were then constantly           in an oscillatory motion until it stabilizes (nearly) at the centre of the
+decelerated until brought back to rest at a position 10 cm away from          trap. Therefore, modulators with a low update rate can result in uneven
+the starting position (for example, see Supplementary Video 3).               accelerations of the particle or make it difficult for the particle to retain
+We used a static camera (CANON, EOS 750D) placed 12 cm in front of            its momentum (to accumulate speed) between updates.
+the MATD (see Extended Data Fig. 4a) and removed all light. We used a
+long-exposure shot to record our trials and used our RGB illumination            The particles manipulated by the MATD do not reach such a static
+system to illuminate (that is, colour-code) the evolution of the particle     equilibrium after each update. Instead, they need to remain at a distance
+along its path at steps of 1 ms (for example, see Extended Data Fig. 4b, c).  from the centre of the levitation trap (p) so as to receive the force and
+                                                                              hence be accelerated. This behaviour can be understood in terms of
+   When exploring the potential maximum linear speeds (vmax) we fol-          the derivative of the Gor'kov potential at the points around the trap.
+lowed a bisection method (initial boundaries v1 = 0, v2 = 16 m s-1). We       Extended Data Fig. 4d shows how such forces evolve for points around a
+performed 10 tests at each velocity, and considered a test to be suc-         trap, as analytically derived by considering our trap (twin trap), particle
+cessful (and tested the higher semi-interval) only if 9/10 repetitions        (radius, about 1 mm; density, about 19 kg m-3; speed of sound in EPS,
+were successful. We stopped after three consecutive failed tests, and         900 m s-1), setup (top and bottom arrays of 16 × 16 transducers, each
+we report only the highest successful speed observed. The same test           modelled using a piston model22) and assuming 346 m s-1 and 1.18 kg m-3
+procedure (bisection search; 9/10 success rate required; stopping crite-      as the speed and density of air, respectively.
+ria: three consecutive failures) was used in all subsequent experiments
+described in this section (that is, acceleration, radius of curvature, and       As shown in the top graph of Extended Data Fig. 4d, restorative forces
+corner speeds).                                                               along the horizontal axis peak at distances of nearly ±3.5 mm from
+                                                                              the centre of the trap, closely matching the distances at which our
+   Extended Data Fig. 5 summarizes the resulting vmax values obtained         particles were detected during our horizontal speed tests. A simi-
+for each condition (OSTM, PSTM and PDTM) for particles travel-                lar behaviour can be observed for the vertical tests. In these cases,
+ling along the horizontal (Extended Data Fig. 5a) and in the vertical         the peaks of the restorative forces along the vertical direction
+(Extended Data Fig. 5b, c) directions. In the top panels of Extended Data     (see Extended Data Fig. 4d, bottom) are at distances of ±1.5 mm, again
+Fig. 5a­c, the solid black lines represent the speed of the levitation trap,  matching our observed displacements.
+and the coloured lines show examples of actual particle velocities, as
+captured during the tests. As expected, the maximum displacement                 The fact that the trap and the particle do not always remain at those
+speeds are influenced by the mode of operation used. Whereas the              peak distances (that is, ±3.5 mm and ±1.5 mm) seems to indicate that
+decrease in maximum speed is small when audio is included (OSTM               even higher speeds should be achievable for both horizontal and
+versus PSTM), the effect is much larger when tactile effects are intro-       vertical displacements. This, however, would require a more com-
+duced because the acoustic power is split between two traps (that is,         plex control mechanism to determine the location of the levitation
+time multiplexing for the PDTM mode). Also, the linear speeds are much        trap, accurately predicting the location of the particle at each point
+higher along the vertical axis (particularly when going downwards,            in time (considering the acoustic force along with drag, gravity and
+owing to the effect of gravity) when compared to horizontal displace-         centrifugal forces) and positioning the trap accordingly (for example,
+ments. This is because our setup, with top and bottom arrays, and the         3.5 mm ahead of the particle for maximum horizontal acceleration).
+twin traps create trapping forces around the levitation trap that are         Other factors--such as temporal changes in the complex amplitude
+much stronger along the vertical direction (see Extended Data Fig. 4d),       (and hence force) related to the simultaneous creation of audible
+allowing higher accelerations.                                                sound, or the multiplexing and interference from the secondary
+                                                                              trap--should also be considered for such a model.
+   The paths observed in Extended Data Fig. 5 show the expected cor-
+relations between particle velocities (top), particle-to-trap distances       Acceleration, sharp corners and minimum radius of curvature. The
+(middle) and accelerations (bottom). Points of zero p (that is, no            content for the MATD was created through the definition of closed
+net force being applied to the particle) correspond to the maximum/           and smooth parametric curves illuminated with varying RGB colours
+minimum points in each velocity plot (that is, derivative equal to zero),     at different points of the path. For content to be visible by the naked
+and the sign of p is aligned with the monotonicity of velocity plots,         eye, such closed curves need to be traversed by the particle in less than
+increasing when p is negative and decreasing otherwise. Similar cor-          0.1 s (ref.23), which becomes a constraint influencing the particle ma-
+relations can be observed between the p (middle) and acceleration             nipulation required (that is, the speeds and accelerations that need
+plots (bottom). Accelerations remain positive when p is negative and          to be imparted at each point along the curve to reveal it within 0.1 s).
+vice versa (that is, the trap acts as a restorative force, following the
+distribution in Extended Data Fig. 4d), and the prominent features in            Although the maximum displacement speeds (vmax, as identified
+both plots match well (for example, the maximum, minimum and the              in Methods section `Linear speed tests') are a relevant constraint to
+intersection points of the plots with the horizontal axes).                   plan/design such paths, other parameters (that is, maximum particle
+                                                                              acceleration, feasible radius of curvature versus speed, and maximum
+   As shown in the middle panels of Extended Data Fig. 5a­c, it is worth      speed at corner features) are equally relevant and were explored. Again,
+noting that the particle almost always remained within a few millimetres      our characterization followed a conservative philosophy, identify-
+of the place where the actual levitation trap was placed (p), being           ing maximum/minimum values for horizontal displacements (that is,
+subjected to high acceleration rates. This observation is important to        with the weakest trapping forces). The final parameters obtained for
+understand the behaviour of the MATD in comparison to other levita-           our experimental conditions are summarized in Extended Data Fig. 6.
+tors.
+                                                                                 1) Maximum acceleration per condition. Some contents do not (or
+   A particle placed exactly at the centre of the levitation trap (p = 0)     cannot) make use of the maximum speeds, but they would benefit
+receives a zero net force contribution, making it stable at that position     from increased accelerations. The accelerations identified in Methods
+but also providing no acceleration. This is ideal for levitators designed     section `Linear speed tests' could be limited as a result of the high par-
+for precise (but slow) particle manipulation. Also, such levitators usu-      ticle speed vmax used. For instance, drag forces increase with speed and
+ally operate at much lower update rates (that is, hundreds of hertz), so      could limit the maximum feasible acceleration in those tests. Similarly,
+when the position of the trap is moved the particle has enough time           high-speed particle displacements involve more frequent and larger
+to transition to the new trap location. As the particle approaches the        changes to the phase of each transducer, making them operate at fre-
+centre of the trap, the acceleration received decreases. If the duration of   quencies different from 40 kHz and resulting in decreased performance
+each update is long enough, the particle goes past the centre of the trap     (that is, emitted pressure).
+We explored whether higher accelerations were feasible for lower target     audio in the second case (Extended Data Fig. 7b, right), discouraging
+linear speeds. The experimental procedure followed for this test was        the use of naive amplitude multiplexing (Extended Data Fig. 7b, centre).
+similar to that used in the previous speed test, but the maximum target
+speeds were limited to the 0.5vmax, 0.8vmax and vmax values identified for     The use of position multiplexing (that is, focusing the acoustic power
+each condition. Our tests (see Extended Data Fig. 6) revealed that the      at the location of the levitation trap for 75 s, and then refocusing it
+maximum acceleration achievable was not affected (that is, increased)       at the location of the tactile trap for 25 s) cannot be avoided if simul-
+by the target speed used (that is, the accelerations observed for the       taneous tactile and audio-visual content is to be delivered. Position
+OSTM, PSTM and PDTM modes matched those identified in Methods               multiplexing introduces frequency aliasing at the 10-kHz multiplexing
+section `Linear speed tests'), which seems to indicate that the observed    rate (as well as harmonic frequencies) as a result of acoustic pressure
+upper limit of the acceleration was not related to the particle speed       being focalized at different locations. Our tests show that our multi-
+used, but rather to the trapping force exerted by the MATD.                 plexing approach (using position multiplexing with a combined 40-kHz
+                                                                            signal; see Extended Data Fig. 7c, right) reduces audible artefacts when
+   2) Maximum speed at corner features. We tested the maximum speed         compared to the use of both amplitude and position multiplexing
+at which the particle could execute a complete change of direction          (Extended Data Fig. 7c, left), particularly for harmonics, and that our
+(vcorner), such as those required to render corners or sharp features       approach minimizes artefacts in the human primary auditory range
+(see Supplementary Video 3). The general experimental procedure             (that is, 2­5 kHz)24.
+was again similar to that described in Methods section `Linear speed
+tests'. The design of each trial, however, was modified to test whether        This study also illustrates the need for high update rates for an MATD
+the levitated particle could perform a complete change in direction for     modulator (that is, beyond enabling higher particle speeds, as shown in
+a given speed. For each speed tested, the particle started again 5 cm       Extended Data Fig. 3e). Our multiplexing schedule involves a multiplex-
+to the right of the centre of the array, accelerated linearly at 0.5amax    ing rate of 10 kHz, creating aliasing effects also at harmonic frequencies
+until the test speed was reached, and performed a complete 180°turn         (that is, 20 kHz). A modulator with a lower rate would create artefacts at
+when it arrived at 5 cm to the left of the array. The maximum speeds        many more frequencies, spread across the auditory range (for example,
+obtained for each condition were 0.75 m s-1 (OSTM), 0.5 m s-1 (PSTM)        a modulator operating at 10 kHz would require a multiplexing rate of
+and 0.375 m s-1 (PDTM), as reported in Table 1.                             2.5 kHz, introducing artefacts around 2.5 kHz, 5 kHz, 7.5 kHz, and so
+                                                                            on). It is also worth noting that the aliasing effects in our prototype
+   3) Radius of curvature versus speed. Extended Data Fig. 6d shows         (around 10 kHz) are related to the multiplexing schedule used (75%
+the maximum displacement speed that can be achieved for a particle          for levitation, 25% for tactile), which in turn is related to the power
+moving along a circular path of different radii (1 to 6 cm). The experi-    constraints of our prototype. Increased transducer power, allowing
+mental procedure again followed the method used for the other tests.        effective levitation at a 50% duty cycle (50% for levitation, 50% for tactile
+For each radius and speed tested, the particles started at rest and were    feedback), would avoid most of these artefacts by shifting them around
+accelerated at 0.5amax until the test speed was reached, moving along       a primary 20 kHz frequency. Extended Data Fig. 7d presents the results
+a horizontal circle of the desired radius (see Supplementary Video 3).      of a test performed using our method in such a configuration (50% duty
+As expected, our results show a decrease in the maximum linear              cycle), which showed reduced artefacts and even better quality than
+speed as the radius is reduced (that is, introducing higher centrip-        in the 75% configuration (Extended Data Fig. 7d, right).
+etal forces). A reduction is also observed for the highest radius tested
+(12 cm diameter) because such a circle spans across the limits of our       Audio modes supported. The MATD supports two different modes for
+operational volume, where it receives less acoustic radiation from the      creating audio: a scatter mode (Extended Data Fig. 8a), which provides
+transducers.                                                                non-directional sound but is compatible with simultaneous visual
+                                                                            and tactile content, and a directional mode (Extended Data Fig. 8b),
+Audio generation and quality. We explored the quality of the audio          which uses the secondary trap to steer the sound in the direction of
+generated by the MATD, as well as the artefacts introduced due to mul-      the user but does not allow simultaneous tactile points (that is, only
+tiplexing in the dual-trap mode. The audio signal used in all these tests   visual content and directional audio).
+was a chirp signal with frequency increasing quadratically from 100 Hz
+to 20 kHz (spectrogram shown in Extended Data Fig. 7a, left).                  We measured the audible sound generated by each of the two
+                                                                            approaches, using a 2-kHz audible signal as the audible output. Our
+   To characterize the performance of our single-trap mode, we trapped      measuring setup comprised a modified 3D printer (OpenBuilds Sphinx
+one particle and used our chirp audio signal to modulate the amplitude      55), in which the extruder had been removed and replaced by a cali-
+of our transducers (as shown in Methods section `Transducer operation       brated microphone (Norsic Environmental Analyser 121; shown in
+(phase and amplitude control)' and Extended Data Fig. 2). We recorded       Extended Data Fig. 8c). Our software controlled the position of the
+the sound generated with an Audio-Technica PRO35 microphone                 microphone with 0.1 mm accuracy by issuing G-code commands over a
+(the spectrogram of the recorded sound is shown in Extended Data            serial port connection. Displacements of the microphone were followed
+Fig. 7b, left), revealing accurate representation of the input signal with  by 1-s pauses (after the end of the motion) to avoid interference due to
+some degradation due to harmonics.                                          vibrations. We also configured the microphone to measure sound only
+                                                                            in the one-third octave band of 2 kHz around our intended audible signal
+   To explore the effects of amplitude and position multiplexing            (that is, unconstrained measurements would also capture harmonics,
+(see Methods, `Operational modes and multiplexing strategies for            resulting in higher but misleading sound pressure results).
+single and dual traps'), we repeated the experiment above for two
+simultaneous (time-multiplexed) traps and two input audio signals.             Each of these audio modes (scatter and directional) were tested
+We used the same chirp signal for a channel and a 250-Hz sinusoidal         for two cases: one measuring the audible response when only audio
+signal (spectrogram shown in Extended Data Fig. 7a, centre) to recreate     is delivered, and another one with both audio and tactile feedback
+the tactile texture. This represents the case in which a primary trap is    delivered. For the directional mode (which cannot support all three
+used to trap a particle (visual and auditive feedback) while the second     modalities simultaneously) the second case is representative of situa-
+trap is used to create tactile feedback on the user's skin.                 tions in which the primary trap is used for directional audio generation
+                                                                            and the secondary one to create tactile feedback.
+   Extended Data Fig. 7b shows the results of mixing both audio and
+tactile signals either by amplitude multiplexing (time-multiplexing the        Extended Data Fig. 8d, e shows the results of our tests for horizontal
+amplitude of each signal at 20 kHz) or by combining them into a single      and vertical scans around the MATD volume. The results show audi-
+40-kHz signal (signals added in the frequency domain, as in Extended        ble levels of sound at all points around the display (74 ± 12 dB for the
+Data Fig. 7a, right). Our tests show improvements in the reconstructed      non-directional scatter mode and 72 ± 13 dB for the directional mode).
+Article
+
+Points of higher intensity can be found around the MATD, which are             feedback is present) in all three cases and both in the presence and
+expected as a result of constructive interference. In the directional case,    absence of the hand. The vertical scans show a repeated pattern of
+high pressure levels of 103 dB can be observed around the intended             lobes, consistent with the interference of the acoustic radiation emit-
+target point, which then continue to propagate forwards along the              ted from the top and bottom arrays. Some differences can be found
+direction between each transducer array and the focusing point.                between the tactile-only condition (first column) and the other two
+In all cases, the inclusion of simultaneous tactile and audio infor-           cases, as a result of the effects of the primary trap (visual content).
+mation results in only a small reduction of the intensity of audible           However, the effects around the tactile point are small, the sharpness
+sound (66 ± 11 dB and 63 ± 12 dB for the non-directional and directional       of the tactile point is maintained, and there is very little variation across
+methods, respectively).                                                        all three cases. The maximum pressure levels are found at the centre
+                                                                               of the tactile points (157.0 dB, 158.6 dB and 158.5 dB in Extended Data
+Tactile generation and quality. We reused the measuring setup de-              Fig. 9d; 154.7 dB, 155.0 dB and 154.6 dB in Extended Data Fig. 9e) and
+scribed in Methods section `Audio modes supported' to scan the sound           are always well above the threshold of 78 dB required for perceivable
+pressure level (SPL, in decibels) generated by our MATD when deliver-          tactile feedback27. It must be noted that the presence of a second high-
+ing tactile sensations (see Extended Data Fig. 9a), by replacing the           pressure area to the bottom left of the images in the second and third
+microphone with a calibrated Brüel & Kjær 4138-A-015 microphone                conditions is the result of the primary trap used to deliver the visual
+connected to a PicoScope 4262 oscilloscope and using the PicoScope             content.
+SDK to retrieve the measurements. We measured the SPL generated
+by our system for a single tactile point at the centre of the array under      Data availability
+three conditions, always using the multiplexing schedule described
+for the dual-trap mode.                                                        The data that support the plots within this paper and other findings of
+                                                                               this study are available in the main text and the Extended Data Figures.
+   In the first condition, only the tactile content was delivered (that is,    Additional information is available from the corresponding author
+the array created a tactile point during the 25% duty cycle allocated to       upon reasonable request.
+the secondary trap, and no output was produced by the array during
+the remaining 75% of the time). For the second and third conditions,           Code availability
+we reused the content displayed in the second part of Supplementary
+Video 2 and Extended Data Fig. 9b, with the scanning particle (primary         Custom C++ code used for controlling our MATD during our tests is
+trap delivering visual content) placed 5 cm to the front and left of the       available on GitHub for anyone under a Creative Commons Attribution-
+tactile point. The second condition used a 250-Hz signal for side-band         Noncommercial-ShareAlike license at https://github.com/RyujiHiray-
+modulation, representing the case in which only visual and tactile content     ama/MATD.
+are present. The third condition, however, included the combined signal
+(that is, audio with a 2-kHz signal combined with a 250-Hz signal) to rep-     Acknowledgements We thank R. Morales Gonzalez and B. Danesh-Kazemi from the University
+resent the case in which all visual, tactile and auditive content is present.  of Sussex, who helped with building the FPGA array, and L. F. Veloso from the University
+                                                                               of Sussex, who helped with the supplementary videos. We acknowledge funding from the
+   To assess the effects that a user's hand could have (that is, by occlud-    EPSRC project EP/N014197/1 `User interaction with self-supporting free-form physical objects',
+ing part of the transducers or via scattering), we measured the field both     the EU FET-Open project Levitate (grant agreement number 737087), the Royal Academy of
+in the presence and absence of a silicone hand (Extended Data Fig. 9c).        Engineering Chairs in Emerging Technology Scheme (CiET1718/14), the Rutherford fellowship
+When the silicone hand was present, the tactile point was created on the       scheme, the Japan Society for the Promotion of Science through Grant-in-Aid number
+surface of the bottom part of the index finger's tip. In all three condi-      18J01002 and the Kenjiro Takayanagi Foundation.
+tions (visual only, visual and tactile, and multimodal), a horizontal and
+a vertical plane of 10 × 10 cm2 were scanned, measuring SPL levels at a        Author contributions D.M.P. and S.S. conceived the idea. R.H. and D.M.P. implemented the
+resolution of 1 mm. Our results are presented in Extended Data Fig. 9d,        system and gathered experimental data demonstrating the idea. Data analysis was led by R.H.,
+e. It must be noted that the presence of the hand prevented measuring          with contributions from all authors. D.M.P. led the optimization design with contributions from
+across the entirety of the plane (see white regions in Extended Data           R.H. and S.S. R.H. optimized the firmware code with contributions from N.M. R.H. wrote the
+Fig. 9e), but the areas within ±3 cm around the fingertip could still be       paper, with contributions from all authors.
+reached, covering an area eight times larger than the width of the focus-
+ing point (about 7 mm diameter). Also, given the thickness of our scan-        Competing interests The authors declare no competing interests.
+ning microphone (3.5 mm) and irregularities on the surface of the hand,
+we could not measure exactly the surface of the hand, and the scans            Additional information
+presented in Extended Data Fig. 9e are taken on the plane Y = -4 mm.           Supplementary information is available for this paper at https://doi.org/10.1038/s41586-019-
+                                                                               1739-5.
+   The results show that the device provided accurate positioning and          Correspondence and requests for materials should be addressed to R.H.
+focusing of the acoustic pressure around the central point (where tactile      Peer review information Nature thanks Daniel Smalley and the other, anonymous reviewer(s),
+                                                                               for their contribution to the peer review of this work.
+                                                                               Reprints and permissions information is available at http://www.nature.com/reprints.
+Extended Data Fig. 1 | Overview of the MATD prototype. Experiments were
+performed using two opposed arrays of 16 × 16 transducers,aligned on top of
+each other and with a separation of 23.4 cm.
+Article
+
+Extended Data Fig. 2 | Phase and amplitude control of the transducers used.  correlation between transducer pressure and duty cycle; measurements (dots)
+a, Square-wave input from the FPGA, used to drive the transducer phase and   and analytical approximation (line). c, Measured sinusoidal responses of
+amplitude by controlling their phase delays and duty cycles. b, Nonlinear    transducers driven by the square waves shown in a.
+Extended Data Fig. 3 | Preliminary characterization of particle sizes and     spline curves fitted to the data. c, POV representation using different particle
+update rates. a, Camera setup used to measure the sphericity and diameter of  diameters. d, Particle size distribution and sphericity of the 2-mm-diameter
+the particles. b, Maximum linear speeds for different particle sizes. In all  particles used. e, Maximum linear speeds along the vertical (downward) path
+graphs the markers correspond to experimental values and the lines represent  for different update rates and for each mode (OSTM, PSTM and PDTM).
+Article
+
+Extended Data Fig. 4 | Speed measurement setup. a, A camera takes a long-       d, Approximation of horizontal and vertical radiation forces exerted on a
+exposure photograph of the moving particle, which is illuminated by the LED at  particle located around a levitation trap, as analytically approximated using
+steps of 1 ms. b, c, Images captured during the horizontal and vertical linear  the Gor'kov potential.
+speed tests at three different conditions (OSTM, PSTM and PDTM).
+Extended Data Fig. 5 | Speed, distance between the acoustic trap and the levitated particle (p) and acceleration. a­c, Data measured during our speed tests
+along the horizontal (a), upward (b) and downward (c) directions.
+Article
+
+Extended Data Fig. 6 | Summary of the particle-control performance tests of  paths denote the speed of the levitation trap, not observed particle
+the MATD for each of the experimental conditions tested. a­c, Maximum        trajectories. d, Maximum linear speeds achieved by particles following circular
+linear speeds and accelerations for each mode (OSTM, PSTM and PDTM). The     paths of increasing radii for each mode.
+Extended Data Fig. 7 | Spectral analysis of the audio response of the MATD. a,  amplitude multiplexing (centre) and combined signals (right). c, Effects of
+Signals used for input: chirp (left), 250 Hz (tactile, centre) and signals      position multiplexing on an amplitude-multiplexed signal (left) and our
+combined in the frequency domain (right). b, Output of the system when only     combined signal (right) for a 75%­25% duty cycle. d, Effects of position
+sound is created (left) and when multiplexed with tactile content using         multiplexing when applied to 50%­50% duty cycle signals.
+Article
+
+Extended Data Fig. 8 | Audio modes supported by the MATD. a, b, Illustration  The SPL distributions were measured under two conditions--sound only and
+of the two different modes (scatter and directional) and the sound tests.     sound plus tactile feedback--across the horizontal and vertical planes.
+c, Audio measurement setup. d, e, Measured SPL distribution of the modes.
+Extended Data Fig. 9 | Characterization of tactile feedback. a, Measurement        delivering only tactile feedback, tactile and visual content, and all three
+setup. b, Visual content used, together with the tactile point. c, Measurement     modalities (tactile, visual and audio). e, Results of vertical and horizontal scans
+setup with a silicone hand (KI-RHAND, from Killer Inc. Tattoo). d, Results of the  in the presence of a hand for all three conditions.
+horizontal and vertical scans of the SPL for each of our conditions while
+Article
+
+Extended Data Fig. 10 | Other applications of the MATD. a, Simultaneous          modulation at 148 Hz to produce resonant oscillations (n = 2) for a 2-mm-
+levitation of six EPS particles in a diamond pattern (16.7% duty cycle for each  diameter water droplet, captured from the side.
+particle; maximum number of particles levitated so far). b, c, Frequency
+

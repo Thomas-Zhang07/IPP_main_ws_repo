@@ -1,0 +1,2 @@
+Configuration device: EPCS16
+Add device-Cyclone IV E - EP4CE6

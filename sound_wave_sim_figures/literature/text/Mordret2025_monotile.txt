@@ -1,0 +1,1406 @@
+arXiv:2408.16476v2 [physics.geo-ph] 27 Dec 2025          Beating the aliasing limit with aperiodic monotile arrays
+
+                                                                              Aurelien Mordret1, 2 and Adolfo G. Grushin3
+
+                                                                               1Department of Geophysics and Sedimentary Basins,
+                                                                             Geological Survey of Denmark and Greenland (GEUS),
+
+                                                                               Øster Voldgade 10, 1350 Copenhagen K, Denmark
+                                                                          2Univ. Grenoble Alpes, Univ. Savoie Mont Blanc, CNRS,
+                                                                         IRD, Univ. Gustave Eiffel, ISTerre, 38000 Grenoble, France
+                                                        3Univ. Grenoble Alpes, CNRS, Grenoble INP, Institut N´eel, 38000 Grenoble, France
+
+                                                                                                (Dated: December 30, 2025)
+
+                                                    Finding optimal wave sampling methods has far-reaching implications in wave physics, such
+                                                 as seismology, acoustics, and telecommunications. A key challenge is surpassing the Whittaker-
+                                                 Nyquist­Shannon (WNS) aliasing limit, establishing a frequency below which the signal cannot be
+                                                 faithfully reconstructed. However, the WNS limit applies only to periodic sampling, opening the
+                                                 door to bypass aliasing by aperiodic sampling. In this work, we investigate the efficiency of a re-
+                                                 cently discovered family of aperiodic monotile tilings, the Hat family, in overcoming the aliasing limit
+                                                 when spatially sampling a wavefield. By analyzing their spectral properties, we show that monotile
+                                                 aperiodic seismic (MAS) arrays, based on a subset of the Hat tiling family, efficiently surpass the
+                                                 WNS sampling limit. Our investigation leads us to propose MAS arrays as a novel design principle
+                                                 for seismic arrays. We show that MAS arrays can outperform regular and other aperiodic arrays in
+                                                 realistic beamforming scenarios using single and distributed sources, including station-position noise
+                                                 and station failures. While current seismic arrays optimize beamforming or imaging applications
+                                                 using spiral or regular arrays, MAS arrays can accommodate both, as they share properties with
+                                                 both periodic and aperiodic arrays. More generally, our work suggests that aperiodic monotiles can
+                                                 be an efficient design principle in various fields requiring wave sampling.
+
+                                                                        I. INTRODUCTION                        For example, electronic wave functions scattering from
+                                                                                                               quasicrystalline lattices behave differently from typical
+                                                    Sampling ­ the operation of measuring a continuous         metals or insulators, resulting in an unusual electrical-
+                                                 analog signal at discrete intervals in time, space, or both   conductance scaling with the system size [8, 10].
+                                                 ­ is ubiquitously used in daily life. We find examples
+                                                 in digital audio and video recording and transmission,           Numerous quasicrystals have been either grown or
+                                                 the Global Positioning System, and health monitoring          found in nature [11, 12], and quasicrystalline metama-
+                                                 devices, among many others. It is also an essential           terials that scatter other types of waves, such as light or
+                                                 component of scientific research, from mathematics and        sound, also show peculiar wave propagation. For exam-
+                                                 physics to biology, medicine, and Earth science [e.g., 1­     ple, photonic crystals show a fractal hierarchy of band
+                                                 3]. Sampling relies on a similar mathematical descrip-        gaps [13] among other phenomena [14­17], and acous-
+                                                 tion across different fields. For example, the problem of     tic metamaterials can reach isotropic effective speeds of
+                                                 sampling seismic waves using a seismic array ­ compact        sound and isotropic acoustical activity [18]. Character-
+                                                 arrangements of seismometers that sample the wavefield        istic quasicrystalline phenomena and structures can be
+                                                 at discrete detector sites [4, 5], mathematically resembles   seen in numerous other platforms, including ultra-cold
+                                                 that of electronic waves scattering by crystalline atomic     atomic lattices [19], decorated metallic surfaces [9], po-
+                                                 sites [6].                                                    laritonic systems [20] microwave networks [21], acous-
+                                                                                                               tic [18] and mechanical [22] metamaterials, botanic [23]
+                                                    The similarities between different fields offer a unified  and even architecture [24].
+                                                 mathematical description, but their differences can be
+                                                 leveraged to improve sampling strategies. Our work is            In exploration geophysics, randomized or aperiodic ac-
+                                                 motivated by one such difference: in seismology, seis-        quisition parameters (source and receiver positions and
+                                                 mometers may or may not be arranged periodically, de-         source timing) are used to optimize seismic surveys to re-
+                                                 pending on the desired application, while in solid-state      duce the amount of data while recovering dense datasets
+                                                 crystals, atoms are arranged periodically. However, the       [25, 26]. Aperiodicity is starting to be considered in seis-
+                                                 discovery of aperiodic but long-range ordered atomic ar-      mic cloaking applications [27]. However, the academic
+                                                 rangement in solids, known as quasicrystals [7, 8] por-       seismology community has yet to embrace quasicrystals
+                                                 trayed that wave propagation in aperiodic media can           as a design principle.
+                                                 differ significantly from their periodic counterparts [9].
+                                                                                                                  The benefit of embracing aperiodicity in seismology lies
+                                                  aurmo@geus.dk, corresponding author                          in that aperiodic sampling patterns can be advantageous
+                                                  adolfo.grushin@neel.cnrs.fr                                  in signal processing through signal reconstruction, one of
+                                                                                                               the basis of compressive sensing [28­31]. The Whittaker-
+                                                                                                               Nyquist­Shannon (WNS) sampling theorem [32­34] re-
+                                                                                                               stricts the faithful reconstruction of a signal from a fi-
+                                                               2
+
+nite periodic sampling set. This theorem establishes a         lies in its ability to employ data processing techniques,
+bound for the sampling frequency, which must be twice          notably beamforming, to extract and enhance seismic sig-
+the signal's maximum frequency to reconstruct it faith-        nals of interest from the background noise. Beamforming
+fully. The signal reconstruction suffers from aliasing if      methods, in general, rely on a delay-and-sum approach.
+the sampling happens at a lower frequency than the WNS         A signal recorded by the elements of an array will stack
+limit. The WNS sampling theorem applies to periodic            coherently when the delays due to the array geometry
+sampling, and it was recognized that non-periodic ar-          are adequately taken into account, while the incoherent
+rays can circumvent its bounds [35] In particular, qua-        noise will stack destructively, improving the signal-to-
+sicrystals provide a stable sampling set [36], defined as      noise ratio (SNR) of the signal of interest [see Methods
+one which can reconstruct sparse signals accurately from       section, Fig. 8, 4, 5]. This technique is instrumental
+a set of measurements that are fewer in number than            in understanding the characteristics of the seismic wave-
+the WNS criterion, even in the presence of perturbative        field, facilitating the identification of seismic events, and
+noise. Hence, finding optimal quasicrystals for wave-          investigating subsurface structures.
+sampling purposes remains an essential challenge with
+far-reaching implications in wave physics such as seis-           The recent development of inexpensive autonomous
+mology, acoustics, or telecommunication.                       and wireless seismic sensors, called nodes, has boosted
+                                                               the deployment of numerous and relatively dense seismic
+   Here, we explore a recently discovered family of ape-       arrays made of hundreds or thousands of instruments
+riodic tilings, the Hat family [Fig. 1, 37, 38], to as-        [e.g., 48, 49]. These so-called large-N arrays, inherited
+sess its efficiency at beating the WNS sampling limit          from industrial hydrocarbon exploration, were initially
+when sampling spatial seismic wavefields. We show that,        deployed for seismic imaging studies, analyzing seismic
+among the whole Hat family of tilings, a parameter region      waves traveling in the subsurface between sources and
+around a member of the family, known as the Specter            receivers to generate numerical images of the structures
+tiling (see Fig. 1), provides ideal properties for unaliased   inside the Earth. Later, they were repurposed as de-
+array analysis. For similar inter-station distance, the        tectors of seismic events, using various beamforming or
+Specter outperforms all other members of the Hat tiling,       matched-field processing approaches [e.g., 50, 51]. Often,
+as well as other aperiodic tilings such as the famous Pen-     these arrays are laid out on a regular grid, not optimized
+rose tiling [Fig. 1c, 39, 40] or the Square-Triangle tiling    for array analysis, and suffer from aliasing problems [50].
+[Fig. 1d, 41]. In contrast, other members of the Hat fam-      On the other hand, arrays designed explicitly for beam-
+ily whose vertices fall closer to periodic tilings, like the   forming measurements, such as spiral arrays [52], are not
+Hat tile, perform worse than those with more irregular         ideal for imaging applications as they produce uneven
+vertices coordinates. Our results suggest that aperiodic       seismic ray (paths joining sources and receivers) densi-
+monotiles can have significant applications in array seis-     ties beneath the array. Therefore, finding an optimal ar-
+mology specifically and in the rich variety of fields relying  ray geometry that could accommodate beamforming and
+on wavefield sampling beyond.                                  imaging studies is of great interest to the seismological
+                                                               community.
+
+                       A. Array Seismology                                          B. Aperiodic Monotiles
+
+   Historically, array seismology was developed following         The field of aperiodic tilings, which describes
+the United Nations "Conference of Experts to study the         quasiperiodic arrays of vertices of tiles, was recently
+methods of detecting violations of a possible agreement        shaken by the discovery of a new family of tilings: the
+on the suspension of nuclear tests" held in 1958 in Geneva     Hat family [37, 38]. A tiling is a set of tiles that can tesse-
+[42]. This event sparked numerous efforts to enhance           late the Euclidean plane without gaps or overlaps. A set
+seismic station capabilities globally. Among these initia-     of tiles may tile the plane periodically, aperiodically, or
+tives was the introduction of sensor arrays to improve the     both. Strong aperiodicity requires that a set of tiles can
+signal-to-noise ratio of seismic events, an approach bor-      only tile the plane aperiodically. The problem of finding
+rowed from radio astronomy, radar, acoustics, and sonar.       an aperiodic monotile, i.e., a unique shape that can tile
+By the 1960s, it had been proven that seismic arrays out-      the plane only aperiodically, concluded in March 2023,
+performed traditional single three-component stations in       after more than half a century of search, when [53, 54]
+discriminating seismic signals from both earthquakes and       proposed the Hat family of tilings (Fig. 1). Unlike other
+explosions [e.g., 43­47].                                      aperiodic tilings, the Hat family of tiles are examples
+                                                               of monotiles that can tile the plane only aperiodically.
+   The deployment of seismic arrays enables the precise        They improve on the previous record holder, the Penrose
+detection and analysis of seismic waveforms emanating          tilings [Fig. 1c; 39, 40], that required a minimum of two
+from various sources, such as tectonic events, volcanic ac-    tiles to tile the plane aperiodically.
+tivity, or anthropogenic signals. These arrays, composed
+of seismometers spatially distributed over a region, allow        The aperiodic tiling family can be constructed from a
+us to sample the seismic wavefield with a high degree of       base, 14-sided polygon whose parallel sides have one of
+spatial resolution. The cornerstone of array seismology
+                                                                                                                                                    3
+
+a)
+
+                                               Specter
+
+                              a bb
+
+                               a     a
+
+                        b     b Hat     a
+
+                           a  ab b b b                  Turtle
+                                                                Comet
+                           Chevron
+
+b)                                         c)           d)
+
+    Mystic
+
+Figure 1. The Tile(p) family of tilings and other quasicrystals a) We highlight five examples of Tile(p) tilings, from left
+                                                        
+to right: p = 0, 1 , 1/2, 3 , 1. These particular tilings are formed by tiles whose names are written on the corresponding
+            1+ 3  1+ 3
+
+tiles. Next to each tile, we show a small portion of the tiling where the mirrored tile needed to generate the tiling is outlined in
+
+a darker color. The fourteen vertices of each tile are highlighted by black dots for the Hat and the Specter, and the two length
+
+scales, a = p and b = 1 - p, are shown around the Hat tile. In the central semicircular diagram, the green shaded area highlights
+
+the range of p for which seismic arrays bypass aliasing. b) The Specter tile can also tile the plane aperiodically without using
+
+the reflected tile. Instead, it requires the Mystic composite tile, composed of two Specter tiles highlighted with darker colors.
+
+c) An example of a Penrose tiling using thick and thin rhombi. d) An example of the aperiodic Square-Triangle tiling.
+                                                                                                                                                                  4
+
+two lengths, a or b, (see Fig. 1a) The sides can be param-                                           II. BEAMFORMING PROPERTIES OF SINGLE
+                                                                                                                              TILE(p) ARRAYS
+eterized by a single parameter p  [0, 1] with a = p and
+
+b = 1 - p. The Hat tile amounts to choosing p = 1 ,
+
+                                                                                               1+ 3
+
+while     the  Specter    is  the  more    symmetric    choice       p  =     1                         We start by describing the properties of seismic arrays
+                                                                              2                      made of seismic stations placed at the vertices of a single
+givingan equilateral tile. The Turtle tile is found for                                              Tile(p), leaving the discussion of seismic arrays based on
+p = 3 . The parameter p interpolates continuously be-                                                using multiple tiles to Section III.
+
+        1+ 3                                                                                            We will first analyze the beamforming performances
+                                                                                                     of such arrays by computing their corresponding array
+tween the Chevron (p = 0) and the Comet (p = 1). These                                               response function (ARF). The ARF, also known as the
+                                                                                                     structure factor of the lattice, is defined as
+are the two limiting cases that, together with the Specter,
+
+can also tile the plane periodically [Fig. 1(a)]. Hereafter,
+
+we will refer to the Hat family of tiles as Tile(p), refer-
+
+ring to each tile by its p value. We will use the vertices
+
+of single tiles (14 stations) as the basis of single-Tile(p)                                                                                           2
+
+MAS arrays. We will refer to the possible tilings by mul-                                                                          1       N
+                                                                                                                   ARF (k) = N 2
+tiple tiles in the family as Tile(p) tilings, specified by the                                                                                  ejxi·k ,          (1)
+
+p value. We will use the vertices of such extended tilings                                                                                 i=1
+
+(several hundreds of stations) to define large-N arrays.                                             where N is the number of stations in the array, xi their
+                                                                                                     positions, k is the wavenumber vector and j2 = -1 (see
+Within         the  Hat    family,  the    Specter      tile,  or  Tile    1  ,                      Methods Section for a detailed definition). In crystal-
+                                                                           2                         lography, the ARF of a solid determines its diffraction
+                                               1                                                     pattern [6, 8]. Then, we perform synthetic beamforming
+is special[55].      While    Tile  p  =   0,  2  ,  1  require both the                             for different scenarios corresponding to the illumination
+                                                                                                     of the arrays by a single plane wave coming from a single
+tile and its mirrored image [Fig. 1a] to tile the plane                                              azimuth with a constant velocity or by multiple plane
+                                                                                                     waves covering all azimuths to mimic a homogeneous
+aperiodically,      Tile   1  can be made to require only the                                        distribution of seismic noise sources [e.g., 60, 61]. We
+                           2                                                                         will compare the robustness against aliasing displayed by
+Specter [38] and not its mirrored image. To achieve this,                                            Tile(p) arrays to those of other aperiodic and periodic ar-
+                                                                                                     rays (see Methods Section and Fig. 9 for a self-contained
+one forces the use of the Mystic tile (Fig. 1b), which                                               description of aliasing effects).
+
+combines two Specters. This means that the tiling with
+
+Tile   1  has two versions, one without and one with its
+       2
+                                                                     1
+mirror    tile;  we  call  these   chiral  and       achiral   Tile  2  ,  re-
+
+spectively. Both can tile the plane aperiodically and pro-
+
+vide equally good performances at beating aliasing. For
+
+completeness, we note that Tile            1      can also tile the plane
+                                           2
+periodically, and therefore it is said to be weakly aperi-
+
+odic [37], unlike other members of the Hat family. This
+
+latter property does not affect any of our results.
+
+   Since its discovery, the novel mathematical properties                                            A. Array Response Functions of single Tile(p)
+of the Hat tiling (p = 1/(1 + 3)) have motivated a few                                                                               arrays
+novel physical results. When considered as a hypothet-
+ical two-dimensional material, the Hat tiling's physical                                             We begin our investigation by analyzing arrays made
+properties lie between those of Graphene and those of
+aperiodic quasicrystals [17]. The particular connectiv-                                              of a single Tile(p), i.e., 14 stations (Fig. 1). To com-
+ity of the Specter tiling allowed the authors of Ref. [56]
+to find exact solutions for dimer models on this tiling.                                             pare all arrays on a common scale, we normalize their
+Other authors have considered the Ising model [57] or the
+macroscopic elastic behavior of the Hat tiling [58]. How-                                            ARF by the minimum interstation distance rmin so that
+ever, previous physically motivated research on monotile                                             the wavenumber is expressed in terms of multiples of the
+tilings focused on either the Hat or the Specter tiles. How
+physical properties change with p remains unexplored.                                                minimum spatial frequency unit in the array. Effectively,
+
+                                                                                                     we represent Eq. (1) as a function of a normalized wave-
+
+                                                                                                     vector  k  =  rmin  ·k    Figs.  2a,  b,  and  c  show  the  normal-
+                                                                                                                            .
+                                                                                                                   2
+                                                                                                     ized ARFs for the Hat, Specter, and Turtle tiles, respec-
+
+                                                                                                     tively. The Hat ARF can be directly compared with the
+
+   Each tiling, for any p, can be grown from a single tile by                                        diffraction patterns obtained by [62], who used a much
+following substitution rules [53, 54]. These rules gather
+a collection of tiles into metatiles, which are then as-                                             larger set of tiles.
+sembled through matching rules. The procedure can be
+iterated to create different generations of tilings. The                                             By construction, the vertices of the Hat monotile are
+web-app put forward by the discoverers of the Hat family,
+can be used to visualize this procedure [59]. We append                                              a subset of vertices and center points of a hexagonal
+with this work the Python codes that reproduce these
+tilings, created by adapting the JavaScript code of the                                              or equilateral triangular lattice [53], as exemplified by
+cited website into Jupyter Notebooks. See the Data and
+Code availability section for details on accessing these                                             Fig. 2g. Half of the vertices of the Hat share vertices with
+scripts.
+                                                                                                     the triangular lattice (open colored circles in Fig. 2g).
+
+                                                                                                     Therefore, it is not surprising that the Hat ARF (Fig. 2)
+
+                                                                                                     bears a strong resemblance with the ARF of a triangu-
+
+                                                                                                     lar lattice and its sixfold rotational symmetry [63], with
+
+                                                                                                     the brightest spots of the Hat ARF being at the same
+
+                                                                                                     positions as the ARF of the triangular tiling. The same
+                                                                                                     5
+
+a)                                             b)                                       c)
+
+d)                                e) 5                                                      f)
+
+                                          4.5
+
+                                          4
+
+                                          3.5
+
+                                          3
+
+                                  |k|     2.5
+
+                                          2
+
+                                          1.5
+
+                                          1
+
+                                          0.5
+
+                                                   0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9
+
+                                                                       p
+
+                                                     0.2             0.4  0.6     0.8           i)
+
+g)                                                               ARFmax, p (|k|)
+
+                                                          h)
+
+Figure 2. Single Tile(p) ARF analysis. a) ARF of the Hat, b) the Specter, and c) the Turtle as a function of the normalized
+
+wavenumber |k|. d) and f) show the ARF of a Triangular lattice (hexagonal lattice plus its centers) array and the Square-
+
+Triangle metatile, respectively. For each p, e) shows the peak sidelobe level as a colormap, calculated using Eq. (2) for each |k|.
+
+The white horizontal dashed lines, indicated by red arrows show the positions of the maxima of the Triangular array ARF (d):
+
+2n , 2n  , n  N, and their combinations.  The white horizontal dotted lines show the maxima of the Square-Triangle metatile
+   3
+
+ARF (f), indicated by the purple arrows. The black dotted horizontal lines show the positions of the two main sidelobes in
+
+common between the Specter and the Square-Triangle ARFs. g) Illustration of the shared vertices between a Triangular lattice
+
+and some Tile(p) vertices. The open-colored circles show the shared vertices. The solid circles show the Tile(p) vertices falling
+
+outside of the Triangular lattice. h) Re-arrangement of the tiles of the Square-Triangle metatile (g) to form a pseudo-Specter.
+
+i) Correspondence between a Square-Triangle aperiodic tiling and the Specter (delineated in black).
+
+observation can be made for the Turtle, albeit with a                     fold rotational symmetry.
+30 rotation of the ARF pattern (Fig. 2c).
+                                                                             Recalling the mathematical similarity between seis-
+In  contrast,  the  ARF  of  the  Specter      tile  (Tile(   1  ),       mic array placements and atomic positions in solids, the
+                                                              2           Specter's ARF resembles structure factors of aperiodic
+Fig. 2b) exhibits less regularity at small normalized                     Square-Triangle tillings [41], which also exhibit a twelve-
+                                                                          fold symmetry (see Fig. 2g). These Square-Triangle till-
+wavenumbers, with no apparent six-fold rotational sym-                    ings can be related to several kinds of quasicrystals re-
+                                                                          alized by twisting graphene atomic monolayers [64, 65],
+metry and lower amplitude peaks. Despite the angles be-                   or macroscopic spheres arrangements [66]. The similar
+
+tween consecutive vertices being the same for all Tile(p),
+
+they can produce very different ARFs. The Specter's
+
+ARF is the only one to exhibit an approximate twelve-
+                                                              6
+
+symmetry between the Specter's ARF and the Square-            the array. An unaliased beamforming result would show
+Triangle tilling's structure factor suggests that the latter  a single high and azimuthally constant intensity ring. 2)
+lattice can closely approximate the Specter tile. Similar     a single source coming from -45N. An unaliased beam-
+to the Hat and other Tile(p) sharing a large number of its    forming result would show a single intensity peak. In
+vertices with a triangular lattice, the Specter shares ap-    both cases, we use plane waves with a wavelength equal
+proximately half of its vertices with the Square-Triangle     to twice the smallest inter-station distance in the array
+lattice (Fig. 2i). Another way to illustrate this similarity  (normalized at 1 km) and a slowness of 0.5 s/km, a typ-
+is by approximating the Specter tile (Fig. 2h) with a re-     ical surface wave velocity at 1 Hz. This configuration of
+arrangement of the square and triangle metatile shown         minimum inter-station distance and wavelength is at the
+in (Fig. 2i). The fact that the Specter does not align        aliasing limit for a regular square-lattice array, according
+perfectly with this set of tiles explains the fading of some  to the WNS theorem [32­34].
+of the peaks in the ARF compared to the ARF of the
+Square-Triangle array.                                           Figure 3 shows the results of this synthetic beamform-
+                                                              ing for five arrays: a triangular-lattice array (Fig. 3a), the
+   We now wish to assess the performance of Tile(p)-          Hat (Fig. 3b), the Specter (Fig. 3c), the Turtle (Fig. 3d),
+based arrays regarding aliasing for all p values. Aliasing    and the Square-Triangle metatile (Fig. 3e). For each ar-
+is mainly controlled by the position of the most promi-       ray, the second row shows the single source beamforming
+nent amplitude peaks in the ARF, and thus, we need to         results while the third row shows the distributed sources
+locate them in the [kx, ky]-space. To do so, we compute       beamforming results. In agreement with the ARF analy-
+the peak sidelobe level ARFmax,p(|k|) [67] as the max-        sis, it appears that the Hat and the Turtle arrays (Fig. 3b
+imum value of each ARFp along circles of constant |k|         and d) behave similarly to the triangular array (Fig. 3a)
+values. Mathematically, this operation can be expressed       and are strongly aliased. In the single source case, Hat
+as                                                            and Turtle arrays exhibit multiple high-intensity peaks
+                                                              having the same amplitude as the main peak (highlighted
+  ARFmax,p(|k|) = max ARFp(|k| cos , |k| sin ), (2)           by the black circle in Fig. 3).
+
+                                     [0,2]                       In the distributed sources scenario, we also observe a
+                                                              repetition of the main intensity ring (the "signal" ring,
+where |k| = kx2 + ky2. Fig. 2e shows ARFmax,p(|k|)            delimited by the black dashed circles in the third row
+for p  [0, 1] and |k|  5. We notice several interesting       of Fig. 3) across the beamforming diagram. These side-
+features. First, higher-intensity background horizontal       rings are tangent to the signal ring. For regular-lattice
+bands can be seen across almost all p. They match the         arrays, the side rings overlap with each other and with
+positions of the peaks expected for the triangular lat-       the signal ring (Fig. 3a), and the maxima of the beam-
+tice, indicated by horizontal dashed lines. Second, this      forming are not located at the correct slowness values.
+pattern interferes with an M-shape pattern centered at        In a blind beamforming experiment with unknown plane-
+p = 0.5. For p = 0.5, the maxima as a function of |k|         wave source parameters, extracting meaningful informa-
+fall on some of the Square-Triangle metatile peaks (black     tion using the Hat, the Turtle, or the triangular arrays
+horizontal dotted lines in Fig. 2e). These maxima seem        would be challenging because there is no way to identify
+unaffected by the triangular lattice background horizon-      the main peak (or ring) from its side peaks (or rings) and
+tal band modulations.                                         correctly identify the incoming wave's slowness.
+
+   Moreover, Tile(p  [0.45, 0.55]) does not have any             Notably, the Specter array (Fig. 3c) outperforms the
+prominent peaks for |k|  2, which suggest an enhanced         other geometries. In the distributed sources configu-
+beamforming performance with respect to aliasing com-         ration, the Specter array, and to a lesser extent, the
+pared to regular arrays. This can be confirmed by not-        Square-Triangle array, presents a well-defined signal ring
+ing that the first aliasing peaks of the triangular and       with minimal side-lobes intensity up to 1.33 s/km. The
+square lattice fall at |k| = 2  1.155 and |k| = 1, re-        Specter array shows a homogeneous low-intensity level
+                                                              between 0.5 and 1.33 s/km for the distributed sources,
+                                                       3      while the Square-Triangle array shows a more pro-
+                                                              nounced variability. In the single source configuration,
+spectively. Hence, a monotile aperiodic seismic (MAS)         the Specter array provides a clear maximum at the ex-
+array with station positions at the vertices of a single      pected slowness position of the incoming wave. The side
+Tile(p  [0.45, 0.55]) should outperform regular arrays        lobes are far from the main peak compared to the Hat,
+for beamforming analysis with respect to aliasing.            Turtle, and triangular arrays and have smaller ampli-
+                                                              tudes. The Square-Triangle array has a similar beam-
+   B. Beamforming performances of single Tile(p)              forming result, albeit with more numerous and more
+                                    arrays                    prominent amplitude side lobes.
+
+   We now describe synthetic beamforming tests to il-            To quantify the performances of the Tile(p)­based ar-
+lustrate the performances of Tile(p)-based arrays. We         rays, we compute the signal-to-noise ratio (SNR) of the
+use two types of plane-wave source distributions: 1) dis-     beamforming results for the distributed sources configu-
+tributed sources, with a homogeneous azimuthal distri-        ration, using the black dashed rings depicted in the third
+bution of 400 sources randomly spanning 360 around
+                                        a)               b)        c)                d)                                              7
+
+                                                                                                              e)
+
+                                               2 km          2 km         2 km                 2 km                2 km
+
+Distributed sources Single source  Noise ring
+
+                                            Signal ring
+
+f)                                 1.4                                                                        Tile(p)
+                                                                                                              Triangle
+    Signal to noise ratio               Distributed sources                                                   Square-Tri
+
+                                   1.3
+
+                                   1.2
+
+                                   1.1
+
+                                   1
+
+                                   0.9  0      0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9                                              1
+
+                                                                       p
+
+Figure 3. Synthetic beamforming for single Tile(p) arrays. The first row shows the maps of the arrays. The grey dots for
+the Hat, Specter, and Turtle tiles are the randomized positions of the stations. The second row shows the beamforming results
+for a single source coming from the northwest at 2 km/s, highlighted by the black circle. The third row shows the beamforming
+results for a homogeneous illumination with sources of 2 km/s plane waves distributed around the arrays. The black dashed
+circles delineate the "signal" ring, and the white circle, the "noise" ring used to compute the signal-to-noise ratio (SNR) in f).
+The different columns show a) a triangular array, b) the Hat, c) the Specter, d) the Turtle, and e) a Square-Triangle metatile.
+f) SNR of the beamforming results for the distributed sources as a function of the parameter p. The gray curve and shaded
+area show the Tile(p) SNR's mean and standard deviation, respectively, when perturbing the station positions (gray dots in
+the first row). Vertical dashed lines highlight the p values of the Hat, Specter, and Turtle arrays. The thick red line shows the
+SNR for the triangular array. The mean SNR of the triangular array with perturbed positions is shown by the thin red line
+with the light red shaded area representing the standard deviation. The Square-Triangle array SNR is displayed by the purple
+horizontal line. The disordered curves are averaged over 100 disorder realizations.
+
+row of Fig. 3. We define the SNR as the ratio of the                   radii. The inner ring (the "signal" ring) is defined be-
+maximum amplitude of the inner ring over the maximum
+amplitude of the outer ring. We chose this definition for              tween  uin,±  =   u0 ±     , 1    and  the  outer  ring  (the
+the SNR because it gives a value of  1 for the aliased
+arrays. The two rings are defined by constant-slowness                                         2f0 rmax
+
+                                                                       "noise" ring) is defined between uin,+ and uout = 1.33
+
+                                                                       s/km, where f0 = 1 Hz, u0 = 0.5 s/km and rmax is the
+
+                                                                       maximum inter-station distance or aperture of each array
+                                                                                    8
+
+Signal to noise ratio  1.6                                                          vary the wavelength. Figure 4 shows how the beamform-
+                                Distributed sources                                 ing SNR varies when varying the normalized wavelength,
+                                                                                    ¯ = /rmin. The different curves represent the Specter
+                       1.4                                                          (green), the triangular (red), and the Square-Triangle
+                                                                                    (purple) arrays, used in Figure 3, and a square-lattice
+                       1.2                                                          regular array (black). The four arrays exhibit a sharp
+                                                                                    increase of SNR for ¯  3.5, a value for which the aliased
+                         1                                              Specter     ring patterns are pushed beyond the slowness limits of
+                       0.8                                              Triangle    the 'noise ring'. Whether this value is general for most
+                                                                        Square-Tri  seismic arrays needs further analysis beyond the scope
+                                1                                       Square      of this paper, but if this is the case, it could serve as
+                                                                                    a good rule of thumb to optimize seismic array design.
+                                                     2         3  4  5  6 78        Another important observation is the absence of max-
+                                                                                    ima for ¯  3 for the regular arrays, consistent with the
+                                                        /rmin                       fact that they suffer from spatial aliasing. In contrast,
+                                                                                    the SNR exhibits a clear maximum around the aliasing
+Figure 4. Beamforming SNR as a function of the                                      limit for the Square-Triangle and the Specter arrays. The
+wavelength. Beamforming SNR for distributed sources as                              Square-Triangle array performs better than the Specter
+a function of the normalized wavelength for regular square                          array at lower ¯ than the Specter array, but its SNR
+and triangular arrays and for the Specter and Square-Triangle                       remains low for ¯  [2, 3].
+aperiodic arrays. The vertical dashed line indicates the alias-
+ing limit: when the wavelength  equals twice the minimum                               This analysis shows that aperiodic tiles possess en-
+interstation distance rmin.                                                         hanced beamforming capabilities compared to regular ar-
+                                                                                    rays such as square or triangular lattice ones. Among the
+to account for the varying resolution.                                              Tile(p) family, the window p  [0.45, 0.55] provides even
+   The SNR results in Fig. 3f ) compares the Tile(p)                                better results by scattering the intensity of the first side
+                                                                                    lobes across a wide area and pushing the most energetic
+in black, the triangular array in red, and the Square-                              side lobes towards larger slowness or wavenumbers. The
+Triangle array in purple. The Tile(p) family performs at                            Specter array, in particular, shows more irregularities in
+least 20% better than regular-lattice arrays in the interval                        the positions of its ARF side lobes than any other config-
+p  [0.45, 0.55]. The Square-Triangle metatile performs                              uration (Fig. 2b). This provides more degrees of freedom
+on average only 5% better than aliased arrays. While                                to project a wavefield and boosts its beamforming capa-
+not the absolute best in the range p  [0.45, 0.55], the                             bility. As the building blocks of aperiodic tilings, these
+Specter tile is a good choice as a compromise between                               tiles and metatiles naturally lack redundancy in their ge-
+performance and design simplicity for a simple 14-station                           ometry, making them inherently more suitable for beam-
+array, beating the aliasing limit of regular-lattice arrays.                        forming applications than regular lattices.
+
+   We tested the robustness of these results with respect                             III. PERFORMANCE OF MULTIPLE TILE(p)
+to disordering the position of each station. If a small posi-                         SEISMIC ARRAYS AND COMPARISON WITH
+tion error degrades the beamforming performances, then
+it becomes difficult to envision a field deployment using                                          OTHER APERIODIC TILINGS
+these geometries. Any obstacle or difficulty in accurately
+positioning sensors would be detrimental to the quality                                In the previous Section II, we explored the array prop-
+of the measurements. For each Tile(p), we varied the                                erties of individual Tile(p) and compared them with reg-
+position of the 14 sensors randomly drawing from a nor-                             ular or irregular arrays made of a similar number of sta-
+mal distribution centered on the actual station position                            tions. Here, we explore large-N arrays made of hundreds
+and a 100 m variance (10% of the minimum inter-station                              of stations.
+distance) for a hundred realizations. These positions are
+displayed as gray points in the array maps of the first                                To compare the beamforming capabilities of large-N
+row of Fig. 3. The distribution of SNR for each p is                                Tile(p)-based arrays and other aperiodic tilings, we gen-
+shown as the dark gray curve with the gray contour for                              erate arrays consisting of 310 stations (see Fig. 5). The
+its mean and standard deviation, respectively. We see                               code accompanying this work can be used to generate
+that, for p / [0.45, 0.55], perturbing the station positions                        seismic arrays of N stations within a geographical region
+improves the SNR, whereas, for p  [0.45, 0.55], the SNR                             of choice, based on any Tile(p), Square-Triangle, or Pen-
+is slightly reduced but still exhibits a local maximum.                             rose tilings (see Fig. 10 and Methods section).
+In comparison, perturbing the positions of the triangu-
+lar array also improves the SNR by about 10%. Still, it                                For the following analysis, we choose a circular region,
+remains below the level of Tile(p), and on par with the                             with an aperture of 2 km, see Fig. 5. On par with single-
+Square-Triangle arrays SNR level.                                                   tile arrays (Fig. 3), we simulate a wavefield generated by
+                                                                                    either distributed sources or a single source. For each
+   The above analysis was calculated at the aliasing limit                          array, we fix the wavelength to be equal to twice the
+when the wavelength equals twice the minimum intersta-
+tion distance in the array. We now explore whether the
+Specter array performs better than the other arrays as we
+                                                                9
+
+average nearest-neighbor distance (the aliasing limit) and      For the distributed sources scenario, we tested another
+a velocity of 2 km/s.                                           definition of the SNR: the Root-Mean-Squared (RMS)
+                                                                intensity ratio in the 'signal ring' and the 'noise ring'
+   The results are shown in Fig. 5, one line per array type:    (see Appendix C, Fig. 11). Interestingly, whatever met-
+Fig. 5a for the triangular array, Fig. 5b for the Specter       ric we choose to measure the SNR with, all aperiodic
+array, Fig. 5c for the Square-Triangle array and Fig. 5d        tilings outperform compared to the triangular case.
+for the Penrose array. The first column shows the map
+of each array on the same scale, the second column is              To test the robustness of the aperiodic arrays to sensor
+the ARF of each array with a logarithmic scale intensity,       site perturbations, compared to regular arrays, we ana-
+and the third and fourth columns are the beamforming            lyzed the effects of 1) disordering the sensors' positions
+results for the distributed and single-source scenarios, re-    and 2) the impact of sensor failure. To do so, we look at
+spectively.                                                     the beamforming SNR for distributed sources as a func-
+                                                                tion of the type of tiling. In the first case, we randomly
+   Figs. 5e and f display the SNR of the beamforming            perturb the sensor positions, drawing 50 disordered real-
+as a function of p for the distributed sources and sin-         izations from a normal distribution centered on the ac-
+gle source configurations, respectively. The horizontal         tual sensor position with a variable standard deviation
+lines in Fig. 5e and f indicate the SNR for the three           (0% to 35% of the average nearest-neighbor distance).
+other geometries: an aperiodic Penrose tiling in blue, an       In the second case, we remove a percentage of randomly
+aperiodic Square-Triangle tiling in purple, and a regular       chosen sites (repeating this operation 50 times to draw
+triangular lattice array in red. We use the same SNR            robust statistics). We remove from 1% to 85% of the
+definition as for the single-tile beamforming (Fig. 3) for      sites.
+both the distributed sources and single-source scenarios:
+the SNR is defined as the ratio of the maximum inten-              The results for the sensors' misplacement are displayed
+sity within the 'signal ring' (the small black circles in       in Fig. 6a. We see that the beamforming results of the
+Fig. 5, for the single-source scenario, and the inner ring      Specter and Square-Triangle arrays are unaffected by sen-
+for the distributed sources scenario) over the maximum          sor misplacement. For the Triangle and Penrose arrays,
+intensity of the 'noise ring' (the rest of the diagram, out     increasing the level of misplacement increases the SNR.
+of the black circle for the single-source scenario, and the     This is true up to a plateau where, with more than 15%
+outer ring for the distributed sources scenario, see Fig. 5).   perturbation, the four types of arrays behave similarly.
+With this definition, SNR  1 indicates that the signal          The Specter and Square-Triangle arrays behave similarly
+is aliased.                                                     despite having different general sensor placements. A
+                                                                small level of randomness in the sensor positions improves
+   Overall, we see that aperiodic arrays perform better         the performance of regular arrays.
+than regular ones. The SNR profile of large-N Tile(p)
+for distributed sources, Fig. 5e, resembles that of single         The improvement of SNR with an increased random-
+Tile(p) arrays (Fig. 3f ). However, in the present case,        ization of the station positions can be due to two factors:
+the SNR level is higher than one across most p values           1) the overall reduction of the average nearest-neighbor
+except for evident SNR reductions at both ends of the p         station distance (Fig. 6b) as a function of the randomiza-
+spectrum and four dips: two around p  0.16, 2.2, and            tion level while the wavelength is fixed; 2) a better spatial
+two for the Hat and the Turtle tiles (see orange and blue       sampling of the wavefield with fewer redundant elements
+vertical dashed lines in Fig. 5e). These SNR reductions         in the arrays when the randomization is increased, or
+are again explained by the proximity of these tiles to a        a combination of both effects. Given the linear trends
+regular triangular lattice. In contrast to single tile arrays,  of the average nearest-neighbor station distance curves
+the SNR maximum for p  [0.45, 0.55] is less pronounced.         (Fig. 6b) and the non-linear increase of SNR (Fig. 6a), we
+At this scale, the SNR of the Square-Triangle array is on       infer that the reduction of the average nearest-neighbor
+the same level as the baseline SNR level of the Tile(p)         station distance is not the sole responsible for the im-
+arrays for p  [0.45, 0.55]. The Penrose tiling exhibits an      provement of the SNR but that the reduction of array
+SNR below one, indicating that the interfering aliased          redundancies plays a dominant role.
+rings sum up to intensity values similar to the maximum
+intensity in the 'signal ring'.                                    From the average nearest-neighbor station distance,
+                                                                we also see that the Specter and Penrose arrays have
+   The single-source scenario, Fig. 5f, highlights other        a smaller average nearest-neighbor station distance for
+noteworthy features. First, the SNR is more spiky, and          the same spatial support and number of stations. This
+eleven discrete p values produce Tile(p) arrays that are        means that for a given wavelength, we would expect these
+entirely aliased. Among them, we find the Chevron               two geometries to perform better with respect to aliasing
+(p=0), the Hat, the Turtle, and the Comet (p=1). The            as ¯ is increased. However, as discussed in the next sec-
+number of p values outperforming (SNR  2.5) is also             tion, this is not the case for the Penrose tiling, whose side
+finite, peaking around three p values showing a clearly         lobes are not only controlled by its interstation distance
+defined maximum. The Specter is one of them. With               but also by its azimuth distribution, resulting in a low
+this SNR definition, the Penrose and Square-Triangle ar-        SNR (see Section IV).
+rays exhibit better performances than regular arrays, but
+they are far from the performances of the Specter array.           The results for the sensor failures are displayed in
+                                                                Fig. 6c. Again, the Specter and Square-Triangle arrays
+                                                                                                                                                      10Specter
+
+a)
+
+                                                                                                                                                                                                     `signal
+                                                                                                                                                                                                       ring'
+
+                                                                                                                                                                                                         `noise
+                                                                                                                                                                                                          ring'
+
+b)
+
+c)
+
+                       Square-Tri
+
+d)
+
+                             Penrose
+
+                       2.5 e)                                               Distributed sources     3.5 f)                                              Single source
+                                                                                                     3
+Signal to noise ratio    2                                                                          2.5
+
+                                                                                                                                       2
+                       1.5
+
+                                                                                                                                      1.5
+
+                       1                                                                            1
+
+                           SNR = max('signal ring') / max('noise ring')     Tile(p)                                                                     Tile(p)
+                                                                            Penrose                                                                     Penrose
+                                                                            Square-Tri              0.5                                                 SquareTri
+                                                                            Triangle                                                                    Triangle
+                                                                                                             SNR = max(in circle) / max(out circle)
+
+                       0.50           0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9                        1  00                                     0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1
+
+                                                                         p                                                                           p
+
+Figure 5. Beamforming performances of Large-N aperiodic arrays. a) from left to right: Station map of the triangular
+array, ARF (intensity in log scale), beamforming for distributed sources, beamforming for a single source. The rest of the
+columns show the same as in a) for the b) Specter array, c) the Square-Triangle array, and d) the Penrose array. The black
+circles in the distributed sources beamforming panels (third column) delineate the areas used to compute the SNR. The black
+circle in the single source beamforming panels delineates the areas used to compute the SNR. e) SNR of the distributed sources
+beamforming for the Tile(p) arrays (black curve) as a function of p. The colored horizontal lines show the SNR level for the
+triangular, the Square-Triangle, and the Penrose arrays. The vertical dashed lines show the p values of the Hat, the Specter,
+and the Turtle arrays. f) Same as e) for the single source beamforming results. In e) and f), SNR  1 when the signal is aliased
+and larger if not.
+                                                                                                                                                                                            11
+
+a)                    Signal to noise ratio                                                                               Signal to noise ratioc) 2.5
+
+            2                                                                                                                      2
+
+         1.5                                                                            Penrose                                 1.5
+                                                                                        SqTri
+            1                                                                           Triangle                                   1
+                                                                                        Specter
+b)                                                                                                                        d) 0.5
+                      Average Nearest                                                             Average Nearest
+         120             Neighbor Distance [m]                                                       Neighbor Distance [m]     250
+         100                                                                                                                   200
+                                                5  10  15  20  25                   30  35                                     150
+          80                                                                                                                   100
+          60
+                                                                                                                                 50
+                     0                                                                                                                   0 1 2 5 10 15 20 25 35 45 55 75 85
+                                                                                                                                                               Level of missing points [%]
+                                                   Position perturbation level [%]
+
+Figure 6. Robustness to sensor misplacement and failure. a) Analysis of the influence of random sensor misplacement on
+the beamforming SNR of four types of arrays as a function of the level of randomness (in percent of the average nearest-neighbor
+station distance in the unperturbed arrays). The beamforming is computed at the aliasing limit of the unperturbed arrays. b)
+Evolution of the average nearest-neighbor station distance as a function of the position perturbation level. c) Analysis of the
+influence of missing sensors on the beamforming SNR of four types of arrays as a function of the level of missing sensors (in
+percent of 310 sensors). The beamforming is computed at the aliasing limit of the unperturbed arrays. d) Evolution of the
+average nearest-neighbor station distance as a function of the level of missing sensors. All points are calculated averaging over
+50 disorder realizations.
+                                                                                                         12
+
+outperform the two other geometries with systematically       especially for the distributed sources scenarios. For these
+larger SNR values. The reduction of the number of sen-
+sors reduces the SNR, and the reduction seems directly        cases, we tested another definition of the SNR (see Ap-
+correlated with the increase of the average nearest neigh-
+bor distances with each array (Fig. 6d). It is worth          pendix C): the ratio between the Root-Mean-Squared
+noticing that for 310-station arrays, the random failure      (RMS) beamforming intensity of the 'signal ring' and the
+of up to one quarter of the sensors has little effect on      'noise ring.' This definition measures how well the inten-
+their beamforming performance. With the RMS defini-           sity is scattered and attenuated in the 'noise ring' but
+tion (Fig. 11c), we see that it is only after removing more
+than 50% of the stations that the aperiodic arrays reach      will fail to clearly indicate if the wavefield is aliased or
+the SNR level of the periodic one, indicating the high
+level of redundancy of the aperiodic arrays.                  not. This is why we favor the maximum ratio definition
+
+      IV. DISCUSSIONS AND CONCLUSION                          in the main text. Figure 11 shows the SNR results using
+
+   We have explored a newly discovered Hat family of          the RMS definition for the different tests involving the
+monotile aperiodic tilings [53, 54] from the viewpoint of     distributed sources scenario. With this definition, the
+(seismic) array analysis. The comparison with other well-     Square-Triangle geometry outperforms the other geome-
+known aperiodic tilings, such as the Penrose and Square-      tries. Still, the central portion of the p spectrum exhibits
+Triangle tilings, shows that the Tile(p) tiling could be
+an ideal geometry for some range of p values. MAS ar-         an SNR maximum.
+rays made of one Tile(p), i.e., 14 stations, exhibit en-
+hanced beamforming performances with larger SNR val-          When comparing a single Tile(p) to other geometries
+ues for p  [0.45, 0.55] (Fig. 3) for configurations with
+distributed sources around the array. For MAS arrays          (triangular and Square-Triangle tiling, Fig 3), we had
+made of hundreds of stations, most of the p spectrum
+produces large SNRs except for a few notable exceptions:      to reach a compromise between the spatial support, the
+the extreme p values and the Hat and the Turtle (Fig. 5e).    number of stations, and the minimum inter-station dis-
+For the single source configuration (Fig. 5f ), we obtain     tance. It was impossible to set these three parameters
+more discrete outperforming p values, which restrict to       equal to the ones of the Tile(p) simultaneously. The
+p  [0.41, 0.43]  [0.495, 0.505]  [0.57, 0.59]. For these
+ranges, the side lobes' amplitude is more than 2.5 times      same principle applies to the comparisons in the large-
+smaller than the amplitude of the main lobe, which effi-
+ciently mitigates aliasing problems.                          N array cases. We chose to fix the number of stations
+
+   An important transversal question for all our analyses     and the spatial support rather than fixing the minimum
+is how to compare each geometry fairly. For the single-
+tile analysis (Fig. 2), we displayed the ARFs normalized      interstation distance and varying the number of stations.
+by the smallest inter-station distance in the array. This is  It is a scenario closer to the actual seismological practice
+a standard approach; however, for Tile(p  [0.45, 0.55]),      of array deployment, where we usually have access to a
+this minimum distance is not one of the sides of the tile     limited number of stations.
+but the distance at the "neck" of the Specter. For this
+range of p, the minimum distance is unique, represent-        Our analysis, spanning several scenarios, while not
+ing only about 1% of all possible distances in the array,
+whereas, for other p-values, the minimum distance is one      exhaustive (we, for example, did not test the effect of
+of the sides and is present multiple times. Therefore,
+normalizing by the minimum distance might present the         noisy seismic data, only noisy station positions or miss-
+Specter and other central-p tiles slightly more favorably
+than they actually are. On the other hand, this approach      ing sensors), is comprehensive enough to demonstrate
+allows us to compare all types of arrays consistently; this   that Specter arrays (and two other geometries that we
+is why we favor it.                                           conjecture to be around p = 2 - 1  0.42 and p =
+                                                              2 - 2  0.58) perform better than regular arrays and
+   Another aspect of quantifying the beamforming perfor-      some aperiodic ones in general.
+mance that relies on a subjective choice is the definition
+of the SNR. Here, we use the ratio of maximum intensity       The aperiodic nature of the Specter tiling is not the
+values between the area of interest of the beamforming
+diagram and an area that we define as 'noise'. This defi-     fundamental reason it performs so well: The Hat and
+nition is a conservative proxy for aliasing but cannot de-
+scribe more subtle features of the beamforming diagrams,      Turtle tilings are clear counterexamples of aperiodic
+
+                                                              tiling suffering from the same aliasing limits as regular
+                                                              arrays. Nor is its monotile nature: the Square-Triangle
+                                                              tiling, made with two tiles, performs almost as well as the
+                                                              Specter tiling. The Specter monotile and large-N arrays
+
+                                                              made of it are ideal geometries for beamforming applica-
+
+                                                              tions because they sample azimuths and distances more
+
+                                                              evenly than any other tested geometry. This is illustrated
+                                                              in Fig. 7a-b, where we can see that the distribution of
+                                                              interstation azimuths is almost uniform for the Specter
+                                                              array.
+
+                                                                 In contrast, other geometries have oversampled and
+
+                                                              undersampled azimuthal directions. This is particularly
+
+                                                              evident for the regular array. The interstation distance
+
+                                                              distribution is much smoother for the Specter array than
+
+                                                              for the other arrays. We confirmed these observations
+                                                              quantitatively by computing the normalized entropy of
+                                                              each distribution (Fig. 7c-d), which estimates the dis-
+                                                              tance of a distribution from a pure uniform distribution:
+
+                                                              E¯ = -           n    pi  log  2(pi  )  ,  (3)
+                                                                               i=1
+
+                                                                               log 2(n)
+                                                                                                                                                                          13
+
+                                  Tile(p)       Penrose               SquareTri                              Triangle           Specter            Hat       Turtle
+
+                          a)                                                                           1 c)
+
+Probability distribution                                                         Normalized entropy  0.99
+
+                                                                                                     0.98
+
+                                                                                                     0.97
+
+                                                                                                     0.96
+
+                                                                                                     0.95
+
+                                                                                                     0.94
+
+                                                                                                     0.93    Interstation azimuth
+
+                                                                                                     0.92         distribution
+
+                                                                                                     0.91
+
+                          0   50  100      150  200  250         300  350                            0.9  0  0.1       0.2      0.3      0.4  0.5  0.6  0.7  0.8     0.9  1
+
+                                       Interstation azimuth [°]                                                                               p
+
+                          b)                                                                         1
+
+                                                                                                       d)
+
+Probability distribution                                                                             0.95
+
+                                                                                 Normalized entropy  0.9
+
+                                                                                                     0.85
+
+                                                                                                      0.8
+
+                                                                                                                  Interstation distance
+                                                                                                                       distribution
+
+                                                                                                     0.75
+
+                              200 400 600 800 1000 1200 1400 1600 1800 2000                          0.7
+
+                                                      Interstation distance [m]                      0       0.1       0.2      0.3      0.4  0.5  0.6  0.7  0.8     0.9  1
+                                                                                                                                              p
+
+Figure 7. Tile(p) interstation azimuth and distance distributions entropy. Distributions of interstation azimuths (a)
+and distances (b) for the four 310-station arrays used in Section III. The normalized entropy (see Eq. (3)) of each distribution
+is shown by the horizontal lines in c) and d) as well as the normalized entropy of 310-stations Tile(p) arrays with the black
+curves. The Specter array has the most homogeneous distributions, with a normalized entropy closest to 1.
+
+where pi is the normalized histogram count of the observ-                                                    and thus, wave sampling will be reproducible and deter-
+able, here either the interstation azimuth or the intersta-                                                  ministic in practice, unlike placing stations at random.
+tion distance, in the bin i and n = 361 is the number
+of bins. Normalized entropy values closer to 1 indicate                                                         Beyond beamforming applications, the ability to ho-
+proximity to a uniform distribution. Again, we observe                                                       mogeneously sample space can be precious for seismic
+that most Tile(p) exhibit a large entropy, except for a few                                                  imaging applications, particularly ambient seismic noise
+p values, which means that in general, Tile(p) provides                                                      tomography using large-N arrays [e.g., 48, 49, 61, 68, 69].
+a very uniform distribution of interstation azimuths and                                                     In this technique, homogenizing the rays' azimuthal dis-
+distances (Fig. 7c-d). This uniform azimuthal and dis-                                                       tribution will produce velocity models where anomalies
+tance sampling provides the largest number of degrees                                                        retain their shape and are less likely smeared by the array
+of freedom possible to sample a wavefield, equivalent to                                                     imprint, improving their resolution and fidelity. Histor-
+having a coarray (see Methods) with its sites as homoge-                                                     ically, researchers have used specific and different array
+neously distributed as possible.                                                                             designs for beamforming and imaging. Spiral arrays are
+                                                                                                             ideal for beamforming due to their optimal distance and
+   Achieving a homogeneous distribution of points is also                                                    azimuth sampling [52, 70]. However, the ray coverage
+possible by drawing coordinates from a uniform distribu-                                                     they produce is not well suited for imaging. On the con-
+tion. However, homogeneity is guaranteed only on aver-                                                       trary, dense arrays designed for imaging are often regular
+age. In realistic scenarios, only a single realization will                                                  [e.g., 61, 71] and may suffer from aliasing when the wave-
+be deployed, which is not guaranteed to have uniform                                                         length becomes smaller than twice the average nearest-
+azimuthal and distance sampling. In contrast, the homo-                                                      neighbor interstation distance. From this point of view,
+geneity of the Tile(p) family is not an average property,                                                    MAS Specter arrays are more versatile and optimal for
+                                                                               14
+
+beamforming and imaging applications altogether.              ACKNOWLEDGMENTS
+
+   Our results can also be tested in settings beyond seis-       We thank P. Roux and L. Seydoux for discussing
+mology, in physical realizations where the ARF or struc-      and suggesting randomizing the station positions. We
+ture factor can be measured directly. One of these plat-      thank the two reviewers for their suggestions to test
+forms is 3D-printed or nano-patterned disorder photonic       the effects of removing stations and for their comments,
+crystals. In this context, exploring the Hat family as a de-  which helped improve this paper. We are also grate-
+sign principle for photonic applications, such as band-gap    ful to C. de France for the hospitality and G. Hen-
+optimization or cloaking [72] is worth exploring. Similar     drick for the discussions while starting this project. We
+arguments apply to other metamaterial platforms, such         thank F. Flicker, S. Franca, H. Roche, M. Yoshii, and
+as acoustic arrays [73, 74]. Another platform properties      J. Schirmann for discussions and related collaborations.
+where our results can be tested are molecular patterns        A. G. G. acknowledges support from the European Re-
+of the surface of a metal like copper using carbon diox-      search Council (ERC) Consolidator grant under grant
+ide molecules [75]. This platform has already been used       agreement No. 101042707 (TOPOMORPH). A. M. ac-
+to design Penrose tilings, where the structure factor was     knowledges support from the Agence Nationale pour la
+directly measured [9]. Thus, it is a promising system to      Recherche (ANR) through the project ANR-22-CE49-
+realize the Tile(p) tiling and test our findings. Similarly,  0019 (MACIV).
+ultra-cold atomic platforms [76] realizing the Hat tiling
+could benefit from the results presented here. For ex-                    DATA AND CODE AVAILABILITY
+ample, particle propagation can show characteristic phe-
+nomenology in aperiodic lattices [19].                           The Python Jupyter Notebooks used to produce the
+                                                              tiling data and figures are available on the GEUS Data-
+   Lastly, as discussed in the introduction, beamforming      verse with the following DOI: https://doi.org/10.
+analysis is strongly tied to the diffraction pattern anal-    22008/FK2/G06YCK.
+ysis of quasicrystals. In this regard, the quasi 12-fold
+symmetry of the Specter tiling stands out, as it should                          COMPETING INTERESTS
+be explored further to determine the relationship, if any,
+with other 12-fold symmetry aperiodic tilings, such as           The authors have no competing interests.
+the Square-Triangle tiling. Although these further anal-
+yses are beyond the scope of this study, we are confident                     AUTHORS CONTRIBUTIONS
+that research on the Hat family of tiling, particularly
+the Specter tiling, is only in its infancy and will flourish     Conceptualization: Aurelien Mordret and Adolfo G.
+soon. We suggest exploring fields and problems where          Grushin; methodology: Aurelien Mordret; software: Au-
+alignments of points or structures, or lack thereof, are      relien Mordret and Adolfo G. Grushin; validation: Au-
+essential, as there is strong potential for practical appli-  relien Mordret and Adolfo G. Grushin; formal analysis:
+cations in diverse areas. Besides those mentioned above,      Aurelien Mordret and Adolfo G. Grushin; writing orig-
+we can include wind-farm optimization design or seismic       inal draft, review, and editing: Aurelien Mordret and
+cloaking to cite a few examples.                              Adolfo G. Grushin;
+
+   In conclusion, our work proposes an advantageous de-                  Appendix A: Plane-wave beamforming
+sign principle based on the recently discovered aperi-
+odic monotiles for seismic arrays to beat the Whittaker-         Plane-wave beamforming is used to determine the un-
+Nyquist­Shannon (WSN) aliasing limit. Monotile aperi-         known slowness parameters of waves recorded by a seis-
+odic seismic (MAS) arrays outperform regular and other        mic array. The principle of plane-wave beamforming is
+quasicrystalline arrays in signal-to-noise ratio for single   illustrated in Figure 8. The signal data recorded by the
+and distributed source scenarios and demonstrate robust-      array are shifted in time according to trial slowness vec-
+ness to station position noise, providing a reliable solu-    tor parameters and then stacked. The maximum inten-
+tion in seismic array design. The array-response-function     sity of the stacked signals is displayed on a matrix at
+and beamforming analysis we presented here can be di-         the position of the trial slowness vector. A grid search is
+rectly applied, without any conceptual modification, to       performed over each pixel of the beamforming diagram.
+rationalize generic wave scattering off aperiodic monotile    The beamforming diagram exhibits a maximum intensity
+sites. Hence, the benefits of MAS arrays can be directly      for a slowness vector matching the true slowness of the
+exported to numerous other fields, e.g., the placement        plane wave recorded by the array.
+and design of telecommunications antennae, ad-atoms
+in solid-state physics, and compressed sensing of various
+digital signals.
+                                                                                                                                                                                 15
+
+a)                                                     b) Recorded signals
+                                                                        0
+                          1                                              1             Time  Station
+                                                                                             number
+                           2                                                                                                                              N                2
+                     4                                                                          1
+    utry_k                          3 utry_j                                                    2                                              1               si()ejxi·k .      (A1)
+                                                                                                3                               B(k, ) = N 2
+                                                                        2= 0                    4                                                         i=1
+                                                                                    3
+             utrue                                                                           1                                  In Eq. (A1), si() is the temporal Fourier transform of
+                                                                            4                                                   si(t) defined by
+
+c)                                                                d)
+
+    Simulated data using utry_j     Correcting data using i - ti     2
+
+    0 t1             Time                     0  Time                                                                                                     
+
+    t2= 0                        1                                                                                                                si() =     si(t)ejtdt.         (A2)
+     t3                          2
+                 t4              3                                uy (s/km)                                                                               -
+                                 4                                                                        Normalized beampower
+                                                                                                                                   For horizontally propagating waves, the wave vector
+                                                                                                                                simplifies to k = [kx, ky] =  · u, where u = [ux, uy] is
+                                                                                                                                the horizontal slowness vector. The beamforming is max-
+    Simulated data using utry_k     Correcting data using i - ti                                                                imized for wavenumbers corresponding to actual plane
+                                                                                                                                waves crossing the array from the right azimuths with
+    0        t1      Time                     0  Time                                                                           the right slowness.
+
+    t2= 0                        1                                -2    ux (s/km)            20                                    Alternatively, the beamforming can be written as
+         t3                      2                                  -2
+         t4                      3
+                                 4
+
+                                 
+
+                                                                                                                                                  N                   N
+
+                                                                                                                                               1       si()ejxi·k ×      sl()ejxl·k ,
+                                                                                                                                B(k, ) = N 2
+Figure 8. Beamforming principle. a) Map of the seismic                                                                                            i=1                l=1
+arrays. The arrows show the (unknown) true slowness vector
+of the incoming plane wave (black) and two trial slowness                                                                           1              NN
+vectors in red and blue. b) The signal recorded by the four                                                                     = N2
+seismic stations, with station 2 as the reference station. c)                                                                                              e-jxi·kCil()ejxl·k ,
+Correction of delays and sum of the signals according to the
+trial slowness vectors. d) The intensities of the stacked signals                                                                                 i=1 l=1
+are displayed on the beamforming diagram at the positions
+of the trial slowness vectors (one per pixel). The intensity is                                                                     1              NN
+maximum for a slowness trial vector close to the true slowness                                                                  = N2
+vector.                                                                                                                                                    Cil()ejril·k ,
+
+                                                                                                                                                  i=1 l=1
+
+                                                                                                                                                                                 (A3)
+
+                                                                                                                                where Cil = si()sl() is the covariance matrix of the
+
+                                                                                                                                data [e.g., 77] , ril = xl - xi is the inter-station distance
+
+                                                                                                                                between sensors i and l , and  is the complex conjugate
+
+                                                                                                                                [5]. Therefore, plane-wave beamforming can be seen ei-
+
+                                                                                                                                ther as the projection of the physical array data onto
+
+   Mathematically, beamforming can be expressed as fol-                                                                         plane waves (Eq. (A1)) or the projection of the physical
+lows. We will describe an array of N stations that record
+a seismic signal s(xi, t) = si(t), where i = [1, ..., N ] is the                                                                array data cross-correlations (Eq. (A3)), i.e., the virtual
+station index, xi = [xx, xy, xz] the geographical coordi-                                                                       data from a virtual array made of N 2 stations located at
+nates of the station i with respect to the centroid x0 of
+the array, and t is the time. We are interested in pla-                                                                         coordinates ril, projected onto plane-waves. This vir-
+nar arrays, so we assume xi = [xx, xy]. A plane-wave                                                                            tual array is called the difference coarray [67, 78], or
+v(k0) = ejk0·x, with j = -1, traveling across the array
+with a wavenumber vector k0 = [kx, ky, kz], will arrive at                                                                      simply coarray in this work, and has been introduced
+each station with a time-delay i = xi · k0 = xi · ( · u0).
+Here,  = 2f is the angular frequency, f is the fre-                                                                             in array seismology by [79]. The coarray is the spatial
+quency, and u0 is the slowness vector, i.e., the inverse
+of the plane-wave velocity. The array-stacked signal, the                                                                       auto-correlation of the physical array coordinates and is
+sum of all signals, is maximum when all the traces from
+each station are in phase. This happens when the time-                                                                          defined as the set A:
+delay i is adequately corrected for at each station before
+summation, i.e., when the wavenumber used to compute                                                                            A = {y|y = x2 - x1, x1, x2  X} ,                 (A4)
+the time-delay is equal to the actual wavenumber of the
+incoming plane wave.                                                                                                            where X is the set of coordinates of the physical array. In
+                                                                                                                                mathematical morphology [80], the coarray is equivalent
+   The beampower or beamforming intensity (abbrevi-                                                                             to the dilation of X by itself. The number of unique
+ated to beamforming in this work) B(k, ), i.e., the inten-                                                                      locations in the coarray and the homogeneity of their
+sity of the array-stacked signal, computed for trial plane-                                                                     spatial distribution determine the array's resolution and
+waves with wave vectors k and at frequency  is [5]                                                                              anti-aliasing capabilities.
+
+                                                                                                                                                   1. Array response function
+
+                                                                                                                                   The array response function (ARF) is usually defined
+                                                                                                                                as the beamforming for a plane-wave illuminating all the
+                                                                                       16
+
+stations of the array at the same time from below, i.e., a)      Array 1  Array 2  b)
+
+a plane-wave with an infinite velocity or a wavenumber
+
+k = 0. From Equation (A1), the ARF simplifies as
+
+                      N         2
+
+                   1            ejxi·k .          (A5)
+ARF(k, ) = N 2
+                      i=1
+
+Similarly, Equation (A3) gives
+
+                   1   NN                         (A6)           Figure 9. Resolution and aliasing illustration for two
+ARF(k, ) = N 2                                                   regular arrays. a) Map of the two arrays. The dashed
+                               ej(xl-xi)·k ,                     lines show the two arrays' maximum inter-station distances
+                                                                 or apertures. b) Superposition of the ARFs of the two arrays,
+                      i=1 l=1                                    in purple for Array 1 and in orange for Array 2.
+
+which has the same support as the spatial Fourier trans-         elongated in the North-West and East-West directions
+form of the coarray. Both the ARF and the coarray en-            for Array 1 and 2, respectively.
+capsulate the geometrical features of the physical array
+and its capabilities in terms of resolution and robustness         Appendix B: Building Tile(p) arrays of N stations
+to aliasing effects. In the [kx, ky] plane, the ARF exhibits
+a central lobe at kx = ky = 0 and several side-lobes more           In this section, we will show how to design large ar-
+or less far from the main lobe with positions and ampli-         rays made of multiple Tile(p) given a user-defined num-
+tudes depending on the array geometry. In solid-state            ber of stations and a predefined spatial support. We in-
+physics, the ARF is called the structure factor, and it is       clude a suite of Jupyter Notebooks (see Data and Code
+defined by the atomic positions and measured by X-ray            availability section) to generate such arrays. There are
+scattering. [e.g., 81].                                          four Notebooks available for four different tilings: Achi-
+                                                                 ral Tile(p) (Fig. 1a), Chiral Specter (Fig. 1b), Square-
+                   2. Resolution and aliasing                    Triangle (Fig. 1d), and Penrose-rhombic aperiodic tilings
+                                                                 (Fig. 1c). The Penrose and Square-Triangle tiling gen-
+   The resolution of an array is determined by its aper-         erators are Python translations from Matlab codes by
+ture, i.e., the largest interstation distance within the ar-     Eddins [82] and Ho [83], respectively. The Tile(p) and
+ray, rmax = max{r}, and can be measured from the                 Chiral Specter tilings are translated from Kaplan [59].
+width of the main central lobe of the ARF. The resolution        The remaining Notebooks in the supplementary package
+assesses how well a given array can distinguish two plane        reproduce relevant parts of the figures displayed in this
+waves with similar slowness. A standard approximation            paper.
+of the slowness resolution is uR = 1/(2f rmax), using the
+frequency f . Inversely, aliasing is controlled by the small-       The first step to generating a seismic array is to define
+est interstation distance in the array, rmin = min{r},           its spatial support. Here, we use Google Earth Pro [84] to
+and is manifested by the repetition of the ARF pattern           create a polygon encompassing the area where one wants
+at larger wavenumber or slowness, according to the WNS           to install the seismic array (black contour in Fig. 10),
+theorem. Based on regular array approximation, the dis-          and we save it as a KML file. The code reads the coor-
+tance in slowness at which the pattern repeats is given          dinates of the polygon in the Universal Transverse Mer-
+by uW NS = 1/(2f rmin). The ideal array design will aim          cator (UTM) format and requires that the polygon be
+at narrowing the main lobe while reducing the ampli-             defined on a unique UTM zone. The second step is to
+tudes of the side lobes and pushing them towards higher          define the number of stations N (plus or minus a small
+slowness.                                                        range N , to allow the algorithm to converge more easily)
+                                                                 that one wants to fit within the polygon. The third step
+   Fig. 9 illustrates the effect of the array design on resolu-  is generating a large enough tiling with more (unique)
+tion and aliasing. Array 1 (purple circles in Fig. 9a com-       vertices than the user-predefined number of stations (or-
+prises eight stations located on a 1.1 km square lattice         ange dots in Fig. 10). The algorithm will then scale the
+with an aperture of 3.11 km. Array 2 (orange squares in          vertices iteratively with a user-defined scaling factor un-
+Fig. 9a) comprises eleven stations assembled on a 1.3 km         til N ± N vertices fit within the polygon (purple dots in
+square lattice with a 5.2 km aperture. The correspond-           Fig 10). The selected vertices coordinates are then saved
+ing apertures are indicated by dashed lines in Fig. 9 a.         in a KML file. Fig. 10 shows an example of designing
+Fig. 9b shows the ARF for both arrays. We can see how            a 499 stations array located in the French Massif Cen-
+the lobes of Array 2 are narrower thanks to the larger           tral within a circular domain based on an achiral Specter
+aperture and are pushed away to higher slowness thanks           tiling.
+to the smaller interstation distances. Note that the lobes
+for both arrays are elliptical because the two arrays are
+                                                              17
+
+Figure 10. Deployment simulation of Large-N Tile(p) MAS array. Generating a 499-station achiral Specter array
+within a circular area located in the French Massif Central. The Google Earth inset shows the location of the array wrapped
+on an exaggerated topography (×2.5).
+
+       Appendix C: Signal to noise results using a            geometries. Still, the central portion of the p spectrum
+                Root-Mean-Squared definition                  exhibits an SNR maximum, and the Hat and Turtle
+                                                              tilings show local SNR minima (Fig. 11a-c). The SNR
+   In the main text, we defined the signal-to-noise ratio     as a function of the normalized wavelength (Fig. 11b)
+(SNR) as the ratio of maximum intensity values between        shows again a sharp increase after ¯ = 3 and a local
+the area of interest of the beam-forming diagram and          maximum before ¯ = 2 for all arrays except the Specter
+an area that we defined as 'noise.' This definition is a      geometry. This shows that the RMS metric is not ap-
+conservative proxy for aliasing but cannot describe more      propriate for properly conveying the quality of a beam-
+subtle features of the beamforming diagrams, especially       forming diagram. In this case, strongly aliased signals
+for the distributed sources scenarios.                        and particular geometries can produce interferences in
+                                                              beamforming diagrams and reduce the RMS intensity in
+   In this Appendix, we present the results for comparison    the 'noise ring'. Interpreting these diagrams regarding
+using an alternative definition of the SNR: the ratio be-     sources' azimuthal distribution and slowness should be
+tween the Root-Mean-Squared (RMS) beamforming in-             done cautiously. Overall, the Specter geometry produces
+tensity of the 'signal ring' and the 'noise ring'. This def-  small SNR values with the RMS definition compared to
+inition measures how well the intensity is scattered and      the other geometries because the Specter tiling has a very
+attenuated in the 'noise ring' but will fail to clearly in-   scattered, almost non-discrete (continuous) Fourier de-
+dicate if the wavefield is aliased or not. This is why we     composition (Fig. 5), with a non-zero background inten-
+favor the maximum ratio definition in the main text.          sity.
+
+   Figure 11 shows the SNR benchmarks discussed in
+the main text computed here using the RMS definition
+for the different tests in the main text involving the
+distributed sources scenario. With this definition, the
+Square-Triangle geometry generally outperforms other
+                                                                                                                                                                                                                             18
+
+a) 1.8                                                                                             Tile(p)                              b) 4     Distributed sources
+             Distributed sources                                                                   Triangle
+      1.7Signal to noise ratio                                                                     SquareTri                               3.5
+      1.6                                                                                                                                     3
+      1.5                                                                                                          Signal to noise ratio                                                     Specter
+      1.4                                                                                                                                  2.5                                               Triangle
+      1.3                                                                                                                                     2                                              SqTri
+      1.2                                                                                                                                                                                    Square
+                                                                                                                                           1.5
+
+                       1.1                                                                                                                 1
+
+                       1              0  0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9                                    1                         0.5    1                    2             3  4  5  6 78
+
+                                                    p
+
+                                                c) 5
+                                                    Signal to noise ratio (rms/rms)
+                                                                                     4
+
+                                                                                     3
+
+                                                                                     2
+
+                                                                                                                                                                      Tile(p)
+
+                                                                                     1                                                                                Penrose
+
+                                                                                           Distributed sources                                                        SquareTri
+                                                                                                                                                                      Triangle
+
+                                                                                     0  0  0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9                                                   1
+
+                                                                                                                                        p
+
+d) 6                                                                                                                                             e) 4.5
+
+          5                                                                                                                                               4
+          4
+          3            SNR (rms/rms)                                                                                                             SNR (rms/rms)  3.5
+          2
+                                                                                                                                                                3
+                   0
+                                                                                                   Penrose                                                      2.5
+                                                                                                   SqTri
+                                                                                                   Triangle                                                       2
+                                                                                                   Specter
+                                                                                                                                                                1.5
+                                         5  10  15                                   20    25  30  35
+                                                                                                                                                                  1
+                                            Position perturbation level [%]                                                                                             0 1 2 5 10 15 20 25 35 45 55 75 85 95
+                                                                                                                                                                                                Level of missing points [%]
+
+Figure 11. Signal-to-Noise benchmarks using the Root-Mean-Squared criterion. These figures contrast those dis-
+cussed in the main text, which were computed using the maximum-ratio definition. a) SNR of the beamforming results for the
+distributed sources as a function of the parameter p, to be compared with Fig. 3 f). b) Beamforming SNR as a function of the
+wavelength, to be compared with Fig. 4. c) SNR of the distributed sources beamforming for the Tile(p) arrays (black curve)
+as a function of p. The colored horizontal lines show the SNR level for the triangular, the Square-Triangle, and the Penrose
+arrays. To be compared with Fig. 5e). d) Analysis of the influence of random sensor misplacement on the beamforming SNR
+of four types of arrays as a function of the level of randomness (in percent of the average nearest-neighbor station distance in
+the unperturbed arrays). To be compared with Fig. 6a). e) Evolution of the average nearest-neighbor station distance as a
+function of the level of missing sensors. To be compared with Fig. 6c).
+
+[1] M. Costa, A. L. Goldberger, and C.-K. Peng, Multiscale                                                                                [4] S. Rost and C. Thomas, Array seismology: Methods and
+    entropy analysis of biological signals, Physical Review                                                                                   applications, Reviews of geophysics 40, 2 (2002).
+    E--Statistical, Nonlinear, and Soft Matter Physics 71,
+    021906 (2005).                                                                                                                        [5] M. Gal and A. M. Reading, Seismic ambient noise (Cam-
+                                                                                                                                              bridge Univ. Press, 2019) Chap. Beamforming and polar-
+[2] A. P. Sarvazyan, O. V. Rudenko, S. D. Swanson, J. B.                                                                                      isation analysis, pp. 32­72.
+    Fowlkes, and S. Y. Emelianov, Shear wave elasticity
+    imaging: a new ultrasonic technology of medical diagnos-                                                                              [6] N. W. Ashcroft and N. D. Mermin, Solid State Physics
+    tics, Ultrasound in medicine & biology 24, 1419 (1998).                                                                                   (Holt-Saunders, 1976).
+
+[3] J. Morlet, Sampling theory and wave propagation, Issues                                                                               [7] D. Shechtman, I. Blech, D. Gratias, and J. W. Cahn,
+    in acoustic Signal--image processing and recognition ,                                                                                    Metallic Phase with Long-Range Orientational Order
+    233 (1983).                                                                                                                               and No Translational Symmetry, Phys. Rev. Lett. 53,
+                                                                                                                                              1951 (1984).
+                                                                   19
+
+ [8] T. Janssen, G. Chapuis, and M. d. Boissieu, Ape-                    Numerical study on one-dimensional aperiodic
+      riodic crystals from modulated phases to qua-                      foundations for seismic isolation of structures, in
+      sicrystals, Acta Crystallographica Section A 74,                   Symposium in Earthquake Engineering (Springer, 2022)
+      10.1107/s2053273318012032 (2018).                                  pp. 283­293.
+                                                                   [28] D. L. Donoho, Compressed sensing, IEEE Transactions
+ [9] L. C. Collins, T. G. Witte, R. Silverman, D. B. Green,              on information theory 52, 1289 (2006).
+      and K. K. Gomes, Imaging quasiperiodic electronic states     [29] C. Mosher, S. Kaplan, and F. Janiszewski, Non-uniform
+      in a synthetic Penrose tiling, Nature Communications 8,            optimal sampling for seismic survey design, 74th EAGE
+      15961 (2017), 1707.06554.                                          Conference and Exhibition incorporating EUROPEC
+                                                                         2012 , cp (2012).
+[10] Z. Stadnik, Physical properties of quasicrystals, Springer    [30] F. B. da Silva, R. von Borries, and C. J. Miosso, Golden
+      Series in Solid-State Sciences 10.1007/978-3-642-58434-3           number sampling applied to compressive sensing, 2018
+      (1999).                                                            IEEE Southwest Symposium on Image Analysis and In-
+                                                                         terpretation (SSIAI) , 1 (2018).
+[11] G. Y. Onoda, P. J. Steinhardt, D. P. DiVincenzo, and          [31] C. Tsingas, W. Jeong, M. Almubarak, and Y. Ma, Com-
+      J. E. Socolar, Growing perfect quasicrystals, Physical re-         pressive sensing principles applied for seismic data ac-
+      view letters 60, 2653 (1988).                                      quisition and processing in time and space, 84th EAGE
+                                                                         Annual Conference & Exhibition 2023, 1 (2023).
+[12] L. Bindi, P. J. Steinhardt, N. Yao, and P. J. Lu, Natural     [32] E. T. Whittaker, Xviii.--on the functions which are rep-
+      quasicrystals, science 324, 1306 (2009).                           resented by the expansions of the interpolation-theory,
+                                                                         Proceedings of the Royal Society of Edinburgh 35,
+[13] M. A. Bandres, M. C. Rechtsman, and M. Segev, Topo-                 181­194 (1915).
+      logical photonic quasicrystals: Fractal topological spec-    [33] H. Nyquist, Certain topics in telegraph transmission the-
+      trum and protected transport, Phys. Rev. X 6, 011016               ory, Transactions of the American Institute of Electrical
+      (2016).                                                            Engineers 47, 617 (1928).
+                                                                   [34] C. Shannon, Communication in the presence of noise,
+[14] M. Notomi, H. Suzuki, T. Tamamura, and K. Edagawa,                  Proceedings of the IRE 37, 10 (1949).
+      Lasing action due to the two-dimensional quasiperiodic-      [35] E. J. Cand`es and M. B. Wakin, An introduction to com-
+      ity of photonic quasicrystals with a Penrose lattice, Phys.        pressive sampling, IEEE signal processing magazine 25,
+      Rev. Lett. 92, 123906 (2004).                                      21 (2008).
+                                                                   [36] B. Matei and Y. Meyer, Simple quasicrys-
+[15] L. Levi, M. Rechtsman, B. Freedman, T. Schwartz,                    tals are sets of stable sampling, Complex Vari-
+      O. Manela, and M. Segev, Disorder-Enhanced Transport               ables and Elliptic Equations 55, 947 (2010),
+      in Photonic Quasicrystals, Science 332, 1541 (2011).               https://doi.org/10.1080/17476930903394689.
+                                                                   [37] D. Smith, J. S. Myers, C. S. Kaplan, and C. Goodman-
+[16] Y. E. Kraus, Y. Lahini, Z. Ringel, M. Verbin, and O. Zil-           Strauss, An aperiodic monotile, Preprint at
+      berberg, Topological States and Adiabatic Pumping in               https://arxiv.org/abs/2303.10798 (2023).
+      Quasicrystals, Phys. Rev. Lett. 109, 106402 (2012).          [38] D. Smith, J. S. Myers, C. S. Kaplan, and C. Goodman-
+                                                                         Strauss, A chiral aperiodic monotile, Preprint at
+[17] J. Schirmann, S. Franca, F. Flicker, and A. G. Grushin,             https://arxiv.org/abs/2305.17743 (2023).
+      Physical properties of an aperiodic monotile with            [39] R. Penrose, The role of aesthetics in pure and applied
+      graphene-like features, chirality, and zero modes, Phys.           mathematical research, Bull. Inst. Math. Appl. 10, 266
+      Rev. Lett. 132, 086402 (2024).                                     (1974).
+                                                                   [40] R. Penrose, Pentaplexity a class of non-periodic tilings of
+[18] Y. Chen, M. Kadic, S. Guenneau, and M. Wegener,                     the plane, The mathematical intelligencer 2, 32 (1979).
+      Isotropic chiral acoustic phonons in 3D quasicrystalline     [41] M. Oxborrow and C. L. Henley, Random square-triangle
+      metamaterials, Phys. Rev. Lett. 124, 235502 (2020).                tilings: A model for twelvefold-symmetric quasicrystals,
+                                                                         Physical Review B 48, 6966 (1993).
+[19] M. Sbroscia, K. Viebahn, E. Carter, J.-C. Yu, A. Gaunt,       [42] UN-Secretary-General, Report of the conference of ex-
+      and U. Schneider, Observing Localization in a 2D Qua-              perts to study the possibility of detecting violations of
+      sicrystalline Optical Lattice, Physical Review Letters             a possible agreement on the suspension of nuclear tests:
+      125, 200604 (2020), 2001.10912.                                    note by the secretary-general, United Nations (1958).
+                                                                   [43] E. Carpenter, An historical review of seismometer array
+[20] D. Tanese, E. Gurevich, F. Baboux, T. Jacqmin,                      development, Proceedings of the IEEE 53, 1816 (1965).
+      A. Lema^itre, E. Galopin, I. Sagnes, A. Amo, J. Bloch,       [44] E. Carpenter, Explosion seismology: Capabilities and
+      and E. Akkermans, Fractal energy spectrum of a polari-             limitations of long-range methods for detecting and rec-
+      ton gas in a Fibonacci quasiperiodic potential, Phys. Rev.         ognizing explosions are discussed., Science 147, 363
+      Lett. 112, 146404 (2014).                                          (1965).
+                                                                   [45] P. E. Green, R. Frosch, and C. Romney, Principles of
+[21] P. Vignolo, M. Bellec, J. Bo¨hm, A. Camara, J.-M. Gam-              an experimental large aperture seismic array (lasa), Pro-
+      baudo, U. Kuhl, and F. Mortessagne, Energy landscape               ceedings of the IEEE 53, 1821 (1965).
+      in a Penrose tiling, Phys. Rev. B 93, 075141 (2016).         [46] J. Capon, R. Greenfield, R. Kolker, and R. Lacoss, Short-
+                                                                         period signal processing results for the large aperture
+[22] Y. Wang and O. Sigmund, Quasiperiodic mechanical                    seismic array, Geophysics 33, 452 (1968).
+      metamaterials with extreme isotropic stiffness, Extreme
+      Mechanics Letters 34, 100596 (2020).
+
+[23] N. Rivier, A botanical quasicrystal, Le Journal de
+      Physique Colloques 47, C3 (1986).
+
+[24] P. J. Lu and P. J. Steinhardt, Decagonal and quasi-
+      crystalline tilings in medieval islamic architecture, sci-
+      ence 315, 1106 (2007).
+
+[25] G. Hennenfent and F. J. Herrmann, Simply denoise:
+      Wavefield reconstruction via jittered undersampling,
+      Geophysics 73, V19 (2008).
+
+[26] F. J. Herrmann, Randomized sampling and sparsity:
+      Getting more information from fewer samples, Geo-
+      physics 75, WB173 (2010).
+
+[27] S. R. Kumawat, S. Pujari, M. Kumar, and A. Laskar,
+                                                                 20
+
+[47] J. Capon, R. J. Greenfield, and R. T. Lacoss, Long-period   [65] W. Yao, E. Wang, C. Bao, Y. Zhang, K. Zhang, K. Bao,
+                                                                       C. K. Chan, C. Chen, J. Avila, M. C. Asensio, et al.,
+signal processing results for the large aperture seismic               Quasicrystalline 30 twisted bilayer graphene as an incom-
+                                                                       mensurate superlattice with strong interlayer coupling,
+array, Geophysics 34, 305 (1969).                                      Proceedings of the National Academy of Sciences 115,
+                                                                       6928 (2018).
+[48] F.-C. Lin, D. Li, R. W. Clayton, and D. Hollis, High-
+                                                                 [66] E. Fayen, L. Filion, G. Foffi, and F. Smallenburg, Qua-
+resolution 3d shallow crustal structure in long beach, cal-            sicrystal of binary hard spheres on a plane stabilized
+                                                                       by configurational entropy, Physical Review Letters 132,
+ifornia: Application of ambient noise tomography on a                  048202 (2024).
+
+dense seismic array, Geophysics 78, Q45 (2013).                  [67] J.-F. Hopperstad and S. Holm, The coarray of sparse ar-
+                                                                       rays with minimum sidelobe level, Proc. IEEE Nordic
+[49] A. Mordret, P. Roux, P. Bou´e, and Y. Ben-Zion, Shallow           Signal Processing Symposium (NORSIG 1998) , 137
+                                                                       (1998).
+three-dimensional structure of the san jacinto fault zone
+                                                                 [68] M. Chmiel, A. Mordret, P. Bou´e, F. Brenguier,
+revealed from ambient noise imaging with a dense seismic               T. Lecocq, R. Courbis, D. Hollis, X. Campman,
+                                                                       R. Romijn, and W. Van der Veen, Ambient noise mul-
+array, Geophysical Journal International 216, 896 (2019).              timode rayleigh and love wave tomography to determine
+                                                                       the shear velocity structure above the groningen gas field,
+[50] C. Gradon, L. Moreau, P. Roux, and Y. Ben-Zion, Analy-            Geophysical Journal International 218, 1781 (2019).
+
+sis of surface and seismic sources in dense array data with      [69] C. Tsarsitalidou, G. Hillers, B. Giammarinaro, P. Bou´e,
+                                                                       L. Stehly, and M. Campillo, Long Period Rayleigh Wave
+match field processing and markov chain monte carlo                    Focal Spot Imaging Applied to USArray Data, Journal of
+                                                                       Geophysical Research: Solid Earth 129, e2023JB027417
+sampling, Geophysical Journal International 218, 1044                  (2024).
+
+(2019).                                                          [70] Y. Sheng, A. Mordret, F. Brenguier, L. Tomasetto,
+                                                                       Q. Higueret, C. Aubert, D. Hollis, F. Vernon, and
+[51] J. C. Castellanos, R. W. Clayton, and A. Juarez, Using a          Y. Ben-Zion, Tracking Seismic Velocity Perturbations
+                                                                       at Ridgecrest Using Ballistic Correlation Functions,
+time-based subarray method to extract and invert noise-                Seismological Research Letters 10.1785/0220230348
+                                                                       (2024), https://pubs.geoscienceworld.org/ssa/srl/article-
+derived body waves at long beach, california, Journal of               pdf/doi/10.1785/0220230348/6313533/srl-
+                                                                       2023348.1.pdf.
+Geophysical Research: Solid Earth 125, e2019JB018855
+                                                                 [71] Y. Sheng, A. Mordret, K. Sager, F. Brenguier, P. Bou´e,
+(2020).                                                                B. Rousset, F. Vernon, Q. Higueret, and Y. Ben-zion,
+                                                                       Monitoring seismic velocity changes across the san jac-
+[52] B. L. N. Kennett, J. Stipcevic, and A. Gorbatov, Spiral-          into fault using train-generated seismic tremors, Geo-
+                                                                       physical Research Letters 49 (2022).
+Arm Seismic Arrays, Bulletin of the Seismological Society
+                                                                 [72] K. Vynck, R. Pierrat, R. Carminati, L. S. Froufe-P´erez,
+of America 105, 2109 (2015).                                           F. Scheffold, R. Sapienza, S. Vignolini, and J. J. Sa´enz,
+                                                                       Light in correlated disordered media, Reviews of Modern
+[53] D. Smith, J. S. Myers, C. S. Kaplan, and C. Goodman-              Physics 95, 045003 (2023), 2106.13892.
+
+Strauss, An aperiodic monotile, arXiv preprint                   [73] E. Ch´eron, J.-P. Groby, V. Pagneux, S. F´elix, and
+                                                                       V. Romero-Garc´ia, Experimental characterization of
+arXiv:2303.10798 (2023).                                               rigid-scatterer hyperuniform distributions for audible
+                                                                       acoustics, Phys. Rev. B 106, 064206 (2022).
+[54] D. Smith, J. S. Myers, C. S. Kaplan, and C. Goodman-
+                                                                 [74] K. Tang, Y. Wang, S. Wang, D. Gao, H. Li, X. Liang,
+Strauss, A chiral aperiodic monotile, arXiv preprint                   P. Sebbah, Y. Li, J. Zhang, and J. Shi, Hyperuniform dis-
+                                                                       ordered parametric loudspeaker array, Phys. Rev. Appl.
+arXiv:2305.17743 (2023).                                               19, 054035 (2023).
+
+[55] Since we are not interested in strong aperiodicity in this  [75] K. K. Gomes, W. Mar, W. Ko, F. Guinea, and H. C.
+                                                                       Manoharan, Designer Dirac fermions and topological
+work we use the names Tile     1  and Specter interchange-             phases in molecular graphene, Nature 483, 306 (2012),
+                               2                                       10.1038/nature10941.
+
+ably. In [38], the Specter has wiggled edges deformed from       [76] I. Bloch, J. Dalibard, and W. Zwerger, Many-body
+                                                                       physics with ultracold gases, Rev. Mod. Phys. 80, 885
+Tile  1  to enforce strong aperiodicity. For beamforming               (2008).
+      2
+                                                                 [77] L. Seydoux, N. M. Shapiro, J. de Rosny, F. Brenguier,
+purposes, only the inter-site distances and relative angles            and M. Land`es, Detecting seismic activity with a covari-
+                                                                       ance matrix analysis of data recorded on seismic arrays,
+matter.  Hence,  the  Tile  1  and Specter have the same               Geophysical Journal International 204, 1430 (2016).
+                            2
+                                                                 [78] R. T. Hoctor and S. A. Kassam, The unifying role of the
+beamforming properties.                                                coarray in aperture synthesis for coherent and incoherent
+                                                                       imaging, Proceedings of the IEEE 78, 735 (1990).
+[56] S. Singh and F. Flicker, Exact solution to the quan-
+
+tum and classical dimer models on the spectre aperiodic
+
+monotiling, Phys. Rev. B 109, L220303 (2024).
+
+[57] Y. Okabe, K. Niizeki, and Y. Araki, Ising model on the
+
+aperiodic smith hat, Journal of Physics A: Mathematical
+
+and Theoretical 57, 125004 (2024).
+
+[58] R. Rieger and A. Danescu, Macroscopic elasticity of the
+
+hat aperiodic tiling, Mechanics of Materials 193, 104988
+
+(2024).
+
+[59] C. Kaplan, An aperiodic monotile (2023).
+
+[60] N. Harmon, C. Rychert, and P. Gerstoft, Distribution
+
+of noise sources for seismic interferometry, Geophysical
+
+Journal International 183, 1470 (2010).
+
+[61] A. Mordret, M. Land`es, N. Shapiro, S. Singh, P. Roux,
+
+and O. Barkved, Near-surface study at the valhall oil field
+
+from ambient noise surface wave tomography, Geophysi-
+
+cal Journal International 193, 1627 (2013).
+
+[62] C. S. Kaplan, M. O'Keeffe, and M. M. Treacy, Periodic
+
+diffraction from an aperiodic monohedral tiling, Acta
+
+Crystallographica Section A: Foundations and Advances
+
+80 (2024).
+
+[63] J. E. S. Socolar, Quasicrystalline structure of the hat
+
+monotile tilings, Phys. Rev. B 108, 224109 (2023).
+
+[64] S. J. Ahn, P. Moon, T.-H. Kim, H.-W. Kim, H.-C. Shin,
+
+E. H. Kim, H. W. Cha, S.-J. Kahng, P. Kim, M. Koshino,
+
+et al., Dirac electrons in a dodecagonal graphene qua-
+
+sicrystal, Science 361, 782 (2018).
+                                                               21
+
+[79] R. A. Haubrich, Array design, Bulletin of the Seismolog-  [82] S. Eddins, Penrose rhombus tiling (2024), gitHub repos-
+      ical Society of America 58, 977 (1968).                        itory. Retrieved April 19, 2024.
+
+[80] J. Serra, Mathematical morphology, in                     [83] I.-L. Ho, Generate periodic-to-quasiperiodic unit blocks
+      Encyclopedia of Mathematical Geosciences (Springer,            to fill space (2024), MATLAB Central File Exchange.
+      2022) pp. 1­16.                                                Retrieved April 19, 2024.
+
+[81] D. Levine and P. J. Steinhardt, Quasicrystals: A new      [84] Google Earth Pro, Polygon, Retrieved April 18, 2024,
+      class of ordered structures, Phys. Rev. Lett. 53, 2477         from http://earth.google.com/ (2024), google Earth ver-
+      (1984).                                                        sion 9.3.1.
+

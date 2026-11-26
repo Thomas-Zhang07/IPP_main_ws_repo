@@ -1,0 +1,605 @@
+740                                                                               IEEE TRANSACTIONS ON HAPTICS, VOL. 14, NO. 4, OCTOBER-DECEMBER 2021
+
+     AUTD3: Scalable Airborne Ultrasound
+                   Tactile Display
+
+              Shun Suzuki , Seki Inoue , Masahiro Fujiwara , Member, IEEE,
+                  Yasutoshi Makino , and Hiroyuki Shinoda , Member, IEEE
+
+   Abstract--Through nonlinear effects, airborne ultrasound                          Acoustic phased arrays have mainly been applied to nonde-
+phased arrays enable mid-air tactile presentations, as well as                    structive diagnosis and inspection of human bodies and con-
+auditory presentation and acoustic levitation. To create workplaces               structions, based on solid-borne and structure-borne sound. In
+flexibly, we have developed a scalable phased array system in which               addition to sensor applications, airborne ultrasonic phased arrays
+multiple modules can be connected via Ethernet cables and                         as wave sources have been studied in a parametric speaker [3],
+controlled from a PC or other host device. Each module has 249                    [4] and a focal point sound source [5]. Recently, acoustic levita-
+transducers and the software used can individually specify the phase              tion using acoustic radiation pressure has also attracted
+and amplitude of each of the connected transducers. Using                         researchers' interest [6]­[8]. In addition to levitating particles
+EtherCAT for communication, the system achieves high accuracy                     smaller than its wavelength, Inoue et al. achieved non-rotating
+synchronization among the connected modules. In this article, we                  levitation of a solid object several times larger than the wave-
+describe the details of the hardware and software architecture of the             length (8:5 mm), using a 40 kHz ultrasound [9]. Dynamic con-
+developed system and evaluate it. We experimentally confirmed the                 trol of lightweight objects is also of current interest [10]­[12].
+synchronization of 20 modules within an accuracy of 0:1 ms and the                Furumoto et al. proposed a floating display by controlling float-
+phase and amplitude can be specified at 8 bits resolution. In                     ing balloons three-dimensionally [13], [14]. Ping-pong ball con-
+addition, using nine modules, we confirmed that we could make a                   trol using high-speed feedback has also been demonstrated [15].
+focal point of the size consistent with the theory at 500 mm above the
+array surface.                                                                       Ultrasonic tactile presentation originates from underwater
+                                                                                  stimulation. Dalecki et al. first showed that a tactile sensation
+   Index Terms--Mid-air ultrasound haptics, phased array.                         could be generated through ultrasonic irradiation in water [16].
+                                                                                  The first aerial tactile stimulation was demonstrated by Iwa-
+                           I. INTRODUCTION                                        moto et al. who demonstrated that airborne convergent ultra-
+                                                                                  sound could apply a tactile sensation to the skin [17].
+I N this paper, we describe and evaluate the hardware                             Subsequently, many systems have been proposed that provide a
+   and software architecture of the scalable airborne ultra-                      tactile sensation through an ultrasound phased array [18]­[20].
+sound phased array system proposed in [1]. Fig. 1 shows the
+phased array system, referred to as an Airborne Ultrasound                           The advantage of mid-air haptics is attributed to the absence
+Tactile Display 3 (AUTD3). The AUTD3 modules can be con-                          of physical contact. The user's movement is not restricted, the
+nected and extended to each other using Ethernet cables. Fur-                     stimulation area is freely selected, and the system is hygienic.
+thermore, the phase and amplitude of each transducer can be                       For basic-research purposes, the pressure pattern can be con-
+individually controlled, enabling the production of arbitrary                     trolled with reproducibility while avoiding the bias of feeling
+pressure patterns. Owing to these features, AUTD3 has                             that they are touching a tactile display device. In addition, it is
+already been used in various studies, where a multi-module                        sometimes preferable that the display area is not hidden by the
+aperture was created to realize a large workspace, sometimes                      devices.
+surrounded by multiple modules with different orientations.
+For example, in [2], eighteen AUTD3 devices cooperate to                             A problem with mid-air ultrasound haptics is the weak dis-
+generate a focal point at a distance of approximately 1 m from                    played stimulation. As a solution to this, stimulation techniques
+the array surface and it was shown that such focus could be                       as lateral modulation [21] and spatiotemporal modulation [22]
+felt by a chest skin through clothing.                                            have been proposed that increase the perceived intensity.
+
+   Manuscript received September 7, 2020; revised December 21, 2020 and              Furthermore, recent studies have shown that not only vibra-
+February 24, 2021; accepted March 26, 2021. Date of publication March 31,         tory sensations but also thermal sensations could be displayed.
+2021; date of current version December 16, 2021. This article was recom-          For example, in [23], a cold feeling is given remotely through
+mended for publication by Associate Editor Dr. Matteo Bianchi and Editor-in-      the transport of cold air by the acoustic flow associated with a
+Chief Marcia K. O'Malley upon evaluation of the reviewers' comments. This         Bessel beam. In [24], a method for providing heat using the
+work was supported in part by JSPS KAKENHI under Grant 16H06303 and in            thermoacoustic phenomenon of ultrasonic waves passing
+part by JST CREST under Grant JPMJCR18A2. (Corresponding author: Shun             through a narrow slit was demonstrated.
+Suzuki.)
+                                                                                     Table I presents an overview of the phased array systems for
+   The authors are with the Graduate School of Frontier Sciences, The University  a haptic presentation. In the original study by Hoshi et al. [18]
+of Tokyo13143 , Kashiwa-shi, Chiba 277-8561, Japan (e-mail: suzuki@hapis.k.u-     and the early research conducted thereafter, prototypes were
+tokyo.ac.jp; inoue@hapis.k.u-tokyo.ac.jp; Masahiro_Fujiwara@ipc.i.u-tokyo.ac.
+jp; yasutoshi_makino@k.u-tokyo.ac.jp; hiroyuki_shinoda@k.u-tokyo.ac.jp).
+
+   Digital Object Identifier 10.1109/TOH.2021.3069976
+
+     This work is licensed under a Creative Commons Attribution 4.0 License. For more information, see https://creativecommons.org/licenses/by/4.0/
+SUZUKI et al.: AUTD3: SCALABLE AIRBORNE ULTRASOUND TACTILE DISPLAY                                                                         741
+
+                                                                                          II. MODULAR PHASED ARRAY SYSTEM
+
+                                                                               Typical acoustic phased array devices used in previous hap-
+                                                                            tics studies, including commercially available ones, are
+                                                                            approximately 30 cm square boards containing ultrasonic
+                                                                            transducers with 1 cm spacing. If a single board is utilized,
+                                                                            the workspace is within the 30 cm cube in front of the board.
+                                                                            The limitation is due to the focusability of the acoustic wave.
+
+                                                                               Applying the Fresnel approximation, the focal size gener-
+                                                                            ated by the rectangular aperture array is given by
+
+                                                                                                          2r
+                                                                                                          R;                               (1)
+
+                                                                            where r is the distance from the array surface, R is the aper-
+
+                                                                            ture size, and  is the wavelength [18]. This means that we
+
+                                                                            must shorten the wavelength or increase the aperture size to
+
+                                                                            create a small focal point at distance r. The shorter the wave-
+
+                                                                            length is, i.e., the higher the frequency, the stronger the attenu-
+
+                                                                            ation from air absorption [28]. Therefore, a practical solution
+
+                                                                            is to widen the aperture.
+
+                                                                            The directivity of the ultrasound transducer is another criti-
+
+                                                                            cal factor. The sound pressure at focus located distant from
+
+                                                                            the array is proportional to the number of transducers. How-
+
+                                                                            ever, when the focus is close to the array, the sound pressure
+
+                                                                            becomes independent of the total number of transducers. The
+
+                                                                            sound pressure p of an ultrasonic wave at point x emitted
+
+                                                                            from a transducer placed at the origin is represented by the fol-
+
+Fig. 1. Photograph of (a) a single module of the proposed array system and  lowing equation:
+(b) nine connected modules. The connected modules can be controlled from a
+computer as a single array.                                                 pðx; tÞ           ¼  p0    A  DðuÞ  eÀbkxk  ejðfþkkxkÞejvt  ;  (2)
+                                                                                                          kxk
+created for various purposes [19], [20]. These studies showed
+the possibility of achieving a tactile presentation using ultra-            where t is time, p0 is a constant value related to the output
+sound phased arrays. Hasegawa et al. proposed an extensible                 power of the transducer, A and f are parameters related to the
+phased array system that constructs a tree-topology net-                    driving signal, DðuÞ is the directivity, b is the attenuation
+work [25]. However, owing to the limitation of communication                coefficient, k is the wavenumber, and v is the angular fre-
+throughput (approximately 1 Mbps), it was not possible to indi-             quency. The directivity DðuÞ usually takes the maximum
+vidually transmit the phases and amplitudes of all of the trans-            value in the normal direction of the transducer. Thus, the best
+ducers. Thus the phases and amplitudes are calculated on each               design to maximize the acoustic irradiation on a target is to
+module; i.e., the displayed patterns were limited to a single               surround the workspace with transducers oriented to the target.
+focus or very simple patterns where the necessary information               Therefore, the surrounding alignment of multiple modules is
+for each module is transmitted in a short code. Based on the                sometimes necessary.
+studies in [19], [26], "Ultrahaptics" has made phased array
+devices available on the market. Although the application pro-                 Inoue et al. first demonstrated AUTD3, a modular phased
+gramming interface is currently public, the entire program is               array system, to meet the above necessity in 2016 [1]. Their
+not disclosed. Besides, a multi-module connection is not                    modules can be daisy-chained using Ethernet cables and oper-
+assumed. Marzo et al. proposed Ultraino, an open-platform                   ated as a single phased array system. The aperture size can be
+phased array project [27]. Both hardware and software are                   widened by arranging the modular arrays and the workspace
+open-source and we can freely design the geometry of the trans-             can be freely designed. Here, the critical problem is the syn-
+ducers. Ultraino uses Arduino Mega as an interface to a per-                chronization of such modules. For example, in the case of a
+sonal computer (PC) and a signal generator, which makes it                  4 bits phase quantization of a 40 kHz ultrasound, the timing
+easy and inexpensive to use. Furthermore, it can be extended by             margin between the transducers is approximately 1 ms. In [1],
+connecting the devices and synchronizing them by sharing a                  the authors proposed a phased array system using EtherCAT
+global clock. However, owing to the limitation of the number of             as a communication system, whose distributed clock mecha-
+pins, only 64 transducers can be driven per device. In addition,            nism enables modules to synchronize at the sub-microsecond
+USB to UART, which is relatively slow at 25 KB=s, is used for               level.
+communication with the PC, limiting the number of connec-
+tions and the update rate.                                                     AUTD3 is an extensible phased array system based on Ether-
+                                                                            CAT. Each array consists of 18 Â 14 transducers (owing to the
+                                                                            assembly, the total number of transducers is 249, with three
+742                                                                 IEEE TRANSACTIONS ON HAPTICS, VOL. 14, NO. 4, OCTOBER-DECEMBER 2021
+
+                                          TABLE I
+     OVERVIEW OF A PHASED ARRAY SYSTEM FOR TACTILE PRESENTATION
+
+Fig. 2. Hardware configuration of AUTD3.                                                        III. HARDWARE
+
+transducers omitted, see also Fig. 3). The size of the array is        As described in [1], the requirements for a 40 kHz fre-
+192 mm Â 151:4 mm, including the substrate. According to the        quency phased array module are as follows: an accurate syn-
+EtherCAT specifications, a maximum of 65 535 devices can the-       chronization, a high refresh rate modulation mechanism of
+oretically be connected and thus more than 16 million transducers   over 2 kHz, real-time logic for generating a waveform, and
+can be driven at maximum. The phase and amplitude can be spec-      controllability from a non-real-time computer.
+ified in 8 bits. These transducers can be specified individually
+from the software. The amplitude and phase update rate is 1 kHz        First, to achieve both scalability and accurate phase syn-
+at maximum, which depends on the number of connected devices        chronization, we employ a distributed clock, compensating for
+as there is an upper limit to the transmission throughput,          the clock drift by measuring the communication delay rather
+100 Mbps. Therefore, the theoretical maximum number of trans-       than sharing a global clock. As already mentioned, the timing
+ducers driven at 1 kHz is 100 Mbps=1 kHz=16 bit ¼ 6250.             margin is approximately 1 ms when the phase is quantized in
+And, the update rate decreases linearly when the number of trans-   4 bits. Furthermore, in recent applications where the focus is
+ducers exceeds the limit.                                           moved at a high speed, it is necessary to perform fine phase
+                                                                    changes quickly. Therefore, high-precision synchronization is
+   This paper is based on the conference paper that reported        required. It is possible to share a global clock in the connec-
+and demonstrated AUTD3 [1]. However, the details of its real-       tion of several modules for synchronization. The advantage of
+ization are not described in [1]. In addition, this device has yet  the distributed clock is that no physical care is necessary for
+to be objectively verified. In this paper, we examine the basic     the electrical delay.
+expandability of AUTD3 and the accuracy of its phase and
+amplitude resolution to verify whether it can be used for gen-         Second, human beings can sense vibrations within a wide
+eral purposes as a standard device. Throughout the experi-          frequency range, from static pressure to nearly 1 kHz [29].
+ment, we confirmed a synchronization of less than 0:1 ms in a       According to the sampling theorem, a refresh rate of 2 kHz
+system consisting of 20 devices. We also confirmed that the         would be sufficient to cover human tactile perception. In the
+phase and amplitude of the transducer could be specified at an      previous developments, the typical stimulation was 200 Hz
+accuracy of 8 bits. Furthermore, by cooperating with nine           amplitude modulation (AM) and there have not yet been any
+devices, we observed a focus 500 mm above the array surface.        reports on the necessity for frequency components higher than
+In addition, we confirmed that the acoustic pressure of a focus     200 Hz in mid-air haptics. This is because mid-air stimulation
+increase as the number of modules increase.                         is weak and heightening perceptual strength has been priori-
+                                                                    tized. At the same time, we expect that high-frequency com-
+                                                                    ponents will be required to produce a realistic tactile feeling
+                                                                    in future systems.
+
+                                                                       Third, a square wave can drive the ultrasonic transducer;
+                                                                    however, unlike pulse width modulation (PWM) motor control,
+                                                                    it is necessary to control not only the duty ratio but also the sig-
+                                                                    nal timing (shift duration) at a sub-microsecond resolution.
+                                                                    Therefore, we need to use a field-programmable gate array
+                                                                    (FPGA). Here, the duty ratio determines the amplitude and the
+                                                                    shift duration corresponds to the phase of the ultrasound.
+
+                                                                       Finally, for convenience, the host machine should not
+                                                                    require a real-time OS. It is desirable to be able to use a stan-
+                                                                    dard PC with Windows, Linux, or macOS.
+
+                                                                       For the above reasons, the EtherCAT protocol was adopted
+                                                                    for the network. EtherCAT is a Fieldbus system based on a 100
+                                                                    BASE Ethernet, with a transmission speed of 100 Mbps [30].
+SUZUKI et al.: AUTD3: SCALABLE AIRBORNE ULTRASOUND TACTILE DISPLAY                                                                             743
+
+                                                                            Fig. 4. Directivity of T4010A1 (reconfigured from the datasheet).
+
+Fig. 3. Dimensional drawing of the transducer array. Dimensions are in mm.
+
+The EtherCAT network consists of a master node and slave                    Fig. 5. Signal generation flow.
+nodes. Only one frame is transferred periodically, which maxi-
+mizes bandwidth utilization. The EtherCAT network has a                                V0  ðS þ nT < t < S þ D þ nT Þ
+built-in function called a distributed clock, enabling clock syn-                      0              ðotherwiseÞ;
+chronization with a low jitter shorter than 1 ms.                           V ðtÞ ¼                                                            (3)
+
+   Fig. 2 shows the hardware configuration of the AUTD3 sys-                where T ¼ 25 ms is the period, D is the pulse width, S is the
+tem. The module consists of four main parts: an EtherCAT                    shift duration of the signal, and n is an integer. The transducer
+controller board, a transducer controller board, a transducer               has a sufficiently high Q-value and hence the output of the
+array, and a fan for cooling. The EtherCAT controller board is              ultrasonic wave is proportional to the 40 kHz component,
+responsible for all communications with the PC and other                    which is given as follows:
+modules. This board also communicates with the FPGA
+through block random access memory (RAM). In addition, the                    Z  T   dtV ðtÞei2Tpt              V0      
+synchronization signal generated by EtherCAT is transmitted                 1                                   p   sin D p eÀ2pi22SþTD:
+to the FPGA. The FPGA generates the drive signals, which                                                     ¼                                 (4)
+are input into the transducers through the driver IC. Fig. 3                T0                                            T
+shows a dimensional drawing of the transducer array, includ-
+ing the substrate.                                                          Therefore, the amplitude A and phase f of the ultrasonic wave
+                                                                            can be expressed as follows:
+   Below, we describe a method for driving a single transducer
+and operating multiple modules.                                                            f  ¼              2p  2S þ  D                       (5Þ
+                                                                                                                 2 T      ;
+A. Driving Manner of a Transducer
+                                                                                                                       
+   We used a 40 kHz ultrasonic transducer (T4010A1, Nippon                                 A / sin D p :
+Ceramic Co., Ltd.). The directivity of the transducer is                                                            T                          (6Þ
+depicted in Fig. 4. The drive signal is generated using an
+FPGA driven by a 25:6 MHz clock. The signal generated by                    In AUTD3, the parameters D and S can be specified in 8 bits.
+the FPGA is amplified to 24 Vpp by the driver IC (NJM2670,                     2) Silent Mode: As pointed out in [31], a sudden change in
+New Japan Radio Co., Ltd.) and applied to the transducer.
+                                                                            the amplitude of the transducer causes a loud noise. In [31], it
+   Fig. 5 shows the signal generation flow in the FPGA. The                 was confirmed that the noise was suppressed by gradual phase
+amplitude parameter Di specified by the PC is first multiplied              change with linear interpolation. In our system, we implement
+by the modulation data. It then passes through the low-pass fil-            the silent mode; the amplitude and phase parameters are
+ter (LPF) and is input to the PWM signal generator. The phase               passed through the LPF in the FPGA to suppress the sudden
+parameter Si specified from the PC also passes through the                  change in amplitude.
+LPF and is input to the PWM signal generation part.
+                                                                               Fig. 6 shows the frequency response of the designed filter. We
+   1) Pulse Width Modulation: We control the transducer                     used an LPF with a cutoff frequency of approximately 150 Hz.
+using PWM. The following equation describes the voltage                     Fig. 7 shows the temporal variation of the phase parameters,
+applied to the transducer:
+744                                                               IEEE TRANSACTIONS ON HAPTICS, VOL. 14, NO. 4, OCTOBER-DECEMBER 2021
+
+Fig. 6. Frequency response of LPF for eliminating noise.          Fig. 7. Effect of LPF. The rapid phase change can be suppressed by passing
+                                                                  through the LPF.
+with and without a filter. The LPF clearly suppresses the abrupt
+change in phase. By gradually changing the amplitude, the            2) Controller Board: EtherCAT requires a unique Ether-
+amplitude fluctuation of the transducer can be suppressed. In     CAT slave controller to achieve the characteristics mentioned
+our system, the same filter is used for the duty ratio.           previously. We used a CPU board (AP-RZT-0 A, AlphaPro-
+                                                                  ject Co., Ltd.) with two EtherCAT ports. The board can be
+   Note that the amplitudes and phases may change undesir-        daisy-chained with other boards and has 209 parallel I/O ports,
+ably as a result of this filtering. Silent mode causes delays in  some of which are connected to the FPGA. The role of this
+the phase change, as shown in Fig. 7. This leads, for example,    board is to transfer the phase, amplitude, and modulation data
+to the focus generation being delayed by several ms. In addi-     sent from the master to the FPGA.
+tion, the focus may not even be generated in the case of fast-
+moving focus applications. Also, the amplitude of the AM             An FPGA (XC7A200 T, XILINX, Inc.) was mounted onto
+may be reduced by the filter and the perception may be weak-      the FPGA board to drive all transducers of the module. The
+ened. Thus, the enable flag in silent mode can be switched off    board also has a circuit to boost the output of the FPGA from
+from the software if deemed unnecessary.                          3:3 V to 24 Vpp. Note that we have experimentally confirmed
+                                                                  that the deviation in propagation delay among the signals
+   3) Special On-Module Functions: AUTD3 has the func-            input to the transducers from FPGA via driver ICs is much
+tion of applying periodic AM, apart from amplitude and phase      less than 1 ms and therefore ignorable.
+control. We can specify a periodic 8 bits data array with a
+maximum size of 4000 from the host device. The data in this          The portions of the CPU board codes that relate to the logic
+array are sampled sequentially at a sampling frequency of         of AUTD3 and the whole FPGA codes are available at https://
+4 kHz and multiplied by the duty ratio. Therefore, it is possi-   github.com/shinolab/autd3-library-firmware.
+ble to apply AM at a frequency of 1 Hz to 2 kHz, which
+includes the human tactile frequency range.                          3) Synchronization: The FPGA operates all of the trans-
+                                                                  ducers in the module; thus, they are driven with the same clock
+   In addition, AUTD3 has a function to provide periodic fast     and synchronized. For synchronization between modules, we
+motion of a focal spot for lateral modulation or spatiotemporal   used the synchronization signals generated by the distributed
+modulation. In this function, the phases are calculated on the    clock of EtherCAT. The signals are fired at regular intervals,
+hardware based on the positional data array of the foci and       which can be specified as having a value of 32 bits in units of
+updated at a refresh rate of 40 kHz at maximum.                   1 ns (thus, approximately 4:2 s at maximum). The FPGA is
+                                                                  operated using a 25:6 MHz crystal oscillator (SG-8002CE-
+B. AUTD3 Module                                                   25.6M-PCB-L2, Seiko Epson Co.). The frequency tolerance of
+   1) Ethercat: EtherCAT works differently to regular com-        this oscillator is Æ50 ppm; thus, a deviation of 100 ms in 1 s
+                                                                  may occur among multiple modules. Therefore, it is necessary
+munication. The EtherCAT slaves (AUTD3 modules) read/             to periodically compensate for an interval of approximately
+write data on frames sent by the master (usually a PC in our      1 ms to maintain the synchronization of 0:1 ms.
+system) while the frames pass through. This makes it appear
+that the master and slaves share the same memory space, with                                  IV. SOFTWARE
+minimum delay.
+                                                                     The libraries used to control AUTD3 are publicly available
+   Furthermore, a distributed clock allows the EtherCAT           at https://github.com/shinolab/autd3-library-software. The
+slaves to synchronize with a high accuracy of less than 1 ms.     software supports cross-platform services as well as Windows,
+The first slave becomes the master clock, measuring the delay     Linux, and macOS. In addition, we can use Raspberry Pi or
+time between each slave and compensating for it accordingly.      microcontroller boards, such as Arduino, if an Ethernet port
+This compensation is conducted automatically by the hard-         and sufficient memory are available. Although the library is
+ware, resulting in fast and accurate synchronization.
+SUZUKI et al.: AUTD3: SCALABLE AIRBORNE ULTRASOUND TACTILE DISPLAY   745
+
+Fig. 8. Measured phase of ultrasound transmitted from a transducer.  Fig. 9. Measured amplitude of ultrasound transmitted from a transducer and
+                                                                     40 kHz component of input voltage.
+written in C++, it can also be written in other languages that
+have a foreign function interface with C (e.g., C# or Python)        correlation function with respect to the observed sound at S ¼ 0.
+as the library also has a C language interface.                      We observed a linear response to S, as described in eq. (6).
+
+   The user first specifies the geometry of the modules, and            Fig. 9 shows the normalized sound pressure. The 40 kHz
+location and orientation of each module. Here, the positions         component of the input voltage applied to the transducer is
+and directions of all transducers are calculated. The user then      also shown in Fig. 9. The horizontal axis of Fig. 9 shows the
+calculates the phase and amplitude of all transducers using          8 bits discretized amplitude parameter D, where D ¼ 0 corre-
+this information, as well as the focal position, as an example.      sponds to a duty ratio of zero, and D ¼ 255 corresponds to a
+In addition to this phase and amplitude data, header data,           duty ratio of 50%. The maximum value was 26:6 Pa at
+which consist of a flag to control the hardware (e.g., an enable     D ¼ 255.
+flag for silent mode) and modulation data if necessary, are
+transferred to the device.                                              The 40 kHz component of the voltage was proportional to
+                                                                     sin ðp=2 Â D=255Þ, according to eq. (6). The transducer
+   The library currently includes utilities to generate a single     extracts this component and emits it into space. Although we
+focus, Bessel beam [32], multi-foci [33], and plane waves.           expected the amplitude of the ultrasound to be proportional to
+The library can be flexibly extended to suit the needs of the        this component, it was not, as shown in Fig. 9. If we assume
+user because the phase and amplitude of all transducers can be       that the amplitude is expressed by sin aðp=2 Â D=255Þ, we
+controlled by the software on the host side. This allows the         obtain a ¼ 0:803 through a fitting (the red dashed line). The
+user to rapidly conduct a wide range of studies.                     same phenomenon was also reported in [25]. The applied volt-
+                                                                     age of the transducer followed the theoretical value; thus, this
+                           V. EVALUATION                             was not a problem of the drive circuit but rather a characteris-
+                                                                     tic of the transducer. This implies that the response of the
+A. Resolution of Amplitude and Phase                                 transducer is saturated with a high duty ratio.
+
+   First, we measure whether the phase and amplitude parame-            Although the measured amplitude differed from the theoret-
+ters can be specified in 8 bits. In this experiment, we drive        ical value and was not linear with the input parameters, it was
+only one transducer because driving all of them saturates the        confirmed that both the phase and amplitude could be speci-
+microphone. The sound pressure was measured using a stan-            fied at a resolution of 8 bits.
+dard microphone (Type 4138-A-015, Bruel & Kjær) at
+200 mm above the transducer.                                         B. Synchronization
+
+   Fig. 8 shows the measured phases of the ultrasound. The hori-        We subsequently investigated the accuracy of the synchro-
+zontal axis of Fig. 8 is an 8 bits discretized phase parameter S,    nization. We connected 20 modules and measured the drive
+where S ¼ 0 corresponds to f ¼ 0 and S ¼ 255 corresponds to          signal when the ultrasound was output. Fig. 10 shows the drive
+f ¼ 2p Â 255=256. The vertical axis is the phase of the              signals for the 1st, 8th, 14th, and 20th of the 20 connected
+measured sound. The phase was calculated using the cross-            modules. All transducers were driven in the same phase. As
+746                                                                                 IEEE TRANSACTIONS ON HAPTICS, VOL. 14, NO. 4, OCTOBER-DECEMBER 2021
+
+                                                                                    Fig. 11. Measured acoustic pressure field around a focus generated using
+                                                                                    nine modules. The duty ratio of the input square wave was 10=255 Â 50%.
+
+Fig. 10. Transducer driving signal of the first, eigth, 14th, and 20th among the    pressure increases as the number of modules increases. We
+20 connected modules. These figures are taken (a) immediately after start-up,       also confirmed that the sound pressure decreases as the focus
+(b) immediately after the start of the synchronization, and (c) one hour after the  becomes distant.
+start of the synchronization. (d) Enlarged view during synchronization.
+                                                                                       As shown in Fig. 12 (c), the sound pressure seems to be sat-
+shown in the figure, we confirmed that these modules were                           urated at a certain level. This implies that the sound pressure
+synchronized with an accuracy of approximately 100 ns.                              generated by many transducers cannot be expressed by a linear
+                                                                                    superposition of that of a single transducer.
+C. Focus Generation With Nine Modules
+                                                                                                               VI. DISCUSSION
+   We also measured the sound pressure field around the focal
+point. Nine AUTD3 modules were densely placed on the grid;                          A. Phase and Amplitude Resolution
+three each in the row and column directions. Thus the aperture
+size of the array was 576 Â 454:2. The sound pressure was                              Our system specifies the phase and amplitude parameters of
+measured with the standard microphone attached to the tip of                        all transducers; hence, excessive resolutions of these parame-
+the robot (M710-iC 20 L, FANUC Corp.). The xy-plane was                             ters decrease the update rate. In addition, the resolution of the
+horizontal to the surface of the array, the z-axis was perpen-                      phase is also related to the synchronization margin. In the fol-
+dicular to it, and the origin was the center of the array surface.                  lowing, we discuss these necessary resolutions.
+A focal point was generated at ðx; y; zÞ ¼ ð0; 0500Þ mm.
+                                                                                       We consider the case of generating a focus. In the follow-
+   Fig. 11 shows the root mean square (RMS) values of the                           ing, we simulate 54 Â 42 transducers based on eq. (2). The
+sound pressure field in the xy plane at z ¼ 500 mm, where                           focal point was created at 500 mm above the center of the
+the duty ratio of the input square wave was 10=255 Â 50%. As                        array. Fig. 13 (a) shows the variation in sound pressure of the
+expected from eq. 1, focal points of approximately twice the                        focus for different phase resolutions. Here, we set the ultra-
+size of the wavelength were generated. The maximum RMS                              sound phase f as follows,
+of acoustic pressure observed was 839 Pa.
+                                                                                              1  j  r   k
+D. Effect of the Number of Modules                                                            x        x
+                                                                                    f  ¼  2p               (7)
+   Next, we investigated the effect of the number of modules
+on the focal sound pressure. The number of modules was one,                         where bÁc is a floor function, x is the number of phase divisions,
+four (two by two), or nine (three by three), and we placed                          r is the distance between the focus and transducer, and  is the
+them densely on a grid. The focus was generated at ðx; y; zÞ ¼                      wavelength. As shown in Fig. 13 (a), for the sound pressure,
+ð0; 0150Þ; ð0; 0300Þ; ð0; 0500Þ mm. The coordinate system                           2p=16, i.e., a resolution of 4 bits is sufficient. Moreover,
+was the same as Sec. V-C. Note that we decreased the sensitiv-                      Fig. 13 (b) shows the calculated error between the produced
+ity of the microphone using a silicon cover and then calibrated                     maximum pressure point and the target point. Each target point
+it at low sound pressure because the dynamic range of the                           was placed at ð0:1n; 0500Þ mm; n ¼ 0; 1; . . .; 85, where the
+microphone is 52:2 dB to 168 dBð5 kPaÞ.                                             origin was the center of the array and the coordinate system was
+                                                                                    set to be the as same as Sec. V-C. Fig. 13 (b) shows that we can
+   Fig. 12 shows the RMS of the acoustic pressure at the focus                      control the focal position with a resolution of 0:1 mm if we
+against the duty ratio. We confirmed that the maximum sound
+SUZUKI et al.: AUTD3: SCALABLE AIRBORNE ULTRASOUND TACTILE DISPLAY                                                               747
+
+Fig. 12. Measured RMS of acoustic pressure at a focal point generated at (a) (0, 0150)mm, (b) (0, 0300)mm, and (c) (0, 0500)mm.
+
+                                                                               1 kHz because the accuracy of the timer of a typical master,
+                                                                               i.e., a standard PC, is approximately 1 ms.
+
+                                                                                  However, this limitation is not a problem in most cases
+                                                                               because there is a certain time constant in the phase shift. For
+                                                                               example, when the driving phase is suddenly reversed, the
+                                                                               amplitude of a resonant-type transducer largely decreases once
+                                                                               and takes approximately 1 ms to recover [31]. As a result, it
+                                                                               was reported that the maximum refresh rate for the standard
+                                                                               40 kHz transducer is approximately 1 kHz, except when the
+                                                                               displacement is sufficiently smaller than the wavelength.
+
+Fig. 13. (a) Amplitude of ultrasound at a focal point generated 500 mm         C. Individual Difference of Transducers
+above an array with 54 Â 42 transducers, where the horizontal axis represents
+a phase resolution. (b) Position error when generating focus. The solid line      Another problem with an increase in the number of trans-
+represents the mean and the colored area represents the existence range of an  ducers is the individual differences in the transducers used.
+error. The subgraphs show enlarged views of from x ¼ 2 to 32.                  Even if the same drive signal is applied to the transducers, the
+                                                                               phase and amplitude of the ultrasonic waves may differ
+have an accuracy of 4 bits. This value is smaller than the two-                depending on the individual. Herein, we discuss how this
+point discrimination threshold and is comparable to that of the                affects the focal point generation and the linear scalability of a
+shift in threshold of a finger, which is the most sensitive part of            phased array for the number of transducers.
+the body. It is also much smaller the displacement amplitude of
+Lateral Modulation [21]. Therefore, a phase resolution of 4 bits                  We assume that the amplitudes A of i-th transducers follow
+is sufficient to control a single focus.                                       a normal distribution independently and identically for i ¼
+                                                                               1; 2; . . .; n, i.e.,
+   In the proposed system, we set the amplitude resolution to
+8 bits though we have no solid ground, taking into account the                                        Ai i$id N ðA; sA2 Þ:       (8)
+margin and the convenience of implementation. In addition, we
+decided to set the phase resolution to 8 bits because this value               The same applies to the phase f,
+is convenient for allowing the data to be in multiples of 1 byte.
+                                                                                                      fi i$id N ð0; s2fÞ:        (9)
+B. Update Rate
+                                                                               Furthermore, we assume that these distributions are indepen-
+   The phase and amplitude refresh rate of our system depends
+on the master device and the number of modules connected to                    dent. Assuming that the focal point is far and the attenuation
+it. The system has no buffer for the phase or amplitude data on
+the hardware, while the master device specifies the phase and                  and directivity are the same for all transducers, the linear
+amplitude of all transducers. The refresh rate is limited to
+                                                                               superposition of sound pressure from all transducers can be
+
+                                                                               expressed as follows:
+
+                                                                                                      p ¼ X Aiejfi     (10)
+
+                                                                                                      i
+748                                                                          IEEE TRANSACTIONS ON HAPTICS, VOL. 14, NO. 4, OCTOBER-DECEMBER 2021
+
+Fig. 14. Individual differences of (a) RMS of acoustic pressure, and (b)     with a resolution of 8 bits. We also observed that 20 con-
+                                                                             nected modules were synchronized within 0:1 ms for an hour
+phase measured at 200 mm above the transducers. The duty ratio of the driv-  experiment. Furthermore, by synchronizing the nine modules,
+ing signal was 10=255 Â 50%.                                                 a focal point of the theoretical size was observed. In addition,
+                                                                             we confirmed that we could make acoustic pressure high by
+Assuming that the phase variance is sufficiently small, the                  increasing the number of modules.
+
+expected value of the sound pressure at the focal point is                      We can freely design a large workspace using these extensi-
+                                                                             ble AUTD3 modules. All modules can be synchronized at the
+expressed as follows:                                                        sub-microsecond level using distributed clocks. In addition,
+                                                                             multiple connected modules operate as a single array system
+            E½p ¼ E½AiE"X ejfi #                    (11Þ           and can be controlled by software on various devices with an
+                                                                             Ethernet port, including a PC. In the case of a single module,
+                       ¼  AE"X          i   f2i2#:  (12Þ           the phase and amplitude of all transducers can be individually
+                                                                             specified with a resolution of 8 bits under the limitation of the
+                                        i  1À                                total throughput of 100 Mbps.
+
+Here, fi=sf2 follows a x2 distribution of n degrees of freedom;                 We evaluated the properties of AUTD3 in this paper. We aim
+                                                                             to conduct various physiological investigations in haptics,
+therefore,                                                                   which are enabled by the device. Because our system can drive
+                                                                             a large number of transducers, it is also important to evaluate
+            E½p           ¼  An  À    n  sf2        (13Þ           the health risks of being exposed to strong ultrasounds in practi-
+                                              2                              cal applications. In addition, applications that generate com-
+                             nA1            :                      plex sound fields at high refresh-rate (e.g. > 10 kHz) have
+                          ¼            À   s  2               (14Þ           recently emerged [34]. For such applications, the communica-
+                                              f                              tion speed (100 Mbps) is insufficient when using many
+                                                                             AUTD3s. Because communication systems with speeds of
+                                              2                              Gbps are already spread through the market, our next challenge
+                                                                             is to create a device that can update all transducers' phase/
+That is, even if the transducers have an individual difference,              amplitude independently in large-scale integrated arrays.
+the sound pressure at the focal point is proportional to n and
+we can consider that n transducers with amplitude characteris-                  Finally, all the data and programs used in this paper are
+tics Ak1 À sf2 =2k.                                                          available at Open Science Framework (URL: https://osf.io/
+                                                                             sqdg4/, DOI: 10.17 605/OSF.IO/SQDG4).
+   Fig. 14 shows the measured individual difference of 2241
+transducers (T4010A1) used in this paper. We measured RMS                                                  REFERENCES
+of acoustic pressure and phase at 200 mm above the trans-
+ducers. The duty ratio of the driving signal was 10=255 Â                     [1] S. Inoue, Y. Makino, and H. Shinoda, "Scalable architecture for airborne
+50%. As shown in Fig. 14. We confirmed that the individual                          ultrasound tactile display," in Proc. Int. AsiaHaptics Conf., 2016,
+differences in amplitude and phase of the transducer follow a                       pp. 99­103.
+normal distribution. The average RMS of acoustic pressure
+was 1:35 Pa, and the standard deviation of the phase was                      [2] S. Suzuki, R. Takahashi, M. Nakajima, K. Hasegawa, Y. Makino, and
+0:44 rad. Therefore, from eq. (14), the amplitude of a focus                        H. Shinoda, "Midair haptic display to human upper body," in Proc. 57th
+distant from an array is expected to decrease by 9:7% even                          Annu. Conf. Soc. Instrum. Control Engineers Jpn.. , 2018, pp. 848­853.
+when linear superposition holds.
+                                                                              [3] P. J. Westervelt, "Parametric acoustic array," J. Acoustical Soc. Amer.,
+                          VII. CONCLUSION                                           vol. 35, no. 4, pp. 535­537, 1963.
+
+   In this study, we verified the characteristics of a scalable               [4] M. Yoneyama, J.-i. Fujimoto, Y. Kawamo, and S. Sasabe, "The audio
+airborne ultrasound tactile display, AUTD3, which can be                            spotlight: An application of nonlinear interaction of sound waves to a
+extended by connecting a module of 249 transducers through                          new type of loudspeaker design," J. Acoustical Soc. Amer., vol. 73,
+an Ethernet cable. Experimentally, we confirmed that the                            no. 5, pp. 1532­1536, 1983.
+amplitude and phase of each transducer could be specified
+                                                                              [5] Y. Ochiai, T. Hoshi, and I. Suzuki, "Holographic whisper: Rendering audi-
+                                                                                    ble sound spots in three-dimensional space by focusing ultrasonic waves,"
+                                                                                    in Proc. CHI Conf. Hum. Factors Comput. Syst., 2017, pp. 4314­4325.
+
+                                                                              [6] S. A. Seah, B. W. Drinkwater, T. Carter, R. Malkin, and S. Subramanian,
+                                                                                    "Correspondence: Dexterous ultrasonic levitation of millimeter-sized
+                                                                                    objects in air," IEEE Trans. Ultrasonics, Ferroelect., Freq. Control,
+                                                                                    vol. 61, no. 7, pp. 1233­1236, Jul. 2014.
+
+                                                                              [7] A. Marzo, M. Caleap, and B. W. Drinkwater, "Acoustic virtual vortices
+                                                                                    with tunable orbital angular momentum for trapping of mie particles,"
+                                                                                    Phys. Rev. Lett., vol. 120, no. 4, 2018, Art. no. 044301.
+
+                                                                              [8] Y. Ochiai, T. Hoshi, and J. Rekimoto, "Pixie dust: Graphics generated
+                                                                                    by levitated and animated objects in computational acoustic-potential
+                                                                                    field," ACM Trans. Graph., vol. 33, no. 4, pp. 1­13, 2014.
+
+                                                                              [9] S. Inoue, S. Mogami, T. Ichiyama, A. Noda, Y. Makino, and H. Shinoda,
+                                                                                    "Acoustical boundary hologram for macroscopic rigid-body levitation,"
+                                                                                    J. Acoustical Soc. Amer., vol. 145, no. 1, pp. 328­337, 2019.
+
+                                                                             [10] A. Marzo, S. A. Seah, B. W. Drinkwater, D. R. Sahoo, B. Long, and
+                                                                                    S. Subramanian, "Holographic acoustic elements for manipulation of
+                                                                                    levitated objects," Nature Commun., vol. 6, 2015, Art. no. 8661.
+SUZUKI et al.: AUTD3: SCALABLE AIRBORNE ULTRASOUND TACTILE DISPLAY                749
+
+[11] R. Morales, A. Marzo, S. Subramanian, and D. Martinez, "Leviprops:           [34] D. M. Plasencia, R. Hirayama, R. Montano-Murillo, and S. Subramanian,
+       Animating levitated optimized fabric structures using holographic                 "Gs-pat: High-speed multi-point sound-fields for phased arrays of trans-
+       acoustic tweezers," in Proc. 32nd Annu. ACM Symp. User Interface                  ducers," ACM Trans. Graph., vol. 39, no. 4, pp. 138­1, 2020.
+       Softw. Technol., 2019, pp. 651­661.
+                                                                                                                Shun Suzuki received the B.S. degree in physics
+[12] R. Hirayama, D. M. Plasencia, N. Masuda, and S. Subramanian, "A vol-                                       from Waseda University, Tokyo, Japan, in 2017, and
+       umetric display for visual, tactile and audio presentation using acoustic                                the M.S. degree, in 2019, in complexity science and
+       trapping," Nature, vol. 575, no. 7782, pp. 320­323, 2019.                                                engineering from The University of Tokyo, Tokyo,
+                                                                                                                Japan, where he is currently working toward the
+[13] T. Furumoto, K. Hasegawa, Y. Makino, and H. Shinoda, "Three-dimen-                                         Ph.D. degree. His research interests include mid-air
+       sional manipulation of a spherical object using ultrasound plane waves,"                                 haptics.
+       IEEE Robot. Automat. Lett., vol. 4, no. 1, pp. 81­88, Jan. 2019.
+                                                                                                                Seki Inoue received the B.S. degree in engineering
+[14] T. Furumoto, M. Fujiwara, Y. Makino, and H. Shinodas, "Baluna: Float-                                      and the Ph.D. degree in information science and tech-
+       ing balloon screen manipulated using ultrasound," in Proc. IEEE Conf.                                    nology from the University of Tokyo, Tokyo, Japan,
+       Virtual Reality 3D User Interfaces (VR). , 2019, pp. 937­938.                                            in 2013 and 2018, respectively. He is currently a
+                                                                                                                Project Researcher with the Graduate School of Fron-
+[15] T. Morisaki et al., "Hopping-pong: Changing trajectory of moving                                           tier Sciences, The University of Tokyo, and a Top
+       object using computational ultrasound force," in Proc. ACM Int. Conf.                                    Data Scientist with Adways Inc., Tokyo, Japan. His
+       Interactive Surfaces Spaces, 2019, pp. 123­133.                                                          research interests include acoustic levitation,
+                                                                                                                machine learning, haptics, and optics. From 2015 to
+[16] D. Dalecki, S. Z. Child, C. H. Raeman, and E. L. Carstensen, "Tactile                                      2016, he was a Research Fellow with the Japan
+       perception of ultrasound," J. Acoustical Soc. Amer., vol. 97, no. 5,                                     Society for the Promotion of Science.
+       pp. 3165­3170, 1995.
+                                                                                                                Masahiro Fujiwara (Member, IEEE) received the
+[17] T. Iwamoto, M. Tatezono, and H. Shinoda, "Non-contact method for                                           B.S. degree in engineering, the M.S. and Ph.D.
+       producing tactile sensation using airborne ultrasound," in Proc. Int.                                    degrees in information science and technology from
+       Conf. Hum. Haptic Sens. Touch Enabled Comput. Appl., 2008, pp. 504­                                      The University of Tokyo, Tokyo, Japan, in 2010,
+       513.                                                                                                     2012, and 2015, respectively. He is currently a Proj-
+                                                                                                                ect Assistant Professor with the Graduate School of
+[18] T. Hoshi, M. Takahashi, T. Iwamoto, and H. Shinoda, "Noncontact tac-                                       Frontier Sciences, The University of Tokyo. His
+       tile display based on radiation pressure of airborne ultrasound," IEEE                                   research interests include information physics, hap-
+       Trans. Haptics, vol. 3, no. 3, pp. 155­165, Jul.-Sep. 2010.                                              tics, non-contact sensing, and application systems
+                                                                                                                related to them.
+[19] T. Carter, S. A. Seah, B. Long, B. Drinkwater, and S. Subramanian,
+       "Ultrahaptics: Multi-point mid-air haptic feedback for touch surfaces,"                                  Yasutoshi Makino received the Ph.D. degree in
+       in Proc. 26th Annu. ACM Symp. User Interface Softw. Technol., 2013,                                      information science and technology from The Uni-
+       pp. 505­514.                                                                                             versity of Tokyo, Tokyo, Japan, in 2007. He is cur-
+                                                                                                                rently an Associate Professor with the Department of
+[20] G. Korres and M. Eid, "Haptogram: Ultrasonic point-cloud tactile stim-                                     Complexity Science and Engineering, The University
+       ulation," IEEE Access, vol. 4, pp. 7758­7769, 2016.                                                      of Tokyo. He was a Researcher for two years with
+                                                                                                                The University of Tokyo and from 2009 to 2013, he
+[21] R. Takahashi, K. Hasegawa, and H. Shinoda, "Tactile stimulation by                                         was an Assistant Professor with Keio University,
+       repetitive lateral movement of midair ultrasound focus," IEEE Trans.                                     Tokyo, Japan. From 2013, he moved to The Univer-
+       Haptics, vol. 13, no. 2, pp. 334­342, Apr.­Jun. 2020.                                                    sity of Tokyo as a Lecturer, and he is an Associate
+                                                                                                                Professor from 2017. His research interests include
+[22] W. Frier et al., "Using spatiotemporal modulation to draw tactile pat-                                     haptic interactive systems.
+       terns in mid-air," in Proc. Int. Conf. Hum. Haptic Sens. Touch Enabled
+       Comput. Appl. , 2018, pp. 270­281.                                                                       Hiroyuki Shinoda (Member, IEEE) received the
+                                                                                                                B.S. degree in applied physics, the M.S. degree in
+[23] M. Nakajima, K. Hasegawa, Y. Makino, and H. Shinoda, "Remotely dis-                                        information physics, and the Ph.D. degree in engi-
+       playing cooling sensation via ultrasound-driven air flow," in Proc. IEEE                                 neering from The University of Tokyo, Tokyo, Japan,
+       Haptics Symp., 2018, pp. 340­343.                                                                        in 1988, 1990, and 1995, respectively. He is currently
+                                                                                                                a Professor with the Graduate School of Frontier Sci-
+[24] T. Kamigaki, S. Suzuki, and H. Shinoda, "Noncontact thermal and                                            ences, The University of Tokyo. He was an Associate
+       vibrotactile display using focused airborne ultrasound," in Proc. Int.                                   Professor from 1995 with the Department of Electri-
+       Conf. Hum. Haptic Sens. Touch Enabled Comput. Appl., 2020,                                               cal and Electronic Engineering, Tokyo University of
+       pp. 271­278.                                                                                             Agriculture and Technology, Fuchu, Japan. After a
+                                                                                                                period at UC Berkeley as a visiting scholar in 1999,
+[25] K. Hasegawa and H. Shinoda, "Aerial vibrotactile display based on            he was an Associate Professor with the University of Tokyo from 2000 to
+       multiunit ultrasound phased array," IEEE Trans. Haptics, vol. 11, no. 3,   2012. His research interests include information physics, haptics, mid-air
+       pp. 367­377, Jul.­Sep. 2018.                                               haptics, two-dimensional communication, and their applications. He is also a
+                                                                                  Member of the IEEJ, RSJ, JSME, and ACM.
+[26] B. Long, S. A. Seah, T. Carter, and S. Subramanian, "Rendering volu-
+       metric haptic shapes in mid-air using ultrasound," ACM Trans. Graph.,
+       vol. 33, no. 6, pp. 1­10, 2014.
+
+[27] A. Marzo, T. Corkett, and B. W. Drinkwater, "Ultraino: An open
+       phased-array system for narrowband airborne ultrasound transmission,"
+       IEEE Trans. Ultrasonics, Ferroelect., Freq. Control, vol. 65, no. 1,
+       pp. 102­111, Jan. 2018.
+
+[28] H. E. Bass, L. C. Sutherland, A. J. Zuckerwar, D. T. Blackstock, and
+       D. Hester, "Atmospheric absorption of sound: Further developments,"
+       J. Acoustical Soc. America, vol. 97, no. 1, pp. 680­683, 1995.
+
+[29] S. Bolanowski, G. Gescheider, R. Verrillo, and C. Checkosky, "Four
+       channels mediate the mechanical aspects of touch," J. Acoust. Soc.
+       Amer., vol. 84, pp. 1680­1694, 12 1988.
+
+[30] Beckhoff Automat. GmbH. EtherCAT - Ethernet Fieldbus. Accessed on:
+       Jun. 1, 2020. [Online]. Available: https://www.ethercat.org/en/technol-
+       ogy.html
+
+[31] S. Suzuki, M. Fujiwara, Y. Makino, and H. Shinoda, "Reducing ampli-
+       tude fluctuation by gradual phase shift in midair ultrasound haptics,"
+       IEEE Trans. Haptics, vol. 13, no. 1, pp. 87­93, Jan.­Mar. 2020.
+
+[32] K. Hasegawa, L. Qiu, A. Noda, S. Inoue, and H. Shinoda,
+       "Electronically steerable ultrasound-driven long narrow air stream,"
+       Appl. Phys. Lett., vol. 111, no. 6, 2017, Art. no. 064104.
+
+[33] S. Inoue, Y. Makino, and H. Shinoda, "Active touch perception pro-
+       duced by airborne ultrasonic haptic hologram," in Proc. IEEE World
+       Haptics Conf., 2015, pp. 362­367.
+

@@ -1,0 +1,106 @@
+"""Tests for the mode-control command script."""
+
+import subprocess
+import sys
+from pathlib import Path
+
+import pytest
+
+import mode_control
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def test_mode_payload_layout_defaults_to_all_on_frame():
+    payload = mode_control.build_mode_payload("c4")
+    assert len(payload) == 259
+    assert payload[0] == 0xC9
+    assert payload[1] == 0xFE
+    assert payload[2:-1] == bytes([0x00]) * 256
+    assert payload[-1] == 0xFD
+
+
+def test_mode_payload_off_frame():
+    payload = mode_control.build_mode_payload("c4", "off")
+    assert len(payload) == 259
+    assert payload[0] == 0xC9
+    assert payload[1] == 0xFE
+    assert payload[2:-1] == bytes([0x10]) * 256
+    assert payload[-1] == 0xFD
+
+
+def test_mode_payload_keep_sends_command_only():
+    assert mode_control.build_mode_payload("c4", "keep") == bytes([0xC9])
+
+
+def test_unknown_frame_raises():
+    with pytest.raises(ValueError):
+        mode_control.build_mode_payload("c4", "sideways")
+
+
+def test_all_modes_map_to_expected_bytes():
+    assert mode_control.MODE_COMMANDS == {
+        "normal": 0xC8,
+        "c4": 0xC9,
+        "little-star": 0xCA,
+        "200hz": 0xCB,
+    }
+
+
+def test_unknown_mode_raises():
+    with pytest.raises(ValueError):
+        mode_control.build_mode_payload("nope")
+
+
+def test_board_payloads_default_to_primary():
+    payloads = mode_control.build_board_payloads("c4")
+    assert [payload[0] for payload in payloads] == [0xC0, 0xC0]
+    assert payloads[0][1] == 0xC9
+    assert payloads[0][-1] == 0xFD
+
+
+def test_board_payloads_secondary_and_both():
+    secondary = mode_control.build_board_payloads("c4", "on", "b")
+    assert [payload[0] for payload in secondary] == [0xC1, 0xC1]
+    both = mode_control.build_board_payloads("c4", "on", "both")
+    assert [payload[0] for payload in both] == [0xC0, 0xC0, 0xC1, 0xC1]
+    assert both[0][1:] == both[1][1:] == both[2][1:] == both[3][1:]
+
+
+def test_board_payloads_keep_prefixes_only_the_select():
+    assert mode_control.build_board_payloads("c4", "keep", "both") == [
+        b"\xc0\xc9",
+        b"\xc0\xc9",
+        b"\xc1\xc9",
+        b"\xc1\xc9",
+    ]
+
+
+def test_unknown_board_raises():
+    with pytest.raises(ValueError):
+        mode_control.build_board_payloads("c4", "on", "c")
+
+
+def test_import_has_no_side_effects():
+    result = subprocess.run(
+        [sys.executable, "-c", "import mode_control"],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        timeout=30,
+    )
+    assert result.returncode == 0, result.stderr
+    assert result.stdout == ""
+
+
+def test_dry_run_needs_no_port():
+    result = subprocess.run(
+        [sys.executable, "mode_control.py", "--dry-run"],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        timeout=30,
+    )
+    assert result.returncode == 0, result.stderr
+    assert "0xC9" in result.stdout
+    assert "[DRY RUN]" in result.stdout

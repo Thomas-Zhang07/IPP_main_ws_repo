@@ -1,0 +1,741 @@
+IEEE Transactions on Ultrasonics, Ferroelectrics, and Frequency Control, vol. 58, no. 2, February 2011                                                                          437
+
+Grating Lobe Elimination in Steerable
+          Parametric Loudspeaker
+
+                     Chuang Shi and Woon-Seng Gan, Senior Member, IEEE
+
+    Abstract--In the past two decades, the majority of research            generated harmonics. Zheng and Coates [13] developed an
+on the parametric loudspeaker has concentrated on the nonlin-              analytical formula for the far-field angular response of the
+ear modeling of acoustic propagation and pre-processing tech-              difference frequency wave, and evaluated the off-axis per-
+niques to reduce nonlinear distortion in sound reproduction.               formance of parametric array. Subsequently, Zheng and
+There are, however, very few studies on directivity control                Wang [14] proposed a numerical method, the results of
+of the parametric loudspeaker. In this paper, we propose an                which were reported to be in close agreement with avail-
+equivalent circular Gaussian source array that approximates                able experimental results within and beyond the Rayleigh
+the directivity characteristics of the linear ultrasonic trans-            distance of parametric array. However, the off-axis angle
+ducer array. By using this approximation, the directivity of               was limited to a small range because of the assumption
+the sound beam from the parametric loudspeaker can be pre-                 that the parametric nonlinear interaction process in air
+dicted by the product directivity principle. New theoretical re-           was treated in a quasi-linear manner in both of these in-
+sults, which are verified through measurements, are presented              vestigations.
+to show the effectiveness of the delay-and-sum beamsteering
+structure for the parametric loudspeaker. Unlike the conven-                  Steering of a directional sound beam is a useful feature
+tional loudspeaker array, where the spacing between array ele-             for applications that require the parametric loudspeaker
+ments must be less than half the wavelength to avoid spatial               to steer to a targeted audience and not to disturb people
+aliasing, the parametric loudspeaker can take advantage of                 nearby [15]. A direct approach is to turn the sound beam
+grating lobe elimination to extend the spacing of ultrasonic               mechanically, as shown in Olszewski et al. [16]. However, a
+transducer array to more than 1.5 wavelengths in a typical                 mechanical structure is bulky and cannot be scaled down
+application.                                                               easily. Alternatively, a digital beamsteering approach for
+                                                                           the parametric loudspeaker was proposed by Tan et al.
+                          I. Introduction                                  [17], who exploited a group of bifrequency Gaussian sourc-
+                                                                           es but ignored the absorption effect in air. In their work,
+Because of the high directivity of sound beams cre-                        the delay-and-sum beamforming technique was employed
+     ated by the parametric loudspeaker, it can be de-                     to electronically steer the primary beams so as to steer
+ployed in many sound confinement applications, such as                     the audible beam in the desired direction. The theoretical
+providing personal listening zones in a public area and                    basis of this digital beamsteering method of the paramet-
+creating immersive sound effects in virtual reality [1]. The               ric loudspeaker can also be traced back to Darvennes and
+principle of the parametric loudspeaker, commonly known                    Hamilton [18]. They studied the difference frequency wave
+as the parametric array, was first theoretically explained                 generated from two noncollinear Gaussian beams based
+by Westervelt [2] in 1963. Since then, many studies were                   on the nonlinear parabolic wave equation, and found that
+conducted underwater. It was not until 1975 that Ben-                      when restricted to moderate source separations and inter-
+nett and Blackstock [3] proved that a parametric array                     action angles, the far-field directivity of the difference fre-
+is also able to operate in air. Yoneyama and Fujimoto [4]                  quency wave is given by the product of the primary beam
+later demonstrated that the parametric loudspeaker can                     directivities. The product directivity principle was applied
+be used to create a directional audio beam by amplitude                    in the work of Gan et al. [19] on digital beamsteerers of
+modulating a high-intensity ultrasonic carrier signal with                 the parametric loudspeaker, but they only provided sim-
+audio signal. However, severe distortion was observed, and                 ulation results of the proposed beamsteering algorithms
+subsequently, different types of preprocessing methods and                 and did not discuss the spatial aliasing issue.
+modulation techniques [5]­[8] have been studied to reduce
+the distortion to an acceptable speech quality level.                         In this paper, a Gaussian source array equivalent to the
+                                                                           ultrasonic transducer array is proposed to prove the fea-
+   Several theoretical models are currently used in describ-               sibility of devising a digital beamsteerer for the paramet-
+ing the nonlinear acoustics properties of parametric array                 ric loudspeaker. A new observation on the limitation of
+[9]­[12], but most of these models emphasize the ampli-                    valid angle range for beamsteering, which is based on the
+tude response, rather than on the phase response of the                    nonlinear parabolic wave equation, is also stated for the
+                                                                           parametric loudspeaker. Moreover, the digital beamsteer-
+   Manuscript received July 29, 2010; accepted October 30, 2010. This      ing approach of the parametric loudspeaker is carried out
+work is supported by the Singapore National Research Foundation Inter-     in experiment and links to the theoretical study. From the
+active Digital Media R&D Program, under research grant NRF2007IDM-         experimental measurements, we observe spatial aliasing
+IDM002-086.                                                                of primary waves in the parametric loudspeaker and the
+                                                                           formation of grating lobes of primary waves, which may
+   The authors are with the School of Electrical and Electronic Engineer-
+ing, Nanyang Technological University, Singapore (e-mail: shic0002@
+e.ntu.edu.sg).
+
+   Digital Object Identifier 10.1109/TUFFC.2011.1821
+
+© Authorized licensed use limited to: Shanghai Jiaotong Univer0s8it8y5. ­D3o0w1n0lo/a$d2e5d.0o0n Nov2e0m11beIrE2E5E,2026 at 11:25:49 UTC from IEEE Xplore. Restrictions apply.
+438                          IEEE Transactions on Ultrasonics, Ferroelectrics, and Frequency Control, vol. 58, no. 2, February 2011
+
+or may not be completely inherited by the difference fre-
+quency wave, depending on the frequencies of the primary
+waves. This grating lobe elimination is also analyzed and
+verified through experiments.
+
+   This paper is organized as follows. In Section II, the
+beamforming structure of the parametric loudspeaker is
+given. In Section III, the grating lobe elimination of the
+parametric loudspeaker is observed and analyzed by simu-
+lations. The experiments of grating lobe elimination are
+carried out and discussed in Section IV. Lastly, Section V
+concludes this paper.
+
+     II. Beamsteering Structure of Parametric
+                           Loudspeaker
+
+   One of the most popular model equations in nonlinear                             Fig. 1. Gaussian directivity varying with (a) the radiation frequency
+acoustics is the parabolic wave equation, widely known                              (radius 8 mm) and (b) the effective radius (frequency 40 kHz).
+as the Khokhlov-Zabolotskaya-Kuznetsov (KZK) equation
+[11], [12]. The KZK equation accurately describes the en-                           sion to radiation wavelength) produce narrower beams.
+tire process of self-demodulation throughout the near-field                         The variation of the Gaussian directivity with radiating
+and into the far-field, both on- and off-axis of the beam,                          frequency and effective radius is plotted in Fig. 1. Fig.
+and is expressed as follows:                                                        1(a) shows that when the radiation frequency increases
+                                                                                    from 30 to 50 kHz and the effective radius of the Gaussian
+          ¶ 2p   =    c0  Ñ  2^p  +  d         ¶ 3p  +  b          ¶ 2p 2      (1)  source is fixed at 8 mm, the beamwidth decreases. Fig.
+          ¶z¶t        2                        ¶t 3                ¶t 2 ,           1(b) shows another case in which the radiation frequency
+                                     2c     3           2r  0c  3                   is fixed and the effective radius of the Gaussian source is
+                                            0                   0                   set at 2, 5, and 8 mm. It is observed that the Gaussian
+                                                                                    directivity gets sharper with higher operating frequency
+where  Ñ  2  is  the  Laplacian      operator           that    operates   in  the  and smaller source radius.
+          ^
+                                                                                       When considering the difference frequency wave caused
+plane perpendicular to the axis of the sound beam, p is the                         by the radiation from a bifrequency Gaussian source, the
+                                                                                    difference frequency wave is given by the product of the
+acoustic pressure,  is the retarded time,  is the diffusiv-                         directivities of the two primary frequency waves in the far-
+                                                                                    field, which is known as the product directivity principle
+ity of sound, c0 is the small-signal sound speed,  is the                           [18]. However, the ultrasonic transducer array in the para-
+coefficient of nonlinearity, and 0 is the ambient density.                          metric loudspeaker [15]­[17] is usually separately weighted
+The effects of diffraction, absorption, and nonlinearity in                         and equally spaced, and all the transducers in the linear
+                                                                                    array are assumed to be omnidirectional instead of Gauss-
+wave propagation are expressed by the first, second, and                            ian sources. A typical beampattern of an 8-channel uni-
+                                                                                    form linear transducer array with half-wavelength spacing
+third terms on the right hand side of (1), respectively.                            and using Chebyshev weights that achieve a side lobe level
+                                                                                    of 20 dB is shown in Fig. 2(a). In practice, either a single
+     There is however no general analytical solution to the                         transducer or a group of transducers are driven by the
+                                                                                    same output from each channel of the transducer array.
+KZK equation [20], but by considering acoustic sources                              Channel directivity is considered as the directivity pat-
+                                                                                    tern transmitted from one channel of the transducer array.
+with Gaussian amplitude shading, namely Gaussian sourc-                             Because of the channel directivity, the heights of side lobes
+                                                                                    are reduced and no longer equal. The beampattern of the
+es, a closed-form solution can be found under the quasilin-                         8-channel transducer array is only plotted from -40° to
+                                                                                    40° in Fig. 2(b) in accordance with the half-power beam-
+ear approximation [9]. The source function q1 of Gaussian                           width of the channel directivity. Note that each lobe in
+sources is defined as                                                               the beampattern of a uniform linear transducer array has
+                                                                                    a bell shape similar to the directivity of a single Gaussian
+                      q1(r) = p0 exp[-(r/a)2 ],                                (2)  source. Thus, a transformation can be proposed to obtain
+                                                                                    an equivalent Gaussian source array from a linear uniform
+where r is the distance to the center of the source, and p0
+and a are the peak source pressure and the effective source
+radius, respectively.
+
+   Thus, the directivity function of Gaussian source can be
+derived from the linear solution component in the quasi-
+linear approximation by substituting (2) into (1) [9]. The
+far-field Gaussian directivity DG is given by
+
+                 DG(q)    =  exp     é      1 (ka)2  tan 2  q   ù              (3)
+                                     êêë -  4                   ûúú ,
+
+where  is the angle (in degree) with respect to the axis of
+the beam, and k is the wavenumber. It is noted from (3)
+that larger values of ka (i.e., larger ratios of source dimen-
+
+     Authorized licensed use limited to: Shanghai Jiaotong University. Downloaded on November 25,2026 at 11:25:49 UTC from IEEE Xplore. Restrictions apply.
+shi and gan: grating lobe elimination in steerable parametric loudspeaker                                                                               439
+
+Fig. 2. (a) Beampattern of a transducer array (8 channels) with Chebyshev weights giving 20 dB side lobe level when the spacing is half the wave-
+length; (b) beampattern of a transducer array (8 channels) with Chebyshev weights giving 20 dB side lobe level taking into account the channel
+directivity; (c) beampattern of the equivalent Gaussian source array (7 elements) to (a); (d) beampattern of the equivalent Gaussian source array
+(5 elements) to (b); (e) mismatch beampattern between (a) and (c), which excludes the channel directivity; (f) mismatch beampattern between (b)
+and (d), which includes the channel directivity.
+
+transducer array whose beampattern is given. In a seminal    lobe in the beampattern plot. The directivity patterns of
+paper, Wen and Breazeale [21] demonstrated that it was       the Gaussian source arrays, which are equivalent to Figs.
+possible to accurately simulate the sound beam of a piston   2(a) and 2(b), are plotted in Figs. 2(c) and 2(d), respec-
+source by the superposition of ten Gaussian beams. They      tively. Two kinds of mismatches are observed between the
+obtained the coefficients by fitting the Gaussian sources    equivalent Gaussian source array and the transducer array
+to match the piston velocity distribution on the surface of  in Figs 2(e) and 2(f). First, the side lobes in the beampat-
+the transducer using a nonlinear least squares approach.     tern plot of the transducer array become more asymmetric
+A similar idea is used here. Each Gaussian source in the     when the incidence angle becomes larger. The asymmetric
+equivalent array is assigned an effective radius and an an-  side lobes result in peaks in the mismatch beampatterns.
+gular offset. Thus, each Gaussian source can represent one   Second, the mismatches between the equivalent Gaussian
+
+Authorized licensed use limited to: Shanghai Jiaotong University. Downloaded on November 25,2026 at 11:25:49 UTC from IEEE Xplore. Restrictions apply.
+440  IEEE Transactions on Ultrasonics, Ferroelectrics, and Frequency Control, vol. 58, no. 2, February 2011
+
+Fig. 3. (a) A uniform linear transducer array (8 elements, half wave-      Gaussian sources in the equivalent circular array are dif-
+length spacing) is transformed into (b) an equivalent circular Gaussian    ferent sizes according to the beamwidths of distinguishing
+source array (7 elements), where ai (i = 0,1,2,...,6) shows the effective  lobes, and are placed at the angular peaks' locations of the
+radius of each Gaussian source located at the indicated angle.             corresponding lobes. Therefore, by choosing the effective
+                                                                           radius for each Gaussian source, as shown in Fig. 3(b),
+source array and the transducer array become larger at the                 the directivity of the Gaussian source can fit the shape of
+gaps between two side lobes. Although the mismatches at                    lobes when the radiating frequency is fixed.
+the gaps are obvious, they occupy relatively small ranges
+of incidence angles. Fig. 2 illustrates that when the overall                 Because the product directivity principle is derived
+directivity of the transducer array is given by multiplying                from the parabolic wave equation that is only valid in the
+its theoretical beampattern with the channel directivity,                  vicinity of the propagating axis, the range of valid angles
+the nonlinear least squares approach can still work out an                 is limited within an angle of ±15° as a result of constraint
+equivalent Gaussian source array that matches the overall                  imposed by the KZK equation [9]. In particular, when the
+beampattern of the transducer array well.                                  ultrasonic transducers in the linear array are assumed to
+                                                                           be Gaussian sources, their propagation axes are parallel.
+   The equivalent circular Gaussian source array can pro-                  Therefore, the range of valid angles of the whole trans-
+vide a novel observation of the validation of the product                  ducer array is still limited within an angle of ±15°. But
+directivity principle. For example, a uniform linear trans-                when the uniform linear transducer array is considered
+ducer array with half-wavelength spacing is shown in Fig.                  as being equivalent to a circular Gaussian source array,
+3(a). There are 7 lobes in this beampattern plot, so the                   the propagating axes of Gaussian sources are distributed.
+same number of Gaussian sources is required to achieve a                   Thus, the range of valid angles of the circular Gaussian
+good match between the transducer array and the circu-                     source array is given by the union of the ranges of valid
+lar Gaussian source array, as illustrated in Fig. 3(b). The                angles of all the Gaussian sources. In this sense, the prod-
+                                                                           uct directivity principle can always be applied to the para-
+                                                                           metric loudspeaker.
+
+                                                                              According to the product directivity principle, the di-
+                                                                           rectivity of the difference frequency wave can be adjusted
+                                                                           by controlling the directivity of the primary waves. Fig. 4
+                                                                           shows a simplified structure of a beamsteerer used in the
+                                                                           parametric loudspeaker, where the total number of channels
+                                                                           is denoted M. Assume that the ultrasonic transducer array is
+                                                                           steered in the same direction and shares the same group of
+                                                                           weights for two primary frequency waves. Therefore, the dif-
+                                                                           ference frequency wave is also steered to that direction, and
+                                                                           the far-field beampattern of the steered ultrasonic transducer
+                                                                           array for the primary frequency wave is given by
+
+                                                                                                           M -1
+
+                                                                                å H(k, q) = wm exp{jmdk(sin q - sin q0)} , (4)
+                                                                                                           m=0
+
+                                                                           where wm are the weights of channels for m = 0,1,2,...,M
+                                                                           - 1; the output of each channel can drive a group of
+
+Fig. 4. Beamsteering structure of the parametric loudspeaker.
+      Authorized licensed use limited to: Shanghai Jiaotong University. Downloaded on November 25,2026 at 11:25:49 UTC from IEEE Xplore. Restrictions apply.
+shi and gan: grating lobe elimination in steerable parametric loudspeaker                                                                               441
+
+transducers which are configured into different shapes; d is                           mary frequency fa and b = nb/F for the higher primary
+the spacing between channels in the ultrasonic transducer                              frequency fb, where na and nb are indices of grating lobes.
+array; k is the wavenumber of the transmitted primary                                  The distance function, which describes the minimum an-
+frequency wave;  is the incidence angle, and can range
+from -90° to 90°; 0 is the steering angle of the ultrasonic                            gular distance between grating lobes of two primary fre-
+transducer array.
+                                                                                       quency waves, is defined as
+   Based on the product directivity principle, the far-field di-
+rectivity of the difference frequency wave Ddiff() is given by                         DK(F)  =   min     ççæè  naL  -  nbL  ÷ö÷ø,                      (7)
+                                                                                                                         F
+                                                                                                 0£na £K
+                                                                                                 0£nb £L
+
+            Ddiff(q) = H(ka, q)H(kb, q),                                          (5)  where K is the largest index of grating lobe of the lower
+                                                                                       primary frequency fa in the visible region where the inci-
+where ka and kb are the wavenumbers of primary frequen-                                dence angle is between ±90°; L is the largest index of grat-
+cies fa and fb, respectively. We always assume that fa < fb                            ing lobe of the higher primary frequency fb in the visible
+without loss of generality. Thus, the difference frequency                             region. Because fa < fb is assumed, K must be less than
+                                                                                       L, and F > 1. Furthermore, to compute the values of the
+wave generated from the two primary frequency waves is                                 distance function, K needs to be assigned in advance.
+
+given by fdiff = fb - fa.                                                                 Fig. 5 shows the distance function when K = 1,2,3,4
+   For simplicity, the product directivity can be de-                                  and 1 < F < 2. Nulls in the distance function show the
+                                                                                       occurrence of grating lobes for difference frequency wave.
+fined as                                                                               When two grating lobes of primary frequency waves arise
+                                                                                       in the same direction, the value of the distance function
+Ddiff(L, F, Q) = H(ka, q)H(kb, q)                                                      reduces to 0. This observation can be shown in Fig. 6(a)
+                                                                                       when the second grating lobe of 40 kHz primary wave
+å å =M -1w       èæçç        Q  ø÷ö÷     M -1        exp  çèçæ  j2pm  Q  F  ö÷÷ø       coincides with the third grating lobe of 60 kHz primary
+m=0      m  exp        j2pm  L        ×  m=0   w  m                   L           ,    wave. Therefore, nulls in the distance function constrain
+                                                                                       the range of F that must be chosen between two neighbor-
+                                                                                  (6)  ing nulls to prevent grating lobes of the difference frequen-
+                                                                                       cy wave. To ensure the ability to generate a low difference
+where  is the ratio of the wavelength of the lower pri-                                frequency, the null where F = 1 must be chosen as the
+                                                                                       lower bound of the valid range of F. From (7), nulls in the
+mary frequency fa to the spacing of the ultrasonic trans-                              distance function are located where F = nb/na. Setting na
+ducer array, given by  = a/d; F is the ratio of the higher                             = K and nb = K + 1 gives the upper bound of the valid
+primary frequency to the lower primary frequency, given                                range of F, which represents the null that is closest to 1.
+                                                                                       Thus, the upper bond of F is given by F = (K + 1)/K.
+by F = fb/fa; and  is the normalized angle, given by                                   Note that the location of nulls in distance function is not
+= sin - sin0.                                                                          related to the estimation of L. So the range of F, given by
+                                                                                       1 < F < 1 + 1/K, is valid whenever K is assigned.
+    III. Grating Lobe Elimination of Parametric
+                            Loudspeaker                                                   The difference frequency is generated from the two pri-
+                                                                                       mary frequency waves, given by fdiff = fb - fa. Derived
+   A typical ultrasonic transducer [22] with a resonance                               from the definition of F, fdiff/fa = F - 1. Therefore, the
+frequency of 40 kHz has a diameter of less than 16 mm.                                 range of the difference frequency is given by 0 < fdiff <
+However, the primary wavelength for the 40 kHz signal is                               fa/K. If the parametric loudspeaker is designed to gener-
+less than 8.5 mm, which is much smaller than the diam-                                 ate all the audible frequencies below 20 kHz, K should
+eter of the ultrasonic transducer. Though it is not surpris-                           be less than fa/20 kHz. In practice, fa is normally chosen
+ing to observe spatial aliasing of primary frequency waves                             to be around 40 kHz (i.e., to coincide with the resonat-
+in the parametric loudspeaker, certain grating lobes of pri-                           ing frequency of the typical ultrasonic transducer [22]).
+mary frequency waves are not completely inherited by the                               Therefore, it is reasonable to assign K = 2.
+difference frequency wave. This grating lobe elimination
+can occur only under some conditions for the difference                                   The relation between steering angle and the number of
+frequency wave in the parametric loudspeaker. To help                                  grating lobes of primary frequency waves can be found in
+analyze the prerequisites for grating lobe elimination, it is                          the Nyquist criterion [23]; the range of  is approximately
+assumed that the weights used in the beamsteering struc-                               given by
+ture of the parametric loudspeaker are symmetric with
+reference to the center channel, and the steering angle is                             L = la ³ 1 + sin j ,                                             (8)
+chosen between 0°  0  90°, without loss of generality.                                           d (K + 1)
+
+   The angular distances between grating lobes of primary                              where  is the maximum steering angle. For example,
+frequency waves is helpful to quantify the level of grating                            setting K = 2,  = 90°, the spacing of the ultrasonic
+lobe eliminations. For example, the grating lobe elimina-                              transducer array d is found to be less than 1.5 times the
+tion of the difference frequency wave can be achieved when                             wavelength. In the case of using upper single sideband
+the angular distance between grating lobes of primary fre-
+quency waves are far apart. The direction where grating
+lobes occur can be found at a = na for the lower pri-
+
+Authorized licensed use limited to: Shanghai Jiaotong University. Downloaded on November 25,2026 at 11:25:49 UTC from IEEE Xplore. Restrictions apply.
+442                    IEEE Transactions on Ultrasonics, Ferroelectrics, and Frequency Control, vol. 58, no. 2, February 2011
+
+Fig. 5. Distance function when considering (a) K = 1, (b) K = 2, (c) K = 3, and (d) K = 4 grating lobes.
+
+modulation and the carrier frequency (i.e., fa) is 40 kHz,                                with 16 channels. The spacing d is chosen as twice the
+the maximum non-aliasing spacing of the ultrasonic trans-
+ducer array is 12.75 mm. In another beamsteering exam-                                    wavelength of the lower primary frequency wave (i.e., 
+ple of K = 2,  = 30°, the largest spacing can achieve two
+times the wavelength of the lower primary frequency wave                                  = 2 and fa = 40 kHz). The higher primary frequency fb
+to prevent grating lobes at the difference frequency. There-                              is selected to be 60, 50, and 42 kHz, resulting in F =
+fore, the non-aliasing spacing of the ultrasonic transducer
+array can now be widened to 17 mm.                                                        1.5, 1.25, and 1.05, respectively. The steering angle 0 is
+                                                                                          specified as 15°, and wm are chosen as Chebyshev weights
+   As discussed previously, the grating lobes of the dif-                                 with 30 dB attenuation. The simulated beam patterns for
+ference frequency wave appear where there are nulls in
+the distance function. In addition, grating lobes are sup-                                three sideband frequencies are plotted in their respective
+pressed within the vicinity of nulls in the distance function
+because of the product directivity principle. Thus, the in-                               plots of Figs. 6(a)­6(c). Grating lobes (1,2,3,...) in the
+tersection function is proposed to describe the elimination
+of grating lobes of the difference frequency wave when                                    figures are indexed from right to left, and the main lobe
+the distance between grating lobes of primary frequency
+waves is given by the distance function. The intersection                                 is labeled as 0.
+function is defined as
+                                                                                             In Fig. 6(a), the second grating lobe of the lower pri-
+     å I K(F)ïïìïíîïï  M -1         exp èæçç        Q  ø÷÷ö
+     =  max                                   j pm  L                                     mary frequency (fa = 40 kHz) only coincides with the
+                            wm                                                            third grating lobe of the higher primary frequency (fb =
+          Q                                                                               60 kHz). In this case, spatial aliasing of the difference
+                       m=0
+                                                                                     (9)  frequency (fdiff = 20 kHz) occurs at -50°. In Fig. 6(b),
+           M -1                é                                      ù    üïïïïþý.       grating lobes of the lower primary frequency (fa = 40 kHz)
+        å ×m=0   w     m  exp  êêë  j  pm  F  (Q    -  D     K(F  ))  ûúú                 coincide with side lobes of the higher primary frequency
+                                           L
+                                                                                          (fb = 50 kHz) that result in side lobes of the difference
+   Based on the beamsteering structure in Fig. 4, simula-                                 frequency (fdiff = 10 kHz). Heights of all the side lobes
+tions are carried out for an ultrasonic transducer array                                  in the difference frequency wave are not higher than the
+
+                                                                                          highest side lobe of the primary frequency waves. This
+
+                                                                                          case is called grating lobe elimination. In Fig. 6(c), the
+
+                                                                                          first grating lobe of the lower primary frequency (fa =
+                                                                                          40 kHz) appears in the direction close to the first grating
+
+                                                                                          lobe of the higher primary frequency (fb = 44 kHz). Two
+                                                                                          grating lobes that are closely spaced result in a side lobe
+
+     Authorized licensed use limited to: Shanghai Jiaotong University. Downloaded on November 25,2026 at 11:25:49 UTC from IEEE Xplore. Restrictions apply.
+shi and gan: grating lobe elimination in steerable parametric loudspeaker                                                                               443
+
+Fig. 6. Three cases, (a) spatial aliasing, (b) grating lobe elimination, and (c) partial grating lobe elimination, occur in an ultrasonic transducer array
+with 16 channels (M = 16) and twice the wavelength spacing ( = 0.5). The intersection function for this array configuration and equal weights is
+plotted in (d) to show the ranges of F that lead to different cases.
+
+at the difference frequency (fdiff = 4 kHz) that is lower      in the beampattern plots of primary frequency waves is
+than the main lobe but higher than the highest side lobe       reduced because of the insufficient spatial sampling rate.
+of primary frequency waves. This case is considered to be      However, the largest index of grating lobes at the lower
+a partial elimination of the grating lobes of the primary      primary frequency is constant as K = 2, because the steer-
+frequencies. The intersection function for this group of       ing angle also changes from 15° to 35°, as stated in (8).
+simulations is plotted in Fig. 6(d). The gray bar at the
+bottom of Fig. 6(d) shows the region of partial grating           In Figs. 8(a) and 8(b), we set K = 2, 1 < F < 1.5, and
+lobe elimination, and the black bar illustrates the region     the number of channels M = 8. The spacings of the ultra-
+of grating lobe elimination.                                   sonic transducer array used to plot Figs. 8(a) and 8(b) are
+                                                               1.5a and 2a, respectively. Slight differences are observed
+   In another scenario, the spacing d is changed to 1.5        between the curves of the intersection functions. However,
+times the wavelength of the lower primary frequency (i.e.,     these differences are found not to affect the ranges of F
+ = 1.5). The number of channels and the lower primary          that ensure grating lobe elimination, because the changed
+frequency are kept at 8 and 40 kHz, respectively. The          segments are subsets of the ranges of F that ensure grat-
+higher primary frequency is selected as 60, 50, and 44 kHz,    ing lobe elimination. Note that from the definition of the
+resulting in F = 1.5, 1.25, and 1.1, respectively. The steer-  intersection function, it can also be discovered that the
+ing angle 0 is specified at 35°, and wm are chosen to be       range of F that ensures the grating lobe elimination is not
+equal weights. Spatial aliasing, grating lobe elimination,     changed with . (see the appendix for a detailed explana-
+and partial grating lobe elimination cases are shown by        tion). However, the value of  can affect the occurrence
+Figs. 7(a)­7(c), respectively. The intersection function for   of grating lobe elimination in an implicit way. In practice,
+this group of simulations is plotted in Fig. 7(d). The gray    closer spacing between channels in the ultrasonic trans-
+bar at the bottom of Fig. 7(d) shows the region of partial     ducer array leads to fewer grating lobes. The value of 
+grating lobe elimination, and the black bar illustrates the    in (8) determines the number of grating lobes of the lower
+region of grating lobe elimination.                            primary frequency wave.
+
+   When the transducer spacing is reduced from 2a (in             In Fig. 8(c), K is set to 1. Within the range of 1 < F
+Fig. 6) to 1.5a (in Fig. 7), the number of grating lobes       < 1.5, we can only obtain the lower bound of F which en-
+
+Authorized licensed use limited to: Shanghai Jiaotong University. Downloaded on November 25,2026 at 11:25:49 UTC from IEEE Xplore. Restrictions apply.
+444  IEEE Transactions on Ultrasonics, Ferroelectrics, and Frequency Control, vol. 58, no. 2, February 2011
+
+Fig. 7. Three cases, (a) spatial aliasing, (b) grating lobe elimination, and (c) partial grating lobe elimination, occur in a ultrasonic transducer array
+with 8 channels (M = 8). The spacing is one and a half the wavelength ( = 0.667). The intersection function for this array configuration and equal
+weights is plotted in (d) to show the ranges of F that lead to different cases.
+
+sures grating lobe elimination, because the upper bound      bound of the difference frequency in parametric loudspeak-
+is already beyond the range of F that we are considering.    ers. Increasing carrier frequency increases both the lower
+Correspondingly in Fig. 5(a), the distance function when     and upper bounds of the difference frequency. Therefore,
+K = 1 has only one null within the range 1 < F < 1.5.        a better way to build the ultrasonic transducer array in
+                                                             the parametric loudspeaker is to increase the number of
+   Another factor that determines grating lobe elimi-        channels, which widens the ranges of F and the difference
+nation is the number of channels used in the ultrasonic      frequency, and also preserves the ability to generate low
+transducer array. In Fig. 8(d), the number of channels M     frequencies.
+is increased to 16. Comparison between Fig. 8(a) and Fig.
+8(d) shows that the number of channels can significantly                       IV. Experimental Results
+affect the range of grating lobe elimination. Another ad-
+vantage of increasing the number of channels is obtaining       Grating lobes appear in the beampattern of primary
+narrower beams, but this is a trade-off because it requires  frequency waves when the spacing of channels is larger
+more digital-to-analog convertors and increases processing   than half the wavelength of the primary frequency waves
+complexity.                                                  in the ultrasonic transducer array. This is commonly
+                                                             known as the Nyquist criterion [24] in array signal pro-
+   Through the comparison among all four subplots of         cessing theory. However, the simulation results reveal that
+Fig. 8, it can be seen that a beamsteerer using Cheby-       the Nyquist criterion no longer applies to the difference
+shev weights with 20 dB attenuation results in compa-        frequency wave generated by the parametric loudspeaker.
+rable range of F compared with a beamsteerer using equal     When the primary waves are steered to the same direc-
+weights. Chebyshev weights with 10 dB and 30 dB at-          tion, their main lobes coincide with each other. But be-
+tenuation result in the widest and narrowest range of F,     cause of the difference between wavenumbers of the two
+respectively. To achieve higher attenuation, the range of    primary waves, the spatial aliasing periods for the two
+difference frequency is sacrificed. Once the range of F is   primary waves are also different. Thus, the grating lobes
+fixed, increasing the carrier frequency widens the range of
+difference frequency generated from the parametric loud-
+speakers. However, the bound of F is proportional to the
+
+     Authorized licensed use limited to: Shanghai Jiaotong University. Downloaded on November 25,2026 at 11:25:49 UTC from IEEE Xplore. Restrictions apply.
+shi and gan: grating lobe elimination in steerable parametric loudspeaker                                                                               445
+
+Fig. 8. Intersection function with four groups of weights (equal weights and Chebyshev weights with 10, 20, and 30 dB attenuations): (a) 8 channels,
+1.5 wavelength spacing, and appearance of two grating lobes for the lower primary frequency wave; (b) 8 channels, two times wavelength spacing,
+and appearance of two grating lobes for the lower primary frequency wave; (c) 8 channels, half-wavelength spacing, and appearance of only one grat-
+ing lobe for the lower primary frequency wave; (d) 16 channels, half-wavelength spacing, and appearance of two grating lobes for the lower primary
+frequency wave.
+
+of two primary frequency waves do not always coincide at     wave, as well as the primary frequency waves were re-
+the same direction. This allows the grating lobes of the     stricted to be measured from -40° to 40° with a resolution
+primary frequency waves to suppress each other at the        of 1°. The sound was estimated to propagate at 343 m/s
+difference frequency wave based on the product directiv-     in air. All the channels in the ultrasonic transducer array
+ity principle. The spacing limitation has been relaxed to    were equally weighted, but differently delayed to achieve
+ensure a sufficient spatial sampling rate at the difference  beamsteering. The beamsteering structure shown in Fig.
+frequency in parametric loudspeakers.                        4 was implemented in a data acquisition board (NI PCI-
+                                                             6733, National Instruments, Austin, TX).
+   In this section, we conduct experimental measurement
+to determine the grating lobe elimination of the difference     The experiments were first carried out using column-
+frequency wave in cases described in the previous sections.  wise configuration with spacing of d = 1 cm. The output
+The experiment was conducted in an anechoic chamber          of each channel drives four transducers in a column, and
+with a dimension of 6 × 3 × 3 m. Primary frequency waves     the channel directivity is shown in Fig. 10(a). Each chan-
+were captured by a B&K 4138 microphone (Brüel & Kjær         nel is considered to be a transducer unit in the beamsteer-
+A/S, Nærum, Denmark), and the difference frequency           ing structure shown in Fig. 4. The steering angle of pri-
+wave was measured by a B&K 4134 microphone (Brüel &          mary frequency waves was fixed at -20°, and the primary
+Kjær A/S). The ultrasonic transducer array was mounted       frequencies were adjusted to achieve three difference fre-
+on a motorized rotary stage, and the microphones were        quencies of 8, 4, and 1 kHz. To compare the measurement
+placed at a location 4 m away from the center of the ultra-  results with the simulation results reported in the previ-
+sonic transducer array, as shown in Fig. 9. The beamwidth    ous sections, we use (4) to compute the beampattern with
+of the Murata ultrasonic transducer (MA40S4S, Murata         the contribution of channel directivity for the two primary
+Manufacturing Co., Nagaokakyo, Japan) [22] used in our       frequency waves. However, in the simulation result for
+experiments is stated as 80° in the data specification.      the difference frequency wave, two simulation approaches
+Therefore, the beampatterns of the difference frequency      can be derived by either using the product of simulated
+
+Authorized licensed use limited to: Shanghai Jiaotong University. Downloaded on November 25,2026 at 11:25:49 UTC from IEEE Xplore. Restrictions apply.
+446  IEEE Transactions on Ultrasonics, Ferroelectrics, and Frequency Control, vol. 58, no. 2, February 2011
+
+Fig. 9. The configuration of the transducer array and the microphones used in the experiments.
+
+Fig. 10. (a) Measured channel directivity of the column-wise configura-  Because there is sufficient angular distance between the
+tion; (b) measured channel directivity of the block configuration.       two grating lobes, grating lobe elimination occurs in the
+                                                                         difference frequency wave. The highest side lobe that is an
+beampatterns of primary frequency waves as well as the                   eliminated grating lobe is located at 25° in Figs. 11(c) and
+channel directivities (simulation I), or using the product               11(d). Fig. 11(c) shows the result of simulation I, which
+of measured beampatterns of primary frequency waves                      can predict the height of an eliminated grating lobe based
+(simulation II). The experimental results as well as the                 on the simulated beam patterns of the primary frequency
+corresponding simulation results are shown in Fig. 11.                   waves; whereas Fig. 11(d), which represents the case for
+                                                                         simulation II, shows a better match between the experi-
+   Main lobes of both primary frequencies and difference                 mental result and the simulation result. A case of partial
+frequencies are marked as M in Fig. 11. Grating lobes of                 grating lobe elimination is shown in Figs. 11(e)­(h). The
+the primary frequencies, as well as the eliminated grat-                 primary frequencies are 38.5 and 42.5 kHz, and the gener-
+ing lobes of the difference frequencies, are marked as G                 ated difference frequency is 4 kHz. The grating lobes are
+in Fig. 11. Figs. 11(a)­11(d) show a case of grating lobe                located at 31° and 26° in the beampatterns of the 36.5 and
+elimination. The results are obtained when the primary                   44.5 kHz primary waves, respectively, shown in Figs. 11(e)
+frequencies are 36.5 and 44.5 kHz, and the generated dif-                and 11(f). These two grating lobes are still separated from
+ference frequency is 8 kHz. The grating lobes are located                each other, but result in partial grating lobe elimination
+at 35° and 24° in the beampatterns of 36.5 and 44.5 kHz                  because of the smaller angular distance between them.
+primary waves, respectively, in Figs. 11(a) and 11(b).                   The partially eliminated grating lobe is located at 29° in
+For the higher primary frequency beampattern [in Fig.                    Figs. 11(g) and 11(h). The simulated beam patterns in
+11(b)], the grating lobe is closer to the main lobe com-                 the cases of simulation I and II generate similar results for
+pared with the lower primary frequency beampattern.                      both the main lobe and partially eliminated grating lobe.
+                                                                         The last set of results shows a case of spatial aliasing, as
+                                                                         illustrated in Figs. 11(i)­(l). The primary frequencies are
+                                                                         39.5 and 40.5 kHz. Thus, the difference frequency is 1 kHz.
+                                                                         Both grating lobes are located at 30° in the beampatterns
+                                                                         of 39.5 and 40.5 kHz primary waves, shown in Figs. 11(i)
+                                                                         and 11(j). These two grating lobes result in spatial alias-
+                                                                         ing because they are located too close to each other. The
+                                                                         grating lobe of the difference frequency wave is slightly
+                                                                         lower than the main lobe because of the channel directiv-
+                                                                         ity of the ultrasonic transducer array [see Figs. 11(k) and
+                                                                         11(l)]. Both results of simulation I and simulation II can
+                                                                         match the measured beampattern of the difference fre-
+                                                                         quency wave at the vicinity of main lobe and grating lobe.
+                                                                         However, for the other angles, simulation II matches the
+                                                                         experimental result better than simulation I.
+
+                                                                            From these experimental results, when the difference
+                                                                         frequency increases, the grating lobes of the two primary
+
+     Authorized licensed use limited to: Shanghai Jiaotong University. Downloaded on November 25,2026 at 11:25:49 UTC from IEEE Xplore. Restrictions apply.
+shi and gan: grating lobe elimination in steerable parametric loudspeaker                                                                               447
+
+Fig. 11. Experimental results and simulation results using column-wise configuration (M: main lobe; G: grating lobe) are plotted in solid lines and
+dash lines, respectively. (a)­(d) show beampatterns of primary frequencies (36.5 and 44.5 kHz) and difference frequency (8 kHz), and illustrate a case
+of grating lobe elimination; (e)­(h) show beampatterns of primary frequencies (38.5 and 42.5 kHz) and difference frequency (4 kHz), and illustrate a
+case of partial grating lobe elimination; (i)­(l) show beampatterns of primary frequencies (39.5 and 40.5 kHz) and difference frequency (1 kHz), and
+illustrate a case of spatial aliasing at the difference frequency.
+
+frequency waves become further apart in angular distance      When the main lobes are steered to -5°, grating lobe elim-
+and full or partial grating lobe elimination can occur.       ination can be observed in Figs. 12(a)­(d). Grating lobes
+However, when the difference frequency gets smaller, spa-     are located at -32° and 19° in the beampattern of the
+tial aliasing becomes a problem. These experiments also       39.5 kHz primary wave in Fig. 12(a). Grating lobes are lo-
+verified that the product directivity principle can be used   cated at -31° and 18° in the beampatterns of the 41.5 kHz
+to predict the directivity of the delay-and-sum structure     primary wave, as shown in Fig. 12(b). These grating lobes
+for the parametric loudspeaker.                               are not sufficiently separated in angular distance, but still
+                                                              result in grating lobe elimination because of the troughs
+   The next experiment looks into a different configura-      in the channel directivity of block configuration as shown
+tion, known as the block configuration. In our experiment,    in Figs. 12(c) and 12(d). Both results from simulation I
+four ultrasonic transducers are grouped into a single chan-   and simulation II match the measured beampattern of the
+nel with a spacing of d = 2 cm between the centroid of        difference frequency at the vicinity of main lobe, as well as
+neighboring channels. The directivity pattern for the         the grating lobes. When the steering angle of the primary
+primary frequency waves of the block configuration plot-      waves are increased to -10° [shown in Figs. 12(e)­(h)],
+ted in Fig. 10(b) has two side lobes and two dips located     the location of grating lobes are changed to 14° and 13°
+around ±25°. Because of the sharper directivity pattern       in the beampatterns of the 39.5 and 41.5 kHz primary
+of the block configuration, the steering angle can only be    waves, respectively [labeled G2 in Figs. 12(e) and 12(f)].
+selected within ±15°. Outside of these angles, the main       Meanwhile, the grating lobes are located at -36° in the
+lobe of the transducer array is greatly suppressed. The       beampattern of both 39.5 and 40.5 kHz primary wave.
+experimental results, as well as the corresponding simula-    The angular distance between the two grating lobes of the
+tion results, are shown in Fig. 12.                           primary frequencies remain close to each other. These two
+                                                              grating lobes still result in partial grating lobe elimination
+   Similar to the previous notations, the main lobes of       because of the channel directivity of the block configura-
+both primary frequencies and difference frequencies are       tion. Figs. 12(g) and 12(h) show this case of partial grat-
+marked as M in Fig. 12. Grating lobes of the primary          ing lobe elimination. Simulation II gives better prediction
+frequencies, as well as the eliminated grating lobes of the
+difference frequencies, are labeled as G1 and G2 in Fig. 12.
+
+Authorized licensed use limited to: Shanghai Jiaotong University. Downloaded on November 25,2026 at 11:25:49 UTC from IEEE Xplore. Restrictions apply.
+448  IEEE Transactions on Ultrasonics, Ferroelectrics, and Frequency Control, vol. 58, no. 2, February 2011
+
+Fig. 12. Experimental results and simulation results using block configuration (M: main lobe; G1 and G2: grating lobe) are plotted in solid lines and
+dash lines, respectively. The primary frequencies are 39.5 and 41.5 kHz, and the difference frequency is 2 kHz. (a)­(d) show a case of grating lobe
+elimination when the primary frequencies are steered to -5°; (e)­(h) show a case of partial grating lobe elimination when the primary frequencies
+are steered to -10°; (i)­(l) show a case of spatial aliasing when the primary frequencies are steered to -15°.
+
+of the measured amplitude of the eliminated grating lobe          Table I summarizes the locations and amplitudes of
+than simulation I. Increasing the steering angle of the pri-   grating lobes of parametric loudspeaker for both column-
+mary waves to -15° leads to a significant decrement of         wise and block configurations. The grating lobe elimina-
+the angular distance between the grating lobes, shown in       tion for the difference frequency wave is shown to be ef-
+Figs. 12(i)­(l). In this case, the grating lobes are located   fective for both configurations in the experiment. For the
+close to each other at 9° in the beampatterns of the 39.5      grating lobe elimination case, experimental results show
+and 41.5 kHz primary waves [labeled G1 in Figs. 12(i)          that the column-wise configuration can reduce the grating
+and 12(j)], which results in spatial aliasing. This grating    lobe (labeled G) by 10.05 dB at the difference frequency
+lobe of the difference frequency wave is shown to be even      of 8 kHz, and the block configuration reduces the grating
+higher than the main lobe, as shown in Figs. 12(k) and         lobes by 11.99 dB (G1) and 11.08 dB (G2) at the differ-
+12(l). In this case, partial grating lobe elimination is also  ence frequency of 2 kHz. For the case of partial grating
+observed for the difference frequency wave at 35°, which is    lobe elimination, the column-wise configuration reduces
+a true elimination that is caused by the angular distance      the grating lobe by 8.32 dB at the difference frequency
+between two grating lobes.                                     of 4 kHz, and the block configuration reduces the grating
+                                                               lobe by 2.69 dB (G1) and 3.45 dB (G2) at the difference
+   It is shown in Fig. 11 and Fig. 12 that the simulation      frequency of 2 kHz. For the spatial aliasing case, there
+results match well with the experimental results for the       are no grating lobe eliminations in either column-wise or
+primary frequency waves. However, for the difference fre-      block configurations. Theoretical simulations can also be
+quency wave, product directivity theory in (6) can only        used to predict the grating lobe elimination fairly accu-
+predict the major lobes including the main lobe, grating       rately for these cases.
+lobes, and some of the relatively higher side lobes. Al-
+though many of the side lobes of the difference frequency         The grating lobe elimination in the block configura-
+wave are clearly observed in the simulation, they are not      tion is observed to be more sensitive to the steering angle
+distinguishable in the experimental plots. A possible rea-     and forms two grating lobes in the visible range. However,
+son is the relatively low amplitude of the side lobes com-     column-wise configuration can steer to -20° with only one
+pared with the inherent noise level of the measurement         grating lobe in the visible range. We can conclude that the
+system.                                                        column-wise configuration has better beamsteering capa-
+
+     Authorized licensed use limited to: Shanghai Jiaotong University. Downloaded on November 25,2026 at 11:25:49 UTC from IEEE Xplore. Restrictions apply.
+shi and gan: grating lobe elimination in steerable parametric loudspeaker                                                                                                                        449
+
+          TABLE I. Distribution of Grating Lobes in Parametric Loudspeaker Using Different Configurations.*
+
+Column-wise configuration (see Fig. 11)                                         Block configuration (see Fig. 12)
+
+          Location of                  Reduction of             Location of                 Reduction of                                     Location of              Reduction of
+          grating lobe                 grating lobe             grating lobe                grating lobe                                     grating lobe             grating lobe
+          G (degree)                                            G1 (degree)                                                                  G2 (degree)
+                                          G (dB)                                              G1 (dB)                                                                   G2 (dB)
+
+Grating lobe elimination case
+
+8 kHz-M                25              10.05         2 kHz-M              -30                           11.99                                   19                        9.41
+                                                                                                                                                                          8.58
+8 kHz-S1               24              10.37         2 kHz-S1             -31                                     9.73                          18                        9.98
+
+8 kHz-S2               25              8.13          2 kHz-S2             -31                           10.23                                   18                        3.45
+                                                                                                                                                                          1.32
+Partial grating lobe elimination case                                                                                                                                    10.27
+
+4 kHz-M                29              8.32          2 kHz-M              -36                                     2.69                          14                        4.98
+                                                                                                                                                                         10.93
+4 kHz-S1               28              6.12          2 kHz-S1             -36                                     2.69                          13                        5.31
+
+4 kHz-S2               29              7.92          2 kHz-S2             -36                           16.55                                   13
+
+Spatial aliasing case
+
+1 kHz-M                31              0.35          2 kHz-M                 9                                    0                             35
+
+1 kHz-S1               30              2.07          2 kHz-S1                9                                    0                             34
+
+1 kHz-S2               30              1.62          2 kHz-S2                9                                    0                             35
+
+*M = measurement; S = simulation; S1 = simulation I; S2 = simulation II.
+
+bility and grating lobe elimination. But when the steering      servation will significantly reduce the cost of implementing
+angle is small, the block configuration can be designed         a steerable parametric loudspeaker. Two configurations of
+such that the grating lobes coincide with the troughs in        the ultrasonic transducer array were also implemented
+its directivity pattern. Thus, the parametric loudspeaker       and compared. The experiments results showed that the
+using block configuration is able to achieve a very narrow      column-wise configuration achieves a better beamsteering
+main lobe, but with a limited range of steering angles.         capability than the block configuration. However, in small
+                                                                steering angle applications, the block configuration can
+                           V. Conclusion                        achieve a sharper main lobe than the column-wise configu-
+                                                                ration when the same number of ultrasonic transducers
+   In this paper, we studied the beamsteering capability        are used in the parametric loudspeaker.
+for the parametric loudspeaker and its unique property of
+spatial aliasing. A theoretical model of the beampattern                                                                 Appendix
+of the parametric loudspeaker was derived based on an
+equivalent circular Gaussian source array that approxi-            One important property of the intersection function is
+mates the directivity characteristics of the linear ultrasonic  that the range of F that ensures the grating lobe elimina-
+transducer array. Using the product directivity principle,      tion of the difference frequency wave does not change with
+a digital beamsteerer of the parametric loudspeaker was         the value of . This property can be proven as follows:
+proposed and implemented in a delay-and-sum structure.
+The experimental results verified the feasibility of the           Substitute (7) into (9),
+digital beamsteerer in the parametric loudspeaker. This
+paper also examined the spatial aliasing property of the                  å I K(F) = max                M -1         w   m  exp        çèæç  j  pm  Q  ÷÷øö
+parametric loudspeaker and found that different degrees                                      Q          m=0                                         L
+of grating lobe elimination can occur under different con-
+ditions. It is observed in both simulation and experiment                    å ×M -1  w  m  exp         ïïïîíïìï  j  pm  F      é   Q  -      min          çæèç  naL  -  nbL  öø÷÷ùúú  ïïïïïþüý            
+that the occurrence of grating lobe elimination depends on                      m=0                                      L      ê                                         F    úû                          .
+both the difference frequency and the configuration of the                                                                      ê            1£na £K
+ultrasonic transducer array. An important finding of this                                                                       ëê           1£nb £L
+work is to show that inter-channel spacing of the ultra-
+sonic transducer array in the parametric loudspeaker can                                                                                                                               (A.1)
+be extended to more than K + 1 times half the wavelength
+of lower primary frequency, where K (usually K = 2) is             Assume  is replaced by . Because both  and 
+the largest index of grating lobes of the lower primary fre-    are determined,  is a constant given by  = /. Thus,
+quency wave in the visible region. When the steering angle      (A.1) can be manipulated to be
+is limited to a certain range, the non-aliasing spacing of
+the ultrasonic transducer array can be further extended.        å I K(F) = max                M -1                   m   exp çèæçç     j pm     Q   ÷ö÷÷ø
+By taking advantage of the increased spacing of the ultra-                         Q                                                            mL
+sonic transducer array, grating lobe elimination allows the                                        w
+parametric loudspeaker to achieve a much sharper main
+lobe without increasing the number of channels. This ob-                                      m=0
+
+                                                                          å ×M -1        exp  ïïïïïíîì  j pm         F      é   Q   -         min      æçèç  namL     -  nbmL          ö÷÷øúúù   þïüýïïïï  .
+                                                                                                                     mL     ê                                              F            úû
+                                                                                  wm                                        ê                1£na £K
+                                                                                                                            ëê               1£nb £L
+                                                                             m=0
+
+                                                                                                                                                                                       (A.2)
+
+                                                                   For any value of F, there is always a certain  that
+                                                                gives the maximum value of the part within the angle
+
+Authorized licensed use limited to: Shanghai Jiaotong University. Downloaded on November 25,2026 at 11:25:49 UTC from IEEE Xplore. Restrictions apply.
+450                                    IEEE Transactions on Ultrasonics, Ferroelectrics, and Frequency Control, vol. 58, no. 2, February 2011
+
+brackets. Furthermore, this maximum value is the value                                                                [15]N. Tanaka and M. Tanaka, "Active noise control using a steerable
+of intersection function at this value of F.                                                                                parametric array loudspeaker," J. Acoust. Soc. Am., vol. 127, no. 6,
+                                                                                                                            pp. 3526­3537, 2010.
+   Here  and  are known. It is not hard to find  =
+/. Eq. (A.2) is further expressed as                                                                                  [16]D. Olszewski, F. Prasetyo, and K. Linhard, "Steerable highly direc-
+                                                                                                                            tional audio beam loudspeaker," in Proc. Interspeech, 2005.
+å I K(F  )               êêêéë  M -1      exp èççæç            Q  ö÷÷÷ø
+            =    max                                     j pm  L                                                      [17] K. S. Tan, W. S. Gan, J. Yang, and M. H. Er, "An efficient digital
+                                     wm                                                                                     beamsteering system for difference frequency in parametric array,"
+                   Q                                                                                                        in Proc. IEEE Int. Conf. Acoustics Speech and Signal Processing,
+                                m=0                                                                                         2004.
+                                                                                                              ù 
+        M -1             é             F  èçæçççç                 æèçç             nbL  ÷øö÷, ø÷ö÷÷÷÷ úúùûú  ú        [18]C. M. Darvennes and M. F. Hamilton, "Scattering of sound by
+     å ×m=0   w  m  exp  ê      j  pm  L           Q  -   min            n  aL  -   F                        ú     .        sound from two Gaussian beams," J. Acoust. Soc. Am., vol. 87, no.
+                         ê                                                                                                  5, pp. 1955­1964, 1990.
+                         ëê                              1£na £K                                              ûúú
+                                                         1£nb £L                                                      [19] W. S. Gan, J. Yang, K. S. Tan, and M. H. Er, "A digital beams-
+                                                                                                                            teerer for difference frequency in a parametric array," IEEE Trans.
+                                                                                        (A.3)                               Audio Speech Lang. Process., vol. 14, no. 3, pp. 1018­1025, 2006.
+
+   Eqs. (A.1) and (A.3) are identical, except that  in                                                                [20]Y. S. Lee, "Numerical solution of the KZK equation for pulsed finite
+(A.1) is replaced by  in (A.3), and  in (A.1) is replaced                                                                   amplitude sound beams in thermoviscous fluids," Ph. D. disserta-
+by  in (A.3). This proves that the maximum values of                                                                        tion, Dept. Mech. Eng., Univ. Texas, Austin, TX, 1993.
+the part within the angle brackets in (A.1) and (A.3) are
+the same. Thus, it can be seen that the change of  cannot                                                             [21] J. J. Wen and M. A. Breazeale, "A diffraction beam field expressed
+change the range of F that ensures the grating lobe elimi-                                                                  as the superposition of Gaussian beams," J. Acoust. Soc. Am., vol.
+nation of the difference frequency wave, which is closely                                                                   83, no. 5, pp. 1752­1756, 1988.
+related to the value of the intersection function.
+                                                                                                                      [22] Murata Manufacturing Co Ltd., (2010, Jun.) Ultrasonic sensor ap-
+                                                                                                                            plication manual, Oct. 31, 2008. [Online]. Available: http://www.
+                                                                                                                            murata.com/products/catalog/pdf/s15e.pdf
+
+                                                                                                                      [23]R. C. Hansen, Phased Array Antennas. New York, NY: Wiley,
+                                                                                                                            2009.
+
+                                                                                                                      [24]D. H. Johnson and D. E. Dudgeon, Array Signal Processing: Con-
+                                                                                                                            cepts and Techniques. Upper Saddle River, NJ: Prentice Hall, 1993.
+
+                             References                                                                                                            Chuang Shi received his B.Eng. degree in com-
+                                                                                                                                                   puter science and technology from Beijing Jiao-
+[1]C. Shi and W. S. Gan, "Development of parametric loudspeaker:                                                                                   tong University, China in 2005, and his M.Eng.
+      A novel directional sound generation technology," IEEE Potentials,                                                                           degree in instrument science and technology from
+      vol. 29, no. 6, pp. 20­24, 2010.                                                                                                             Tsinghua University, China in 2008. He is cur-
+                                                                                                                                                   rently pursuing the Ph.D. degree in electrical and
+[2] P. J. Westervelt, "Parametric acoustic array," J. Acoust. Soc. Am.,                                                                            electronic engineering at Nanyang Technological
+      vol. 35, no. 4, pp. 535­537, 1963.                                                                                                           University, Singapore.
+
+[3] M. B. Bennett and D. T. Blackstock, "Parametric array in air," J.                                                                              Woon-Seng Gan received his B.Eng. (1st Class
+      Acoust. Soc. Am., vol. 57, no. 3, pp. 562­568, 1975.                                                                                         Hons) and Ph.D. degrees, both in electrical and
+                                                                                                                                                   electronic engineering from the University of
+[4] M. Yoneyama and J. Fujimoto, "The audio spotlight: An application                                                                              Strathclyde, UK in 1989 and 1993 respectively. He
+      of nonlinear interaction of sound waves to a new type of loudspeaker                                                                         joined the School of Electrical and Electronic En-
+      design," J. Acoust. Soc. Am., vol. 73, no. 5, pp. 1532­1536, 1983.                                                                           gineering, Nanyang Technological University, Sin-
+                                                                                                                                                   gapore, as a Lecturer in 1993 and was promoted to
+[5] T. Kamakura, M. Yoneyama, and K. Ikegaya, "Developments of                                                                                     Senior Lecturer in 1998. He is currently an Associ-
+      parametric loudspeaker for practical use," in Proc. Int. Symp. Non-                                                                          ate Professor and Deputy Director of the Center
+      linear Acoustics, 1984, pp. 147­150.                                                                                                         for Signal Processing at Nanyang Technological
+                                                                                                                                                   University. His research interests include adaptive
+[6] T. D. Kite, J. T. Post, and M. F. Hamilton, "Parametric array in                                                  signal processing, active noise control, directional sound systems, and
+      air: Distortion reduction by preprocessing," in Proc. 16th Int. Congr.                                          real-time embedded systems.
+      Acoustics, 1998.                                                                                                    Dr. Gan has won the Institute of Engineer Singapore (IES) Presti-
+                                                                                                                      gious Engineering Achievement Award in 2001 for the work on audio
+[7] F. J. Pompei, "The use of airborne ultrasonics for generating au-                                                 beam systems. He has published more than 180 international refereed
+      dible sound beams," J. Audio Eng. Soc., vol. 47, no. 9, pp. 726­731,                                            journals and conferences, and has been granted four Singapore and US
+      1999.                                                                                                           patents. He has co-authored the book Digital Signal Processors: Archi-
+                                                                                                                      tectures, Implementations, and Applications (Prentice Hall, 2005). He is
+[8] E. L. Tan, P. F. Ji, and W. S. Gan, "On preprocessing techniques                                                  also the leading author of a new book, Embedded Signal Processing with
+      for bandlimited parametric loudspeakers," Appl. Acoust., vol. 7, no.                                            the Micro Signal Architecture, (Wiley-IEEE, 2007). A new book Sub-
+      5, pp. 486­492, 2010.                                                                                           band Adaptive Filtering: Theory and Implementation was also published
+                                                                                                                      by John Wiley in August 2009. He is currently a Senior Member of
+[9] M. F. Hamilton and D. T. Blackstock, Nonlinear Acoustics. San                                                     IEEE and a Member of the Audio Engineering Society and Professional
+      Diego, CA: Academic Press, 1998.                                                                                Engineers of Singapore. He is also a member of the Signal Processing
+                                                                                                                      Education (SPEd) technical committee of the IEEE Signal Processing
+[10] H. O. Berktay, "Possible exploitation of non-linear acoustics in un-                                             Society (USA).
+      derwater transmitting applications," J. Sound Vibrat., vol. 2, no. 4,
+      pp. 435­461, 1965.
+
+[11] E. A. Zabolotskaya and R. V. Khokhlov, "Quasi-plane waves in the
+      nonlinear acoustics of confined beams," Sov. Phys. Acoust., vol. 15,
+      no. 1, pp. 35­40, 1969.
+
+[12] V. P. Kuznetsov, "Equations of nonlinear acoustics," Sov. Phys.
+      Acoust., vol. 16, no. 4, pp. 467­470, 1971.
+
+[13] M. Zheng and R. F. W. Coates, "The angular response of a para-
+      metric array: Analytical solution," J. Sound Vibrat., vol. 209, no. 3,
+      pp. 493­503, 1998.
+
+[14] M. Zheng and L. S. Wang, "The angular response of a parametric
+      array: General numerical solution," J. Sound Vibrat., vol. 228, no. 1,
+      pp. 177­197, 1999.
+
+     Authorized licensed use limited to: Shanghai Jiaotong University. Downloaded on November 25,2026 at 11:25:49 UTC from IEEE Xplore. Restrictions apply.
+

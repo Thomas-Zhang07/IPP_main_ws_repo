@@ -1,0 +1,12 @@
+Reading pref.tcl
+
+# 2025.2
+
+# waves_old.wlf opened as dataset "waves_old"
+# do t1.do
+# ** Error: Active logfile is not in simulation mode
+# Error in macro ./t1.do line 1
+# Active logfile is not in simulation mode
+#     while executing
+# "add wave -noupdate -label swap_out "/tb_top/dut/\inst6|s_swap_out~q\\""
+VSIM 2> 

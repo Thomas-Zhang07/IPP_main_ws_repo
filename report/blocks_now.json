@@ -1,0 +1,1356 @@
+[
+  {
+    "block_id": "Fvdld3xEGo0UY9xfKszcxU6HnGc",
+    "block_type": 1,
+    "children": [
+      "doxcnKtTvS1zVssoqZUpye3Wajb"
+    ],
+    "page": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "LUIS report",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1
+      }
+    },
+    "parent_id": ""
+  },
+  {
+    "block_id": "doxcnKtTvS1zVssoqZUpye3Wajb",
+    "block_type": 3,
+    "children": [
+      "doxcnEdXQwBdn6Lb4mHIMp79PPM",
+      "M7vedtgp8ocMJ2xqZ1wccCBKn5f",
+      "Sx6HdNh7aoqdHMxuB0lc41KQndh",
+      "CVbzdQgpOoQ7Rwx9B1TcqDySnJa",
+      "FzGOdBWbUo8sSQx6V05cG2tjn6f",
+      "V0z1dZakxooz5UxuGGHccL7Pnac",
+      "MNO9dUJQTotgG3xzHsYc5njKnkh",
+      "JALedITBkoyqd6xDScMcJ3rVnIh",
+      "doxcn01txS3oQYy4JVZaaEAGELg",
+      "doxcnCfA6bPcNBWRtIYrkFwEybb",
+      "doxcntperic6BBPSwr9o829ejob",
+      "doxcnYouvmUzA1TzfkQY0ifURKb",
+      "doxcnGvbU2NoXRealsCNz2dAJye",
+      "doxcnNvdnonBY6fsxabXIFHFh5b",
+      "doxcnNvalAKux1QqyXH4mqzdq7e",
+      "doxcnsNzTx9Zz3xwgJ31L16Qlae",
+      "doxcnYQcDDTW0evztH30XDEKhTc",
+      "doxcndmKKEyDt2kj8RYSlm5fn8g",
+      "doxcnzL3Gs4QF1UdHE1Je0rNW5b",
+      "doxcn2VDBmrrXUoGRldeHvu4hTg",
+      "doxcnKdIJM6AOy1t7DtWwS3Ygub",
+      "SgOjdbsUDog1EixdGzucseLEnQb",
+      "LkgrdFvM7oQl3jxvRhXcsCaenda",
+      "doxcn9GOmuhkFjanBTGtPT8DNRd",
+      "doxcnxVBAEDnFWEghlJCjcP1I7d",
+      "doxcniFHlu9gB5nZQFnocJ4mjEg",
+      "doxcnLvZvKe07dwvs9THPqmG0Ze",
+      "doxcnfBrwYfTMTDWgKQaVV9rZJd",
+      "doxcn7BQgtlvHIBqfyaABOe7XoC",
+      "doxcnA2ceJBpxz3psMa0W2m6gig",
+      "doxcnZvDWH3Xd5HMIX60IRwrxQw",
+      "doxcnvDmWgRtbsf3R28SI45xMzh",
+      "doxcn7RUeIYEQ0qwWUkKbkKEoed",
+      "doxcns6WXNM9oZktl5qGD1x7Aed",
+      "doxcnOlM7k7rtgZAkZlQY2qC4Qd",
+      "doxcnK5qoQw9EYJUXX6pcvEEdVb",
+      "doxcnO0r7tKxktdQodrsMs1Uc0g",
+      "doxcnOHgSKxD7czxVBcZGG741ih",
+      "doxcnkY57t8Pc2cFhSejsoMSgUe",
+      "doxcnad0SyLqWkINEXli3c87kWd",
+      "doxcnBMc8dz71aUhd0iMe6X38tb"
+    ],
+    "heading1": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "26.11.11",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "Fvdld3xEGo0UY9xfKszcxU6HnGc"
+  },
+  {
+    "block_id": "doxcnEdXQwBdn6Lb4mHIMp79PPM",
+    "block_type": 22,
+    "divider": {},
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "M7vedtgp8ocMJ2xqZ1wccCBKn5f",
+    "block_type": 3,
+    "heading1": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "Directional Speaker Demo",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "Sx6HdNh7aoqdHMxuB0lc41KQndh",
+    "block_type": 27,
+    "image": {
+      "align": 2,
+      "height": 559,
+      "scale": 1,
+      "token": "N56UbFrI7ogreMxUyL3cfF4anVh",
+      "width": 410
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "CVbzdQgpOoQ7Rwx9B1TcqDySnJa",
+    "block_type": 2,
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb",
+    "text": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "https://www.youtube.com/watch?v=Fbphhg9ArXw&t=375s",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    }
+  },
+  {
+    "block_id": "FzGOdBWbUo8sSQx6V05cG2tjn6f",
+    "block_type": 2,
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb",
+    "text": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    }
+  },
+  {
+    "block_id": "V0z1dZakxooz5UxuGGHccL7Pnac",
+    "block_type": 27,
+    "image": {
+      "align": 2,
+      "height": 555,
+      "scale": 0.9498208614517996,
+      "token": "DBwyb4SSKoq8w4xDkwhc54wanPg",
+      "width": 837
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "MNO9dUJQTotgG3xzHsYc5njKnkh",
+    "block_type": 2,
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb",
+    "text": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "大概偏离45度 听不到",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    }
+  },
+  {
+    "block_id": "JALedITBkoyqd6xDScMcJ3rVnIh",
+    "block_type": 2,
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb",
+    "text": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "https://www.youtube.com/watch?v=GAo09JyyCIA",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    }
+  },
+  {
+    "block_id": "doxcn01txS3oQYy4JVZaaEAGELg",
+    "block_type": 4,
+    "heading2": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "1. 提升指向性",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnCfA6bPcNBWRtIYrkFwEybb",
+    "block_type": 5,
+    "heading3": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "主机 Python",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcntperic6BBPSwr9o829ejob",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "抽稀/密度加权：按 Hann/Gaussian 选阵元；栅瓣降 10–20 dB，增益 −3 dB，主瓣 ×√2。",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnYouvmUzA1TzfkQY0ifURKb",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "相位抖动：每阵元 ±1–2 档随机相位；打散栅瓣，成本最低。",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnGvbU2NoXRealsCNz2dAJye",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "相位-only 优化：坐标下降/SA；压旁瓣、加零陷；旁瓣 −5–15 dB，零深 −20–30 dB。",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnNvdnonBY6fsxabXIFHFh5b",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "相位校准：测逐通道误差，主机预补偿；主瓣 +1–3 dB。",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnNvalAKux1QqyXH4mqzdq7e",
+    "block_type": 5,
+    "heading3": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "FPGA",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnsNzTx9Zz3xwgJ31L16Qlae",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "逐通道 duty 幅度加权（",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": "DutyLine",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": true,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": " 原型；",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": "PhaseLine",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": true,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": " 加 duty + 脉冲居中）。",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnYQcDDTW0evztH30XDEKhTc",
+    "block_type": 4,
+    "heading2": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "2. 流播放",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcndmKKEyDt2kj8RYSlm5fn8g",
+    "block_type": 2,
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb",
+    "text": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "主机流单声道音频 → FPGA FIFO + sigma-delta → 现有波束",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    }
+  },
+  {
+    "block_id": "doxcnzL3Gs4QF1UdHE1Je0rNW5b",
+    "block_type": 13,
+    "ordered": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "UART：",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": "g_CLKS_PER_BIT",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": true,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": " 133→20；",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": "RSSFilter_1",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": true,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": " TAPS 8→2。",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false,
+        "sequence": "1"
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcn2VDBmrrXUoGRldeHvu4hTg",
+    "block_type": 13,
+    "ordered": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "协议：新增 ",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": "0xCC",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": true,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": " 音频包。",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false,
+        "sequence": "auto"
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnKdIJM6AOy1t7DtWwS3Ygub",
+    "block_type": 13,
+    "ordered": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "FPGA：1 kB FIFO + sigma-delta + ",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": "stream_en",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": true,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": "。",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false,
+        "sequence": "auto"
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "SgOjdbsUDog1EixdGzucseLEnQb",
+    "block_type": 2,
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb",
+    "text": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "先进先出缓冲，解耦 UART 写入和 8 kHz 读出，吸收主机抖动。",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    }
+  },
+  {
+    "block_id": "LkgrdFvM7oQl3jxvRhXcsCaenda",
+    "block_type": 2,
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb",
+    "text": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "1 kB = 1024 样本 = 128 ms @8 kHz；空则静音，满则丢包或降速。",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    }
+  },
+  {
+    "block_id": "doxcn9GOmuhkFjanBTGtPT8DNRd",
+    "block_type": 5,
+    "heading3": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "协议",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnxVBAEDnFWEghlJCjcP1I7d",
+    "block_type": 2,
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb",
+    "text": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "现有相位帧：",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    }
+  },
+  {
+    "block_id": "doxcniFHlu9gB5nZQFnocJ4mjEg",
+    "block_type": 14,
+    "code": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "0xFE | 256 × phase | 0xFD",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "language": 1,
+        "wrap": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnLvZvKe07dwvs9THPqmG0Ze",
+    "block_type": 2,
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb",
+    "text": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "新增音频包：",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    }
+  },
+  {
+    "block_id": "doxcnfBrwYfTMTDWgKQaVV9rZJd",
+    "block_type": 14,
+    "code": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "0xCC | len_hi | len_lo | N × sample | checksum",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "language": 1,
+        "wrap": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcn7BQgtlvHIBqfyaABOe7XoC",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "长度前缀避免样本字节误触发 ",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": "0xFE/0xFD/0xC8",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": true,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": "。",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnA2ceJBpxz3psMa0W2m6gig",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "包与包之间可插相位帧，实现边放边转。",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnZvDWH3Xd5HMIX60IRwrxQw",
+    "block_type": 5,
+    "heading3": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "流播放架构",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnvDmWgRtbsf3R28SI45xMzh",
+    "block_type": 14,
+    "code": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "主机音频（WAV/麦克风, 8 kHz, 8-bit）\n   │  0xCC | len | N×sample | checksum\n   ▼\nUART 256k → UARTReader → 音频包解析 → 1 kB FIFO\n                                          │ 8 kHz\n                                          ▼\n                                   sigma-delta @5.12 MHz\n                                          │ 1-bit gate\n                                          ▼\n",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": "现有相位帧 → 40 kHz 载波 ───────────────► 门控 → 32×DATA → 驱动板 → 换能器",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "language": 1,
+        "wrap": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcn7RUeIYEQ0qwWUkKbkKEoed",
+    "block_type": 4,
+    "heading2": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "附录：代码位置",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcns6WXNM9oZktl5qGD1x7Aed",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "demo/array_factor.py",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": true,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": " — 阵列因子/旁瓣",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnOlM7k7rtgZAkZlQY2qC4Qd",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "demo/acoustics.py",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": true,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": " — 相位/聚焦/偏转",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnK5qoQw9EYJUXX6pcvEEdVb",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "fpga_code/src/PhaseLine.vhd",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": true,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": " — 单通道相位",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnO0r7tKxktdQodrsMs1Uc0g",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "fpga_code/src/AllChannels.vhd",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": true,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": " — 256 通道 + mux",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnOHgSKxD7czxVBcZGG741ih",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "fpga_code/src/Distribute.vhd",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": true,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": " — 帧解析/模式",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnkY57t8Pc2cFhSejsoMSgUe",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "fpga_code/src/music_player.vhd",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": true,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": " — 音频门控",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnad0SyLqWkINEXli3c87kWd",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "fpga_code/src/RSSFilter_1.vhd",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": true,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": " — UART 滤波",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  },
+  {
+    "block_id": "doxcnBMc8dz71aUhd0iMe6X38tb",
+    "block_type": 12,
+    "bullet": {
+      "elements": [
+        {
+          "text_run": {
+            "content": "fpga_code/src/DutyLine.vhd",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": true,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        },
+        {
+          "text_run": {
+            "content": " — duty 原型",
+            "text_element_style": {
+              "bold": false,
+              "inline_code": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            }
+          }
+        }
+      ],
+      "style": {
+        "align": 1,
+        "folded": false
+      }
+    },
+    "parent_id": "doxcnKtTvS1zVssoqZUpye3Wajb"
+  }
+]

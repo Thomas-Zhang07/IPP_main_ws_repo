@@ -1,0 +1,10 @@
+<!doctype html><html><head><script>window.addEventListener('error',e=>document.title='ERR:'+e.message,true);</script><meta charset="utf-8">
+<script type="importmap">{"imports":{"three":"vendor/three.module.js"}}</script>
+<style>body{margin:0}</style></head><body>
+<script type="module">
+import * as THREE from 'three';
+const r=new THREE.WebGLRenderer({antialias:true}); r.setSize(300,300);
+document.body.appendChild(r.domElement);
+const s=new THREE.Scene(); s.background=new THREE.Color(0xff0000);
+const c=new THREE.PerspectiveCamera(); r.render(s,c);
+</script></body></html>

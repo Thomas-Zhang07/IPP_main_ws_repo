@@ -1,0 +1,733 @@
+Downloaded from www.e merald.c om/a tsip/a rticle-pdf/3 /1 /1/1 1342274/a tsip.2 014.1 8en.p df by guest on 25 November 2026
+SIP (2015), vol. 3, e20, page 1 of 12 © The Authors, 2015.
+The online version of this article is published within an Open Access environment subject to the conditions of the Creative Commons Attribution-NonCommercial-ShareAlike
+license <http://creativecommons.org/licenses/by-nc-sa/3.0/>. The written permission of Cambridge University Press must be obtained for commercial re-use.
+doi:10.1017/ATSIP.2014.18
+
+overview paper
+
+An overview of directivity control methods of
+the parametric array loudspeaker
+
+  chuang shi1, yoshinobu kajikawa1 and woon-seng gan2
+
+       A sound reproduction system usually consists of several types of loudspeakers to cater to sophisticated applications. The directiv-
+       ity of a loudspeaker is a measure of its efficiency in sending sounds to a particular direction instead of all directions. Demand to
+       control the directivity of a sound reproduction system is gaining momentum with many new designs of directional loudspeakers,
+       including the acoustic dome, horn loudspeaker, loudspeaker array, and parametric array loudspeaker (PAL). The PAL is an
+       application of the parametric acoustic array in air, which generates a sound beam from the interaction of ultrasonic beams. The
+       PAL has several desired features, such as its narrow beamwidth over a wide frequency range, low sound attenuation over a long
+       distance, and ability to reproduce perceptually near sound images. The PAL is also advantageous in using a smaller driving unit
+       to transmit an equally narrow sound beam as compared to the conventional loudspeaker and broadside loudspeaker array. An
+       overview of directivity control methods of the PAL is presented in this paper. In particular, acoustic models and signal processing
+       techniques in controlling the directivity of the PAL are emphasized.
+
+Keywords: Parametric array loudspeaker, Acoustic beamforming, Directivity model
+
+Received 24 July 2014; Revised 4 December 2014; Accepted 4 December 2014
+
+I. INTRODUCTION                                                                      sound is cumulatively formed in the beam of the ultra-
+                                                                                     sonic carrier as described by the Berktay's far-field solution,
+The parametric array loudspeaker (PAL) is an application                             and it will continue to propagate beyond the absorption
+of the parametric acoustic array in air [1]. It was dis-                             distance where the ultrasonic carrier has been sufficiently
+covered by Westervelt in the early 1960s that two colli-                             attenuated [4].
+mated high-frequency beams could result in the generation
+of a low-frequency sound beam as a result of nonlinear                                  Signal processing is of critical importance in the devel-
+acoustic effects [2]. The high-frequency components were                             opment of the PAL. Nonlinear distortions have been the
+commonly referred to as the primary frequency and the                                top technical barrier to promote the use of the PAL. Ever
+low-frequency component generated from the interaction                               since the PAL was invented [5], a variety of signal pro-
+of primary frequencies was thus referred to as the differ-                           cessing methods have been proposed to address nonlinear
+ence frequency. After Westervelt published his discovery                             distortions in the PAL. Kamakura et al. have suggested
+of the parametric acoustic array, Berktay studied a self-                            that the square-root operation preprocess the envelope of
+demodulation phenomenon caused by the same nonlinear                                 the double sideband modulation method, which can sub-
+acoustic effects. Berktay found out that when an acoustic                            stantially reduce the second harmonic distortion [6]. Kite
+wave was transmitted in the form of a pulsed carrier, it was                         et al. have further added the double integral operation in
+self-demodulated to its envelope, which consisted of much                            front of the square-root operation to treat the higher order
+lower frequency components than the carrier frequency,                               harmonic distortions [7]. After that, the single sideband
+after a sufficiently large propagation distance [3]. This was                        modulation method was introduced to fully eliminate har-
+known as the Berktay's far-field solution. Therefore, the                            monic distortions based on the Berktay's far-field solution.
+sound principle of the PAL happens when a modulated                                  However, the practical performance of the single sideband
+ultrasonic carrier is transmitted into air. The modulating                           modulation method was not as good as the double side-
+                                                                                     band modulation method. It was because that when pres-
+1Department of Electrical and Electronic Engineering, Kansai University, Osaka,      sure levels of primary frequencies were high, the Berktay's
+Japan                                                                                far-field solution was no longer valid [8]. Recently, there
+2School of Electrical and Electronic Engineering, Nanyang Technological University,  were many new methods applied in the PAL, such as the
+Singapore                                                                            quadrature modulation method [9], recursive modulation
+                                                                                     method [10], and hybrid modulation method [11]. All of
+Corresponding author:                                                                these methods were highly optimized to a specific acoustic
+C. Shi                                                                               model. They encountered the same limitation as the single
+Email: r148005@kansai-u.ac.jp
+
+                                                                                                                                                                                   1
+
+Downloaded from www.emerald.com/a tsip/a rticle-pdf/3 /1/1/1 1342274/a tsip.2 014.18en.pdf by guest on 25 November 2026
+2 chuang shi et al.
+
+sideband modulation method that discrepancies between           Fig. 1. Sketches of the quadrilateral and hemispherical reflectors for controlling
+the applied environment and acoustic model assumptions          the directivity of the PAL.
+led to significant performance degradation. Therefore a
+superior method to address nonlinear distortions of the                          Fig. 2. Directivity measurement setup of the PAL.
+PAL should be able to adapt to the applied environment.
+One such solution is the nonlinear system identification of     IV(C). In addition, the digital beamsteerer of the PAL is
+the PAL using a Volterra series [12­14]. On the other hand,     examined when spatial aliasing at the primary frequency
+a psychoacoustical method has been tested in the PAL to         occurs. Lastly, Section V concludes this paper and charts
+generate the virtual bass effect by equalizing the residual     new research directions of the PAL.
+harmonic distortions that cannot be completely eliminated
+at this stage [15].                                             II. DIRECTIVITY CONTROL METHOD
+                                                                OF THE PAL
+   There are various studies that use the PAL as an acces-
+sible compact directional source. Sound field control is one    There are two types of directivity control methods of
+of them targeting at tailored enhancement and attenuation       the PAL. They are the mechanical and signal processing
+of acoustic components [16]. The PAL has been employed          methods. The mechanical method is built with motor-
+in sound field control applications, such as the audio pro-     ized rotation stages and reflective objects, whereas the sig-
+jection [17], three-dimensional sound reproduction [18],        nal processing method is implemented in analog circuits
+immersive communication [19], and active noise control          and digital processors. The disadvantage of the mechanical
+(ANC) [20]. The computational complexity of a multi-            method owes to its overall size and additional reflections
+channel ANC system using PALs as secondary sources is           caused by the motorized rotation stages and the reflective
+greatly reduced, because crosstalk secondary path models        objects.
+can be removed [21, 22]. Being relatively small in size, the
+PAL has substituted conventional miniature loudspeakers         A) Mechanical method
+in the mobile phone [23] and interactive humanoid [24].
+The PAL has also been employed in nondestructive testing,       The PAL is commonly used in the direct mode to project a
+such as the landmine detection [25], weapon detection [26],     sound beam to a listener. However, there is another reflected
+material measurement [27], and art preservation [28].           mode of the PAL. A virtual sound source is formed at the
+                                                                point of reflection when the PAL is placed to face a reflec-
+   Although a controllable sound beam enhances the ease         tive surface as shown in Fig. 1. The PAL operating in the
+of using the PAL in different applications, there has been      reflected mode has been employed in an ANC system [30],
+only a limited number of studies to control the directivity     where the secondary source was invisible to the control
+of the PAL. The emitter of the PAL consists of numerous         point. Changes to the reflective surface can lead to certain
+ultrasonic transducers. In the past studies, addressing non-    directivity control of the PAL. The quadrilateral reflector
+linear distortions of the PAL, the emitter of the PAL was       diverts the beam direction of the PAL and the hemispherical
+considered as an ultrasonic source en bloc. However, when       reflector widens the beamwidth of the PAL [31]. Olszewski
+phased array techniques are applied to control the directiv-    and Linhard [32] have reported that the presence of a lis-
+ity of the PAL, ultrasonic transducers in the emitter of the    tener's head in the near field of the PAL results in a diffused
+PAL have to be configured into multiple channels, which are
+driven individually. This configuration can be interpreted as
+an array of PALs because every channel consists of a number
+of ultrasonic transducers and operates as a PAL. The delay-
+and-sum beamformer has been proved effective in con-
+trolling the directivity of the PAL, but other sophisticated
+methods are usually not applicable due to lack of an accu-
+rate directivity model of the PAL with a low computational
+complexity [29].
+
+   The rest of this paper is organized as follows. Directiv-
+ity control methods of the PAL are elaborated in Section
+II. The product directivity principle and past studies to
+improve the accuracy of the product directivity principle
+are presented in Section III(A). One of the latest directivity
+models of the PAL, namely the convolution model, is pro-
+vided in Section III(B). One advantage of the convolution
+model is that environmental conditions, such as the room
+temperature and relative humidity, are taken into account.
+Using the convolution model, the beamwidth of the PAL is
+shown under different environmental conditions in Section
+IV(A). The constant beamwidth beamformer and digital
+beamsteerer of the PAL are described in Sections IV(B) and
+
+Downloaded from www.e merald.c om/atsip/article-pdf/3 /1 /1 /11342274/a tsip.2014.18en.pdf by guest on 25 November 2026
+     directivity control methods of the parametric array loudspeaker 3
+
+(a)  (b)                                                        (c)                                                     (d)        (e)
+
+     Fig. 3. Various array configurations of the PAL.
+
+sound field. This observation can be explained by the simi-     system, an icosahedral PAL transmitting 10 sound beams
+larity in shape between the listener's head and hemispherical   were employed to create virtual sound sources to provide
+reflector.                                                      a user with immersive listening experience [40]. The icosa-
+                                                                hedral PAL outperformed small-scale loudspeaker systems
+   A motorized rotation stage can easily change the beam        in terms of its localization accuracy, because the sound field
+direction of the PAL. Ishii et al. [33] developed an indoor     reproduced by the icosahedral PAL was independent from
+navigation system, in which the PAL was installed on a          individual head-related transfer functions.
+motorized rotation stage to send private messages to a mov-
+ing listener. A similar setup is often adopted in the direc-       In the acoustic measurement of a reverberant environ-
+tivity measurement of the PAL. As illustrated in Fig. 2,        ment, a diffused acoustic source is essential but very expen-
+the PAL is fastened on a motorized rotation stage and a         sive. An omnidirectional PAL was implemented by pin-
+microphone is placed in the far field of the PAL. Sound         ning hundreds of ultrasonic transducers on hollow sphere
+absorbing treatments to the walls of the measurement room       foam [41]. This omnidirectional PAL became a budget sub-
+are highly recommended. Moreover, an array of PALs can          stitute to the expensive dodecahedron loudspeaker and
+be tilted simultaneously by many motorized rotation stages.     demonstrated a more stable omnidirectional pattern over a
+A prototype of one such motorized PAL array was built by        wide frequency range. The low-frequency sound level of this
+Olszewski et al. [34], which consisted of four PALs tilting     omnidirectional PAL was relatively soft, which was another
+in unison. In this motorized PAL array, digital delays were     recognized drawback of the PAL [15].
+also implemented in all the four channels to compensate for
+phase deviations among the PALs.                                C) Array signal processing
+
+B) Array configuration                                          Figure 4 shows a delay-and-sum beamforming structure
+                                                                of the steerable PAL [42]. The weight for the mth channel
+Array configuration is another important aspect of the          is denoted as wm, where m = 0, 1, 2, . . . , M - 1 and M is
+directivity control of the PAL. Olszewski and Linhard [35]      the number of channels in the steerable PAL. Usually, the
+compared different configurations of the PAL and rec-           same delays are applied to all primary frequencies in every
+ommended a ring configuration that could narrow the             channel, which are given by
+beamwidth of the PAL over the low-frequency range.
+Figure 3(a) shows the front view of the ring configuration.                                                                  m  =     d  sin  0,  (1)
+Besides, a dedicated uneven surface as shown in Fig. 3(b)                                                                          m
+compensated for phase deviations among ultrasonic trans-
+ducers [34]. A curved PAL mimicking the concave lens as                                                                              c0
+shown in Fig. 3(c) was used in global ANC [36]. The focus
+point of the concave PAL was configured at the noise source     where d is the uniform spacing between neighboring chan-
+to create an exact anti-noise source to reduce the noise level  nels; c0 is the speed of sound; 0 is the steering angle [43].
+globally. In the three-dimensional sound reproduction, a        When the wavefront of the primary frequency is formed in
+convex PAL as shown in Fig. 3(d) outperformed the con-          one direction, the difference frequency generated from the
+cave PAL in terms of the size of the sweet spot [37]. Besides   interaction of primary frequencies is strengthened in the
+changing the array configuration of the PAL, the directivity    same direction. The quantitative description of this state-
+of the PAL was also narrowed when a horn was attached to        ment is called the product directivity principle, which is
+the PAL, which was shown in Fig. 3(e) [38].                     elaborated in the next section.
+
+   An array of PALs was used as a multi-beam PAL and               The effectiveness of the steerable PAL was validated in
+was mounted on the ceiling of a conference room to form         an application of ANC [44]. It was noted that when the PAL
+a corresponding number of personal audio zones simul-           was used as the secondary source, not only was the noise
+taneously [39]. As compared to the loudspeaker array, the       level at the control point reduced, spillovers of the anti-
+power consumption and control complexity of this multi-         noise wave to other areas were also restricted. Moreover, the
+beam PAL were reduced significantly. In a mixed reality         steerable PAL enabled the relocation of the control point
+                                                                to follow a moving listener. In a field programmable gate
+                                                                array (FPGA) implementation of the steerable PAL [45],
+
+Downloaded from www.emerald.com/a tsip/article-pdf/3 /1/1/11342274/a tsip.2 014.1 8en.pdf by guest on 25 November 2026
+4 chuang shi et al.
+
+                     Fig. 4. Delay-and-sum beamforming structure of the steerable PAL.
+
+fractional delay filters provided arbitrary delays for the pri-  A) Product directivity principle
+mary frequency and consequently improved the angular
+resolution that was limited by the sampling interval. Instead,   Early attempts to model the directivity of the PAL were car-
+another FPGA implementation of the steerable PAL had to          ried out on the basis of the product directivity principle [49].
+adopt a sampling rate at 1.4 MHz to yield an angular reso-       If the emitter of the PAL was a Gaussian source en bloc, the
+lution of 2 [46]. A remarkable advantage of the steerable        product directivity of two primary frequencies was able to
+PAL in [46] was that it consisted of 576 channels and could      approximate the directivity of the difference frequency. The
+transmit multiple controllable sound beams simultaneously.       product directivity principle is easily applied in the devel-
+                                                                 opment of the steerable PAL. However, since assumptions
+   The steerable PAL is gaining attention in assistive hear-     of Gaussian source are partially ignored, the accuracy of the
+ing too. For example, an elderly person with a hearing           product directivity principle is not satisfactory.
+loss is watching a television program together with other
+people with no hearing loss. The steerable PAL can sup-             To improve the accuracy of the product directivity prin-
+plement the television loudspeaker system to enhance the         ciple, Shi and Gan [50] have introduced the equivalent
+listening experience of the elderly person with a hearing        Gaussian source array. In the equivalent Gaussian source
+loss and prevent the excessive sound from spreading to           array, the directivity of every Gaussian source approximates
+the other people [47]. Furthermore, an array of PALs can         a lobe in the directivity of a primary frequency. Coefficients
+reproduce an arbitrary wavefront with the help of wave           of the equivalent Gaussian the source array are determined
+field synthesis (WFS) techniques. A global quiet zone can        by the nonlinear regression analysis based on the following
+be created regardless of the listener's position when virtual    model:
+anti-noise sources are created in the vicinity of all actual
+noise sources [48].                                                              N                                         -  an   2            ,  (2)
+                                                                                                                              2c0
+III. DIRECTIVITY MODEL OF                                        D( ) = pn exp                                                      tan2( - n)
+THE PAL
+                                                                               n=1
+
+In this section, directivity models of the PAL are elaborated.   where  is the independent variable;  is the primary fre-
+The directivity of the PAL plays an important role in vari-      quency; N is the number of Gaussian sources; pn, an, and
+ous applications of the PAL. Although there have been many       n are the amplitude, radius, and steering angle of the nth
+nonlinear acoustic models describing the sound principle of      Gaussian source, respectively. Measured directivities of the
+the PAL, they seldom address the directivity of the PAL. The     primary frequency provide the observational data in the
+most widely used nonlinear acoustic models including the         nonlinear regression analysis. The use of the equivalent
+Westervelt and Khokhlov­Zabolotskaya­Kuznetsov (KZK)             Gaussian source array allows assumptions of the Gaussian
+equations [2­4] have no general analytical solution. Numer-      source to be valid in the PAL.
+ical solutions are only available with a heavy computational
+load, especially when the directivity of the PAL is computed        Based on the equivalent Gaussian source array, three
+over a wide angle range. Therefore, it has been a long exist-    modifications to the product directivity principle have been
+ing problem to accurately compute the directivity of the PAL     derived. They are the advanced product directivity (APD),
+with a low computational complexity when directivities of        exponential product directivity (EPD), and combined prod-
+primary frequencies are given.                                   uct directivity (CPD) models [51]. Taking the APD model
+                                                                 into account, the directivity of the difference frequency is
+
+Downloaded from www.e merald.c om/atsip/a rticle-pdf/3 /1 /1/11342274/a tsip.2014.1 8en.p df by guest on 25 November 2026
+                                                 directivity control methods of the parametric array loudspeaker 5
+
+computed by                                                       The source strength density of the primary source is
+
+                                                                  known as                                                                               2
+                                                                                                                                                         t
+                                                                                                                             q(x, t)       =                  p2(x, t),                     (5)
+                          
+                 N1   N2    p1,m p2,na12,ma22,n                                                                                                  02c  4
+                m=1  n=1      a12,m + a22,n                                                                                                           0
+
+Dd ( )       =                                                    where  is the nonlinear coefficient and 0 is the density
+
+                                                                  of air. Hence, when equation (4) is inserted into equation
+
+                                                                  (5), the source strength density of the difference frequency
+                                                        
+                          -a12,m12   tan2(   -   1,m)             is obtained as
+                          -a22,n 22  tan2(   -   2,n )
+                ×  exp                4c 02               .  (3)  qd(x, t)                                               =   P1 P2      (-i   d  )
+
+                                                                                                                             02c  4
+                                                                                                                                  0
+
+                                                                                                                            × exp -(1 + 2)x - i d                            t- x       , (6)
+                                                                                                                                                                                  c0
+
+In equation (3), N1 and N2 are numbers of Gaussian sources        where d is the difference frequency, much lower than
+of the two primary frequencies, respectively. The product         primary frequencies.
+directivity principle is applied to every pair of Gaussian
+sources in the equivalent Gaussian source array. Superpo-            The geometry in Fig. 5 is applied to derive the West-
+sition of all the product directivities yields the directivity    ervelt's directivity, which yields the pressure level of the
+of the difference frequency. In the experiment validation         difference frequency in the form of
+in [51], the APD model has demonstrated a higher accu-
+racy as compared to the product directivity principle, and                                                                         P1 P2d2                                     d tan2       -1
+the EPD and CPD models have shown similar accuracies                                                                        40c04 R0(1 + 2)                                  2c0(1 +    2)
+but with higher computational complexities as compared to         pd(R0, )                                               =                                     -1    +   i
+the APD model.
+                                                                                                                            × exp -i d              t - R0           ,                      (7)
+   So far, there are two remaining drawbacks of the prod-                                                                                                c0
+uct directivity principle and models. Firstly, the beamwidth
+of the PAL is wider in practice than model results. Sec-          where R0 is the distance from the observation point to the
+ondly, sidelobes of the PAL are observed in model results
+but are rarely found in practice. Therefore, a postprocessing     PAL; and R is distance from the observation point to the
+method has been used for the product directivity principle
+and models. In this postprocessing method, the spline inter-      virtual source located at x. The derivation of equation (7)
+polation between local maxima of the model result leads to
+an improved match to the measured directivity of the dif-         follows the same steps of equation (12) in [2], but the approx-
+ference frequency [52, 53]. Nevertheless, this postprocessing
+method lacks theoretical evidences.                               imation of                                             R0  -  R          x  -  x  tan2      is adopted here instead
+                                                                                                                                                      2
+                                                                  of the one of R0 - R  x cos  used in [2]. Therefore, the
+
+                                                                  Westervelt's directivity is given by the absolute value of the
+
+                                                                  second term of equation (7), i.e.
+
+                                                                                                                             DW( ) =                        1                .              (8)
+
+                                                                                                                                                    1 + d2 tan4 2        )2
+                                                                                                                                                          4c  0  (1  +2
+
+B) Convolution model                                              Using the Westervelt's directivity in equation (8), the mag-
+                                                                  nitude of equation (7) can be rewritten as
+Recently, a convolution model based on the Westervelt's
+directivity has been originated. The convolution model pro-                                                              | pd (R0,  )|  =            P1 P2d2         2) DW( ).              (9)
+vides an accurate directivity model for the PAL. Derivation
+of the convolution model is presented in this subsection and                                                                               40c      4  R0(1      +
+three applications of the convolution model are provided in                                                                                         0
+the Section IV.
+                                                                  When collimated primary frequency beams are transmitted
+   Firstly, according to assumptions made by Westervelt [2],      at an angle of 0, they can be expressed in directivities as
+primary frequency beams are extremely narrow and per-
+fectly collimated so that a one-dimensional equation is ade-                                                                      D1( ) = P1( - 0),                                     (10)
+quate to represent the source distribution. The complex
+form of the primary source pressure level is assumed as           and
+
+                                                                                                                                  D2( ) = P2( - 0),                                     (11)
+
+                   2        -mx + i m            t- x     , (4)   where (x) is the Kronecker delta function that gives 1 when
+                                                      c0          x = 0 and 0 when x = 0. Hence, the pressure level of the
+p(x, t) = Pm exp                                                  difference frequency is obtained by rotating the coordinate
+                                                                  system of equation (9), i.e.
+                 m=1
+                                                                                                                                      D1(0)D2(0)d2
+                                                                       | pd (R0,  )|                                         =                                       DW(        -  0).  (12)
+                                                                                                                                  40c         4  R0(1     +    2)
+where Pm and m are the amplitude and attenuation rates of                                                                                     0
+the mth primary frequency at m, respectively; and i is the
+imaginary unit.                                                   Under the assumption of the weak nonlinear interaction,
+                                                                  the superposition principle of sound waves is still valid in
+
+Downloaded from www.e merald.com/atsip/a rticle-pdf/3 /1 /1/11342274/a tsip.2014.1 8en.pdf by guest on 25 November 2026
+6 chuang shi et al.
+
+                                                   Fig. 5. Illustration of the Westervelt's directivity and convolution model of the PAL.
+
+                                     Fig. 6. An experimental validation of the convolution model.
+
+the PAL. When a few pairs of collimated primary frequency         Based on equation (13), the directivity of the difference
+beams are transmitted at different angles, the pressure level  frequency is written as
+of the difference frequency is expressed by a summation as
+                                                                                                 N
+| pd (R0,  )|  =           d2
+                                                                          Dd ( ) = D1(n)D2(n)DW( - n). (14)
+                  40c  4  R0  (1  +  2)
+                       0                                                                       n=1
+
+                        N                                      It is noted that equation (14) is in the form of a discrete
+                                                               convolution, which can be rewritten as
+                  × D1(n)D2(n)DW( - n), (13)
+                                                                                                                           Dd ( ) = [D1( )D2( )]  DW( ),                (15)
+                      n=1
+
+where D1(n) and D2(n) are equal to pressure levels of          where  denotes the discrete convolution operation. In
+primary frequencies transmitted at the angle of n when         addition, when the PAL adopts the beamforming struc-
+n = 1, 2, . . . , N and N is the number of collimated beam     ture shown in Fig. 4, theoretical directivities of primary
+pairs. In the directivity measurement, the directivity of a    frequencies are computed by
+sound source is measured at a fixed distance from the source
+location and only at discrete angles. In this case, N becomes  D1,2( ) =                                                    M            i  w1,2  md(sin    -  sin  0)  , (16)
+the number of angles where the directivity measurement is                                                                                    c0
+taken.                                                                                                                         w¯ m exp
+
+                                                                                                                           m=1
+
+Downloaded from www.e merald.c om/atsip/article-pdf/3 /1/1 /11342274/a tsip.2 014.1 8en.p df by guest on 25 November 2026
+                                               directivity control methods of the parametric array loudspeaker 7
+
+where w¯ m =  wm          is  the  normalized  weight  for  the  mth
+
+              M    |wm||                                               (a)
+              m=1                                                      (b)
+                                                                      Fig. 7. FWHM of the PAL changing with the temperature and relative humidity.
+channel.
+
+In equation (15), the convolution of the product direc-
+
+tivity with the Westervelt's directivity yields the directiv-
+
+ity of the difference frequency. Thus, it is named as the
+
+convolution model. Shi and Kajikawa [54] have reported
+
+some experiment validations of the convolution model.
+
+Here another experiment validation is presented. A picture
+
+of the PAL consisting of 8 channels is shown in Fig. 6. When
+the steering angle is set to 0, all the channels of this PAL
+
+are driven by the same modulated carrier. The full-width
+
+at half maximum (FWHM) of the beam is measured in
+
+directivities of the difference frequency at 1, 2, 4, and 8 kHz.
+
+Measurement results are compared with the model results
+
+of the product directivity principle, Westervelt's directivity,
+
+and convolution model. Figure 6 shows that the convolution
+
+model has demonstrated the closest match to measurement
+
+results.
+
+IV. DIRECTIVITY DESIGN OF
+THE PAL
+
+The convolution model in equation (15) has opened an
+opportunity to directivity control methods of the PAL.
+In the past studies, there have been some attempts to
+apply sophisticated array signal processing methods in the
+PAL [49, 55]. But they have been hindered owing to lack of
+an effective directivity model. Using the convolution model,
+we are able to study directivity control methods that were
+difficult to investigate. Therefore, three applications of the
+convolution model in the PAL are elaborated in this section.
+
+A) Environmental influences on the FWHM                               Fig. 8. FWHM of the PAL under different environmental conditions when the
+of the PAL                                                            difference frequency is transmitted at 4 kHz.
+
+The temperature and relative humidity are two of the affect-          a broadside loudspeaker array depends on the wavenumber.
+ing factors in nonlinear acoustic effects in air. Their influ-        As the speed of the sound is slow at a lower temperature,
+ence on the directivity of the PAL has yet to be addressed.           both a higher frequency and a lower temperature lead to
+The convolution model based on the Westervelt's direc-                a larger wavenumber. Therefore, a narrow beamwidth of
+tivity is a function of the difference frequency, speed of            the broadside loudspeaker array is expected when the fre-
+sound, and attenuation rates of primary frequencies. The              quency is high and the temperature is low. In Fig. 7(b), the
+temperature and relative humidity determine the speed of              temperature is set to 25C, while the relative humidity varies
+sound together with attenuation rates of primary frequen-             from 20 to 80. A unique observation of the PAL can
+cies. Hence, it is interesting to see how the temperature             be made in Fig. 7(b). The beamwidth of the PAL is almost
+and relative humidity affect the directivity of the PAL. A            constant regardless of the varying relative humidity in the
+PAL consisting of 8 equally spaced channels is used in this           range of 40­80. When the relative humidity is 20, the
+study. The interchannel spacing and steering angle are set to         beamwidth of the PAL becomes much narrower because
+1 cm and 0, respectively. The difference frequency is gener-          attenuation rates of primary frequencies decrease to a much
+ated as a sine sweep from 500 Hz to 12 kHz, which has the             smaller level [56].
+same typical frequency range as one commercial unit of the
+PAL [11]. The FWHM is measured in the directivity of the                 Figure 8 shows the FWHM of the PAL when the dif-
+PAL.                                                                  ference frequency is fixed at 4 kHz. The temperature varies
+                                                                      from -10C to 30C and the relative humidity varies from
+   In Fig. 7(a), the relative humidity is set to 50, while            5 to 95. When the air is extremely dry and cold, the
+the temperature varies from 0C to 30C. Higher differ-                 beamwidth of the PAL is narrow and independent from the
+ence frequencies and lower temperatures result in narrower
+beamwidths of the PAL. This observation is similar to that
+made in the broadside loudspeaker array. The directivity of
+
+Downloaded from www.e merald.com/a tsip/article-pdf/3/1/1/11342274/a tsip.2 014.1 8en.p df by guest on 25 November 2026
+8 chuang shi et al.
+                                      (a)
+
+                                      (b)
+
+                                           Fig. 9. Directivity of the PAL using the constant beamwidth beamformer.
+
+temperature and relative humidity. This is because when         Therefore, the constant beamwidth beamforming approach
+the air is extremely dry and cold, attenuation rates of the     has been proposed for the PAL taking into account the
+primary frequencies are so low that the Westervelt's direc-     single sideband modulation method [55]. In the single side-
+tivity becomes as sharp as the Dirac Delta function. Hence,     band modulation, there are two primary frequencies that
+the convolution model is simplified to the product direc-       are referred to as the carrier and sideband frequencies,
+tivity principle. As aforementioned, the product directivity    respectively. In the constant beamwidth beamformer of the
+principle tends to have a narrow beamwidth. On the other        PAL, the sidelobe attenuation of the carrier frequency is
+hand, when the temperature is high, the beamwidth of the        determined by the given null to null beamwidth, and the
+PAL is relatively wide. We can conclude from Fig. 8 that        sidelobe attenuation of the sideband frequency is adjusted
+the beamwidth of the PAL is relatively narrow in the desert     to make the first sidelobe of the sideband frequency coin-
+region and wide in the tropical region. This knowledge of       cide with the first null of the carrier frequency. Based on the
+difference in directivity is beneficial to applications of the  product directivity principle, the null to null beamwidth of
+PAL related to sound field control [17­22].                     the PAL is equal to the given null to null beamwidth over all
+                                                                the difference frequencies.
+B) Constant beamwidth beamformer of
+the PAL                                                            To examine the constant beamwidth beamformer using
+                                                                the convolution model, the PAL consisting of 8 channels
+In signal processing, the design of a finite impulse response   is adopted again, of which the interchannel spacing is set
+filter based on window functions is a mature and simple         to 0.5 cm. This interchannel spacing is feasible only in the
+technique. Similarly, window functions can be used in the       compact configuration [44, 45]. The difference frequency
+design of a uniform linear array (ULA). When coefficients       is generated as a sine sweep from 1 to 12 kHz. The lower
+of a window function are adopted as weights for the ULA,        sideband modulation (LSB) method sets one primary fre-
+the frequency response of the window function gives the         quency at 40 kHz as the carrier frequency and decreases the
+beampattern of the ULA. Hence, the wavenumber is also           other primary frequency from 39 to 28 kHz as the sideband
+referred to as the spatial frequency.                           frequency. The null to null beamwidth of the PAL is given
+                                                                by 40. The steering angle is set to 0. The design of the
+   The Dolph­Chebyshev window is famous for having the          constant beamwidth beamformer gives the weight for every
+narrowest mainlobe when the sidelobe attenuation is given.      channel. Directivities of the difference frequency are plotted
+Moreover, sidelobe levels of the Dolph­Chebyshev window         in Figs. 9(a) and 9(b) using the product directivity principle
+are always equal. When weights for a ULA are designed           and convolution model, respectively. The constant null to
+based on the Dolph­Chebyshev window, the beamwidth of           null beamwidth is easily observed in Fig. 9(a), but there are
+the ULA is decided by the sidelobe attenuation and vice         no nulls in the convolution model as a result of the convolu-
+versa. The emitter of the PAL can be configured into a ULA.     tion with the Westervelt's directivity. Since the convolution
+
+Downloaded from www.emerald.com/atsip/a rticle-pdf/3/1 /1/11342274/a tsip.2014.1 8en.pdf by guest on 25 November 2026
+                                   directivity control methods of the parametric array loudspeaker 9
+
+Fig. 10. FWHM of the PAL using the constant beamwidth beamformer.  Derived from equation (17), there are three conventional
+                                                                   solutions to the limited range of the steering angle, i.e. to
+model is proved more accurate than the product directiv-           implement the fractional delay filter [45], to use a high sam-
+ity principle, the FWHM is a more practical measure of the         pling rate [46], and to widen the interchannel spacing [50].
+PAL's beamwidth rather than the null to null beamwidth.
+                                                                      However, these solutions do not account for the sound
+   In contrast to the LSB method, the upper sideband mod-          principle of the PAL. Therefore, a dedicated digital beam-
+ulation (USB) method increases the sideband frequency              steerer has been specifically worked out for the PAL taking
+from 41 to 52 kHz. FWHMs are measured in directiv-                 into account the single sideband modulation [49]. Differ-
+ities of the PAL when the LSB and USB methods are                  ent delays are applied to two primary frequencies, which
+adopted and results are shown in Fig. 10. There are sev-           are also referred to as the carrier and sideband frequencies.
+eral interesting observations. Firstly, the product directiv-      The carrier signal can be digitally generated with arbitrary
+ity principle results in narrower FWHMs as compared to             delay so the carrier frequency is able to be steered to any
+the convolution model. Secondly, when the difference fre-          direction. However, available steering angles of the sideband
+quency increases, the Westervelt's directivity becomes nar-        frequency remain limited by equation (17). Based on the
+rower and model results of the product directivity principle       product directivity principle, if the mainlobe of the side-
+and convolution model become closer. Thirdly, the West-            band frequency is sufficiently wide, the directivity of the
+ervelt's directivity plays a dominant role in the directivity      carrier frequency will contribute to the directivity of the
+of the PAL when the difference frequency is low. Lastly, the       PAL.
+FWHM of the Westervelt's directivity exhibits an exponen-
+tial decay against the difference frequency. The convolution          The PAL configuration remains the same as the pre-
+model suggests that the product directivity of primary fre-        vious subsection. The carrier and difference frequencies
+quencies should be designed to have an exponential growth          are transmitted at 40 kHz and 4 kHz, respectively. Weights
+in the FWHM in order to implement an efficient constant            for the sideband frequency are designed by the Parks­
+beamwidth beamformer of the PAL.                                   McClellan algorithm [57]. When the steering angle is set
+                                                                   to 20, directivities of primary and difference frequencies
+C) Digital beamsteerer of the PAL                                  are plotted in Figs. 11(a) and 11(c) when the LSB and USB
+                                                                   methods are adopted, respectively. Based on the design
+The digital signal is a discrete and discontinuous represen-       of the digital beamsteerer, the mainlobe of the sideband
+tation of information. The minimum integer delay in any            frequency is much wider than the mainlobe of the car-
+digital system is determined by the sampling interval of this      rier frequency. Therefore, the steering angle of the PAL is
+system. Based on equation (1), the available steering angle is     expected to depend on the directivity of the carrier fre-
+consequently given by                                              quency. Furthermore, when the steering angle varies from
+                                                                   -90 to 90, directivities of the difference frequency are
+n = sin-1  c0  nTs  ,              (17)                            plotted in Figs. 11(b) and 11(d). It can be observed that
+           d                                                       the digital beamsteerer is effective for both the LSB and
+                                                                   USB methods until spatial aliasing occurs at large steering
+where Ts is the sampling interval and n is a natural num-          angles.
+ber. When the interchannel spacing and sampling interval
+                                                                      Because of the wide mainlobe of the sideband frequency,
+are set to 0.5 cm and 0.01 ms, respectively, there is only one     grating lobe elimination is not going to be effective in the
+available steering angle existing at 43. When the inter-           digital beamsteerer of the PAL [50]. Spatial aliasing is thus
+                                                                   the weakness of the digital beamsteerer. To illustrate this
+channel spacing is extended to 1 cm, another steering angle        weakness, the interchannel spacing is extended to 1.5 cm
+becomes available at 20, but spatial aliasing also occurs.         and the rest of conditions are kept unchanged. Now the
+                                                                   interchannel spacing is twice the wavelength of the side-
+                                                                   band frequency at 44 kHz. When the steering angle is set
+                                                                   to 20, directivities of primary and difference frequencies
+                                                                   are plotted in Figs. 12(a) and 12(c). As the grating lobe of the
+                                                                   sideband frequency is as wide as the mainlobe, the differ-
+                                                                   ence in spatial periods of the carrier and sideband frequen-
+                                                                   cies cannot separate all grating lobes sufficiently. Therefore,
+                                                                   grating lobe elimination fails to occur. Once again, when
+                                                                   the steering angle varies from -90 to 90, directivities of
+                                                                   the difference frequency are plotted in Figs. 12(b) and 12(c).
+                                                                   Spatial aliasing is observed for all steering angles in the
+                                                                   digital beamsteerer. It is confirmed that the digital beam-
+                                                                   steerer requires a narrow interchannel spacing to avoid
+                                                                   spatial aliasing at primary frequencies. Therefore, the com-
+                                                                   pact configuration is of the utmost importance to the digital
+                                                                   beamsteerer [49].
+
+Downloaded from www.e merald.c om/atsip/article-pdf/3/1 /1/1 1342274/atsip.2 014.1 8en.p df by guest on 25 November 2026
+10 chuang shi et al.
+
+(a)                                                         (b)
+
+(c)                                                         (d)
+
+                      Fig. 11. Directivity of the PAL using the digital beamsteerer and compact configuration.
+
+(a)                                                         (b)
+
+(c)                                                         (d)
+
+                      Fig. 12. Spatial aliasing example in the digital beamsteerer of the PAL.
+
+V. CONCLUSIONS                                              in the directivity control of the PAL have been elaborated.
+                                                            The directivity of the PAL is found to be relatively narrow in
+This paper overviewed a wide range of directivity control   desert regions and wide in tropical regions. The beamwidth
+methods of the PAL. The superb accuracy of the convolu-     of the PAL can double in a hot and humid climate than in
+tion model has been demonstrated through experiments.       a cold and dry climate. Environmental influences on the
+The convolution model has outperformed previous direc-      directivity of the PAL are of importance when the PAL is
+tivity models. Three applications of the convolution model  employed in sound field control. Furthermore, to develop
+
+Downloaded from www.emerald.com/atsip/article-pdf/3/1/1 /11342274/a tsip.2014.1 8en.pdf by guest on 25 November 2026
+directivity control methods of the parametric array loudspeaker 11
+
+the constant beamwidth beamformer of the PAL, it is sug-                         [8] Aoki, K.; Kamakura, T.; Kumamoto, Y.: Parametric loudspeaker:
+gested that the product directivity have an exponentially                             characteristics of acoustic field and suitable modulation of carrier
+growing beamwidth to compensate for the window effect of                              ultrasound. Electron. Commun. Japan (Part III: Fundam. Electron.
+the Westervelt's directivity in spatial domain. Nevertheless,                         Sci.), 74 (1991), 76­82.
+the directivity of the PAL in the low-frequency band is dom-
+inated by the Westervelt's directivity and only mechanical                       [9] Liew, Y.H.: Signal processing techniques for sound reproduction in
+methods are efficient to control it. Lastly, the digital beam-                        parametric arrays, Master Thesis, Nanyang Technological University,
+steerer of the PAL has been examined using the convolution                            Singapore, 2002.
+model. It is found that the digital beamsteerer is sensitive to
+spatial aliasing at the primary frequency and thus the com-                     [10] Croft, J.J.; Spencer, M.E.; Norris, J.O.: Modulator processing for a
+pact configuration is of the utmost importance to the digital                         parametric speaker system, Patent US6584205, USA, 2003.
+beamsteerer of the PAL to avoid spatial aliasing.
+                                                                                [11] Shi, C.; Gan, W.S.: A preprocessing method to increase high fre-
+   The convolution model has created new opportunities in                             quency response of a parametric loudspeaker, APSIPA Annual Sum-
+the research area of the PAL. There have been many worth-                             mit and Conf., Kaohsiung, Taiwan, 2013.
+while attempts to apply the WFS and other sophisticated
+array signal processing methods to control the directivity of                   [12] Ji, W.; Gan, W.S.: Identification of a parametric loudspeaker system
+the PAL. But most of them have not been successful due to                             using an adaptive Volterra filter. Appl. Acoust., 73 (2012), 1251­1262.
+lack of an efficient directivity model. Trial and error meth-
+ods of placing PALs in a sound field control application                        [13] Hatano, Y.; Shi, C.; Kajikawa, Y.: A study on linearization of nonlinear
+will be improved by introducing the convolution model. We                             distortions in parametric array loudspeakers, Int. Workshop on Smart
+look forward to more exciting applications of the PAL, for                            Info-Media Systems in Asia, Ho Chi Minh City, Vietnam, 2014.
+example in a smart city where sound field control can be
+widely applied to reduce noise pollution. This will accelerate                  [14] Mu, Y.; Ji, P.; Ji, W.; Wu, M.; Yang, J.: Modeling and compensation
+the popularity of the PAL. Moreover, as the PAL generates                             for the distortion of parametric loudspeakers using a one-dimension
+sounds from ultrasound, it is able to be integrated with other                        Volterra filter. IEEE/ACM Trans. Audio, Speech, Lang. Process., 22
+established ultrasonic techniques, such as the time reversal,                         (2014), 2169­2181.
+medical imaging, and even parametric receiving array. This
+paper has thus presented an up to date and comprehensive                        [15] Shi, C.; Mu, H.; Gan, W.S.: A psychoacoustical preprocessing
+reference for future works of the PAL.                                                technique for virtual bass enhancement of the parametric loud-
+                                                                                      speaker, Int. Conf. Acoustics, Speech, and Signal Processing, Vancouver,
+ACKNOWLEDGEMENTS                                                                      Canada, 2013.
+
+This work is supported by MEXT-Supported Program for                            [16] Elliot, S.: Active control of sound fields: enhancing signals and atten-
+the Strategic Research Foundation at Private Universities,                            uating noise, Audio Engineering Society Conf., Guildford, UK, 2013.
+2013­2017.
+                                                                                [17] Aoki, S.; Toba, M.; Tsujita, N.: Sound localization of stereo repro-
+REFERENCES                                                                            duction with parametric loudspeakers. Appl. Acoust., 73 (2012),
+                                                                                      1289­1295.
+ [1] Bennett, M.B.; Blackstock, D.T.: Parametric array in air. J. Acoust. Soc.
+      Am., 57 (1975), 562­568.                                                  [18] Shi, C.; Nomura, H.; Kamakura, T.; Gan, W.S.: Spatial aliasing effects
+                                                                                      in a steerable parametric loudspeaker for stereophonic sound repro-
+ [2] Westervelt, P.J.: Parametric acoustic array. J. Acoust. Soc. Am., 35             duction. IEICE Trans. Fundam. Electron. Commun. Comput. Sci.,
+      (1963), 535­537.                                                                E97-A (2014), 1859­1866.
+
+ [3] Berktay, H.O.: Possible exploitation of non-linear acoustics in under-     [19] Gan, W.S.; Tan, E.L.; Kuo, S.M.: Audio projection. IEEE Signal Process.
+      water transmitting applications. J. Sound Vib., 2 (1965), 435­461.              Mag., 28 (2011), 43­57.
+
+ [4] Shi, C.; Gan, W.S.: Development of a parametric loudspeaker: a novel       [20] Lam, B.; Gan, W.S.; Shi, C.: Feasibility of a length-limited parametric
+      directional sound generation technology. IEEE Potentials, 29 (2010),            source for active noise control applications, Int. Congress on Sound
+      20­24.                                                                          and Vibration, Beijing, China, 2014.
+
+ [5] Yoneyama, M.; Fujimoto, J.; Kawamo, Y.; Sasabe, S.: The audio spot-        [21] Tanaka, K.; Shi, C.; Kajikawa, Y.: Study on active noise control sys-
+      light: an application of nonlinear interaction of sound waves to a new          tem using parametric array loudspeakers, Forum Acusticum, Krakow,
+      type of loudspeaker design. J. Acoust. Soc. Am., 73 (1983), 1532­1536.          Poland, 2014.
+
+ [6] Kamakura, T.; Yoneyama, M.; Ikegaya, K.: Developments of para-             [22] Tanaka, K.; Shi, C.; Kajikawa, Y.: Multi-channel active noise con-
+      metric loudspeaker for practical use, Int. Symp. Nonlinear Acoustics,           trol using parametric array loudspeakers, APSIPA Annu. Summit and
+      Kobe, Japan, 1984.                                                              Conf., Siem Reap, Cambodia, 2014.
+
+ [7] Kite, T.D.; Post, J.T.; Hamilton, M.F.: Parametric array in air: distor-   [23] Nakashima, Y.; Yoshimura, T.; Naka, N.; Ohya, T.: Prototype of mobile
+      tion reduction by preprocessing, Int. Congress on Acoustics, Seattle,           super directional loudspeaker. NTT DoCoMo Tech. J., 8 (2006), 25­32.
+      USA, 1998.
+                                                                                [24] Nakadai, K.; Tsujino, H.: Towards new human-humanoid commu-
+                                                                                      nication: Listening during speaking by using ultrasonic directional
+                                                                                      speaker, IEEE Int. Conf. Robotics and Automation, Barcelona, Spain,
+                                                                                      2005.
+
+                                                                                [25] Haupt, R.W.; Rolt, K.D.: Standoff acoustic laser technique to locate
+                                                                                      buried land mines. Linc. Lab. J., 15 (2005), 3­22.
+
+                                                                                [26] Achanta, A.; McKenna, M.; Heyman, J.: Non-linear acoustic con-
+                                                                                      cealed weapons detection, Applied Imagery and Pattern Recognition
+                                                                                      Workshop, Washington, USA, 2005.
+
+                                                                                [27] Kuang, Z.; Ye, C.; Wu, M.; Yang, J.: A method for measuring the
+                                                                                      absorption coefficient of materials in situ using a parametric loud-
+                                                                                      speaker, Int. Congress on Sound and Vibration, Cairo, Egypt, 2010.
+
+Downloaded from www.emerald.com/a tsip/article-pdf/3 /1 /1 /11342274/a tsip.2014.18en.p df by guest on 25 November 2026
+12 chuang shi et al.
+
+[28] Calicchia, P.; Simone, S.D.; Marcoberardino, L.D.; Marchal, J.: Near-       [48] Ishimori, A.; Tanaka, N.; Iwamoto, H.: Global active noise control
+      to far-field characterization of a parametric loudspeaker and its                using a delayed driving parametric array loudspeaker. Trans. Japan
+      application in non-destructive detection of detachments in panel                 Soc. Mech. Eng. Ser. C, 79 (2013), 604­616.
+      paintings. Appl. Acoust., 73 (2012), 1296­1302.
+                                                                                 [49] Gan, W.S.; Yang, J.; Tan, K.S.; Er, M.H.: A digital beamsteerer for
+[29] Shi, C.: Generation of a steerable audio beam from an ultrasonic                  difference frequency in parametric array. IEEE Trans. Audio Speech
+      transducer array. APSIPA Newsl., 7 (2014), 16­18.                                Lang. Process., 14 (2006), 1018­1025.
+
+[30] Tachi, R.; Tanaka, N.: Active noise control using acoustic wave reflec-     [50] Shi, C.; Gan, W.S.: Grating lobe elimination in steerable paramet-
+      tion of parametric speaker, Asia Pacific Vibration Conf., Christchurch,          ric loudspeaker. IEEE Trans. Ultrason., Ferroelectr. Freq. Control, 58
+      New Zealand, 2009.                                                               (2011), 437­450.
+
+[31] Morise, M.; Ikefuji, D.; Tujii, H.; Hirokawa, K.; Nishiura, T.: A design    [51] Shi, C.; Gan, W.S.: Product directivity models for parametric loud-
+      of reflective audio spot with reflective objects, Int. Congress on Acous-        speakers. J. Acoust. Soc. Am., 131 (2012), 1938­1945.
+      tics, Sydney, Australia, 2010.
+                                                                                 [52] Shi, C.; Gan, W.S.: Modeling the directivity of parametric loud-
+[32] Olszewski, D.; Linhard, K.: Imperfections of parametrically gener-                speaker, Int. Symp. Nonlinear Acoustics, Tokyo, Japan, 2012.
+      ated sound beams caused by reflexions, Symp. Ultrasonic Electronics,
+      Nagoya, Japan, 2006.                                                       [53] Shi, C.; Nomura, H.; Kamakura, T.; Gan, W.S.: An envelope method
+                                                                                       for improving the product directivity models of the parametric loud-
+[33] Ishii, K.; Yamamoto, Y.; Imai, M.; Nakadai, K.: A navigation system               speaker. IEICE Technical Report, 113 (2014), 7­10.
+      using ultrasonic directional speaker with rotating base. Lecture Notes
+      in Comput. Sci., 4558 (2007), 526­535.                                     [54] Shi, C.; Kajikawa, Y.: A convolution model for computing the far-field
+                                                                                       directivity of a parametric loudspeaker array. J. Acoust. Soc. Am., in
+[34] Olszewski, D.; Prasetyo, F.; Linhard, K.: Steerable highly directional            press.
+      audio beam loudspeaker, Interspeech, Lisbon, Portugal, 2005.
+                                                                                 [55] Yang, J.; Gan, W.S.; Tan, K.S.; Er, M.H.: Acoustic beamforming of a
+[35] Olszewski, D.; Linhard, K.: Optimum array configuration for para-                 parametric speaker comprising ultrasonic transducers. Sens. Actua-
+      metric ultrasound loudspeakers using standard emitters, Interspeech,             tors A, 125 (2005), 91­99.
+      Pittsburgh, USA, 2006.
+                                                                                 [56] Harris, C.M.: Absorption of sound in air versus humidity and tem-
+[36] Tanaka, N.; Tanaka, M.: Mathematically trivial control of sound using             perature. J. Acoust. Soc. Am., 40 (1966), 148­159.
+      a parametric beam focusing source. J. Acoust. Soc. Am., 129 (2011),
+      165­172.                                                                   [57] McClellan, J.H.; Parks, T.W.: A personal history of the Parks­
+                                                                                       McClellan algorithm. IEEE Signal Process. Mag., 22 (2005), 82­86.
+[37] Ikefuji, D.; Tsuji, H.; Masnaga, S.; Nakayama, M.; Nishiura, T.;
+      Yamashita, Y.: Reverberation steering and listening area expansion         Chuang Shi received his B. Eng. degree in Computer Science
+      on 3-D sound field reproduction with parametric array loudspeaker,         from Beijing Jiaotong University in 2005, M. Eng. degree in
+      APSIPA Annu. Summit Conf., Siem Reap, Cambodia, 2014.                      Microelectromechanical Systems from Tsinghua University in
+                                                                                 2008, and Ph.D. degree in Electrical and Electronic Engineer-
+[38] Sayin, U.; Guasch, O.: Directivity control and efficiency of parametric     ing from Nanyang Technological University in 2013. He joined
+      loudspeakers with horns. J. Acoust. Soc. Am., 134 (2013), EL153­EL157.     Nanyang Technological University as a research associate and
+                                                                                 research fellow in 2011 and 2013, respectively. He is currently
+[39] Olszewski, D.; Linhard, K.: Highly directional multi-beam audio             working as a postdoctoral fellow at Kansai University. He is a
+      loudspeaker, Interspeech, Pittsburgh, USA, 2006.                           member of IEEE and a member of APSIPA. His research inter-
+                                                                                 ests include parametric array loudspeaker, active noise control,
+[40] Sugibayashi, Y.; Kurimoto, S.; Ikefuji, D.; Morise, M.; Nishiura,           acoustic beamforming, and audio classification.
+      T.: Three-dimensional acoustic sound field reproduction based on           Yoshinobu Kajikawa received his B. Eng. degree in 1991 and
+      hybrid combination of multiple parametric loudspeakers and elec-           M. Eng. degree in 1993 from Kansai University in Electrical
+      trodynamic subwoofer. Appl. Acoust., 73 (2012), 1282­1288.                 Engineering, and D. Eng. degree in 1997 from Osaka Univer-
+                                                                                 sity in Communication Engineering. He worked at Fujitsu Ltd.
+[41] Sayin, U.; Artis, P.; Guasch, O.: Realization of an omnidirectional         in 1993 and engaged in research on active noise control. In 1994,
+      source of sound using parametric loudspeakers. J. Acoust. Soc. Am.,        he joined Kansai University, as professor. He is a senior mem-
+      134 (2013), 1899­1907.                                                     ber of IEEE and a member of APSIPA. His current research
+                                                                                 interests fall in the area of signal processing for acoustic and
+[42] Shi, C.; Gan, W.S.: Analysis and calibration of system errors in steer-     communication systems.
+      able parametric loudspeakers. Appl. Acoust., 73 (2012), 1263­1270.         Woon-Seng Gan received his B. Eng. and Ph.D. degrees both
+                                                                                 in Electrical and Electronic Engineering from the University of
+[43] Shi, C.; Gan, W.S.: Steerable parametric loudspeaker with preprocess-       Strathclyde in 1989 and 1993, respectively. He joined Nanyang
+      ing methods, Int. Congress on Acoustics, Montreal, Canada, 2013.           Technological University as a lecturer and senior lecturer in
+                                                                                 1993 and 1998, respectively. In 1999, he was promoted to as
+[44] Tanaka, N.; Tanaka, M.: Active noise control using a steerable para-        Associate Professor. He is an AES fellow, a senior member
+      metric array loudspeaker. J. Acoust. Soc. Am., 127 (2010), 3526­3537.      of IEEE, and a member of APSIPA. He has published more
+                                                                                 than 300 international refereed journal and conference papers.
+[45] Wu, S.; Wu, M.; Huang, C.; Yang, J.: FPGA-based implementation of           His current research interests include active noise control,
+      steerable parametric loudspeaker using fractional delay filter. Appl.      audio signal processing, parametric loudspeaker, and spatial
+      Acoust., 73 (2012), 1271­1281.                                             audio.
+
+[46] Takeoka, S.; Yamasaki, Y.: Acoustic projector using directivity con-
+      trollable parametric loudspeaker array, Int. Congress on Acoustics,
+      Sydney, Australia, 2010.
+
+[47] Shi, C.: Investigation of the steerable parametric loudspeaker based
+      on phased array techniques. Doctoral Dissertation, Nanyang Tech-
+      nological University, Singapore, 2013.
+
+Downloaded from www.emerald.c om/atsip/a rticle-pdf/3 /1/1/1 1342274/atsip.2 014.1 8en.p df by guest on 25 November 2026
+

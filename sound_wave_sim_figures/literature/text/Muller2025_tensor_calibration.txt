@@ -1,0 +1,1559 @@
+arXiv:2406.14355v2 [eess.SP] 18 Dec 2024                                                                                                                                                                                                   1
+
+                                            A tensor model for the calibration of air-coupled
+                                                  ultrasonic sensor arrays in 3D imaging
+
+                                                Raphael Mu¨ller, Gianni Allevato, Matthias Rutsch, Christoph Haugwitz, Tianyi Liu (),
+                                                                                      Mario Kupnik, Marius Pesavento
+
+                                                                                                                  Abstract
+
+                                                     Arrays of ultrasonic sensors are capable of 3D imaging in air and an affordable supplement to other sensing
+                                                modalities, such as radar, lidar, and camera, i.e. in heterogeneous sensing systems. However, manufacturing tolerances
+                                                of air-coupled ultrasonic sensors may lead to amplitude and phase deviations. Together with artifacts from imperfect
+                                                knowledge of the array geometry, there are numerous factors that can impair the imaging performance of an array.
+                                                We propose a reference-based calibration method to overcome possible limitations. First, we introduce a novel
+                                                tensor signal model to capture the characteristics of piezoelectric ultrasonic transducers (PUTs) and the underlying
+                                                multidimensional nature of a multiple-input multiple-output (MIMO) sensor array. Second, we formulate and solve
+                                                an optimization problem based on this model to obtain the calibrated parameters of the array. Third, we assess both
+                                                our model and the commonly used analytic model using real data from a 3D imaging experiment. The experiment
+                                                reveals that our array response model we learned with calibration data yields an imaging performance similar to
+                                                that of the analytic array model, which requires perfect array geometry information.
+
+                                                                                                     I. INTRODUCTION
+
+                                          W HEN considering imaging with ultrasound (US), the first thing that comes to mind is medical imaging
+                                                   [1]­[3]. With the advent of cost-efficient high-power sensors, however, three-dimensional (3D) ultrasonic
+                                          imaging, which combines two-dimensional (2D) direction finding and range estimation, has been extended to operate
+                                          in air [4]. In general, air-coupled ultrasonic imaging builds on phased array technology and uses similar image
+                                          formation principles as medical sonography and multiple-input multiple-output (MIMO) radar, e.g. beamforming
+                                          techniques [5] and synthetic apertures [6].
+
+                                             The main advantages of US over other air-coupled sensing modalities are its low deployment cost, its robustness
+                                          against particles in the air, e.g. smoke, dust, or rainfall, as well as its ability to operate independently of the lighting
+                                          conditions [7], [8]. In addition, acoustic waves offer distinct imaging characteristics compared to electromagnetic
+                                          (EM) waves or light due to the different system parameters such as the wave propagation speed or material reflec-
+                                          tivity. This makes air-coupled US attractive for heterogeneous sensing systems where different sensing modalities
+                                          can complement each other as frequently encountered in autonomous driving [9] or, more recently, in healthcare
+                                          [10].
+
+                                             The major obstacle in air-coupled US is the poor coupling of acoustic waves into air, as well as the high
+                                          attenuation and the low propagation speed of US in air as compared to fluids or tissue [11]­[14]. In contrast to
+                                          medical sonography, the requirement for large coverage areas of airborne US, along with the reduced speed of
+                                          sound in air lead to large propagation delays, thereby slowing down the image frame rate. Additionally, the larger
+                                          wavelengths of US systems in air lead to a reduced angular resolution compared to medical US if arrays of the same
+                                          aperture size are considered. Thus, air-coupled US faces a variety of challenges that distinguish it from medical
+                                          US. The latter is also comparatively mature whereas research on 3D imaging with an US array in air has only
+                                          recently become a study subject as well [15].
+
+                                             This work has received funding from the German Federal Ministry of Education and Research (BMBF) within the project "Open6GHub"
+                                          under grant number 16KISK014.
+
+                                             Raphael Mu¨ller , Tianyi Liu () , and Marius Pesavento are with the Communication Systems Group, TU Darmstadt,
+                                          Darmstadt, Germany (e-mail: {raphael.mueller, tianyi.liu, pesavento}@nt.tu-darmstadt.de).
+
+                                             Gianni Allevato is with Hottinger Bru¨el & Kjær GmbH, Darmstadt, Germany.
+                                             Matthias Rutsch is with Robert Bosch GmbH, Leonberg, Germany.
+                                             Christoph Haugwitz and Mario Kupnik are with the Measurement and Sensor Technology Group, TU Darmstadt, Darmstadt, Germany
+                                          (e-mail: {christoph.haugwitz, mario.kupnik}@tu-darmstadt.de).
+
+                                           Accepted manuscript licensed under CC BY-NC-ND 4.0. To view a copy of this license, visit https://creativecommons.org/licenses/by-nc-
+                                           nd/4.0/. Formal publication by Elsevier B.V. available via the following DOI: 10.1016/j.sigpro.2024.109812.
+                                                                                                              2
+
+                                                                                                Image data Y
+
+Calibration data {Yp}Pp=1              Decomposition      Parameter estimates       Array                                 Data matching
+                                       modified BCD                                 response
+                                                      {g^n,Tx}nN=1, {g^m,Rx}m M=1,  dictionary  Localized signal gains h^p^
+                                                        {a^p,Tx, a^p,Rx, c^p}pP=1                     Imaging (target localization)
+
+Calibration (array response learning)
+
+Figure 1. Flowchart for the proposed calibration and imaging steps: calibration data {Yp}pP=1 from P distinct refer-
+ence positions, characterized by 3D coordinates, is measured to estimate the parameters {g^n,Tx}nN=1, {g^m,Rx}M m=1,
+and {a^p,Tx, a^p,Rx, c^p}Pp=1. With those, targets in an unknown scene are localized from image data Y by selecting
+
+target position estimates p^ from the P candidate positions of the array response dictionary learned during calibration.
+Finally, the target signal gain h^p^ of each target detected is estimated.
+
+   Air-coupled ultrasonic sensors, also referred to as transducers, are realized with different materials and principles,
+resulting in varying degrees of sensitivity, mechanical robustness, and costs [16]. The inherent properties of the
+materials used and the production tolerances of low cost transducers lead to variations in the directivity pattern and
+frequency responses. Furthermore, differing resonance frequencies in the transmit and receive mode, respectively,
+result in nonreciprocal transceiver characteristics of piezoelectric ultrasonic transducers (PUTs) such that no common
+array manifold for transmission and reception exists. These and other factors, e.g. aging or exposure of an imaging
+system to environmental conditions such as temperature fluctuations, urge the need to learn the transducer array
+responses from training data, particularly within complex heterogeneous sensing systems where describing the array
+response analytically is often impractical.
+
+   In this work, we consider a bistatic MIMO imaging system with a uniform rectangular array (URA) of PUT
+elements as a prototype US system for 3D imaging in air. PUTs are a popular choice for this as they deliver a high
+output pressure at their resonance frequency while being available for a low unit price, making them attractive for
+large array configurations in various applications [17]­[20]. Concomitant disadvantages include a comparatively
+small relative bandwidth as well as fluctuations in the element directivity and phase response [21]. As PUTs are
+often too large to be placed at half-wavelength (/2) spacing, the array is embedded into a waveguide for grating-
+lobe-free beamforming [22]. While the waveguide offers protection in harsh environments and enables flexible array
+shape designs, it introduces further uncertainties in the array response and increases the overall complexity of the
+imaging system. Therefore, it is necessary to investigate whether these uncertainties adversely affect the imaging
+performance when using the commonly employed analytic point source model, and to explore how anomalous array
+responses can be accurately modeled.
+
+   We propose a novel multidimensional array model to capture artifacts and uncertainties from imperfections
+in both the individual transducer elements as well as the array configuration. The model parameters are learned
+from reference-based calibration data. High-resolution 3D imaging is accomplished with the virtual array concept
+where the aperture is spanned by the Kronecker product of the receive array and multiple, spatially displaced
+transmit sensors. Each transmitter emits US pulses into a sparse scenery such that at the receive array, target
+echoes are recorded in the image data tensor Y. During image formation, indexed positions p^ of each potential
+target are estimated from Y based on the spatial signatures corresponding to P candidate positions that have been
+learned previously at the calibration stage. For each source position p^, a corresponding gain h^p^ is estimated, whose
+magnitude is displayed in the final image (Figure 1).
+
+A. State of the art and own contributions
+
+   Array calibration addresses the problem of modeling errors in the array response, most commonly due to unknown
+sensor amplitudes and phases, mutual coupling (electrical, mechanical, and acoustic cross-talk) between the array
+elements, or inaccurate knowledge of their relative positions [23]. Remedies for these imperfections differ based
+on the availability of additional calibration measurements. Non-reference-based, or autocalibration, methods do not
+require calibration targets at known locations and perform calibration and target localization either alternately or
+                                                                                                                                                                                                 3
+
+jointly on the same data using parametric models, e.g., the sensor locations, the complex gains, or the coupling
+matrix are jointly estimated during the image formation [24]­[27]. Calibration is achieved by exploiting the specific
+geometry of the array [28]­[30], especially in the case of partly calibrated arrays [31]­[33] and higher-order statistics
+of the associated measurements [34], or other concepts such as low-rank modeling or sparsity [35]­[37]. However,
+the parametric approach of joint calibration and imaging requires a structured model with only few degrees of
+freedom. In the context of air-coupled US, Ramamohan et al. recently investigated joint calibration and one-
+dimensional (1D) direction-of-arrival (DOA) estimation with a linear array assuming a highly structured array
+manifold [38].
+
+   Contrary to autocalibration, reference-based calibration methods are more flexible in terms of error modeling and
+suggest superior imaging performance of a stationary system after calibration [39]­[41]. Other recent studies such as
+[42]­[44] reveal that the majority of calibration methods in the literature, both reference-based and non-reference-
+based, consider linear measurement models, even though the underlying imaging principles are of a multilinear
+nature, comprising a multidimensional data tensor with a transmitter, receiver, frequency, and time dimension,
+respectively. In such a case, using multilinear algebra for dictionary learning of the multidimensional data is more
+appropriate [45]. Recently, Guo et al. demonstrated such a multilinear approach to the calibration of a bistatic
+MIMO radar where a rank-one canonical polyadic decomposition (CPD) model was considered for each source
+[46]. Similar approaches were later pursued by Sun et al. [47] and Chen et al. [48]. In our previous work [49],
+we applied low-rank tensor factorization to calibration data and exploited sparsity in the image formation [50].
+That approach with a generic tensor model is designed for arrays composed of identical transceiver elements with
+identical transmit and receive magnitude responses.
+
+   In this work, we take the particular manufacturing tolerances and transceiver characteristics of PUTs into account
+and propose a novel tensor signal model that captures the multidimensional structure of an air-coupled ultrasonic
+sensor array for MIMO imaging. We learn the parameters of our proposed tensor signal model jointly from
+measurements of the entire volume-of-interest (VOI), i.e. the angular field-of-view (FOV) in a given range interval.
+In a testbed deployed in our anechoic chamber at TU Darmstadt, we additionally assess the performance of our
+proposed method with a phased array for 3D imaging where the PUTs are combined with a 3D-printed waveguide.
+In summary, the key contributions of this article are:
+
+ (1) We introduce a novel tensor signal model that accounts for varying element transceiver characteristics in air-
+      coupled ultrasonic MIMO sensor arrays with nonuniform transmitter and receiver magnitude responses and
+      nonuniform element patterns. This makes our model also of interest for other array processing applications,
+      including sonar and radar.
+
+ (2) We learn the array response from reference-based calibration measurements using targets at known locations.
+      An optimization problem is formulated to jointly estimate all tensor model parameters.
+
+ (3) We apply a unique parameterization to the proposed tensor model and derive a modified block coordinate
+      descent (BCD) method that exhibits highly parallel, closed-form solutions of the corresponding subproblems
+      in each set of block variables. We prove that the modified BCD method converges to a stationary point of the
+      calibration problem.
+
+ (4) We test the proposed calibration method using synthetic data and real measurements recorded with prototype
+      hardware. A 3D imaging example serves as a proof of concept for the usability of the dictionary of array
+      responses learned from calibration measurements.
+
+ (5) We compare the imaging quality of our proposed tensor model after calibration with the conventional analytic
+      point source model, which in the case of our testbed data reveals to be a valid model.
+
+B. Notation and outline
+
+   We use the italic letter x, the boldface lowercase italic letter x, the boldface uppercase italic letter X, and the
+boldface uppercase calligraphic italic letter X to denote a scalar, a vector, a matrix, and a general multi-way array,
+respectively. The (i1, i2, . . .)-th scalar element of X is denoted by [X ]i1,i2,... and a colon instead of a fixed index
+indicates the selection of all entries of the corresponding mode. Subtensors with all but one index fixed (fibers)
+are assumed to be column vectors and subtensors with all but two indices fixed (slices) are treated as matrices.
+Unfolding the tensor X to its mode w is denoted by unfw(X ) and yields matrix X(w). The all-one vector of length
+I is denoted by 1I and vec(·) returns its multidimensional argument reshaped into a vector, while Diag(·) returns a
+                                                                                                                                                                                                 4
+
+square matrix with the elements of the vector argument on the main diagonal and zero everywhere else, respectively.
+Symbols , ,  and  denote Hadamard multiplication, Kronecker multiplication, column-wise Kronecker (Khatri-
+Rao) multiplication, and outer tensor multiplication, respectively. The complex conjugate, transpose, and Hermitian
+transpose are represented by (·), (·)T, and (·)H, respectively, while (·)(i) denotes the i-th iterate of a variable.
+Taking the Euclidean norm or the Frobenius norm is indicated by ·2 and ·F, respectively. Finally, arg(·) returns
+the principal angle of its complex argument while operators Re(·) and Im(·) return the real and imaginary part of
+their argument, respectively.
+
+   The rest of this article is organized as follows: Section II introduces the tensor signal model that is used to
+formulate the estimation problem for calibration in Section III, where it is solved with a modified BCD method.
+The resulting parameter estimates are then used for imaging in Section IV. Results from simulations as well as
+experiments with real data are presented in Section V and concluding remarks with future research directions are
+given in Section VI.
+
+                                             II. SIGNAL MODEL FOR CALIBRATION
+
+   Consider a single and static point target at a position indexed by integer p in the far field of a co-located MIMO
+transceiver array. In polar coordinates, the position of this target can be, e.g., characterized by (rp, p, p), where
+rp, p, and p represent the target range, azimuth angle and elevation angle, respectively. The target is repeatedly
+exposed to US pulses emitted from one of the transceiver elements. In total, N different transmitters are used
+for excitation and, w.l.o.g., we index the reference sensor with n = 1. Under the narrowband assumption, the
+spatial displacement of a transmitter element w.r.t. the reference sensor yields a corresponding phase shift in the
+waveform at the point target. At position p, the phase shifts of all N transmitter elements relative to the reference
+sensor are characterized by the transmit steering vector ap,Tx  CN [51]. Furthermore, the complex gain [ap,Tx]n
+also captures the propagation delay and the path attenuation experienced by the n-th transmitter as a result from
+additional transceiver structures, such as an attached waveguide [52].
+
+   According to the Huygens-Fresnel principle, the wave impinging on a target initiates a reflecting wave that
+travels back to the transceiver array. Hence in the receiver path, the far field point target is viewed as a point source
+transmitting an echo signal to the array. For an arbitrary array geometry, the M -element array response to the echo
+signal originating from a target at position p is described by a general receive steering vector ap,Rx  CM [53].
+Similar to ap,Tx, each receive steering vector consists of receiver-dependent complex gains based on individual
+characteristics, e.g. point responses, propagation delays, and path attenuations.
+
+   For the calibration of the measurement system, a reflector is set up at distinct but known positions p = 1, . . . , P in
+an anechoic chamber (Figure 2). Compared to its surrounding, the reflector provides a strong echo that approximates
+a point source in free field. Sequentially, each transmitter n = 1, . . . , N fires a series of T acoustic pulses, also
+referred to as bursts [54]. Each burst emerges from the physical operating principle of a PUT, i.e. after applying
+multiple periods of a sinusoidal electrical signal with constant excitation frequency to the active transducer.
+
+   After reflection at the target object, the incoming echo pulse is measured at the receive array and converted back
+from the acoustic to the electrical domain based on the receiver characteristics of the respective PUT elements.
+Thus, the data acquisition principle is similar as in MIMO radar or medical US. However, passband signals in
+air-coupled US can be directly sampled without downconversion due to the comparably low carrier frequency of
+f0 = 40 kHz. After analog-to-digital conversion of the sampled echo signal per transmitter and burst, a rectangular
+window of length Nrect = 212 is applied to each of the M receive sequences to filter out undesired reflections from
+near field clutter or ghost targets from multipath propagation. In the following, we consider measurements in the
+frequency domain by applying the discrete Fourier transform (DFT) to the received time signals.
+
+   The PUTs regarded in this work have a narrow relative bandwidth of about 3 %, i.e., most of the signal energy
+is spread across the frequency range from 39.4 kHz to 40.6 kHz. Based on the sampling frequency fs = 195 kHz
+of the measurement system, we select L = 24 frequency bins equally spaced by Nr-ec1tfs  48 Hz that contain the
+significant signal power around the average receive resonance frequency. The measurements of each transmitter
+n = 1, . . . , N are then arranged in a three-way array of dimension M × L × T , similar to the data tensor used in
+MIMO radar [55]. As in radar, air-coupled US imaging also uses the short time measurements for range estimation.
+In the following, we introduce a novel tensor signal model that accounts for nonidentical magnitude responses of
+distinct transceiver elements in a sensor array.
+                                                                                                                                              5
+
+               Calibration target
+
+               Array incl. waveguide
+               and rigid baffle
+
+Figure 2. Measurement setup in an anechoic chamber to obtain data for the calibration technique proposed in
+Section III.
+
+   In the frequency band of interest, we model the transmit and receive characteristics (transfer functions) of the
+n-th transmitter and the m-th receiver on the L dominant DFT bins by the real-valued frequency response vectors
+gn,Tx and gm,Rx. The US transceivers can be operated in transmit or receive mode with a fast switch between both
+modes. We remark, however, that due to manufacturing tolerances, the frequency responses of different sensors are
+generally different and also the transmit and receive responses within the same sensor generally differ due to the
+distinct resonance frequencies for both operating modes [56].
+
+   The propagation time of a burst affects the phase of the DFT of the receive pulse proportionally to the range
+of the target at position p. For a point target, the phase increment over frequency is generally linear, however,
+for generality we allow arbitrary phase increments in the phase response cp  CL, which is modeled with a unit
+modulus property, i.e. |[cp]| = 1,  = 1, . . . , L. We combine gn,Tx, gm,Rx and cp into the frequency vector
+
+               bn,m,p = gn,Tx  gm,Rx  cp                               (1)
+
+of the pulse from the n-th transmitter to the m-th receiver after reflection from the target at position p, which
+models the input-output relationship of the transceivers as a linear time-invariant (LTI) system.
+
+   Lastly, the modulation of each pulse sequence, the path attenuation between the reference sensors of the transmit
+and receive array, and the reflectivity of the point target at position p are all modeled by the signal gain vector
+hp  CT . Thus [hp]t, i.e. the t-th entry of the gain vector hp, does not only describe particular system attributes
+such as the amplitude and the phase of the t-th transmit pulse but also the acoustic cross-section of the scatterer.
+
+   We assume, w.l.o.g., that the signal gain vector does not change between different transmit pulses for the same
+target, i.e. hp = [hp]11T . In our approach, however, we admit arbitrary, possibly nonidentical entries in hp to model
+artifacts of the data acquisition system such as sample offsets that occur during reception as well as variations in
+the pulse amplitudes. For simplicity, we assume that all transmitters use the same pulse waveform (envelope) so
+that hp is independent of the transmitter index n.
+
+   Using all of the parameters introduced above, we model each pulse that travels from transmitter n to receiver
+m as the trilinear term in (1) weighted by scalars [ap,Tx]n  C and [ap,Rx]m  C. Evidently, this expression is
+also dependent on the target position indexed by p. A pulse sequence over T distinct time instants, referred to as
+snapshots, over the L frequency bins of interest then yields the L × T rank-1 matrix
+
+               [ap,Tx]n [ap,Rx]m (gn,Tx  gm,Rx  cp) hpT.               (2)
+
+Furthermore, the collection of all receive measurements initiated by all transmitters yields a four-way array Yp 
+CN×M×L×T for every calibration target position p = 1, . . . , P . We model the p-th tensor as
+
+      NM
+
+Yp =           (en  ap,Tx)  (em  ap,Rx)  (gn,Tx  gm,Rx  cp)  hp + Zp,  (3)
+
+      n=1 m=1
+
+where ei is the standard basis vector of compatible dimension with entries [ei]j = 1 for i = j and [ei]j = 0 for
+i = j, and Zp  CN×M×L×T represents additive measurement noise. The basis vectors impose a masking on all
+
+but one entry in ap,Tx and ap,Rx, respectively, such that (3) is composed of the slices in (2).
+                                                                                     6
+
+A. Relation to other tensor models
+
+   According to (3), the receive measurements {Yp}pP=1 from P target positions are coupled by the magnitude
+responses {gn,Tx}nN=1 and {gm,Rx}mM=1. A special case arises if all transceivers have identical transmit and receive
+magnitude responses, i.e. gn,Tx = gn,Tx and gm,Rx = gm,Rx for n, n = 1, . . . , N and m, m = 1, . . . , M ,
+respectively. In this instance, we may introduce a common transmit magnitude response gTx for all n and a common
+receive magnitude response gRx for all m, respectively, such that the model in (3) reduces to
+
+                           Yp = ap,Tx  ap,Rx  (gTx  gRx  cp)  hp + Zp.               (4)
+
+For a single position p, the noise-free part of (4) admits a rank-1 CPD, which roots in the canonical decomposition
+(CANDECOMP) [57] and the parallel factor (PARAFAC) model [58]. Measurement tensors of different target
+positions, however, still share a common transmit and magnitude response under (4), which is not addressed by
+the general positionwise rank-1 CPD approximation
+
+                           Yp  ap,Tx  ap,Rx  bp  hp.                                 (5)
+
+Unlike our proposed tensor model, the rank-1 CPD approximation (5) is in this case associated with a model
+mismatch. For studies on the multi-rank CPD of a measurement tensor, where each rank-1 component corresponds
+to the signal from one of multiple targets, we refer the reader to [50].
+
+   Another interesting link to multilinear algebra is given by the block-term decomposition of a third-order tensor
+[59]. If we rearrange our P fourth-order tensors {Yp}pP=1 from (3) into the coupled third-order tensors
+
+                           Y virt,p = [Y p]1,:,:,:, . . . , [Y p]N,:,:,: T  CNM×L×T  (6)
+
+for p = 1, . . . , P with a virtual array spanned by N M transceiver elements, we can factorize the measurements
+
+into
+
+                                                Y virt,p = ApBpT  hp                 (7)
+
+for p = 1, . . . , P using the diagonal matrix
+
+                           Ap = Diag(ap,Tx  ap,Rx)  CNM×NM                           (8)
+
+for p = 1, . . . , P , which is formed from the virtual array steering vector corresponding to the target at position p,
+
+and the frequency matrix
+
+                           Bp = cTp  GTTx  GTRx T  CL×NM                             (9)
+
+for p = 1, . . . , P with
+
+                           GTx = g1,Tx, . . . , gN,Tx  CL×N                          (10)
+
+and
+
+                           GRx = g1,Rx, . . . , gM,Rx  CL×M .                        (11)
+
+   The factorization in (7) is similar to the rank-(I, I, 1) block-term decomposition of (6) given by Yvirt,p =
+   rR=1(A~p,rB~pT,r)  h~p,r with A~p,r  CNM×I and B~p,r  CL×I for I  min(L, N M ), and tensor rank R [60].
+In contrast to matrices A~p,r and B~p,r, which do not exhibit any specific structure, our matrices Ap and Bp are
+structured according to (8) and (9), respectively. Furthermore, our frequency matrix Bp is not guaranteed to have full
+column rank, e.g. if L < N M , but allows a more descriptive insight on the physical behavior of the imaging system.
+
+Thus, we prefer (7) over the "regular" rank-(I, I, 1) decomposition of the tensor in (6) for the considered application.
+As a final remark, we note that all third-order tensors {Yvirt,p}Pp=1 are coupled by the magnitude response matrices
+GTx and GRx in (10) and (11), respectively, which is not captured by the positionwise rank-(I, I, 1) decomposition
+and highlights the novelty of our proposed signal model in (3).
+                                                                                                                        7
+
+B. Unfolding of the tensor signal model
+
+When dealing with the tensor model in (3), it is often convenient to operate with the corresponding matrix
+
+unfoldings instead. Unfolding, also known as matricization, rearranges any W -way array X  CI1×···×IW into
+
+matrices  C X  (w)  Iw ×I1 ...Iw-1 Iw+1 ...IW     for  modes  w  =  1, . . . , W .  An  intuitive  way to matricize a tensor is to
+
+cyclically permute its modes.The unfoldings of a four-way array X  CI1×I2×I3×I4 are given by
+
+unf1(X ) = X(1) :=  [X ]:,:,1,1, [X ]:,:,2,1, . . . , [X ]:,:,I3,1,   . . . , [X ]:,:,I3,I4 ,                           (12a)
+unf2(X ) = X(2) :=                                                                                                      (12b)
+unf3(X ) = X(3) :=  [X ]1,:,:,1, [X ]1,:,:,2, . . . , [X ]1,:,:,I4 ,  . . . , [X ]I1,:,:,I4 ,                           (12c)
+
+unf4(X ) = X(4) :=  [X ]1,1,:,:, [X ]2,1,:,:, . . . , [X ]I1,1,:,:,   . . . , [X ]I1,I2,:,: ,                           (12d)
+
+                                               T                 T                     T                          T  .
+
+                    [X ]:,1,1,: , [X ]:,2,1,: , . . . ,               [X ]:,I2,1,: , . . . ,       [X ]:,I2,I3,:
+
+Let us further define the factor matrices
+
+                    Ap,Tx = Diag(ap,Tx)  1TM  CN×NM ,                                                                   (13a)
+                    Ap,Rx = 1NT  Diag(ap,Rx)  CM×NM ,                                                                   (13b)
+                                                                                                                        (13c)
+                      Hp = hp1TNM  CT ×NM .
+
+Using the matricization in [61] and the permutation scheme in [62], the following properties w.r.t. our tensor model
+in (3) hold for Zp = 0, i.e. the noiseless case:
+
+                    unf1(Yp) = Yp(1) = Ap,Tx (Hp  Bp  Ap,Rx)T  CN×MLT ,                                                 (14a)
+                    unf2(Yp) = Yp(2) = Ap,Rx (Ap,Tx  Hp  Bp)T  CM×NLT ,                                                 (14b)
+                    unf3(Yp) = Yp(3) = Bp (Ap,Rx  Ap,Tx  Hp)T  CL×NMT ,                                                 (14c)
+                    unf4(Yp) = Yp(4) = Hp (Bp  Ap,Rx  Ap,Tx)T  CT ×NML.                                                 (14d)
+
+In the following, we estimate the model parameters by applying all four unfoldings on the measurement tensors in
+a modified BCD procedure that leads to parallel alternating univariate optimization problems [63].
+
+                                III. MODIFIED BLOCK COORDINATE DESCENT PROCEDURE
+
+   The signal model in (3) provides us with parameters gn,Tx, gm,Rx, ap,Tx, ap,Rx, cp, and hp that characterize
+the array for a single point target at position p. Ultimately, we aim to describe a given but unknown array for an
+arbitrary scene composed of multiple targets at different and unknown positions. According to the superposition
+principle, a scene with multiple targets can be described as the superposition of multiple, independent single-source
+cases [64]. Thus, we propose a reference-based calibration method where the unknown parameters are estimated
+from P single-source scenarios with known positions of the calibration target. This provides us with the ability to
+handle scenarios with multiple unknown targets after calibration.
+
+   Using the measurement system in the anechoic chamber, we place a reflector at P different positions and record the
+respective measurement tensors, each one following (3). The collection of tensors {Yp}pP=1 is then matched jointly
+                                                                                                       8
+
+to our model in (3) to determine the parameter estimates {g^n,Tx}Nn=1, {g^m,Rx}M m=1, and {a^p,Tx, a^p,Rx, c^p, h^p}pP=1.
+This parameter estimation process is cast as the optimization problem
+
+                         min      N,    f {gn,Tx}Nn=1 , {gm,Rx}mM=1 , {ap,Tx, ap,Rx, cp, hp}pP=1       (15a)
+
+                    { } gn,TxRL+  n=1                                                                  (15b)
+                                                                                                       (15c)
+                    { } gm,RxRL+  M,                                                                   (15d)
+                                                                                                       (15e)
+                                  m=1                                                                  (15f)
+                                                                                                       (15g)
+{ap,TxCN , ap,RxCM , cpCL, hpCT }pP=1                                                                  (15h)
+                                                                                                       (15i)
+                         s.t.            Im [ap,Tx]1 = 0, p = 1, . . . , P,                            (15j)
+                                        ap,Tx22 - N = 0, p = 1, . . . , P,                             (15k)
+                                                                                                       (15l)
+                                         Im [ap,Rx]1 = 0, p = 1, . . . , P,
+                                        ap,Rx22 - M = 0, p = 1, . . . , P,
+
+                                        [cp]1 - 1 = 0, p = 1, . . . , P,
+
+                                        [cp] - 1 = 0, p = 1, . . . , P,  = 2, . . . , L,
+
+                                                   g1,Tx = 1L,
+
+                                        -[gn,Tx] +   0, n = 2, . . . , N,  = 1, . . . , L,
+
+                                        max[gn,Tx  ]  -  1  =  0,  n = 2, . . . , N,  = 1, . . . , L,
+
+                                           
+
+                                        -[gm,Rx] +   0, m = 1, . . . , M,  = 1, . . . , L,
+
+                                        max[gm,Rx  ]  -  1  =  0,  m = 1, . . . , M,  = 1, . . . , L,
+
+                                           
+
+with cost function
+
+                    f {gn,Tx}nN=1 , {gm,Rx}mM=1 , {ap,Tx, ap,Rx, cp, hp}Pp=1
+
+                    P             NM                                          2                        (16)
+
+= Yp -                                  (en  ap,Tx)  (em  ap,Rx)  (gn,Tx  gm,Rx  cp)  hp ,
+
+                    p=1        n=1 m=1                                        F
+
+which is designed to match the noise-free array output model corresponding to (3) to all calibration measurements
+{Yp}pP=1 in a least-squares (LS) sense.
+
+   The constraints in (15b)­(15f) and (15h)­(15l) are introduced to address trivial scaling invariances. Generally, if
+(15a) is minimized without these constraints, then not only {gn,Tx}Nn=1, {gm ,Rx}mM=1, and {ap,Tx, ap,Rx, cp, hp}Pp=1
+are minimizers to (15a), but also {g~n,Tx}nN=1, {g~m ,Rx}mM=1, and {a~p,Tx, a~p,Rx, c~p, h~p}Pp=1 yield the same objective
+function value in (15a) for g~n,Tx = n,gTx gn,Tx, g~m ,Rx = m,gRx gm ,Rx, a~p,Tx = p,aTx ap,Tx, a~p,Rx = p,aRx ap,Rx,
+c~p = p,ccp, and h~p = p,hhp, where the coefficients n,gTx and m,gRx are positive real-valued, p,aTx and
+p,aRx are arbitrary complex, p,c is unit modulus, i.e. |p,c| = 1, and p,h = (n,gTx m,gRx p,aTx p,aRx p,c)-1.
+Rotations of the global phase are prevented by keeping the first entry of every optimization variable other than hp
+real-valued. Scaling ambiguities are further avoided by employing norm constraints on ap,Tx and ap,Rx, respectively.
+Constraint (15h) resolves the scaling ambiguity between the transmit and receive frequency response vectors, gn,Tx
+and gn,Rx, in the objective function (16) by fixing the transmit reference sensor n = 1. On the DFT bins that
+carry relevant signal power, the frequency responses of the n-th transmitter and m-th receiver, respectively, are
+furthermore restricted in (15i)-15l to take real-valued and strictly positive values in the interval [, 1] for some
+small constant  > 0. Lastly, (15g) follows from the unit modulus property of the phase response vector cp.
+
+   Problem (15) is jointly nonconvex, with a multivariate objective function (15a). For each individual variable,
+
+however, the problem can be reformulated in an equivalent convex subproblem when the remaining variables are
+
+fixed. Hence, (15) can be solved by various iterative techniques such as gradient projection and the successive
+
+convex approximation framework [65]. We choose the BCD method that approximates the multilinear objective of
+
+the optimization problem by a series of approximate problems in which all but one optimization variable are fixed,
+
+leading to univariate subproblems [66].
+
+   Applying the BCD method straight to problem (15) results in subproblems that are nonconvex due to the
+
+constraints. As nonconvex problems are in general difficult to solve, we relax the nonconvex constraints in each of the
+
+subproblems and then show that these constraints can always be satisfied by appropriate scaling. This modification
+                                                                                                                                                     9
+
+of the BCD method convexifies the subproblems such that they exhibit closed-form solutions. Additionally, each
+approximate problem is separable into further subproblems with independent variables such that the update of any
+block variable can be done in parallel. This makes our method attractive for implementation on modern parallel
+hardware architectures such as graphics processing units (GPUs), field-programmable gate arrays (FPGAs), and
+multicore digital signal processors (DSPs). Further parallelization can be achieved with the successive convex
+approximation framework in [65].
+
+   Each approximate problem only depends on one set of variables, hence, only one factor in the multilinear product.
+The following subsections introduce the approximate problems for each block variable and the corresponding
+solutions. We denote the iterates of the different block variables after the update and before the parameter scaling
+in iteration i of the modified BCD method as {gn(i,+Tx1)}nN=1, {gm(i+,R1x)}mM=1 and {ap(i,+Tx1), a(pi,+Rx1), cp(i+1), hp(i+1)}pP=1,
+respectively.1 The iterates of the different block variables in the i-th iteration of the modified BCD method after
+the parameter scaling are denoted as
+
+                                                   g~n(i,+Tx1) = n,gTx gn(i,+Tx1),                                                        (17a)
+                                                   g~m(i+,R1x) = m,gRx gm(i+,R1x),                                                        (17b)
+                                                   a~(pi,+Tx1) = p,aTx gTx  a(pi,+Tx1) ,                                                  (17c)
+
+                                                   a~(pi,+Rx1) = p,aRx gRx  a(pi,+Rx1) ,                                                  (17d)
+
+                                                   c~(pi+1) = p,ccp(i+1),                                                                 (17e)
+                                                   h~(pi+1) = p,hhp(i+1),                                                                 (17f)
+
+for n = 1, . . . , N , m = 1, . . . , M , and p = 1, . . . , P , respectively, where gTx
+= [1,gTx , . . . , N,gTx ] = [1, (max[g2(i,+Tx1)])-1, . . . , (max[gN(i+,T1x)])-1]T  R+N , gRx = [1,gRx , . . . , M,gRx ]
+= [(max[g1(i,+Rx1)])-1, . . . , (max[gM(i+,R1x)])-1]T  R+M , p,c = [cp(i+1)]1, p,h = (p,aTx p,aRx p,c)-1, while p,aTx
+and p,aRx are chosen such that the first entry in ap(i,+Tx1) and ap(i,+Rx1) become real-valued, respectively, and the
+
+respective norm constraints (15c) and (15e) are fulfilled.
+
+A. Update of {ap,Tx}Pp=1
+
+   We start our modified BCD method by relaxing problem (15) to remove the constraints (15b) and (15c), which
+
+can always be satisfied by the proposed rescaling in (17). Following the definitions (13b) and (13c) for the factor
+matrices A~p(i,)Rx = 1TN  Diag(a~(pi,)Rx) and H~ p(i) = h~p(i)1NT M , respectively, as well as the frequency matrix B~p(i) =
+((c~p(i))T  (G~T(ix))T  (G~(Rix))T)T according to (9), the first approximate problem at iteration i is given by
+
+                       min              faTx       ap,Tx, a~p(i,)Rx, c~p(i), h~(pi)    P          g~n(i,)Tx  N       g~m(i),Rx   M    ,              (18)
+               {ap,Tx  CN }pP=1                                                                                                  m=1
+                                                                                           ,                      ,
+
+                                                                                       p=1                   n=1
+
+where we use the mode-one unfolding on (16) as defined in (12a) to obtain the cost function
+
+faTx ({ap,Tx, a~(pi,)Rx, c~(pi), h~(pi)}Pp=1, {g~n(i,)Tx}Nn=1, {g~m(i),Rx}M m=1)       2
+
+=  P    Yp     (1)  -  (Diag(ap,Tx)     1M T  )(H~ p(i)     B~p(i)    A~p(i,)Rx)T       .  Eventually,       problem      (18)   can  be  separated  into
+   p=1
+                                                                                       F
+P N scalar subproblems
+
+                            min                M   [Y p]n,m,:,: - [ap,Tx]n a~(pi,)Rx m~b(ni,)m,p                 h~ (pi)  T2                         (19)
+                       [ap,Tx]n  C            m=1                                                                             2
+
+for ~b(ni,)m,p = (c~p(i)  g~n(i,)Tx  g~m(i),Rx) with solutions
+
+                                2  M                   2              2  -1 M                                    H               h~p(i) 
+                                2                  m                  2                           m
+   ap(i,+Tx1)    =     h~ (pi)          a~(pi,)Rx         ~bn(i,)m,p                   a~p(i,)Rx     ~bn(i,)m,p    [Y p]n,m,:,:                      (20)
+
+               n                   m=1                                            m=1
+
+   1We note that the order in which the variables are updated can be modified and does not need to follow the sequence presented here. It is,
+however, mandatory by the BCD method to always use the latest available values of all other parameters when updating one block variable
+of interest.
+                                                                                                                                                                        10
+
+for n = 1, . . . , N and p = 1, . . . , P , respectively, that can be solved in parallel.
+
+B. Update of {ap,Rx}Pp=1
+   Similar to the update of {ap,Tx}Pp=1, learning the receive steering vectors {ap,Rx}pP=1 requires solving the
+
+approximate problem in which all remaining parameters are fixed. At first, we again relax the constraints (15d)
+
+and (15e), which can always be satisfied by the proposed rescaling (17).
+   Using the mode-two unfolding in (12b) on (16), the approximate problem at iteration i is given by
+
+                          min                  faRx    ap,Rx, ap(i,+Tx1), c~p(i), h~(pi)       P                g~n(i,)Tx     N        g~m(i),Rx       M                (21)
+                  {ap,Rx  CM }Pp=1                                                                                                                     m=1
+                                                                                                   ,                               ,
+
+                                                                                               p=1                            n=1
+
+with                                                                       faRx ({ap,Rx, a(pi,+Tx1), c~(pi), h~p(i)}Pp=1, {g~n(i,)Tx}Nn=1, {g~m(i),Rx}mM=1)
+
+=     P    Yp     (2)  - (1TN    Diag(ap,Rx))(A(pi,+Tx1)         H~ p(i)        B~p(i)  )T     2   Following                  the  same  steps         as  in  Section  III-A,
+      p=1
+                                                                                                .
+problem (21) is decoupled into P M scalar subproblems
+                                                                                               F
+
+                                    min            N      [Y p]n,m,:,: - [ap,Rx]m a(pi,+Tx1) n~b(ni,)m,p                               h~p(i) T 2                       (22)
+                               [ap,Rx]m  C        n=1
+                                                                                                                                                    2
+
+with solutions
+
+                                   2  N                   2                2    -1 N                                                   H               h~(pi) 
+                                   2                   n                   2                                    n
+      ap(i,+Rx1)     =   h~ (pi)           a(pi,+Tx1)          ~bn(i,)m,p                      a(pi,+Tx1)          ~bn(i,)m,p            [Y p]n,m,:,:                   (23)
+
+                  m                   n=1                                          n=1
+
+for m = 1, . . . , M and p = 1, . . . , P .
+
+C. Update of {cp}pP=1
+
+   Following the BCD procedure as above, we next consider the update of the block variables {cp}Pp=1. First, we
+make the nonconvex constraint (15g) implicit by introducing the parameterization [cp] = ej,p and consider ,p
+with ,p  [-, ) for  = 1, . . . , L and p = 1, . . . , P as the optimization variables instead. Second, we relax
+constraint (15f), which can always be satisfied by the rescaling procedure (17).
+
+   Applying the mode-three unfolding in (12c) on (16) yields the modified approximate problem
+
+                         min          P        f       p, ap(i,+Tx1), ap(i,+Rx1), h~p(i)          P                g~n(i,)Tx  N        g~m(i),Rx       M       ,        (24)
+                                      p=1                                                                                                              m=1
+                  p  (-, ]L                                                                           ,                            ,
+
+                                                                                                  p=1                         n=1
+
+where p = [1,p, . . . , L,p]T  [-, )L and f({p, ap(i,+Tx1), ap(i,+Rx1), h~(pi)}Pp=1, {g~n(i,)Tx}Nn=1, {g~m(i),Rx}mM=1)
+                                                                                                   2
+=          P      Yp(3)  -     Diag(ejp )  G~ (i) (A(pi,+Rx1)    Ap(i,+Tx1)        H~ p(i))T       F          using           G~ (i)     =                 (G~T(ix)T  G~R(ix)T)T
+           p=1
+
+= [Diag(g~1(i,)Tx) G~(Rix), . . . , Diag(g~N(i),Tx) G~(Rix)] with G~T(ix) and G~(Rix) according to (10) and (11), respectively, while
+
+e(·) denotes the elementwise exponential function.
+
+   As in Sections III-A and III-B, problem (24) decouples and can be solved separately for every p. Additionally, the
+
+diagonal matrix containing the optimization variable, i.e. Diag(ejp), decouples the optimization variable elements
+
+[p], leading to P L parallel surrogate problems
+
+                              max              Re                T  Ap(i,+Rx1)  Ap(i,+Tx1)  H~ p(i)                           G~(i) e-j,p                               (25)
+                        ,p  (-, ]
+                                                       Yp(3) ,:                                                                        ,:
+
+for  = 1, . . . , L and p = 1, . . . , P , respectively. A maximizer to (25) is given by o,ppt
+= arg(([Yp(3)],:)T(A(pi,+Rx1)  A(pi,+Tx1)  H~ p(i))([G~(i)],:)) such that the -th element of the phase response cp can
+
+be estimated as
+
+                                                          [ ] [ ] [ ] [ ] ( ) N M                                             h~ p(i)  H[Y p]n,m,,:
+                                                                                n              m
+                                                          n=1 m=1
+                        c(pi+1)    =  ejo,ppt  =   j arg            a(pi,+Tx1)     ap(i,+Rx1)      g~n(i,)Tx    g~m (i),Rx                                              (26)
+
+                                                  e
+
+                                 
+
+for  = 1, . . . , L and p = 1, . . . , P .
+                                                                                                                                       11
+
+D. Update of {gn,Tx}nN=1
+   According to the BCD procedure, we next consider the block variable update {gn,Tx}Nn=1. We relax the nonconvex
+
+constraint (15j) and consider [gn,Tx]  1 for n = 2, . . . , N and  = 1, . . . , L instead, because the original constraint
+can always be satisfied by applying the rescaling (17) to the solution of the relaxed subproblem. The modified relaxed
+
+problem with the remaining parameters fixed therefore reduces to
+
+                   min         N    fgTx  {gn,Tx}nN=1 ,     ap(i,+Tx1), ap(i,+Rx1), cp(i+1), h~p(i)           P      g~m(i),Rx   M     (27a)
+                               n=1                                                                                               m=1
+                   gn,Tx  R+L                                                                                     ,
+
+                                                                                                              p=1
+
+                   s.t.                      g1,Tx = 1L,                                                                               (27b)
+
+                                    -[gn,Tx] +   0, n = 2, . . . , N,  = 1, . . . , L,                                                 (27c)
+
+                                    [gn,Tx] - 1  0, n = 2, . . . , N,  = 1, . . . , L,                                                 (27d)
+
+where       we           remark           that              fgTx ({gn,Tx}nN=1, {a(pi,+Tx1), ap(i,+Rx1), cp(i+1), h~p(i)}pP=1, {g~m(i),Rx}M m=1)
+
+=      P    N      M     L     [c(pi+1)] [Y p]n,m,,:     -  [gn,Tx ] [g~m(i),Rx ] [ap(i,+Tx1) ]n [ap(i,+Rx1) ]m h~ p(i)    2    takes  measurements
+       p=1  n=1    m=1   =1                                                                                                F
+
+from all P positions into account.
+
+   Ignoring the constraints in (27c)-(27d), the problem reduces to a simple linear LS problem with decoupled
+
+variables. The corresponding minimizers are given in closed form as
+
+                        Re      PM        a(pi,+Tx1)     ap(i,+Rx1)     cp(i+1)       g~m(i),Rx    h~ p(i)    H
+            gnLS,Tx  =         p=1 m=1                n              m
+                                                                                                                [Y p]n,m,,:
+
+                                     PM                                                                                                (28)
+                                    p=1 m=1
+                                                ap(i,+Tx1) n 2       a(pi,+Rx1) m 2   g~m(i),Rx  2            h~p(i) 2
+
+                                                                                                                      2
+
+for  = 1, . . . , L and n = 2, . . . , N . Neglecting the trivial case of n = 1, there remain L(N - 1) terms in (27a)
+
+that are quadratic functions in one scalar variable each, such that there exists a respective global minimum that
+
+either fulfills (27c)-(27d) or is located outside these boundaries. In the latter case, (27a) is strictly monotonically
+
+descending towards (28) within the constrained interval. The solution to (27) is therefore given by (28) projected
+
+onto [, 1], i.e.,
+
+                                                         1              gnLS,Tx  > 1
+
+                                                         
+
+                                    gn(i,+Tx1)           
+
+                                                      =     gnLS,Tx       gnLS,Tx      1                                               (29)
+                                                         
+                                                                                      
+
+                                                                        gnLS,Tx  < .
+
+E. Update of {gm,Rx}M m=1
+
+   Following similar considerations as in the previous subsection, we relax the nonconvex constraint (15l) by
+considering [gm,Rx]  1 for m = 1, . . . , M and  = 1, . . . , L instead, and remark that the original constraint can
+always be satisfied by proper rescaling of the solution of the relaxed subproblem according to (17).
+
+   The resulting relaxed problem is
+
+                   min         M    fgRx  {gm,Rx}mM=1 ,              ap(i,+Tx1), ap(i,+Rx1), cp(i+1), h~p(i)  P      gn(i,+Tx1)  N     (30a)
+                               m=1                                                                                               n=1
+            gm,Rx  RL+                                                                                            ,
+
+                                                                                                              p=1
+
+                   s.t.             -[gm,Rx] +   0, m = 1, . . . , M,  = 1, . . . , L,                                                 (30b)
+
+                                    [gm,Rx] - 1  0, m = 1, . . . , M,  = 1, . . . , L                                                  (30c)
+
+with                                                       fgRx ({gm,Rx}M m=1, {a(pi,+Tx1), a(pi,+Rx1), c(pi+1), h~p(i)}pP=1, {gn(i,+Tx1)}nN=1)
+
+=     P     N      M     L     [c(pi+1)][Y p]n,m,,:      -  [gm,Rx ] [gn(i,+Tx1) ] [ap(i,+Tx1) ]n [a(pi,+Rx1) ]m h~ p(i)   2
+      p=1   n=1    m=1   =1
+                                                                                                                            .
+   The corresponding LS solution of the relaxed problem is given by
+                                                                                                                           2
+
+                         Re     PN        a(pi,+Tx1)     ap(i,+Rx1)     cp(i+1)       gn(i,+Tx1)     h~ p(i)  H
+            gmLS,Rx  =         p=1 n=1                n              m
+                                                                                                                [Y p]n,m,,:
+
+                                     PN                                                                                                (31)
+                                    p=1 n=1
+                                                ap(i,+Tx1) n 2       ap(i,+Rx1) m 2   gn(i,+Tx1)  2           h~(pi) 2
+
+                                                                                                                      2
+                                                                                                                                               12
+
+for  = 1, . . . , L and m = 1, . . . , M , which are again projected onto [, 1], i.e.,
+
+                                                         1                     gmLS,Rx  > 1
+                                                         
+
+                                        gm(i+,R1x)       
+
+                                                      =     gmLS,Rx                 gmLS,Rx     1.                                             (32)
+                                                         
+                                                                                               
+
+                                                                               gmLS,Rx  < 
+
+F. Update of {hp}Pp=1
+
+   Making use of the definitions (13a), (13b), and (9), the approximate problem in the gain vectors {hp}pP=1 for
+the remaining parameters fixed yields the standard linear LS problem
+
+                      min     P    fh     hp, a(pi,+Tx1), a(pi,+Rx1), c(pi+1)       P      gn(i,+Tx1)  N       gm(i+,R1x)  M                   (33)
+                              p=1                                                                                          m=1
+                  hp  CT                                                                ,                   ,
+
+                                                                                    p=1                n=1
+
+with                                                               fh({hp, ap(i,+Tx1), a(pi,+Rx1), cp(i+1)}pP=1, {gn(i,+Tx1)}Nn=1, {gm(i+,R1x)}mM=1)
+
+=     P    Yp(4)  -  hp1NT M  (Bp(i+1)    A(pi,+Rx1)    Ap(i,+Tx1))T  2        The  problem    (33)    decouples  into     P  LS  problems     with
+      p=1
+                                                                       .
+individual minimizers given by
+                                                                      F
+
+                                         NM         a(pi,+Tx1)     a(pi,+Rx1)   ([Y p]n,m,:,:])T bn(i,+m1,)p   
+                                        n=1 m=1                 n
+                      h(pi+1) =                                                m                                                               (34)
+
+                                           NM            a(pi,+Tx1) n 2        a(pi,+Rx1) m 2  bn(i,+m1,)p 2
+                                          n=1 m=1
+                                                                                                           2
+
+for p = 1, . . . , P . After the update of {hp}pP=1, iteration i concludes by initiating the scaling procedure (17).
+   With this, we now have introduced the subproblems and corresponding solutions of a modified BCD method
+
+to learn the array response for P sample calibration points by estimating the corresponding parameters of the
+tensor model in (3), i.e. {gn,Tx}nN=1, {gm,Rx}mM=1, and {ap,Tx, ap,Rx, cp, hp}Pp=1. Additionally, the solutions to all
+approximate problems of the modified BCD method are given in closed-form and the individual block variables as
+
+well as their rescaling (17) can be computed in parallel.
+
+G. Initialization of the BCD
+
+   The parameter g1,Tx is fixed according to (15h), so w.l.o.g., we start our proposed calibration procedure by
+
+estimating the transmit magnitude response update gn(i,+Tx1) at iteration i. Estimates for the remaining parameters at the
+
+initial iteration i = 1 are obtained from the calibration data for snapshots t = 1, . . . , T using the simple initialization
+
+a~(p1,T)x = 1N , a~p(1,R)x = 1M , g~m(1,)Rx = 1L, c~(p1) = 1L, and [h~p(1)]t = (LM N )-1               L       M           N    |Re([Y  p  ]n,m,,t)|
+                                                                                                       =1      m=1         n=1
+                  L   M       N
++j(LM N )-1       =1  m=1     n=1  |Im([Y p ]n,m,,t )|,            which  we   denote      as  the  complex-valued         t-average  (t-av).  These
+
+initial estimates can be obtained from the measurements in Yp without additional knowledge of the calibration
+
+positions p.
+
+H. Range scanning
+
+   Our experiments reveal that the phase responses {cp}Pp=1  CL learned from calibration measurements exhibit
+approximately linear phases that are distant-dependent. Thus, we conclude that the far field model with constant
+group delays holds [67]. Hence, we may model the entries of the p-th phase response as
+
+                                                         [cp] = e-j(-1)p                                                                       (35)
+
+with phase slope p = 2c-1(rp + r0), where c is the effective speed of sound for the imaging burst, rp is
+
+the adjusted range from the array to the calibration target position indexed by p, r0 is a system offset, e.g. due to
+unknown group delays introduced by the waveguide and mechanical inertia of the PUTs, and  = 2fs(LDFT)-1
+
+is the radial frequency separation based on the sampling frequency fs as well as the DFT length LDFT.
+                                                                                                                                                       13
+
+   While the true range rp is known for every calibration point p, the system offset range r0 is generally unknown.
+However, we can determine r0 using the estimation of signal parameters via rotational invariance technique (ESPRIT)
+for the simple case of a single source as [68]
+
+                                          cP             arg [c^p]H1:L-1[c^p]2:L                          .                                            (36)
+                                 r^0 = 2                                                  - 2rp c
+                                                    p=1
+
+   With the model-based approach described above, the density of dictionary entries in the range dimension can be
+flexibly increased by choosing different scanning ranges rp 1, . . . , rp R for every calibrated position p. Thus, the total
+number of dictionary entries P is increased to P = RPmeasured. This allows a higher accuracy for the estimation
+
+of the range in distances that have not been learned during calibration.
+
+I. Complexity and methods for comparison
+
+   Instead of learning from measurements under the common narrow-band assumption [53], a normalized and single-
+
+snapshot array response Rp  CM×N×L for a single target at position p can be described in closed form as the
+
+third-order tensor
+
+                                 Rp,analytic = ap,Tx,analytic  ap,Rx,analytic  bp,analytic                                                             (37)
+
+using the analytic steering vectors ap,Tx,analytic = [e-jk(,)Tr1,Tx , . . . , e-jk(,)TrN,Tx ]T and ap,Rx,analytic
+                                                                                                                                        
+=  [e-jk(,)Tr1,Rx ,  .  .  .  ,  e-jk(,)TrM,Rx ]T,  the  linear  frequency  response      bp,analytic  =  [1,  .  .  .  ,  e-j2(L-1)rp    c  ]T,  the  wave
+
+vector k(, ) = -2f0c-1[sin() cos(), sin(), cos() cos()]T, the array element positions ri = [xi, yi, zi]T,
+
+and  = 2fs(LDFT)-1. Note that the analytic frequency response bp,analytic uses the same linear phase model as
+
+described in Section III-H.
+
+   A simple calibration technique that reduces relative gain and phase offsets in the different transceiver elements
+
+is given by broadside compensation [53], [77]. For this, a measurement tensor Y(0,0) with a target at broadside
+direction (, ) = (0, 0) is approximated by the rank-1 CPD (5) using a classic alternating least squares (ALS)
+
+algorithm [61] with the initialization in Section III-G. After appropriate rescaling, unique estimates a^(0,0),Tx,CPD,
+a^(0,0),Rx,CPD, and ^b(0,0),CPD are used as complex valued gains, i.e. amplitude factors and phase shifts, to correct
+
+the components of the analytic array responses Rp of all directions at the same range:
+
+                              ap,Tx,analytic = a^(0,0),Tx,CPD  e-jk(,)Tr1,Tx , . . . , e-jk(,)TrN,Tx T ,
+
+                              ap,Rx,analytic = a^(0,0),Rx,CPD  e-jk(,)Tr1,Rx , . . . , e-jk(,)TrM,Rx T ,                                               (38)
+
+                                 bp,analytic = ^b(0,0),CPD       e-j2·0·rp       ,  ...,  e-j2(L-1)rp             T
+                                                                              c                             c
+                                                                                                                    .
+
+   The analytic model for Rp yields a low computational load with broadside compensation but requires precise
+knowledge of the array geometry, which may be unavailable if the array is embedded in a system or affected by
+temperature changes and aging. Our proposed calibration technique and the positionwise rank-1 CPD approximation
+(5) overcome this limitation, albeit with higher computational complexity.
+
+   The computational cost of the modified BCD procedure for problem (15) is mainly driven by updating the
+magnitude responses {gn,Tx}Nn=1 and {gm,Rx}mM=1, which sets our tensor model apart from the rank-1 CPD ap-
+proximation. As noted in Sections III-D and III-E, estimating gn,Tx and gm,Rx requires measurements from all P
+positions, respectively. While this makes our method computationally more demanding than a positionwise rank-
+1 CPD approximation, the complexity remains in the same order as the decoupling of subproblems allows for
+elementwise updates. Table I lists the computational load for the three calibration techniques in terms of multiply-
+accumulate (MAC) operations, where the load for the rank-1 CPD approximation is based on elementwise updates
+for a fair comparison.
+
+J. Convergence analysis
+
+   In the following, we establish the convergence result for the proposed modified BCD algorithm that follows
+the proof of the conventional BCD algorithm provided in [66, Proposition 3.7.1]. Let us define the vector (i)
+that contains all block variables {a(pi,+Tx1), a(pi,+Rx1), p(i+1), h(pi+1)}pP=1, {gn(i,+Tx1)}nN=1, {gm(i+,R1x)}mM=1 at iteration i after
+                                            14
+
+        Algorithm       Computational load
+Broadside compensation  O(P (N + M + L))
+
+       Rank-1 CPD           O(P N M LT )
+         Proposed           O(P N M LT )
+
+TABLE I: Computational load of multiply-accumulate (MAC) operations for different tensor-based calibration
+algorithms.
+
+performing their respective updates (20), (23), (26), (29), (32) and (34) but prior to the scaling, whereas ~(i) denotes
+the vector of all block variables {a~(pi,+Tx1), a~(pi,+Rx1), ~p(i+1), h~p(i+1)}pP=1, {g~n(i,+Tx1)}nN=1, {g~m(i+,R1x)}mM=1 at iteration i after
+the rescaling in (17). The following convergence result can then be established.
+
+Proposition 1. Every limit point of the sequence {~(i)} is a stationary point of problem (15).
+
+Sketch of Proof for Proposition 1: The above convergence statement can be justified by extending the proof of [66,
+Proposition 3.7.1] for the classic BCD algorithm. We first observe that in each block variable update, as well as in the
+scaling step, the function value is nonincreasing. As the objective is bounded below, it follows from the Monotone
+Convergence Theorem that the function values corresponding to the iterates converge. To further show that a limit
+point ¯ of the sequence {~(i)} is a stationary point of problem (15), we follow the proof of [66, Proposition 3.7.1].
+We first note that all respective subproblems, i.e. (19), (22), (25), (27), (30) and (33) have unique minimizers. The
+objective functions of the subproblems are continuously differentiable over the constraint sets and monotonically
+nonincreasing between the current iterates and the minimizers of the subproblems. Furthermore, the constraint sets
+are convex and bounded. Thus, the conditions in [66, Proposition 3.7.1] are satisfied. Performing the exact steps
+in the proof of [66, Proposition 3.7.1] along the chain of BCD updates in one iteration, we can demonstrate that
+every limit point ¯ of the sequence of iterates {~(i)} satisfies the first-order stationarity condition
+
+Re f (¯)H( - ¯)  0    ,                     (39)
+
+where f (¯) and  denote the vector of partial derivatives and the feasible set of the problem without scaling
+
+constraints, i.e., the set defined by constraints (27b), (27c), (27d), (30b), (30c), respectively. Together with the fact
+that the sequence of iterates {~(i)} is enforced to satisfy the scaling constraints by the scaling procedure (17), it
+can be concluded from (39) that every limit point ¯ is a stationary point of problem (15).
+
+   Due to the multilinear nature of its objective, we note that problem (15) is nonconvex, and the convergence of the
+modified BCD algorithm to a global minimum cannot generally be guaranteed (c.f. [66]). Therefore, the stationary
+point to which the proposed modified BCD algorithm converges may be a global minimum, a local minimum, or
+a saddle point of problem (15).
+
+     IV. IMAGING
+
+   As pointed out in Section I, air-coupled US uses the same image formation principles as other in-air sensing
+modalities. Basic but fast techniques, such as delay-and-sum beamforming in the time domain and conventional
+beamforming in the frequency domain, have been successfully applied to air-coupled ultrasonic arrays [54], [69].
+Advanced methods, e.g. multiple signal classification (MUSIC) [70] or ESPRIT [68], promise superresolution,
+provided the array is well-calibrated. Another class of imaging techniques leverages sparsity in the scene, which
+can be exploited using sparsity-promoting concepts, e.g. convex 1-norm minimization [71], including the LASSO
+problem considered in our previous work [49]. Sequential algorithms, such as matching pursuit (MP), orthogonal
+matching pursuit (OMP), and orthogonal least squares (OLS) [72], exploit sparsity using a dictionary, which we
+obtain from calibration measurements. As a proof-of-concept that array responses can be learned from calibration
+data with the algorithm provided in Section III, we employ a sequential multi-target estimation technique that
+estimates target locations one by one.
+
+   Consider the superposition of K sources according to our signal model in (3), i.e.,
+
+K    K
+
+Y = Ypk = Qpk  hpk + Z,                     (40)
+
+k=1  k=1
+                                                                                                                                                                           15
+
+where Ypk models the single-source tensor (3) for the k-th target at the unknown position indexed by pk. The
+noiseless signal part contributed by the k-th target can be factorized into the signal gain hpk and the third-order
+tensor
+
+                                            NM
+
+                   Qp =                        (en  ap,Tx)  (em  ap,Rx)  (gn,Tx  gm,Rx  cp)  CN×M×L                                                                     (41)
+
+                         n=1 m=1
+
+that is formed from the factors (ap,Tx, ap,Rx, cp, gn,Tx, gm,Rx) for calibration points p = 1, . . . , P . The tensor Qp
+in (41) characterizes the array range-angular response of a point reflector at the candidate location indexed by p
+and is assumed to be fixed and known after calibration. Let
+
+                                                                       qp = vec(Qp)  CNML                                                                               (42)
+
+denote the vectorization of the array response tensor Qp at calibration position p and let the set
+
+                                                                          Q = {q1, q2, . . . , qP }                                                                     (43)
+
+denote the range-angle dictionary for P candidate targets. Our objective is to find the atoms qp^k in the sparse
+                                                         K
+representation unf4(Y) = Y(4)                            k=1  hp^k     qpT^k  under    the    mode-four          unfolding  from  (12d).   We    remark              that  the
+
+true source number K is generally unknown and needs to be detected [53].
+
+A. Sequential imaging with OMP
+
+   We select the atoms for the sparse representation of the image measurement tensor Y according to the OMP
+
+technique [73]. At the beginning of the i-th iteration of OMP, the location estimate indices p^1, . . . , p^i-1 cor-
+
+responding to the selected atoms qp^1, . . . , qp^i-1  Q along with the corresponding signal gain estimate vectors
+h^ (1i-1), . . . , h^ i(-i-11)  CT of the previously estimated targets are given and the location index estimate p^i of the
+target in the i-th iteration is selected as the minimizer
+
+                                                                                            i-1                             2
+
+                                           p^i = arg min min                     Y(4) -          h^ k(i-1)qpT^k - hqpT .                                                (44)
+
+                                                   p{1,...,P } hCT                          k=1                             F
+
+The inner optimization problem in (44) is a linear LS problem in h for fixed qp and has the closed form solution
+
+hLS = (Y(4) -      i-1  h^ (ki-1)  qpT^k   )(qp            2  )-1  qp  .  Inserting    hLS    for    h  in  (44)  yields    the  simple  selection  criterion
+                   k=1                                     2
+
+                                               Step 1:                    p^i = arg max          Y((4i)-,r1es).    qp  2                                                (45)
+                                                                                                                 qp22
+                                                                                  p{1,...,P }                           ,
+
+                                                                                                                       2
+
+where                                                                                       i-1
+
+                                                              Y((4i)-,r1es). = Y(4) -            h^ (ki-1)qpT^k                                                         (46)
+
+                                                                                          k=1
+
+is the unfolded residual measurement tensor at the end of the (i - 1)-th iteration. At the i-th iteration, we observe
+
+that according to (45), the atom qp of our learned dictionary Q is selected that has the largest correlation to the
+
+rows of the residual in (46).
+   In the second step of the i-th iteration of the OMP method, all gain vectors {h^ (ki)}ik=1 corresponding to the
+
+selected target directions {p^k}ki =1 are estimated for fixed atoms {qp(^ik)}ik=1 as the LS minimizers
+
+                                                                          i            2                                    Q^ (i) T Q^ (i)  -1 ,
+
+          Step 2:       h^ (ki) = arg min                  Y(4) -             hk(i)qpT^k =         Y(4)     Q^ (i)                                              :,k     (47)
+
+                                      hCT                              k=1             F
+
+where  Q^ (i)  =  [qp^1 , . . . , qp^i ].  We  remark         that        h^ k   2     which     is  a  measure        for  the  received  power    of  the          signal
+
+                                                                                 2,
+
+reflected by the target detected at the position indexed by k, is later used to create the image.
+
+The two steps of the OMP procedure are repeated, e.g., until the Frobenius norm of the updated unfolded
+                                                                                                                                                                     2
+residual  measurement   tensor             Y((4i)),res.  according           to  (46)  falls  below      a  predefined      threshold  ,   i.e.  Y((4i)),res.        F     ,
+
+or a maximum number of iterations IOMP is reached.
+                                                                                  16
+
+                                                   V. RESULTS AND DISCUSSION
+
+   In this section, we carry out numerical experiments to investigate the error performance of the proposed calibration
+technique and its impact on the imaging quality using both synthetic and real measurements recorded with an air-
+coupled ultrasonic array [54].
+
+A. Simulations
+
+   We first evaluate our proposed modified BCD method for tensor-based array calibration with synthetic data
+from P = 250 different calibration points, N = 4 transmit and M = 60 receive elements, L = 24 DFT bins, and
+T = 10 snapshots. We model the transmit steering vector element [ap,Tx]n, the receive steering vector element
+[ap,Rx]m, the phase response element [cp], and the pulse gain element [hp]t as i.i.d. random variables with unit-
+magnitude and uniform random phase in [-, ), for p = 1, . . . , P , n = 1, . . . , N , m = 1, . . . , N ,  = 1, . . . , L,
+and t = 1, . . . , T . The transmit magnitude response element [gn,Tx] and the receive magnitude response element
+[gm,Rx] are uniformly drawn from [1 - , 1], with 0   < 1 modeling variations among transmitters and receivers
+and  = 0 corresponding to identical frequency responses. Simulations at varying SNR levels are performed using
+the tensor factorization according to (3), where we assume i.i.d. zero-mean complex circular Gaussian noise.
+
+   We use the mean complementary normalized cross-correlation (MCNCC) of each estimated range-angle dictionary
+entry in (42) as a performance metric that is to a large extend independent of existing scaling ambiguities. In a
+Monte Carlo simulation with IMC Monte Carlo trials, the MCNCC is defined as
+
+                                   1                       qpH,iMC q^p,iMC        (48)
+                MCNCC =                                                        ,
+                                           IMC P          qp,iMC 2 q^p,iMC  2
+
+                                                     1 -
+                                  IMCP iMC=1 p=1
+
+where qp,iMC and q^p,iMC are the vectorized range-angle responses of the true parameter values {gn,Tx}nN=1,
+{gm,Rx}mM=1, and {ap,Tx, ap,Rx, cp}Pp=1 and the corresponding finite iteration parameter estimates {g^n,Tx}Nn=1,
+{g^m,Rx}mM=1, and {a^p,Tx, a^p,Rx, c^p}pP=1 at the termination of the modified BCD algorithm for p = 1, . . . , P ,
+
+n = 1, . . . , N and m = 1, . . . , M , respectively, according to (41) and (42). In terms of coherence [74], we
+
+remark that the MCNCC is inversely proportional to the coherence between qp,iMC and q^p,iMC, i.e., the MCNCC is
+zero for full coherence and one for full incoherence.
+
+In Figure 3, the MCNCC metric is averaged over IMC = 100 Monte Carlo trials after each decomposition reaches
+fr(eil-1) - fr(eil)  10-6, where
+                                           -1
+                                  
+
+                                                   P  P               (i)  2
+                                                                      p    F
+                                  fr(eil) =  Yp2F          Yp  -  Y^              (49)
+
+                                      p=1             p=1
+
+is the normalized cost function (16) at the i-th iteration of our proposed modified BCD procedure. We compare
+the MCNCC for   {0, 0.1, 0.5} to illustrate the influence of transmitters and receivers with increasingly different
+frequency responses. With our proposed method, the MCNCC converges to 0, i.e. full coherence between qp and
+q^p, with rising SNR, regardless of the distortion parameter . For identical frequency responses, i.e.  = 0, the
+data can well be approximated with a rank-1 CPD introduced in Section III-I. For  > 0, however, i.e. nonidentical
+frequency responses of individual transducers, a rank-1 CPD is unsuitable as the MCNCC saturates at a nonzero
+value depending on .
+
+   From our simulation results for the considered scenario, we further remark that we observe the parameter estimates
+approaching the true parameters in the noise-free case, which suggests that in this case, our modified BCD algorithm
+converges to the global minimum of problem (15).
+
+B. Real data
+
+   For experimental validation, we use an 8 × 8 URA with custom electronics based on a Xilinx Zynq 7010
+FPGA [54]. The URA features PUTs of type MA40S4S manufactured by Murata (Nagaokakyo, Kyoto Prefecture,
+Japan). The MA40S4S operate at f0 = 40 kHz and have an output power level of more than 120 dB at 0.3 m,
+enabling imaging ranges of several meters. These transducers are widely available to both academic and commercial
+customers, however, their bulky dimensions prevent a classic /2-spacing between neighboring array elements. An
+                                                                                                                                                                      17
+
+       100
+
+       10-2
+
+MCNCC  10-4     Proposed,  = 0
+                Proposed,  = 0.1
+       10-6     Proposed,  = 0.5    -5  0         5  10  15  20
+           -20  Rank-1 CPD,  = 0
+                Rank-1 CPD,  = 0.1
+                Rank-1 CPD,  = 0.5
+
+                 -15 -10
+
+                                        SNR (dB)
+
+Figure 3. Comparison between our proposed decomposition method and a rank-1 CPD approximation, respectively,
+using the mean complementary normalized cross-correlation (MCNCC) (48) of the vectorized range-angle response
+estimates q^p and their respective true values qp according to (42). Unlike the rank-1 CPD, our proposed method is
+independent of the frequency response variation .
+
+individually designed waveguide has been proposed to overcome this limitation and is part of the considered URA
+[22].
+
+   All URA elements can operate in both transmit and receive mode, with fast switching for simultaneous pulse
+transmission and reception. However, to avoid ring-out effects, we use each transceiver exclusively as a transmitter or
+receiver. Specifically, the N = 4 corner transducers sequentially transmit sinusoidal pulses of duration Tburst = 1 ms
+each. This configuration minimizes measurement time, limited by the number of pulses per calibration position.
+
+   For both calibration and imaging, we fire T = 10 pulses from one transmitter before switching to the next,
+repeating this until all N = 4 transmitters have emitted in total N T = 40 bursts. The remaining M = 60 sensor
+elements in the URA operate in receive mode only. For each snapshot t = 1, . . . , T , echoes are recorded at a
+sampling frequency fs = 195 kHz and stored for L = 24 sample frequencies. Unambiguous range detection within
+the bounds of the anechoic chamber is ensured by setting the pulse repetition rate to Tburst = 150 ms, assuming
+a wave propagation velocity of c = 343 ms-1.
+
+   We select P = 1,909 calibration points distributed on a spherical shell at a constant range of r = 2 m, covering
+a FOV of ±60 in both azimuth and elevation. Near broadside, the FOV is sampled more densely due to a higher
+sensitivity of the steering vectors ap at lower electrical angles arg(ap). The exact coordinates of each point p
+are derived from the rotational axes of the measurement system, which efficiently move the array relative to the
+calibration target along a meander-shaped path [75].
+
+   The reconstruction performance of our algorithm for the US array measurements described above is shown in
+Figure 4. In Figure 4(a), the relative pointwise reconstruction error
+
+                rel(p) = YpF -1 Yp - Y^ p F                      (50)
+
+is displayed for various azimuth and elevation angles at the set range of r = 2 m. The relative reconstruction error
+
+represents the model mismatch for any calibration position p = 1, . . . , P between the calibration measurement
+Yp and the reconstructed model Y^ p according to (3) using the parameter estimates learned with our modified
+
+BCD algorithm. We observe that our proposed tensor model in (3) accurately models measured data for different
+target positions within the FOV, despite the narrow 3 dB mainlobe width of 12 [54]. The relative pointwise
+
+reconstruction error according to (50) is 20 % near broadside and increases up to 50 % towards the edge of the
+
+FOV. The reconstruction errors may be due to measurement noise, model errors resulting from the violation of the
+
+single-point-source assumption, and reverberation. By construction, the BCD method always provides a decrease of
+
+the objective function in every variable update. The convergence behavior of our proposed modified BCD method
+is shown by examining the difference between the normalized cost function fr(eil) according to (49) at each iteration
+i against fr(eil-1) of the previous iteration (Figure 4(b)).
+                                                                                                   18
+
+                           rel (%)
+
+50                                                                                10-2
+
+                                                  40
+Elevation  ()
+0                                                              fr(eil-1) - fr(eil)10-4
+
+                                                  20
+
+-50                                                   10-6
+
+     -50  0            50                         0                  100 200 300 400 500
+                                                                                Iteration i
+          Azimuth  ()
+                                                                  (b) Normal. cost funct. differ.
+(a) 2D proj. of relat. pointwise reconstr. error
+
+Figure 4. Relative pointwise reconstruction error (50) and normalized cost function difference (49) of the calibration
+
+technique proposed in Section III in a constant range of r = 2 m. For P = 1,909 calibration points defined by their
+
+azimuth  and elevation  w.r.t. the alignment of the array elements, the reconstruction error rel(p) is computed after
+500 iterations (a). To show the convergence behavior, the difference fr(eil-1) - fr(eil) between consecutive normalized
+cost function values is evaluated (b).
+
+   Figure 5. Imaging setup with multiple targets (red triangles) viewed from above and behind the rigid baffle.
+
+   Finally, projections of scatter plots in Cartesian and spherical space are given as a proof-of-concept for the
+imaging capabilities of the proposed model and methods. As a test scenario, we arrange multiple tetrahedral corner
+reflectors of the same kind as used for calibration on two skew planes perpendicular to the x-z plane (Figure 5).
+A dictionary of P = R · Pmeasured = 15 · 1,909 = 28,635 range-angle response vectors {qp}Pp=1 is learned
+from Pmeasured = 1,909 measured calibration positions with varying angles at the constant range r = 2 m and
+R = 15 different scanning ranges r including the original calibration range. The scanning ranges are chosen as
+r = r + 0.2 · k · r, k = -7, . . . , 7, where r = 0.5 · c · Tburst  17 cm equals half the range resolution given by the
+Rayleigh bandwidth [76]. For imaging, we apply the OMP algorithm introduced in Section IV with IOMP = 100
+iterations. In each iteration, we select one range-angle response vector qp^ from the dictionary according to Step 1 in
+(45). The corresponding position estimate p^ is assigned the weighted norm square T -2h^p^22 according to Step 2 in
+(47). A threshold is then applied to exclude position estimates p^ with a weighted power estimate T -2h^p^22 more
+than 10 dB below the peak estimate. The remaining target estimates are color-coded according to their weighted
+power estimate.
+
+   A 2D image of the reconstructed model projected onto the x-z plane is displayed in Figure 6(a) while Figure 6(b)
+shows an angular projection using azimuth and elevation. The latter is obtained by transforming Cartesian coordinates
+into spherical ones and collapsing the range dimension of the resulting tensor. A positive azimuth angle  is measured
+from the z-axis to the x-axis whereas a positive elevation angle  is measured from the z-axis to the y-axis. Signal
+gains associated to targets appearing under the same direction, i.e. same azimuth and elevation but different scanning
+                                                                                                                                                        19
+
+                                              h^ p^        2  /T2  (dB)                                                        h^ p^            2  /T2  (dB)
+                                                           2                                                                                    2
+
+                                                                             -15                                                                   -15
+
+               2                                                                     Elevation  ()    20
+                                                                                                       0
+z/m            1.5                                                                                  -20                                            -20
+
+                                                                                -20
+
+                 1
+
+               0.5                                            -25                                                                                  -25
+
+                    1         0           -1                                                              40 20 0 -20 -40
+
+                            x/m                                                                           Azimuth  ()
+
+                    (a)  x-z  projection  (proposed)h^ p^  2  /T2  (dB)                                   (b)  Angular  proj.  (proposed) h^p^  2  /T2  (dB)
+                                                           2                                                                                    2
+
+Elevation  ()                                                                  -15   Elevation  ()                                                                  -15
+
+               20                                                                                   20
+
+                                                                             -20                                                                                  -20
+
+               0                                                                                    0
+
+               -20                                                 -25                              -20                                            -25
+
+            40 20 0 -20 -40                                                                          40 20 0 -20 -40
+
+                   Azimuth  ()                                                                              Azimuth  ()
+     (c) Angular proj. (analytic without compensation)                                              (d) Angular proj. (anal. with compens.)
+
+Figure 6. From measurements with multiple reflectors (red), scatter plots projected onto the x-z plane (a) and the
+azimuth-elevation-plane (b), respectively, are computed using the dictionary of our proposed calibration method. For
+comparison, the angular projections using an analytic dictionary without (c) and with (d) broadside compensation
+are also provided.
+
+ranges, are added up. For comparison, we provide the 2D projection based on an analytic dictionary that requires
+exact array geometry knowledge and is used without and with the broadside compensation from Section III-I (c.f.
+Figure 6(c) and (d), respectively).
+
+   Our main observations from Figure 6 are threefold:
+
+ (1) In our proof-of-concept experiment with real data, Figure 6(b) shows that we achieve a good imaging perfor-
+      mance because the proposed dictionary of measured array responses, i.e. without explicit knowledge of the
+      array geometry, is capable of resolving the multi-target scenario.
+
+ (2) Figure 6(a) shows that the principal target location estimates p^ corresponding to larger signal gain estimates h^p^
+      are distributed along two planes perpendicular to the x-z-plane according to the ground truth setup indicated
+      by the red boxes. This proves the correctness of our assumed linear phase response model in (35): target ranges
+      can be estimated even if they have not been learned during calibration.
+
+ (3) Without and with broadside compensation (c.f. Figure 6(c) and (d), respectively), the analytic model, which
+      requires precise knowledge of the array geometry, yields similar imaging performance as obtained with the
+      array responses learned from calibration measurements.
+
+                                                VI. CONCLUSIONS AND OUTLOOK
+
+   In this article, we propose a novel tensor model to describe the measurement data of an air-coupled ultrasonic
+MIMO sensor array for 3D imaging. A reference-based calibration scheme is suggested in which the tensor model
+parameters are jointly estimated from all calibration measurements using a modified BCD method with proven
+convergence. The modification exploits scaling invariances between the block variables to convert the originally
+nonconvex subproblems into equivalent subproblems that admit closed-form solutions. Numerical experiments
+carried out with synthetic data as well as real measurements recorded with an air-coupled ultrasonic array confirm
+                                                                                                                                                                                                20
+
+both, the validity of the model as well as the functionality of the calibration procedure. Additionally, an imaging
+example with real data verifies that dictionaries with the commonly used, analytically modeled steering and phase
+response vectors as well as the angular-range response vectors obtained with our calibration procedure are feasible
+for 3D imaging with air-coupled ultrasonic sensor arrays. It is assumed that in air-coupled US as well as other
+array processing applications such as radar or sonar, array elements with magnitude responses more distinct than
+those of our prototype array will benefit from our proposed model as suggested by our simulations.
+
+   In the future, we will investigate if more structure enforced onto the tensor signal model and therefore the
+optimization problem itself, e.g. by exploiting a parametric range model during calibration, will improve the
+calibration results and imaging performance. Future work also addresses performance bounds of the proposed tensor
+model and research towards non-reference-based, i.e. blind, calibration methods that perform joint calibration and
+imaging without the overhead associated with calibration measurements.
+
+                                                              REFERENCES
+
+ [1] J. Huang, X. Yang, Fast reduction of speckle noise in real ultrasound images, Signal Process. 93 (4) (2013) 684­694. doi:10.1016/
+      j.sigpro.2012.09.005.
+
+ [2] C. Yu, C. Zhang, L. Xie, An envelope signal based deconvolution algorithm for ultrasound imaging, Signal Process. 92 (3) (2012)
+      793­800. doi:10.1016/j.sigpro.2011.09.024.
+
+ [3] M. K. Kiymik, I. Gu¨ler, O. Hasekioglu, M. Karaman, Ultrasound imaging based on multiple beamforming with coded excitation, Signal
+      Process. 58 (1) (1997) 107­113. doi:10.1016/S0165-1684(97)00016-9.
+
+ [4] S. Harput, A. Bozkurt, Ultrasonic phased array device for acoustic imaging in air, IEEE Sensors J. 8 (11) (2008) 1755­1762. doi:
+      10.1109/JSEN.2008.2004574.
+
+ [5] J. F. Synnevag, A. Austeng, S. Holm, Adaptive beamforming applied to medical ultrasound imaging, IEEE Open J. Ultrason., Ferroelect.,
+      Freq. Contr. 54 (8) (2007) 1606­1613. doi:10.1109/TUFFC.2007.431.
+
+ [6] J. A. Jensen, S. I. Nikolov, K. L. Gammelmark, M. H. Pedersen, Synthetic aperture ultrasound imaging, Ultrason. 44 (2006) e5­e15.
+      doi:10.1016/j.ultras.2006.07.017.
+
+ [7] T. G. Leighton, What is ultrasound?, Prog. in Biophys. Mol. Biol. 93 (1) (2007) 3­83. doi:10.1016/j.pbiomolbio.2006.
+      07.026.
+
+ [8] A. S. Mohammed, A. Amamou, F. K. Ayevide, S. Kelouwani, K. Agbossou, N. Zioui, The perception system of intelligent ground
+      vehicles in all weather conditions: A systematic literature review, Sensors 20 (22) (2020) 6532. doi:10.3390/s20226532.
+
+ [9] S. M. Patole, M. Torlak, D. Wang, M. Ali, Automotive radars: A review of signal processing techniques, IEEE Signal Process. Mag.
+      34 (2) (2017) 22­35. doi:10.1109/MSP.2016.2628914.
+
+[10] Z. Fang, F. Gao, H. Jin, S. Liu, W. Wang, R. Zhang, Z. Zheng, X. Xiao, K. Tang, L. Lou, K.-T. Tang, J. Chen, Y. Zheng, A review
+      of emerging electromagnetic-acoustic sensing techniques for healthcare monitoring, IEEE Trans. Biomed. Circuits Syst. 16 (6) (2022)
+      1075­1094. doi:10.1109/TBCAS.2022.3226290.
+
+[11] D. E. Chimenti, Review of air-coupled ultrasonic materials characterization, Ultrason. 54 (7) (2014) 1804­1816. doi:10.1016/j.
+      ultras.2014.02.006.
+
+[12] M. Haller, B. Khuri-Yakub, 1-3 composites for ultrasonic air transducers, in: IEEE 1992 Ultrason. Symp., Vol. 2, 1992, pp. 937­939.
+      doi:10.1109/ULTSYM.1992.275822.
+
+[13] F. Lionetto, A. Tarzia, A. Maffezzoli, Air-coupled ultrasound: A novel technique for monitoring the curing of thermosetting matrices,
+      IEEE Trans. Ultrason. Ferroelectr. Freq. Control 54 (7) (2007) 1437­1444. doi:10.1109/TUFFC.2007.404.
+
+[14] H. E. Bass, L. C. Sutherland, A. J. Zuckerwar, Atmospheric absorption of sound: Update, J. Acoust. Soc. Am. 88 (4) (1990) 2019­2021.
+      doi:10.1121/1.400176.
+
+[15] M. Strakowski, B. Kosmowski, R. Kowalik, P. Wierzba, An ultrasonic obstacle detector based on phase beamforming principles, IEEE
+      Sensors J. 6 (1) (2006) 179­186. doi:10.1109/JSEN.2005.856129.
+
+[16] T. Dahl, J. L. Ealo, H. J. Bang, S. Holm, P. Khuri-Yakub, Applications of airborne ultrasound in human­computer interaction, Ultrason.
+      54 (7) (2014) 1912­1921. doi:10.1016/j.ultras.2014.04.008.
+
+[17] S. Suzuki, S. Inoue, M. Fujiwara, Y. Makino, H. Shinoda, AUTD3: Scalable airborne ultrasound tactile display, IEEE Trans. Haptics
+      14 (4) (2021) 740­749. doi:10.1109/TOH.2021.3069976.
+
+[18] M. Legg, S. Bradley, Ultrasonic arrays for remote sensing of pasture biomass, Remote Sensing 12 (1) (2020) 111. doi:10.3390/
+      rs12010111.
+
+[19] A. S. Rekhi, B. T. Khuri-Yakub, A. Arbabian, Wireless power transfer to millimeter-sized nodes using airborne ultrasound, IEEE Trans.
+      Ultrason. Ferroelectr. Freq. Control 64 (10) (2017) 1526­1541. doi:10.1109/TUFFC.2017.2737620.
+
+[20] A. Marzo, S. A. Seah, B. W. Drinkwater, D. R. Sahoo, B. Long, S. Subramanian, Holographic acoustic elements for manipulation of
+      levitated objects, Nat. Commun. 6 (1) (2015) 8661. doi:10.1038/ncomms9661.
+
+[21] J. Gelly, F. Lanteri, Comparison of piezoelectric (thickness mode) and MEMS transducers, in: IEEE Symp. Ultrason., Vol. 2, 2003,
+      pp. 1965­1974 Vol.2. doi:10.1109/ULTSYM.2003.1293302.
+
+[22] A. Ja¨ger, D. Großkurth, M. Rutsch, A. Unger, R. Golinske, H. Wang, S. Dixon, K. Hofmann, M. Kupnik, Air-coupled 40-KHZ
+      ultrasonic 2D-phased array based on a 3D-printed waveguide structure, in: IEEE Int. Ultrason. Symp. (IUS), 2017, pp. 1­4. doi:
+      10.1109/ULTSYM.2017.8091892.
+
+[23] M. Viberg, M. Lanne, A. Lundgren, Calibration in array processing, in: T. E. Tuncer, B. Friedlander (Eds.), Classical and Modern
+      Direction-of-Arrival Estimation, Elsevier Inc., Burlington, 2009, pp. 93­124. doi:10.1016/B978-0-12-374524-8.00003-9.
+                                                                                                                                                                                                21
+
+[24] G. Wu, M. Zhang, F. Guo, Self-Calibration direct position determination using a single moving array with sensor gain and phase errors,
+      Signal Process. 173 (2020) 107587. doi:10.1016/j.sigpro.2020.107587.
+
+[25] B. C. Ng, C. M. S. See, Sensor-array calibration using a maximum-likelihood approach, IEEE Trans. Antennas Propag. 44 (6) (1996)
+      827­835. doi:10.1109/8.509886.
+
+[26] M. Viberg, A. L. Swindlehurst, A Bayesian approach to auto-calibration for parametric array signal processing, IEEE Trans. Signal
+      Process. 42 (12) (1994) 3495­3507. doi:10.1109/78.340783.
+
+[27] A. J. Weiss, B. Friedlander, Array shape calibration using sources in unknown locations--a maximum likelihood approach, IEEE Trans.
+      Acoust. Speech Signal Process. 37 (12) (1989) 1958­1966. doi:10.1109/29.45542.
+
+[28] K. Han, P. Yang, A. Nehorai, Calibrating nested sensor arrays with model errors, IEEE Trans. Antennas Propag. 63 (11) (2015)
+      4739­4748. doi:10.1109/TAP.2015.2477411.
+
+[29] A. Liu, G. Liao, C. Zeng, Z. Yang, Q. Xu, An eigenstructure method for estimating DOA and sensor gain-phase errors, IEEE Trans.
+      Signal Process. 59 (12) (2011) 5944­5956. doi:10.1109/TSP.2011.2165064.
+
+[30] Z. Liu, Z. Huang, F. Wang, Y. Zhou, DOA estimation with uniform linear arrays in the presence of mutual coupling via blind calibration,
+      Signal Process. 89 (7) (2009) 1446­1456. doi:10.1016/j.sigpro.2009.01.017.
+
+[31] Y. Liu, B. Jiu, H. Liu, Clutter-based gain and phase calibration for monostatic MIMO radar with partly calibrated array, Signal Process.
+      158 (2019) 219­226. doi:10.1016/j.sigpro.2019.01.011.
+
+[32] B. Liao, S. C. Chan, Direction finding with partly calibrated uniform linear arrays, IEEE Trans. Antennas Propag. 60 (2) (2012)
+      922­929. doi:10.1109/TAP.2011.2173144.
+
+[33] P. Parvazi, M. Pesavento, A. B. Gershman, Direction-of-arrival estimation and array calibration for partly-calibrated arrays, in: 2011
+      IEEE Int. Conf. Acoust. Speech Signal Process. (ICASSP), 2011, pp. 2552­2555. doi:10.1109/ICASSP.2011.5947005.
+
+[34] H. Wan, B. Liao, Fourth-order direction finding in antenna arrays with partial channel gain/phase calibration, Signal Process. 169 (2020)
+      107380. doi:10.1016/j.sigpro.2019.107380.
+
+[35] H. Huang, Q. Liu, H. C. So, A. M. Zoubir, Low-rank and row-sparse decomposition for joint DOA estimation and distorted sensor
+      detection, IEEE Trans. Aerosp. Electron. Syst. 59 (4) (2023) 4763­4773. doi:10.1109/TAES.2023.3241886.
+
+[36] J. Geiss, E. Sippel, M. Hehn, M. Vossiek, Antenna array calibration using a sparse scene, IEEE Open J. Antennas Propag. 2 (2021)
+      349­361. doi:10.1109/OJAP.2021.3061935.
+
+[37] M. J. Taghizadeh, R. Parhizkar, P. N. Garner, H. Bourlard, A. Asaei, Ad hoc microphone array calibration: Euclidean distance matrix
+      completion algorithm and theoretical guarantees, Signal Process. 107 (2015) 123­140. doi:10.1016/j.sigpro.2014.07.016.
+
+[38] K. N. Ramamohan, S. P. Chepuri, D. F. Comesan~a, G. Leus, Self-calibration of acoustic scalar and vector sensor arrays, IEEE Trans.
+      Signal Process. 71 (2023) 61­75. doi:10.1109/TSP.2022.3214383.
+
+[39] V. Ollier, M. N. E. Korso, R. Boyer, P. Larzabal, M. Pesavento, Robust calibration of radio interferometers in non-Gaussian environment,
+      IEEE Trans. Signal Process. 65 (21) (2017) 5649­5660. doi:10.1109/TSP.2017.2733496.
+
+[40] J. Pierre, M. Kaveh, Experimental performance of calibration and direction-finding algorithms, in: 1991 Int. Conf. Acoust. Speech
+      Signal Process. (ICASSP), 1991, pp. 1365­1368 vol.2. doi:10.1109/ICASSP.1991.150676.
+
+[41] A. Paulraj, T. Kailath, Direction of arrival estimation by eigenstructure methods with unknown sensor gain and phase, in: 1985 IEEE
+      Int. Conf. Acoust. Speech Signal Process. (ICASSP), Vol. 10, 1985, pp. 640­643. doi:10.1109/ICASSP.1985.1168341.
+
+[42] J. A. Nanzer, S. R. Mghabghab, S. M. Ellison, A. Schlegel, Distributed phased arrays: Challenges and recent advances, IEEE Trans.
+      Microw. Theory Tech. 69 (11) (2021) 4893­4907. doi:10.1109/TMTT.2021.3092401.
+
+[43] P. Heidenreich, A. M. Zoubir, M. Rubsamen, Joint 2-D DOA estimation and phase calibration for uniform rectangular arrays, IEEE
+      Trans. Signal Process. 60 (9) (2012) 4683­4693. doi:10.1109/TSP.2012.2203125.
+
+[44] S. J. Wijnholds, A.-J. van der Veen, Multisource self-calibration for sensor arrays, IEEE Trans. Signal Process. 57 (9) (2009) 3512­3522.
+      doi:10.1109/TSP.2009.2022894.
+
+[45] I. Tosic´, P. Frossard, Dictionary learning, IEEE Signal Process. Mag. 28 (2) (2011) 27­38. doi:10.1109/MSP.2010.939537.
+[46] Y. Guo, X. Wang, L. Wan, M. Huang, C. Shen, K. Zhang, Y. Yang, Tensor-based Angle and array gain-phase error estimation scheme
+
+      in bistatic MIMO radar, IEEE Access 7 (2019) 47972­47981. doi:10.1109/ACCESS.2019.2909760.
+[47] Y. Sun, W.-Q. Wang, C. Jiang, Space­time-range clutter suppression via tensor-based STAP for airborne FDA-MIMO radar, Signal
+
+      Process. 214 (2024) 109235. doi:10.1016/j.sigpro.2023.109235.
+[48] J. Chen, Y. Tang, X. Zhu, J. Li, Angle estimation based on Vandermonde constrained CP tensor decomposition for bistatic MIMO
+
+      radar under spatially colored noise, Signal Process. 220 (2024) 109429. doi:10.1016/j.sigpro.2024.109429.
+[49] R. Mu¨ller, D. Schenck, G. Allevato, M. Rutsch, J. Hinrichs, M. Kupnik, M. Pesavento, Dictionary-based learning for 3D-imaging with air-
+
+      coupled ultrasonic phased arrays, in: IEEE Int. Ultrason. Symp. (IUS), 2020, pp. 1­4. doi:10.1109/IUS46767.2020.9251726.
+[50] G. Kushe, Y. Yang, C. Steffens, M. Pesavento, A parallel sparse regularization method for structured multilinear low-rank tensor
+
+      decomposition, in: 27th Eur. Signal Process. Conf. (EUSIPCO), 2019, pp. 1­5. doi:10.23919/EUSIPCO.2019.8902569.
+[51] J. Liu, J. Li, Robust detection in MIMO radar with steering vector mismatches, IEEE Trans. Signal Process. 67 (20) (2019) 5270­5280.
+
+      doi:10.1109/TSP.2019.2939078.
+[52] M. Rutsch, A. Unger, G. Allevato, J. Hinrichs, A. Ja¨ger, T. Kaindl, M. Kupnik, Waveguide for air-coupled ultrasonic phased-arrays with
+
+      propagation time compensation and plug-in assembly, J. Acoust. Soc. Am. 150 (5) (2021) 3228­3237. doi:10.1121/10.0006969.
+[53] M. Viberg, Introduction to array processing, in: A. M. Zoubir, M. Viberg, R. Chellappa, S. Theodoridis (Eds.), Array and Statistical
+
+      Signal Processing, Vol. 3 of Academic Press Library in Signal Processing, Elsevier Ltd., Kidlington, UK, 2014, pp. 463­502. doi:
+      10.1016/B978-0-12-411597-2.00011-4.
+[54] G. Allevato, J. Hinrichs, M. Rutsch, J. P. Adler, A. Ja¨ger, M. Pesavento, M. Kupnik, Real-time 3-D imaging using an air-coupled
+      ultrasonic phased-array, IEEE Trans. Ultrason. Ferroelectr. Freq. Control 68 (3) (2021) 796­806. doi:10.1109/TUFFC.2020.
+      3005292.
+[55] W. L. Melvin, Space-time adaptive processing for radar, in: N. D. Sidiropoulos, F. Gini, R. Chellappa, S. Theodoridis (Eds.),
+      Communications and Radar Signal Processing, Vol. 2 of Academic Press Library in Signal Processing, Elsevier Ltd., Kidlington,
+      UK, 2014, pp. 595­665. doi:10.1016/B978-0-12-396500-4.00012-0.
+                                                                                                                                                                                                22
+
+[56] G. Allevato, Ultrasonic phased arrays for 3D sonar imaging in air, Ph.D. thesis, Technische Universita¨t Darmstadt, Darmstadt, Germany
+      (Sep. 2023). doi:10.26083/tuprints-00024425.
+
+[57] J. D. Carroll, J.-J. Chang, Analysis of individual differences in multidimensional scaling via an n-way generalization of "Eckart-Young"
+      decomposition, Psychometrika 35 (3) (1970) 283­319. doi:10.1007/BF02310791.
+
+[58] R. A. Harshman, Foundations of the PARAFAC procedure: Models and conditions for an "explanatory" multi-modal factor analysis,
+      UCLA Working Papers in Phonetics 16, Ann Arbor, Michigan (1970).
+
+[59] L. De Lathauwer, Decompositions of a higher-order tensor in block terms--Part II: Definitions and uniqueness, SIAM J. Matrix Anal.
+      Appl. 30 (3) (2008) 1033­1066. doi:10.1137/070690729.
+
+[60] A. Cichocki, D. Mandic, L. De Lathauwer, G. Zhou, Q. Zhao, C. Caiafa, H. A. PHAN, Tensor Decompositions for Signal Processing
+      Applications: From two-way to multiway component analysis, IEEE Signal Processing Magazine 32 (2) (2015) 145­163. doi:
+      10.1109/MSP.2013.2297439.
+
+[61] T. G. Kolda, B. W. Bader, Tensor decompositions and applications, SIAM Rev. 51 (3) (2009) 455­500. doi:10.1137/07070111X.
+[62] H. A. L. Kiers, Towards a standardized notation and terminology in multiway analysis, J. Chemom. 14 (3) (2000) 105­122. doi:
+
+      10.1002/1099-128X(200005/06)14:3<105::AID-CEM582>3.0.CO;2-I.
+[63] N. D. Sidiropoulos, L. De Lathauwer, X. Fu, K. Huang, E. E. Papalexakis, C. Faloutsos, Tensor decomposition for signal processing
+
+      and machine learning, IEEE Trans. Signal Process. 65 (13) (2017) 3551­3582. doi:10.1109/TSP.2017.2690524.
+[64] A. Paulraj, B. Ottersten, R. Roy, A. Swindlehurst, G. Xu, T. Kailath, Subspace methods for directions-of-arrival estimation, in: N. K.
+
+      Bose, C. R. Rao (Eds.), Handbook of Statistics, Vol. 10, Elsevier Science Publishers B.V., 1993, pp. 693­739.
+[65] Y. Yang, M. Pesavento, Z.-Q. Luo, B. Ottersten, Inexact block coordinate descent algorithms for nonsmooth nonconvex optimization,
+
+      IEEE Trans. Signal Process. 68 (2020) 947­961. doi:10.1109/TSP.2019.2959240.
+[66] D. P. Bertsekas, Nonlinear Programming, 3rd Edition, Athena Scientific, Belmont, 2016.
+[67] M. A. Richards, J. A. Scheer, W. A. Holm (Eds.), Principles of Modern Radar: Basic Principles, Vol. 1, SciTech Publishing, Raleigh
+
+      (NC), 2010.
+[68] R. Roy, T. Kailath, ESPRIT-estimation of signal parameters via rotational invariance techniques, IEEE Trans. Acoust. Speech Signal
+
+      Process. 37 (7) (1989) 984­995. doi:10.1109/29.32276.
+[69] R. Kerstens, D. Laurijssen, J. Steckel, eRTIS: A fully embedded real time 3D imaging sonar sensor for robotic applications, in: Int.
+
+      Conf. Robotics Autom. (ICRA), 2019, pp. 1438­1443. doi:10.1109/ICRA.2019.8794419.
+[70] R. O. Schmidt, Multiple emitter location and signal parameter estimation, IEEE Trans. Antennas Propag. 34 (3) (1986) 276­280.
+
+      doi:10.1109/TAP.1986.1143830.
+[71] Z. Zhang, Y. Xu, J. Yang, X. Li, D. Zhang, A survey of sparse representation: Algorithms and applications, IEEE Access 3 (2015)
+
+      490­530. doi:10.1109/ACCESS.2015.2430359.
+[72] M. Pesavento, M. Trinh-Hoang, M. Viberg, Three more decades in array signal processing research: An optimization and structure
+
+      exploitation perspective, IEEE Signal Process. Mag. 40 (4) (2023) 92­106. doi:10.1109/MSP.2023.3255558.
+[73] Y. Pati, R. Rezaiifar, P. Krishnaprasad, Orthogonal matching pursuit: Recursive function approximation with applications to wavelet
+
+      decomposition, in: Proc. 27th Asilomar Conf. Signals Syst. Comput., 1993, pp. 40­44 vol.1. doi:10.1109/ACSSC.1993.342465.
+[74] D. L. Donoho, X. Huo, Uncertainty principles and ideal atomic decomposition, IEEE Trans. Inform. Theory 47 (7) (Nov./2001) 2845­
+
+      2862. doi:10.1109/18.959265.
+[75] M. Rutsch, Duct acoustics for air-coupled ultrasonic phased arrays, Ph.D. thesis, Technische Universita¨t Darmstadt, Darmstadt, Germany
+
+      (2023). doi:10.26083/tuprints-00023129.
+[76] M. A. Richards, Fundamentals of Radar Signal Processing, 3rd Edition, McGraw Hill, New York, 2022.
+[77] H. M. Aumann, F. G. Willwerth, Phased-array calibration by adaptive nulling, Tech. Rep. 915, Lincoln Laboratory/Massachusetts
+
+      Institute of Technology, Lexington/Massachusetts (May 1991).
+

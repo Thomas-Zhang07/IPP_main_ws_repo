@@ -1,0 +1,628 @@
+DECEMBER 09 2024
+
+Calibrating position and orientation of multiple ultrasound
+phased array units using Bayesian optimization
+
+Jianyu Chen ; Shun Suzuki ; Yasutoshi Makino ; Hiroyuki Shinoda
+
+J. Acoust. Soc. Am. 156, 3838­3851 (2024)
+https://doi.org/10.1121/10.0034559
+
+                                           
+
+                                            View Export
+                                           Online Citation
+
+Articles You May Be Interested In                                                                       25 November 2026 11:25:11
+
+Acoustic levitation of super-wavelength elastic films using ultrasound phased arrays
+
+Appl. Phys. Lett. (February 2025)
+
+Acoustic levitation of objects larger than wavelength using a circular orbital single ultrasound focus
+
+J. Acoust. Soc. Am. (July 2025)
+
+Distant small spot presentation in midair haptics using polyhedral reflector
+
+J. Acoust. Soc. Am. (May 2024)
+.....................A...R..T..IC...L.E...
+
+Calibrating position and orientation of multiple ultrasound
+phased array units using Bayesian optimization
+
+Jianyu Chen,1,a) Shun Suzuki,1,b) Yasutoshi Makino,1,2 and Hiroyuki Shinoda1,2
+
+1Graduate School of Frontier Sciences, The University of Tokyo, Kashiwa, Japan
+2Graduate School of Information Science and Technology, The University of Tokyo, Tokyo, Japan
+
+ABSTRACT:
+Airborne ultrasound phased arrays (AUPAs) generate non-contact tactile sensations and enable acoustic levitation
+with specific focus fields. Using multiple units together offers numerous advantages, such as increased stimulus
+intensity and the ability to overcome occlusion. The AUPA units are typically mounted on a fixed frame, with their
+poses manually measured using tools such as a ruler for calibration. However, to increase the degrees of freedom for
+these units, a more flexible calibration method is required. With a wavelength of 8.5 mm, a 4 mm deviation in propa-
+gation distance from the two phased arrays can weaken the pressure at the focus position. Hence, in this study, cali-
+bration based on pose and focus information obtained through image processing was performed. First, augmented
+reality markers are attached to each AUPA unit for rough estimation of pose parameters. Second, using these approx-
+imate poses, the pressure distribution generated on a specific plane is estimated through thermal imaging. Finally,
+Bayesian optimization is employed to efficiently explore the pose parameters to minimize the error between the
+desired position and generated focal point. This approach enables the efficient calibration of the relative poses of
+AUPA units, even when they are placed in challenging-to-measure locations. VC 2024 Author(s). All article content,
+except where otherwise noted, is licensed under a Creative Commons Attribution (CC BY) license (https://
+creativecommons.org/licenses/by/4.0/). https://doi.org/10.1121/10.0034559
+
+(Received 20 June 2024; revised 15 November 2024; accepted 15 November 2024; published online 9 December 2024)                    25 November 2026 11:25:11
+
+[Editor: Mingsian R. Bai]                                        Pages: 3838­3851
+
+I. INTRODUCTION                                                  frequency of 40 kHz, with a period of 25 ls and a wavelength
+                                                                 of approximately 8.5 mm at room temperature. Controlling the
+     The airborne ultrasound phased array (AUPA) is a            phase involves managing the timing of this 25 ls period.
+device in which ultrasound transducers are arranged in an        When driving multiple units, synchronization between units
+array (Carter et al., 2013; Iwamoto et al., 2008). By appro-     becomes a significant challenge. The Airborne Ultrasound
+priately controlling the set of phases, the ultrasound waves     Tactile Display 3 (AUTD3) unit has achieved precise control
+emitted from these transducers interfere with each other and     over temporal synchronization when driving multiple units
+generate the desired acoustic fields, such as focus. The gen-    simultaneously (Suzuki et al., 2021). Therefore, this is the
+erated acoustic fields find wide practical applications in       AUPA unit we utilized in this study.
+areas such as mid-air haptics, acoustic levitation, and control
+of lightweight objects.                                               Although the issue of temporal synchronization for
+                                                                 coordinating multiple units has been resolved, spatial mis-
+     For example, several haptic applications have been          alignment of unit placement remains a challenge. This study
+developed using AUPA (Carter et al., 2013; Long et al.,          proposes a flexible method for calibrating the relative posi-
+2014; Martinez Plasencia et al., 2020; Matsubayashi et al.,      tions between units. Given the wavelength of 8.5 mm, about
+2019; Morisaki et al., 2022a,b; Motoyama et al., 2022;           4 mm deviation in the propagation distance from two phased
+Nakajima et al., 2021). In addition, they are widely             arrays to the focal point would cause a phase inversion at
+employed in acoustic levitation (Hirayama et al., 2019;          the focal point, leading to destructive interference between
+Marzo et al., 2018; Seah et al., 2014). In the application of    the sound waves from the two units. Currently, this chal-
+controlling lightweight objects, a study utilized AUPA units     lenge is addressed by precisely designing frames and driving
+to alter the trajectory of ping pong balls (Morisaki et al.,     the apparatus with known distances between units. The rela-
+2020), while another used AUPA units to control the direc-       tive posture of the units is measured by tools such as rulers
+tion of suspended balloons (Furumoto et al., 2019).              and protractors. If units can be freely arranged and their pos-
+                                                                 ture parameters can be estimated through subsequent cali-
+     To expand the presentation area or increase the focus       bration, the flexibility in placing AUPA units would
+intensity, methods for driving multiple units in coordination    increase, potentially enabling diverse tactile presentations
+have been proposed. These ultrasound phased arrays use a         and lightweight object manipulation.
+
+a)Email: 7707189878@edu.k.u-tokyo.ac.jp                               Similarly, errors in estimating sound velocity also
+b)Email: suzuki@hapis.k.u-tokyo.ac.jp                            impact the accuracy of focal point formation. To create a
+
+3838 J. Acoust. Soc. Am. 156 (6), December 2024                  VC Author(s) 2024.
+https://doi.org/10.1121/10.0034559
+
+focus at a specific location, it is necessary to calculate the        In the experiments, we first compared the results                              25 November 2026 11:25:11
+propagation time of sound between that location and the          obtained with conventional measurement of the unit distan-
+transducers, based on an assumed sound velocity. If this         ces against those achieved with BO. When measuring the
+estimated sound velocity is inaccurate, even if the positions    translation between AUPAs, we used a ruler with an accu-
+and orientations of the actual ultrasound units are precisely    racy of 0.1 mm. For rotating the AUPA, we fixed it onto a
+determined, the resulting focal point may not be optimal.        frame with an angle of p/4 rad. The focus positions gener-
+The calibration of AUPA units during spatial arrangement         ated from these measurements served as the baseline. We
+has been discussed by Nakagawa and Hasegawa (2023),              confirmed that BO provides sufficient calibration accuracy
+who proposed a method to estimate the orientation parame-        for both translation and rotation compared to the baseline.
+ters of multiple units using linear beam sound fields.           Subsequently, we evaluated more freely arranged configura-
+However, the previous method does not account for the            tions that are challenging to measure with conventional tools
+aforementioned impact of actual sound velocity deviations.       and verified that BO enhanced the precision of focus forma-
+                                                                 tion. The challenging-to-measure situation involves one side
+     Our study proposes a calibration method that optimizes      of the AUPA unit resting on a table, while the other side is
+parameters by measuring the interference pattern of sound        tilted against a frame, introducing unmeasured translation
+waves propagated through the actual temperature environ-         and rotation.
+ment from multiple units. Recently, a study reported
+observing ultrasound focus fields on a mesh surface (here-       II. METHODS
+after observation plane) as two-dimensional (2D) patterns
+using a thermal camera (Onishi et al., 2022). Moreover,               This section introduces the workflow of our calibration
+they reported that the square of the sound pressure is pro-      system, including obtaining the initial pose using AR
+portional to the temperature rise at the focal point over a      markers and observing the focus sound field using thermal
+certain period. Using the observed results of the 2D pattern     imaging. It also explains how BO is applied in our system
+of the sound field, it is possible to determine pose parame-     and the selection of the objective function.
+ters to achieve the ideal focal intensity or a specific sound
+field. As a result, we propose using thermal imaging to          A. Calibration system workflow
+measure the 2D intensity pattern and employ it for posture
+calibration. In this study, two AUPA units are driven simul-          As a premise, the following assumptions were made:
+taneously, and six focal points on the observation plane are     "The distance between the first AUPA unit and the screen is
+selected. The actual sound field pattern after interference is   known, and the focus can be formed on the screen." There
+measured and used for optimization. Since our proposed           are m desired focus positions F0ðmÞ on the screen where m
+method optimizes the post-interference pattern, there is no      focal points are intended to be formed, and their absolute
+need to explicitly specify the sound velocity. While there is    positions are known. Our calibration system primarily con-
+no guarantee that the pose parameters will match the true        sists of the following four steps:
+values, the advantage of our method is that the resulting
+sound field pattern in a given plane can be calibrated to be     (1) Obtain the relative pose of AUPA units based on AR
+of sufficient intensity.                                             markers.
+
+     Since it is necessary to have a rough estimate of the ini-  (2) Use the pose to generate a focus on the observation
+tial positions to generate the focus on the observation plane,       plane at m different positions, and then record the coor-
+vision-based markers were used to estimate the approximate           dinates of these points with the highest temperature,
+positions of the ultrasound units. The vision-based markers,         FðmÞ.
+referred to as augmented reality (AR) markers (Kato and
+Billinghurst, 1999), are distinct patterns that can be easily    (3) Calculate the difference between the actual coordinates
+recognized by cameras and processed, enabling real-time              of the point with the highest temperature, FðmÞ, and
+calculation of pose parameters to the camera. However,               desired focus positions, Fð0mÞ.
+since the estimation accuracy of pose parameters using this
+method alone is low, further optimization was performed          (4) Use BO to minimize the error between the desired posi-
+based on the observed sound field. Due to the vast search            tion and generated focal point.
+space involved in parameter estimation, we propose
+Bayesian optimization (BO) to optimize the focus. BO is a             The procedure is shown in Fig. 1(a).
+strategy for the global optimization of black-box functions           The overview of our system setup is shown in Fig. 1(b).
+without assuming any functional forms (Brochu et al.,            The black dashed arrows represent the initial pose acquisi-
+2010). When exploring the optimal pose, we treat the pro-        tion by the red-green-blue (RGB) camera through AR
+cess of projecting the foci generated by the AUPA units in       marker recognition. These poses are used to drive the
+space onto the thermal imaging observation plane, along          AUPA units to generate a focal point on the observation
+with the associated noise, as a black box. We employ pose        plane. The red circle represents the focal point generated by
+as input variables and utilize the error of the focus positions  the reference AUPA, while the blue dashed circle represents
+as the output for BO exploration.                                the focal point generated by the second AUPA. Since the
+                                                                 pose between the second unit and the first one needs to be
+J. Acoust. Soc. Am. 156 (6), December 2024                       calibrated, a thermal camera is required to measure the error
+                                                                 between these two focal points.
+
+                                                                                                                                   Chen et al. 3839
+                                                                   https://doi.org/10.1121/10.0034559
+
+FIG. 1. (Color online) Overview of the calibration process: The initial pose is obtained from the AR marker for the initial exploration of BO. The AUPA
+units are then driven to generate focal points on the observation plane. The error between the focal points is observed by thermal camera. Finally, the BO
+process is repeated.
+
+B. Preparation of AR marker recognition                            relative to the RGB camera. We then compute the relative pose                             25 November 2026 11:25:11
+                                                                   between the two markers using transformation matrices. As the
+     Generally, the phased array's surface is oriented toward      AR marker's coordinate system origin is at the bottom-left ver-
+the workspace. To confirm the arrangement from the focus           tex, we also need to calculate the distance from this vertex to
+side (i.e., observation plane) using a camera, it is beneficial    the origin of the AUPA unit's coordinate system. Finally, with
+to have AR markers on the surface of AUPA units.                   these calculations, we can determine the relative pose between
+However, as AUPA units are often placed close, placing             the two AUPA units.
+markers that may protrude into the surrounding area is unde-
+sirable. Therefore, in this study, we placed a thin layer               Howard et al. (2023) reported that the ultrasound gener-
+(nylon mesh) on top of the transducers with sufficient acous-      ated by AUPA can penetrate through meshes with different
+tic transparency.                                                  openings, and it analyzed the attenuation of the acoustic
+                                                                   radiation force. The opening of the mesh we used is 77 lm,
+     We drew these AR markers individually on nylon                and the opening area is 37%. To ensure that the nylon mesh
+meshes and attached each mesh to a 200 mm Â 208 mm                 does not affect focal point formation, we conducted related
+acrylic frame, collectively referred to as augmented reality       experiments. The results showed that the sound pressure
+marker frames (ARFs) in this paper. These ARFs were then           with the nylon mesh reached 95.1% of that without the
+attached to each AUPA unit, allowing the camera to recog-          mesh, and the focal point shape remained unaffected.
+nize the markers and measure their position and orientation.       Detailed experiments are presented in the Appendix.
+One of the AR markers is affixed to the reference AUPA
+unit, serving as a baseline for determining the relative posi-     C. Observing the acoustic field using thermal imaging
+tions of the other marker. Another marker is attached to the
+second AUPA unit.                                                       Our system requires the observation of the acoustic
+                                                                   pressure field generated by AUPA for calibration purposes.
+     AR markers are simple geometric patterns or symbols           A study reported that a mesh and thermal camera could be
+with high-contrast colors, rendering them easily detectable        employed to observe the focus in the acoustic field by moni-
+by computer algorithms. Pose detection of AR markers               toring the temperature distribution on a 2D plane (Onishi
+involves determining the precise position and orientation of       et al., 2022). Moreover, the study also pointed out that the
+these markers within a given space. By analyzing the visual        square of the sound pressure is proportional to the tempera-
+features and patterns of the AR marker captured by a               ture rise at the focal point over a certain period. Therefore,
+camera, computer vision algorithms can calculate its three-        we can indirectly evaluate the sound pressure by measuring
+dimensional (3D) position and rotation relative to the cam-        the temperature rise at the focal point. However, the propor-
+era's viewpoint. Based on these calculated 3D positions and        tional relationship may not hold when the position of the
+relative rotations, we compute the relative pose between           observation surface relative to the AUPA units changes. We
+each AR marker (i.e., rotation and translation parameters).        describe this in detail in Sec. II E. As in the literature, we
+                                                                   utilize a nylon mesh as our observation plane. The opening
+     In this study, we used the ArUco library (Garrido-Jurado      of the nylon mesh we used as the observation plane is still
+et al., 2014) of OPENCV (Bradski, 2000). The specification of the  77 lm, and the opening area is 37%. The observation plane
+AR markers we use is aruco.DICT_6X6_50. Using the                  is directly above the AUPA units, positioned at a height of
+ArUco library, we can detect the two markers with the RGB          170 mm. A thermal camera (Optris PI450i; Optris,
+camera. Since the camera's calibration parameters are known,
+the library functions can determine the poses of the two markers                                                                                Chen et al.
+
+3840 J. Acoust. Soc. Am. 156 (6), December 2024
+https://doi.org/10.1121/10.0034559
+
+Portsmouth, NH) is attached to the side of the AUPA                rotation and translation parameters of the second unit should              25 November 2026 11:25:11
+(details will be provided in Sec. III), enabling upward mea-       be ðhz1 ; hy0 ; hz200 Þ; ðtX; tY ; tZÞ, where z1; y0; z200 follow the zyz
+surements of the temperature distribution of the acoustic          intrinsic rotation convention and translation occurs along
+field formed on the observation plane. The camera's resolu-        the XYZ axes of the world coordinate system.
+tion is 382 Â 288 pixels2, and the size of the observation
+plane is 140 Â 140 mm2. Figure 2(a) visually presents the               BO treats the objective function as a black box and uses
+appearance of the focus acoustic field in thermography,            a prior to evaluate it. Within the iterations, the prior was
+where the acoustic pressure's intensity is represented as a        updated to form the posterior distribution over the objective
+temperature distribution. Figure 2(b) shows the temperature        function. The prevalent approach employed to define the
+distribution of the focus along the xy axes. The red portion       posterior distribution is the Gaussian process (GP). The
+represents the standard deviation of temperature changes           mean function of a GP is typically initialized at 0.
+within a 2.5 s interval, while the blue portion represents the     Additionally, the covariance function (i.e., kernel function)
+average temperature change. We consider the point with the         also influences the observations in BO. The Matern 5/2 ker-
+highest temperature as the center of the focal point.              nel is frequently adopted for this. The prior was used to per-
+                                                                   form the search, and these data, D, induced a posterior over
+D. BO                                                              the function; however, a strategy remains necessary to iden-
+                                                                   tify the next point for evaluation through a proxy optimiza-
+     The focal point is formed in 3D space, but what can be        tion, xnext ¼ arg minxaðxÞ, where aðxÞ is referred to as the
+observed is a 2D pattern. The process of projecting a given        acquisition function. From the numerous acquisition func-
+3D coordinate onto a 2D plane is not inherently self-evident.      tions proposed, we used the maximum probability of
+Therefore, this study treats this projection as part of the        improvement as the acquisition function.
+black box of BO and optimizes the difference between the
+actual coordinates of the point with the highest temperature            If the relative positions and orientations of AUPA units
+and desired focus positions. The BO technique is employed          and the sound velocity are precisely known, ideal foci can
+to efficiently search for the optimal configuration of parame-     be generated. However, the converse is not self-evident.
+ters or design variables within a complex objective function.      Therefore, we cannot rely solely on a single positional input
+By iteratively updating the surrogate model based on the           when optimizing by reducing the error between the foci and
+acquired data, BO balances the exploration of unexplored           target positions during exploration. To ensure that the
+regions and the exploitation of promising areas, ultimately        parameters in all six directions of rotation and translation
+converging to the optimal solution with fewer evaluations          generate the strongest possible sound pressure, our experi-
+compared to traditional methods. Moreover, the projection          ment selected M ¼ 6 target positions for optimization. Since
+process and the noise term are implicitly considered.              three non-colinear points are sufficient to determine a plane,
+                                                                   the calibration system requires at least three points.
+     We aim to explore the optimal pose parameters that            However, to further minimize errors and enhance accuracy,
+minimize the errors between the foci generated by AUPA             we chose to use six points. This choice ensures that the opti-
+units and objective positions. Assuming the existence of the       mized poses can create focal points at all six target posi-
+objective function f ðxÃÞ $ f ðh; tÞ, where h and t are the rota-  tions, thereby improving the robustness of the calibration.
+tion and translation parameters, respectively. The determi-        While more points could potentially reduce errors even fur-
+nation of this objective function will be explained in Sec.        ther, we selected six points to balance accuracy with the
+II E. BO was used to find the input xÃ to minimize the error,      time and resources available for the experiment. FðmÞ repre-
+that is, xÃ ¼ arg minx2Xf ðxÞ (Brochu et al., 2010). Here, we      sents the center position of the focus generated when two
+used the first AUPA unit as the reference for calibration; the     AUPA units are driven simultaneously in the optimization
+rotation and translation parameters are 0. The inputs of the       process of pose, while Fð0mÞ refers to the target focus posi-
+                                                                   tion. Therefore, the output of our algorithm should represent
+
+                                                        FIG. 2. (Color online) Focus field observed by thermal imaging.  Chen et al. 3841
+J. Acoust. Soc. Am. 156 (6), December 2024
+                                                                                 https://doi.org/10.1121/10.0034559
+
+ALGORITHM 1. BO for AUPA calibration.                                            pressure and temperature rise over a certain period at a point
+                                                                                 using thermal imaging. However, we suggest optimization
+1: Input: ðh; tÞ ¼ fðhz1 ; hy0 ; hz200 Þ; ðtX; tY ; tZÞg                         based on the difference between the focus center at the hottest
+2: Output: ðh; tÞopt                                                             point in the thermal image and the target position, rather than
+3: for c ¼ 1; 2; ... do                                                          the temperature rise over a certain period as the optimization
+4: Find ðh; tÞc by optimizing the acquisition function over the GP:              objective. We provide an explanation for this in this section.
+
+        ðh; tÞc ¼ arg minðh;tÞa½ðh; tÞjD1:cÀ1, where D is the observation data.       The hypothesis we propose is that in practical applica-
+5: Sample the objective function with the acquisition function:                  tions, where the AUPA forms a focal sound field on the
+                                                                                 observation plane, the accompanying acoustic streaming
+        ðh; tÞc ¼ aðEcÞ                                                          (airflow) may cool the surface of the mesh. This can result
+6: Augment the data D1:c ¼ fD1:cÀ1; ½ðh; tÞc; Ecg and update the GP              in the hottest point in temperature imaging not correspond-
+7: end for                                                                       ing to the point of strongest sound pressure in space. To val-
+                                                                                 idate this hypothesis, we conducted experiments using the
+the total sum of errors, E, between FðmÞ and Fð0mÞ at six posi-                  setup in Fig. 4.
+tions on the observation plane, that is,
+                                                                                      We conducted two experiments using two AUPA units
+E ¼ X6 jjF0ðmÞ À FðmÞjj2:  (1)                                                   closely arranged along the x axis. We fixed the observation
+                                                                                 plane at a position 166 mm above the AUPA. We varied the
+m¼1                                                                              depth (z value) of the focal point generated by the AUPA
+                                                                                 from (156, 194) mm in 2 mm increments and observed the
+     Based on Eq. (1), we apply BO (Algorithm 1) to explore                      trend in temperature increase [Fig. 4(a)]. Moreover, when
+the optimal phases within the iteration.                                         adjusting the depth of the focal point, the lateral position
+                                                                                 change in the thermal image did not exceed a few pixels.
+     The flow chart is shown in Fig. 3.                                          Therefore, this error can be considered negligible.
+
+E. Selection of the optimization objective                                            In another experiment, we placed a microphone at the                                 25 November 2026 11:25:11
+                                                                                 same position as the screen (166 mm above the AUPA) to
+     The paper by Onishi et al. (2022) theoretically pointed out                 measure the sound pressure variation as the focal point's
+a quadratic proportional relationship between the sound                          depth changed from 156 to 184 mm in increments of 2 mm
+                                                                                 [Fig. 4(b)].
+
+                                                                                      From the temperature increase trend [Fig. 5(a)], evi-
+                                                                                 dently, the temperature gradually rises from 156 to 183 mm,
+                                                                                 and the peak is at 184 mm. In contrast, Fig. 5(b) shows that
+                                                                                 the sound pressure peaked at 170 mm. Although it deviates
+                                                                                 from the theoretical value by 4 mm, this result is reasonable
+                                                                                 considering the variations in room temperature. According
+                                                                                 to Hoshi et al. (2010), higher sound pressure is associated
+                                                                                 with greater airflow effects. This confirms our hypothesis
+                                                                                 that airflow affects the observation results of thermal imag-
+                                                                                 ing, and the hottest point observed in space may not neces-
+                                                                                 sarily correspond to the point of highest sound pressure.
+                                                                                 Additionally, we speculate that the sound pressure is stron-
+                                                                                 gest at the center of the focus. In contrast, due to the cooling
+                                                                                 effect of airflow, the temperature rise at the bottom of the
+                                                                                 focus may be the highest.
+
+                                                                                      Hence, when calibrating the AUPA unit using thermal
+                                                                                 imaging, it is essential to fix the height of the observation
+                                                                                 plane and the focus and use the center position of the focal
+                                                                                 point as the objective function for optimization. This
+                                                                                 ensures that the generated focal point positions are accurate
+                                                                                 within a fixed plane. Therefore, the objective function
+                                                                                 should not use temperature increase on focus positions when
+                                                                                 calibrating the units, as it requires accounting for the influ-
+                                                                                 ence of airflow on temperature.
+
+   FIG. 3. The flow chart of Bayesian optimization for AUPA calibration.         III. EXPERIMENTS AND EVALUATION
+3842 J. Acoust. Soc. Am. 156 (6), December 2024                                       This section introduces the experimental setup and pro-
+
+                                                                                 cedures, including an overview of the experiments
+
+                                                                                                                                                              Chen et al.
+https://doi.org/10.1121/10.0034559
+
+                                                                    FIG. 4. (Color online) Experimental
+                                                                    setup for investigating the relationship
+                                                                    between temperature increase and
+                                                                    acoustic pressure without the AR
+                                                                    marker frame.
+
+conducted to evaluate the system is presented. Additionally,        as "translation only"), with the setup shown in Fig. 7(a).                       25 November 2026 11:25:11
+we present an evaluation of each of the three experiments           Experiment 2 added rotation to the translation (hereafter
+separately.                                                         represented as "with rotation"), as shown in Fig. 7(b). In
+                                                                    these two experiments, the AUPA units were measured
+     Figure 6 provides a comprehensive view of our calibration      using conventional measurement tools, allowing for a base-
+system, which incorporates two AUPA units, each embedded            line comparison. In experiment 3, the placement of the sec-
+with a frame displaying an AR marker. We employed an RGB            ond AUPA unit was difficult to measure (hereafter referred
+camera (RealSense D455; Intel, Santa Clara, CA) positioned          to as "unknown posture"), so no baseline was available, as
+diagonally above the units to enhance the measurement of dis-       shown in Figs. 7(c) and 7(d). Additionally, in our experi-
+tance information associated with AR markers. The observa-          ments, the coordinate system of the reference AUPA is
+tion plane is placed directly above the AUPA units and kept         defined as the world coordinate system. All rotations follow
+parallel to them. A thermal camera (Optris PI450i) is posi-         the zyz intrinsic rotation convention, and translations occur
+tioned to the side of the units to measure the temperature distri-  along the XYZ axes of the world coordinate system.
+bution of the observation plane from below.
+                                                                         First, we obtained the initial pose information of the
+A. Overview of the experiments                                      second AUPA unit relative to the first AUPA unit using an
+                                                                    RGB camera. This pose information was then input into the
+     In this study, we conducted three experiments.                 second AUPA unit, and both units were simultaneously
+Experiment 1 involved only translation (hereafter referred to
+
+                                          FIG. 5. (Color online) Variation in temperature and sound pressure with focal distance.  Chen et al. 3843
+J. Acoust. Soc. Am. 156 (6), December 2024
+                                                                  https://doi.org/10.1121/10.0034559
+
+                    FIG. 6. (Color online) Calibration system.    experiments 1 and 2, both AUPA units were driven simulta-                                 25 November 2026 11:25:11
+                                                                  neously. Using parameters obtained from measurement tools
+driven to generate a single focus at the six positions on the     as inputs, we generated six individual focal points in the
+2D observation plane. The thermographic image was used            world coordinate system, with coordinates (215, 40, 170),
+to determine the focus positions with the strongest acoustic      (200, 60, 170), (230, 60, 170), (215, 60, 170), (200, 40,
+pressure. This process provided the inputs and output of the      170), and (230, 40, 170) (units in mm). The height of the
+objective functions required for BO.                              observation plane is z ¼ 170 mm, where the focus was pro-
+                                                                  jected. These six individual focal points were then captured
+     The AUPA units continuously generate the focus field         using a thermographic image. We observed and recorded
+at each position for a duration of 1.5 s. To more accurately      the pixel coordinates of the highest temperature (corre-
+measure the temperature rise during focus generation, a 2.5 s     sponding to the strongest acoustic pressure) using the ther-
+interval was introduced between stopping one focus and            mal camera, denoted as the 2D coordinate F0ðmÞ. Our BO
+generating the next. As we perform ten iterations, generating     exploration approximated the 2D coordinates of these foci
+six individual foci in each iteration, with 4 s taken per gener-  based on the pose parameters obtained from AR markers.
+ation, the time required for each iteration is 6 Â 4 ¼ 24 s. As
+the computation time of BO is considerably smaller than                Figure 8 depicts the focus fields generated at three dis-
+this duration, we have not included it here. In all three         tinct positions using the pose acquired from the baseline
+experiments, we conducted five repeated trials.                   measurement tools, the initial pose derived from AR
+                                                                  markers, and the pose optimized through BO under the
+B. Experiment 1: Translation only                                 translation only condition. In the absence of rotation, the
+                                                                  focus fields generated by the pose optimized with BO
+     Under the translation only condition, two AUPA units         closely match that of the pose obtained from the baseline.
+were horizontally positioned along the y axis, at a distance      However, the focus fields generated only based on the AR
+of 210 mm along the x axis. No rotation was present. In           markers pose is less satisfactory. Figure 9 shows the temper-
+other words, the translation and rotation parameters of the       ature distribution of Fð1Þ along the x and y axes. The red por-
+second AUPA unit relative to the first, as measured by the        tion represents the standard deviation of temperature
+measurement tool, were (210, 0, 0) and (0, 0, 0) respec-          changes within a 2.5 s interval, while the blue portion repre-
+tively. The exploration space for BO was set to 65 mm and         sents the average temperature change. It is observed that the
+60.02 rad for the translation and rotation parameters,            baseline and BO results exhibit a narrow peak, while the AR
+respectively, with respect to the coordinates obtained by the     marker result shows two distinct peaks.
+AR markers. Under this condition, ten iterations of BO were
+performed.                                                             Figure 10(a) displays the root-mean-square error
+                                                                  (RMSE) results of focus coordinates generated under the
+     In this section, we evaluate the proposed method             AR condition and BO compared to the baseline. The out-
+against the baseline. Assuming the baseline is sufficiently       comes indicate that the focus fields generated by BO exhibit
+accurate, we aim to directly compare the BO results with the      a smaller error compared to those generated only based on
+focal points generated by the baseline pose. Therefore, in        AR markers in relation to the desired positions. As demon-
+                                                                  strated in Fig. 10(b), the ultrasound emitted based on the AR
+3844 J. Acoust. Soc. Am. 156 (6), December 2024                   marker-derived pose results in the smallest temperature rise
+                                                                  at focal positions within 1.5 s. In contrast, the temperature
+                                                                  rise was considerably greater with BO compared to the
+                                                                  baseline.
+
+                                                                  C. Experiment 2: With rotation
+
+                                                                       Under the with rotation conditions, two AUPA units
+                                                                  were connected end to end along the y axis, at the same
+                                                                  210 mm distance along the x axis. The second AUPA unit
+                                                                  was rotated around its own y axis by Àp=4 rad. In this case,
+                                                                  the translation and rotation parameters of the second AUPA
+                                                                  unit relative to the first, as determined by the measurement
+                                                                  tool, were (210, 0, 0) and (0, Àp/4, 0) respectively. The
+                                                                  exploration space for BO was extended to 610 mm and
+                                                                  60.02 rad for the translation and rotation parameters,
+                                                                  respectively. A total of 20 iterations were carried out in the
+                                                                  BO framework, reflecting the larger search spaces. The
+                                                                  other conditions were identical to those under the translation
+                                                                  only condition.
+
+                                                                                                                                               Chen et al.
+https://doi.org/10.1121/10.0034559
+
+FIG. 7. (Color online) Experimental setup.
+
+     As observed in Fig. 11, the baseline and BO pose gener-   some cases but fell behind the baseline in other cases. This                                25 November 2026 11:25:11
+ates well-defined focus fields under the with rotation condi-  suggests that when the second AUPA unit is rotated, the
+tion. In contrast, the acoustic field generated by the pose    focal pressure generated under the AR condition is weaker,
+from AR markers exhibits a double-focus pattern. In Fig.       followed by that after BO, while the baseline remains the
+12(a), AR markers and BO result in higher RMSEs of the         strongest.
+generated focus coordinates compared to the baseline under
+the with rotation condition. However, the optimization         D. Experiment 3: Unknown posture
+effect of BO is evident in this case. From Fig. 12(b), in the
+second experiment, the positions obtained by AR markers             Under the unknown posture condition, we detached the
+resulted in the smallest temperature increase at the focal     second AUPA unit from the aluminum frame. The second
+points within 1.5 s. BO was comparable to the baseline in      AUPA unit is connected to the first but is tilted at a certain
+
+                                   FIG. 8. (Color online) Results of the temperature distribution under the translation only condition.  Chen et al. 3845
+J. Acoust. Soc. Am. 156 (6), December 2024
+https://doi.org/10.1121/10.0034559
+
+                                                                                                                                          25 November 2026 11:25:11
+
+FIG. 9. (Color online) Temperature distribution along the xy axes for the translation only condition.
+
+                                                     FIG. 10. (Color online) Evaluation for the translation only condition.  Chen et al.
+3846 J. Acoust. Soc. Am. 156 (6), December 2024
+https://doi.org/10.1121/10.0034559
+
+FIG. 11. (Color online) Results of the temperature distribution under the with rotation condition.
+
+angle along the x axis. Since the relative position between      improvements when optimizing the pose acquired from AR                      25 November 2026 11:25:11
+the two units cannot be measured, but the observation plane      markers. Moreover, the BO-generated optimized pose con-
+is parallel to the first AUPA unit and the distance is known,    sistently yield focus positions that closely approximate those
+we use the first unit as a reference to obtain the target focus  of the baseline.
+position. This time, the first unit is driven independently,
+generating six focal points at the coordinates (215, 40, 170),        Here, we discuss the temperature rise results of BO and
+(200, 60, 170), (230, 60, 170), (215, 60, 170), (200, 40,        the baseline. Under the with rotation condition, there are
+170), and (230, 40, 170) within its own coordinate system        instances where the temperature rise with BO is comparable
+(which is also the world coordinate system). The coordinates     to the baseline, but the overall average is poor. On the con-
+of these focal points on the observation plane serve as the      trary, where the second AUPA unit did not undergo rotation,
+target positions Fð0mÞ. The exploration space for BO was set     the temperature rise at various focus positions generated by
+to 610 mm and 60.02 rad for the translation and rotation         BO is higher than the baseline. We speculate there are two
+parameters, respectively. A total of 20 iterations were          reasons for this. First, the pose parameters obtained as the
+performed.                                                       baseline using measurement tools inherently contain errors
+                                                                 because of the frame distortions caused by the weight.
+     Due to the challenge of measuring the second AUPA           Second, even if the ideal pose is measured, deviations in
+unit placement under the unknown posture condition, we           sound velocity may cause the AUPA unit driven by the
+evaluated only the results from AR markers and BO. As            phase generated using the assumed sound velocity to pro-
+shown in Fig. 13, the pose obtained from AR markers              duce non-ideal focal fields. Therefore, even with accurate
+generate a sound field with shifted foci, resulting in a         knowledge of the precise pose between AUPA units, the
+bifocal pattern. In contrast, BO consistently generates a        focus can shift due to errors in the assumptions. Our
+single focal point sound field. Moreover, as observed in         approach corrects this by observing the errors between the
+Fig. 14(a), BO exhibits smaller errors compared to AR            foci. Hence, to keep the configuration stationary, our method
+markers. Furthermore, the temperature rise at the focal          can produce patterns with higher sound pressure focal points
+points for BO is higher than that for AR markers                 than the baseline in some cases. Additionally, our method
+[Fig. 14(b)].                                                    can be applied in scenarios when there is flexibility in
+                                                                 placement.
+IV. DISCUSSION
+                                                                      Next, we discuss the initial pose parameters obtained
+     Compared with the baseline in the first two experimen-      from AR markers and the parameters obtained after optimi-
+tal outcomes, BO consistently demonstrates notable               zation using BO in comparison to the baseline parameters.
+                                                                 We present the RMSE results with respect to baseline
+
+                                                       FIG. 12. (Color online) Evaluation of the with rotation condition.  Chen et al. 3847
+J. Acoust. Soc. Am. 156 (6), December 2024
+                                                                 https://doi.org/10.1121/10.0034559
+
+FIG. 13. (Color online) Results of the temperature distribution under the unknown posture condition.
+
+parameters (210, 0, 0, 0, 0, 0) and (210, 0, 0, 0, Àp/4, 0) in        Furthermore, our experiments were conducted with two              25 November 2026 11:25:11
+Fig. 15. The closer the numerical value is to zero (dashed       AUPA units this time: We will conduct experiments using a
+line), the closer it is to the baseline parameters. Although     larger number of units in the future.
+AR markers and BO parameters exhibit some deviations
+from the baseline parameters, BO can optimize the parame-        V. LIMITATION
+ters to create well-formed focus fields. This is because the
+center position of the focus changes when the focus is pro-           Our system relies on observing the focal positions to
+jected onto a plane in 3D space. Our objective function min-     calibrate; hence, it cannot effectively perform pose optimi-
+imizes the error between the center positions of the focus on    zation when the focal points generated by the AUPA unit do
+a fixed observation plane. Consequently, different pose          not fall on the observation plane and cannot be observed by
+parameters can be obtained if the two focus center positions     the thermal camera. For example, when the second AUPA is
+coincide. In tactile applications, focus sound fields are often  significantly rotated, the initial position of the generated
+generated on a fixed plane, rendering our approach applica-      focal point is offset from the observation plane, and adjust-
+ble in practical scenarios.                                      ing the pose parameters within the predetermined BO search
+                                                                 range cannot detect the focal point. Similarly, if the focal
+     In this study, the observation plane was fixed at 170 mm    point cannot be generated on the observation plane due to
+from the AUPA units and assumed to be parallel to the first      initial estimation errors from the AR marker, optimization
+AUPA unit. However, there may be deviations from this            cannot proceed.
+assumption. Since the ultrasound focus is elongated in the
+depth direction, any shift or tilt of the observation plane           This study did not discuss the case where the observa-
+may result in a horizontal misalignment of the focal point       tion plane is perpendicular to the AUPA units. Due to the
+on the observation plane. The proposed method incorporates       airflow's influence on the temperature at the focus point, as
+corrections based on actual measurements, allowing it to         mentioned in Sec. II E, the highest temperature point may
+absorb some of these discrepancies in the distance and tilt of   not necessarily be the focus center. Therefore, our method
+the observation plane. However, evaluating the robustness        may not be applicable in such cases.
+of the system to misalignments of the observation plane
+remains a topic for future work.                                      Moreover, since our calibration system ensures focal
+                                                                 point formation within a specific plane, any change in the
+
+                                                    FIG. 14. (Color online) Evaluation for the unknown posture condition.  Chen et al.
+3848 J. Acoust. Soc. Am. 156 (6), December 2024
+            https://doi.org/10.1121/10.0034559
+
+            FIG. 15. Error of pose parameters.                                                                                                      25 November 2026 11:25:11
+
+height of the observation plane requires calibration from the to-measure orientation. In summary, our proposed approach
+
+beginning.                                                      introduces a flexible method for calibrating AUPA units.
+
+VI. CONCLUSION                                                  ACKNOWLEDGMENTS
+                                                                     This work was supported by CAO-NEDO SIP
+     This study proposed a flexible calibration system for
+AUPA units, using AR markers to acquire the relative pose       23201554-0 and JSPS KAKENHI Grant No. 21H05301.
+between AUPA units, followed by optimization using BO to
+attain calibrated focus fields. In the first two experiments,   AUTHOR DECLARATIONS
+we evaluated our proposed method with the pose obtained         Conflict of Interest
+from measurement tools. When the second AUPA unit had
+no rotation, our proposed method resulted in a higher tem-           The authors have no conflicts to disclose.
+perature rise (i.e., acoustic pressure) at the focal positions
+within 1.5 s compared to that generated by the baseline. The    DATA AVAILABILITY
+results suggest that optimization based on the error between         The data that support the findings of this study are
+focal points can reduce errors more than that obtained by the
+traditional measurement of the pose. Even with rotation in      available from the corresponding author upon reasonable
+the second AUPA unit, our proposed method, although not         request.
+achieving the average temperature rise effectively as the
+baseline, significantly reduced the errors that AR could not    APPENDIX: THE IMPACT OF NYLON MESH ON
+compensate for, bringing them close to the baseline.            ULTRASOUND FOCUS FORMATION
+Therefore, our proposed method is suitable for practical
+applications. In addition, our proposed method successfully          To verify the influence of this nylon mesh on ultra-
+generated focus fields under the unknown posture condition,     sound, we conducted two experiments. In the first experi-
+where one of the AUPA units was placed in a challenging-        ment, the temperature pattern of the focus was observed
+                                                                with a thermal camera. We utilized an AUPA unit and
+J. Acoust. Soc. Am. 156 (6), December 2024
+                                                                                                                                  Chen et al. 3849
+                                                                              https://doi.org/10.1121/10.0034559
+
+FIG. 16. (Color online) Impact of nylon mesh (AR marker frame) on focus form.
+
+generated a single focus at the position (163.5, 71.26, 170),                 Howard, T., Gicquel, G., Pacchierotti, C., and Marchal, M. (2023). "Can we                25 November 2026 11:25:11
+corresponding to 170 mm above the central position of this                      effectively combine tangibles and ultrasound mid-air haptics? A study of
+unit within its own coordinate system. The experiments                          acoustically transparent tangible surfaces," IEEE Trans. Haptics 16,
+were conducted under the situations that AUPA is with and                       477­483.
+without the nylon mesh. Figure 16 shows the results of the
+focal point on the xy axes generated by the AUPA unit with-                   Iwamoto, T., Tatezono, M., and Shinoda, H. (2008). "Non-contact method
+out and with nylon meshes. The unit without the mesh is                         for producing tactile sensation using airborne ultrasound," in EuroHaptics
+represented by the blue solid line, while the one without the                   '08: International Conference on Human Haptic Sensing and Touch
+mesh is represented by the green solid line. The fluctuations                   Enabled Computer Applications, Madrid, Spain (Springer-Verlag,
+of the solid lines represent the measurement error of the                       Berlin), pp. 504­513.
+thermal camera. The focal point coordinates without the
+mesh are (159, 126), and with the mesh, the coordinates are                   Kato, H., and Billinghurst, M. (1999). "Marker tracking and HMD calibra-
+(159, 121). The results indicate that the focal points gener-                   tion for a video-based augmented reality conferencing system," in
+ated with and without the mesh are almost identical along                       Proceedings of the 2nd IEEE and ACM International Workshop on
+the x axis, with a shift of 5 pixels along the y axis, but the                  Augmented Reality (WAR'99), San Francisco, CA (IEEE, New York), pp.
+overall shape of the focal point remains largely unchanged.                     85­94.
+
+     In the second experiment, the acoustic pressure at the                   Long, B., Seah, S. A., Carter, T., and Subramanian, S. (2014). "Rendering
+focus position was measured using microphones. The mea-                         volumetric haptic shapes in mid-air using ultrasound," ACM Trans.
+sured sound pressure at the microphone location under the                       Graph. 33, 181.
+fixed mesh condition is approximately 95.1% of that in the
+without mesh. Therefore, the nylon mesh had minimal                           Martinez Plasencia, D., Hirayama, R., Montano-Murillo, R., and
+impact on the focus sound field generation.                                     Subramanian, S. (2020). "GS-PAT: High-speed multi-point sound-fields
+                                                                                for phased arrays of transducers," ACM Trans. Graph. 39, 138:1­138:12.
+Bradski, G. (2000). "The opencv library," Dr. Dobb's J. Softw. Tools 25,
+  2236121.                                                                    Marzo, A., Caleap, M., and Drinkwater, B. W. (2018). "Acoustic virtual
+                                                                                vortices with tunable orbital angular momentum for trapping of Mie parti-
+Brochu, E., Cora, V. M., and de Freitas, N. (2010). "A tutorial on Bayesian     cles," Phys. Rev. Lett. 120, 044301.
+  optimization of expensive cost functions, with application to active user
+  modeling and hierarchical reinforcement learning," arXiv:1012.2599.         Matsubayashi, A., Oikawa, H., Mizutani, S., Makino, Y., and Shinoda, H.
+                                                                                (2019). "Display of haptic shape using ultrasound pressure distribution
+Carter, T., Seah, S. A., Long, B., Drinkwater, B., and Subramanian, S.          forming cross-sectional shape," in 2019 IEEE World Haptics Conference
+  (2013). "Ultrahaptics: Multi-point mid-air haptic feedback for touch          (WHC), Tokyo, Japan (IEEE, New York), pp. 419­424.
+  surfaces," in UIST '13: Proceedings of the 26th Annual ACM Symposium
+  on User Interface Software and Technology, St. Andrews, Scotland            Morisaki, T., Fujiwara, M., Makino, Y., and Shinoda, H. (2022a). "Non-
+  (Association for Computing Machinery, New York), pp. 505­514.                 vibratory pressure sensation produced by ultrasound focus moving later-
+                                                                                ally and repetitively with fine spatial step width," IEEE Trans. Haptics
+Furumoto, T., Hasegawa, K., Makino, Y., and Shinoda, H. (2019). "Three-         15, 441­450.
+  dimensional manipulation of a spherical object using ultrasound plane
+  waves," IEEE Robot. Autom. Lett. 4(1), 81­88.                               Morisaki, T., Fujiwara, M., Makino, Y., and Shinoda, H. (2022b).
+                                                                                "Ultrasound-driven passive haptic actuator based on amplifying radiation
+Garrido-Jurado, S., Mu~noz-Salinas, R., Madrid-Cuevas, F. J., and Marin-        force using simple lever mechanism," in SA '22: SIGGRAPH Asia 2022
+  Jimenez, M. J. (2014). "Automatic generation and detection of highly reli-    Emerging Technologies, Daegu, Republic of Korea (Association for
+  able fiducial markers under occlusion," Pattern Recogn. 47, 2280­2292.        Computing Machinery, New York), pp. 1­2.
+
+Hirayama, R., Martinez Plasencia, D., Masuda, N., and Subramanian, S.         Morisaki, T., Mori, R., Mori, R., Serizawa, K., Makino, Y., Itoh, Y.,
+  (2019). "A volumetric display for visual, tactile and audio presentation      Yamakawa, Y., and Shinoda, H. (2020). "Hopping-Pong: Computational
+  using acoustic trapping," Nature 575(7782), 320­323.                          curveball in table tennis by noncontact ultrasound force," in SIGGRAPH
+                                                                                '20: Special Interest Group on Computer Graphics and Interactive
+Hoshi, T., Takahashi, M., Iwamoto, T., and Shinoda, H. (2010).                  Techniques Conference (Virtual Event) (Association for Computing
+  "Noncontact tactile display based on radiation pressure of airborne ultra-    Machinery, New York), pp. 1­2.
+  sound," IEEE Trans. Haptics 3(3), 155­165.
+                                                                              Motoyama, H., Fujiwara, M., Morisaki, T., Shinoda, H., and Makino, Y.
+3850 J. Acoust. Soc. Am. 156 (6), December 2024                                 (2022). "Touchable cooled graphics midair 3D image with noncontact
+                                                                                cooling feedback using ultrasound-driven mist vaporization," in SA '22:
+                                                                                SIGGRAPH Asia 2022 Emerging Technologies, Daegu, Republic of
+                                                                                Korea (Association for Computing Machinery, New York), pp. 1­2.
+
+                                                                              Nakagawa, M., and Hasegawa, K. (2023). "Spatial calibration of airborne
+                                                                                ultrasonic phased arrays with two-dimensional visualization of ultrasound
+                                                                                emissions," in 2023 IEEE Ultrasonics Symposium (IUS), Montreal, QC,
+                                                                                Canada (IEEE, New York), pp. 1­4.
+
+                                                                                                                                                           Chen et al.
+https://doi.org/10.1121/10.0034559
+
+Nakajima, M., Hasegawa, K., Makino, Y., and Shinoda, H. (2021).            Seah, S. A., Drinkwater, B. W., Carter, T., Malkin, R., and Subramanian, S.
+  "Spatiotemporal pinpoint cooling sensation produced by ultrasound-         (2014). "Correspondence: Dexterous ultrasonic levitation of millimeter-
+  driven mist vaporization on skin," IEEE Trans. Haptics 14, 874­884.        sized objects in air," IEEE Trans. Ultrason. Ferroelectr. Freq. Control
+                                                                             61(7), 1233­1236.
+Onishi, R., Kamigaki, T., Suzuki, S., Morisaki, T., Fujiwara, M., Makino,
+  Y., and Shinoda, H. (2022). "Two-dimensional measurement of air-         Suzuki, S., Inoue, S., Fujiwara, M., Makino, Y., and Shinoda, H. (2021).
+  borne ultrasound field using thermal images," Phys. Rev. Appl. 18,         "Autd3: Scalable airborne ultrasound tactile display," IEEE Trans.
+  044047.                                                                    Haptics 14(4), 740­749.
+
+                                                                                                                                                        25 November 2026 11:25:11
+
+J. Acoust. Soc. Am. 156 (6), December 2024                                 Chen et al. 3851
+

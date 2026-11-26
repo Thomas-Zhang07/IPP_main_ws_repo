@@ -1,0 +1,37 @@
+{
+  "best_pair": {
+    "kind": "pair",
+    "taper": "uniform",
+    "short": "current pair 15.75/5.25",
+    "n_boards": 2,
+    "key": "05_coplanar_gap",
+    "band_energy_pct": 23.3726,
+    "leak_60_pct": 0.7438,
+    "lobe_54_75_db": -240.0,
+    "band_max_db": -14.689,
+    "di_db": 38.504,
+    "bw6_xz_deg": 1.7,
+    "bw6_yz_deg": 3.5,
+    "on_axis_db": 0.0,
+    "seam": 0.01575,
+    "offset": 0.00525
+  },
+  "best_three": {
+    "kind": "three",
+    "taper": "uniform",
+    "short": "3 s=12.48/17.20 o=0.0/5.2/0.0",
+    "n_boards": 3,
+    "key": "study",
+    "band_energy_pct": 23.7838,
+    "leak_60_pct": 0.6619,
+    "lobe_54_75_db": -17.057,
+    "band_max_db": -16.182,
+    "di_db": 40.266,
+    "bw6_xz_deg": 1.1,
+    "bw6_yz_deg": 3.5,
+    "on_axis_db": 0.0,
+    "s1": 0.012477,
+    "s2": 0.017202,
+    "offsets": "0.000000,0.005250,0.000000"
+  }
+}

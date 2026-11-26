@@ -1,0 +1,926 @@
+<title>旋转夹具 3D 模型</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<style>
+  :root{
+    --bg:#ece9e1;
+    --surface:#fbfaf6;
+    --surface-2:#e7e4db;
+    --ink:#17201d;
+    --muted:#5f6964;
+    --line:#cfccc2;
+    --line-strong:#a9a69b;
+    --accent:#c2410c;
+    --accent-soft:#f4dccd;
+    --board:#2f6b4f;
+    --board-soft:#d3e5da;
+    --acrylic:#8aa9bc;
+    --column:#4f7f9a;
+    --steel:#697277;
+    --steel-dark:#4f585c;
+    --element:#c9a86a;
+    --stage:#e6e3da;
+    --stage-2:#f0eee7;
+    --grid:#c7c3b8;
+    --chip:rgba(251,250,246,.94);
+    --shadow:rgba(23,32,29,.14);
+    color-scheme:light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0f1415;
+      --surface:#161d1f;
+      --surface-2:#1e2729;
+      --ink:#e8e5dc;
+      --muted:#98a39f;
+      --line:#2f3b3d;
+      --line-strong:#465354;
+      --accent:#f08a4b;
+      --accent-soft:#3a2a20;
+      --board:#4e9d77;
+      --board-soft:#1e3a2d;
+      --acrylic:#7e9daf;
+      --column:#5d8fa5;
+      --steel:#a5b0b4;
+      --steel-dark:#7b878b;
+      --element:#d6b77c;
+      --stage:#0b1011;
+      --stage-2:#131b1c;
+      --grid:#253133;
+      --chip:rgba(22,29,31,.94);
+      --shadow:rgba(0,0,0,.45);
+      color-scheme:dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0f1415;
+    --surface:#161d1f;
+    --surface-2:#1e2729;
+    --ink:#e8e5dc;
+    --muted:#98a39f;
+    --line:#2f3b3d;
+    --line-strong:#465354;
+    --accent:#f08a4b;
+    --accent-soft:#3a2a20;
+    --board:#4e9d77;
+    --board-soft:#1e3a2d;
+    --acrylic:#7e9daf;
+    --column:#5d8fa5;
+    --steel:#a5b0b4;
+    --steel-dark:#7b878b;
+    --element:#d6b77c;
+    --stage:#0b1011;
+    --stage-2:#131b1c;
+    --grid:#253133;
+    --chip:rgba(22,29,31,.94);
+    --shadow:rgba(0,0,0,.45);
+    color-scheme:dark;
+  }
+
+  *{box-sizing:border-box}
+  html{background:var(--bg)}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"IBM Plex Sans","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;
+    min-height:100dvh;
+    padding-left:max(16px,env(safe-area-inset-left,0px));
+    padding-right:max(16px,env(safe-area-inset-right,0px));
+    padding-block:18px 26px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .app{max-width:1480px;margin:0 auto;width:100%}
+
+  .top{
+    display:flex;justify-content:space-between;align-items:flex-end;gap:20px;
+    padding-bottom:16px;border-bottom:1px solid var(--line);margin-bottom:14px;flex-wrap:wrap;
+  }
+  .title-block{min-width:0}
+  .eyebrow{
+    margin:0 0 8px;color:var(--accent);
+    font:500 10px/1.2 "IBM Plex Mono",monospace;
+    letter-spacing:.18em;text-transform:uppercase;
+  }
+  h1{
+    margin:0;font-size:clamp(25px,3.1vw,38px);line-height:1.04;
+    font-weight:600;letter-spacing:-.025em;text-wrap:balance;
+  }
+  .sub{margin:8px 0 0;color:var(--muted);font-size:12.5px;line-height:1.5}
+  .meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  .pill{
+    font:500 10px/1 "IBM Plex Mono",monospace;letter-spacing:.03em;
+    padding:7px 9px;border:1px solid var(--line);border-radius:999px;
+    color:var(--muted);background:var(--surface);white-space:nowrap;
+  }
+  .pill.hot{color:var(--accent);border-color:var(--accent-soft)}
+
+  .workspace{
+    display:grid;grid-template-columns:minmax(0,1fr) 334px;gap:14px;align-items:start;
+  }
+  .stage{
+    position:relative;overflow:hidden;
+    height:clamp(430px,calc(100dvh - 215px),790px);
+    background:radial-gradient(125% 110% at 50% 0%,var(--stage-2) 0%,var(--stage) 58%,var(--stage) 100%);
+    border:1px solid var(--line);border-radius:14px;
+    box-shadow:0 22px 60px -42px var(--shadow);
+  }
+  .stage canvas{display:block;width:100%;height:100%;touch-action:none;outline:none}
+  .stage canvas:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+
+  .viewbar{
+    position:absolute;top:12px;left:12px;z-index:4;display:flex;gap:2px;
+    padding:3px;background:var(--chip);border:1px solid var(--line);border-radius:10px;
+    box-shadow:0 4px 16px var(--shadow);backdrop-filter:blur(8px);
+  }
+  .viewbar button{
+    appearance:none;border:0;background:transparent;color:var(--muted);
+    font:500 11px/1 "IBM Plex Sans","Noto Sans SC",sans-serif;
+    padding:7px 9px;border-radius:7px;cursor:pointer;white-space:nowrap;
+  }
+  .viewbar button:hover{color:var(--ink);background:var(--surface-2)}
+  .viewbar button.active{background:var(--ink);color:var(--surface)}
+  .viewbar button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+
+  .stage-tools{position:absolute;top:12px;right:12px;z-index:4}
+  .stage-tools button{
+    appearance:none;width:34px;height:34px;display:grid;place-items:center;
+    background:var(--chip);border:1px solid var(--line);border-radius:9px;
+    color:var(--muted);cursor:pointer;box-shadow:0 4px 16px var(--shadow);
+  }
+  .stage-tools button:hover{color:var(--ink);background:var(--surface)}
+  .stage-tools button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+  .stage-tools svg{width:14px;height:14px;display:block}
+
+  .labels{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden}
+  .label{
+    position:absolute;transform:translate(-50%,-128%);
+    background:var(--chip);border:1px solid var(--line);border-radius:6px;
+    padding:3px 7px 4px;white-space:nowrap;opacity:0;
+    font:500 10px/1.15 "IBM Plex Mono",monospace;color:var(--ink);
+    box-shadow:0 3px 10px var(--shadow);
+    transition:opacity .12s linear;
+  }
+  .label b{font-weight:600;color:var(--accent);margin-left:5px}
+  .label span{font-weight:400;color:var(--muted)}
+  .label::after{
+    content:"";position:absolute;left:50%;top:100%;width:1px;height:9px;
+    background:var(--line-strong);transform:translateX(-.5px);
+  }
+
+  .scalebar{
+    position:absolute;left:12px;bottom:12px;z-index:4;pointer-events:none;
+    display:flex;flex-direction:column;gap:5px;
+  }
+  .scalebar span{font:500 9px/1 "IBM Plex Mono",monospace;color:var(--muted);letter-spacing:.04em}
+  .scalebar .bar{
+    height:5px;border-left:1px solid var(--muted);
+    border-right:1px solid var(--muted);border-bottom:1px solid var(--muted);
+    width:64px;
+  }
+  .stage-hint{
+    position:absolute;right:12px;bottom:12px;z-index:4;pointer-events:none;
+    font:400 9.5px/1.45 "IBM Plex Mono",monospace;color:var(--muted);
+    text-align:right;
+  }
+  .loading{
+    position:absolute;inset:0;z-index:2;display:grid;place-items:center;
+    font:500 11px/1.4 "IBM Plex Mono",monospace;color:var(--muted);
+    letter-spacing:.04em;
+  }
+  .fallback{
+    position:absolute;inset:0;z-index:5;display:grid;place-items:center;
+    padding:24px;text-align:center;color:var(--muted);font-size:12px;line-height:1.6;
+    background:var(--stage);
+  }
+
+  .panel{
+    background:var(--surface);border:1px solid var(--line);border-radius:14px;
+    padding:16px;display:flex;flex-direction:column;gap:18px;min-width:0;
+  }
+  .panel-block{min-width:0}
+  .panel h2{
+    margin:0 0 10px;font:600 10px/1.2 "IBM Plex Mono",monospace;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+  }
+  .toggles{display:flex;flex-direction:column;gap:9px}
+  .toggle{display:flex;align-items:center;gap:8px;font-size:12px;line-height:1.35;cursor:pointer}
+  .toggle input{width:15px;height:15px;margin:0;accent-color:var(--accent);flex:0 0 auto}
+  .toggle span{min-width:0}
+
+  .spec{display:grid;gap:0;margin:0}
+  .spec > div{
+    display:flex;justify-content:space-between;gap:12px;align-items:baseline;
+    padding:7px 0;border-bottom:1px solid var(--line);
+  }
+  .spec > div:last-child{border-bottom:0}
+  .spec dt{font-size:11.5px;line-height:1.35;color:var(--muted);min-width:0}
+  .spec dd{
+    margin:0;font:500 11.5px/1.3 "IBM Plex Mono",monospace;
+    font-variant-numeric:tabular-nums;text-align:right;color:var(--ink);white-space:nowrap;
+  }
+  .spec dd em{font-style:normal;color:var(--muted);font-size:9.5px;margin-left:2px}
+  .spec dd.accent{color:var(--accent)}
+
+  .note{
+    background:var(--surface-2);border:1px solid var(--line);border-radius:10px;
+    padding:11px 12px;font-size:11px;line-height:1.6;color:var(--muted);
+  }
+  .note strong{color:var(--ink);font-weight:600}
+  .note p{margin:0}
+  .note p + p{margin-top:7px}
+  .note ul{margin:7px 0 0;padding-left:15px;display:grid;gap:4px}
+  .note li::marker{color:var(--accent)}
+  .panel footer{
+    padding-top:10px;border-top:1px solid var(--line);
+    font:400 9px/1.5 "IBM Plex Mono",monospace;color:var(--muted);
+  }
+
+  .sr-only{
+    position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+    overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
+  }
+
+  @media (max-width: 900px){
+    .workspace{grid-template-columns:1fr}
+    .stage{height:57vh;min-height:360px;order:1}
+    .panel{order:2}
+  }
+  @media (max-width: 560px){
+    body{padding-block:14px 20px}
+    .top{gap:12px;align-items:flex-start}
+    .meta{gap:5px}
+    .pill{font-size:9px;padding:6px 8px}
+    .viewbar{left:8px;top:8px;max-width:calc(100% - 16px);overflow-x:auto;scrollbar-width:none}
+    .viewbar::-webkit-scrollbar{display:none}
+    .stage-tools{top:58px;right:8px}
+    .scalebar{left:8px;bottom:8px}
+    .stage-hint{display:none}
+    .label{font-size:9px;padding:2px 6px 3px}
+    .panel{padding:14px}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .label{transition:none}
+  }
+</style>
+
+<div class="app">
+  <header class="top">
+    <div class="title-block">
+      <p class="eyebrow">SonicSurface · mounting mechanics</p>
+      <h1>旋转夹具 3D 模型</h1>
+      <p class="sub">两块板同向转 90°（不镜像）· 10.5 mm 网格 · 30 mm 离地 · 4.848 mm 边距</p>
+    </div>
+    <div class="meta" aria-label="关键参数">
+      <span class="pill hot">seam 15.750</span>
+      <span class="pill">gap 4.848</span>
+      <span class="pill">A / B 同向</span>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <section class="stage" id="stage" aria-label="旋转夹具三维模型">
+      <div class="viewbar" role="group" aria-label="视角">
+        <button type="button" data-view="overview" class="active" aria-pressed="true">总览</button>
+        <button type="button" data-view="top" aria-pressed="false">俯视</button>
+        <button type="button" data-view="seam" aria-pressed="false">缝隙</button>
+        <button type="button" data-view="side" aria-pressed="false">侧视</button>
+        <button type="button" data-view="joint" aria-pressed="false">拼插</button>
+      </div>
+      <div class="stage-tools">
+        <button type="button" id="resetView" title="重置视角" aria-label="重置视角">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M2.6 6.2A5.6 5.6 0 1 1 2.4 9.5"/>
+            <path d="M2.4 2.8v3.6h3.6"/>
+          </svg>
+        </button>
+      </div>
+      <div class="labels" id="labels" aria-hidden="true"></div>
+      <div class="scalebar" aria-hidden="true">
+        <span id="scaleLabel">50 mm</span>
+        <div class="bar" id="scaleBar"></div>
+      </div>
+      <div class="stage-hint" aria-hidden="true">拖动旋转 · 滚轮缩放<br>右键 / 双指平移</div>
+      <div class="loading" id="loading">正在加载 3D 模型…</div>
+    </section>
+
+    <aside class="panel">
+      <section class="panel-block">
+        <h2>显示</h2>
+        <div class="toggles">
+          <label class="toggle"><input type="checkbox" id="toggleBoards" checked><span>PCB 半透明（看柱子和围栏）</span></label>
+          <label class="toggle"><input type="checkbox" id="toggleElements" checked><span>显示 512 个元件中心</span></label>
+          <label class="toggle"><input type="checkbox" id="toggleAnnotations" checked><span>显示尺寸标注</span></label>
+        </div>
+      </section>
+
+      <section class="panel-block">
+        <h2>关键尺寸</h2>
+        <dl class="spec">
+          <div><dt>Seam（元件中心）</dt><dd class="accent">15.750 <em>mm</em></dd></div>
+          <div><dt>PCB 边距</dt><dd class="accent">4.848 <em>mm</em></dd></div>
+          <div><dt>y 偏移</dt><dd class="accent">5.250 <em>mm</em></dd></div>
+          <div><dt>PCB 底面离地</dt><dd>30.000 <em>mm</em></dd></div>
+          <div><dt>底板</dt><dd>390 × 220 × 12</dd></div>
+          <div><dt>单板</dt><dd>168.402 × 185.092</dd></div>
+          <div><dt>板厚</dt><dd>1.600 <em>mm</em></dd></div>
+          <div><dt>网格</dt><dd>16 × 16 @ 10.500</dd></div>
+        </dl>
+      </section>
+
+      <section class="panel-block">
+        <h2>基准 / 支撑</h2>
+        <dl class="spec">
+          <div><dt>A datum</dt><dd>(20.000, 20.000)</dd></div>
+          <div><dt>B datum</dt><dd>(193.250, 25.250)</dd></div>
+          <div><dt>角柱</dt><dd>8 × 10×10×40</dd></div>
+          <div><dt>中柱</dt><dd>4 × 10×6×40</dd></div>
+          <div><dt>fence</dt><dd>6 × 30×32×3</dd></div>
+          <div><dt>拼插槽</dt><dd>3.05 / 10.05 / 6.05</dd></div>
+          <div><dt>角柱通孔</dt><dd>Ø3.4 / PCB Ø3.5</dd></div>
+          <div><dt>螺栓</dt><dd>8 × M3×55 + 螺母</dd></div>
+          <div><dt>旋转</dt><dd>90° CCW · 同向</dd></div>
+        </dl>
+      </section>
+
+      <section class="panel-block note">
+        <p><strong>全拼插版。</strong>6 片 3 mm fence 底部 8 mm tab 直插底板；8 根 10×10 + 4 根 10×6 柱底部 10 mm tenon 插底板。只有 8 个 PCB mount 点用 M3×55 通孔螺栓 + 螺母，底部无螺丝、无热熔螺母、无胶。</p>
+        <p>孔/槽：fence 槽 3.05×30.05；角柱槽 10.05×10.05；中柱槽 10.05×6.05；角柱通孔 Ø3.4（底板角柱槽是开放的，不再单独开孔）；PCB 孔 Ø3.5；槽端圆角 R1.5（fence R1.525），每个槽一条闭合轮廓；配合 0.05。中柱前移 0.6 mm，与 front fence 留 0.75 mm 亚克力壁。</p>
+        <ul>
+          <li>先切试片确认激光刀缝；轻压，不要敲。</li>
+          <li>M3×55 从底板下方穿入，头部在底板下，螺母在 PCB 上方；每次只拧上面 8 个螺母，板就能拿下来，螺栓留在柱里。4 根中柱只支撑、不拧。</li>
+        </ul>
+      </section>
+
+      <footer>单位 mm · 模型用于装配和审图核对，不是加工图 · 板厚按 1.6 mm 假设</footer>
+    </aside>
+  </main>
+</div>
+
+<p class="sr-only">三维夹具模型：底板 390 × 220 × 12 毫米，两块 168.402 × 185.092 毫米 PCB 同向旋转 90 度，间距 4.848 毫米，元件中心 seam 15.75 毫米，PCB 底面离地 30 毫米。6 片 3 毫米围栏和 12 根亚克力柱拼插进底板，只有 8 个 PCB 安装点用 M3×55 通孔螺栓和螺母。</p>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+const $ = (sel, root = document) => root.querySelector(sel);
+const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+
+const stage = $('#stage');
+const labelsEl = $('#labels');
+const loadingEl = $('#loading');
+const scaleBarEl = $('#scaleBar');
+const scaleLabelEl = $('#scaleLabel');
+
+// ---- fixture dimensions, mm ------------------------------------------------
+const BASE = { w: 390, h: 220, t: 12, r: 8 };
+const BOARD = { w: 168.402, h: 185.092, t: 1.6 };
+const CLEARANCE = 30;
+const A = { x: 20, y: 20 };
+const B = { x: 193.25, y: 25.25 };
+const PITCH = 10.5;
+const ELEM_X0 = 5.406;
+const ELEM_Y0 = 13.706;
+const MOUNT = [
+  [3.149, 3.221],
+  [3.137, 181.917],
+  [165.100, 3.221],
+  [165.062, 181.917]
+];
+const MID = [
+  [84.000, 3.800],
+  [84.000, 181.900]
+];
+const FENCE_T = 3, FENCE_H = 32, FENCE_LEN = 30, FENCE_TAB = 8;
+const COL_W = 10, COL_D_MID = 6, COL_H = 30, COL_TENON = 10;
+const BOLT_HOLE = 3.4, BOLT_LEN = 55;
+
+const FENCES = [
+  { axis: 0, fixed: A.x, centre: A.y + 50 },
+  { axis: 0, fixed: A.x, centre: A.y + 135 },
+  { axis: 1, fixed: A.y, centre: A.x + 84 },
+  { axis: 0, fixed: B.x, centre: B.y + 50 },
+  { axis: 0, fixed: B.x, centre: B.y + 135 },
+  { axis: 1, fixed: B.y, centre: B.x + 84 }
+];
+
+const COLUMNS = [];
+for (const origin of [A, B]) {
+  for (const [mx, my] of MOUNT) {
+    COLUMNS.push({ x: origin.x + mx, y: origin.y + my, w: COL_W, d: COL_W, through: true });
+  }
+  for (const [mx, my] of MID) {
+    COLUMNS.push({ x: origin.x + mx, y: origin.y + my, w: COL_W, d: COL_D_MID, through: false });
+  }
+}
+
+const token = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// ---- renderer --------------------------------------------------------------
+let renderer;
+try {
+  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+} catch (err) {
+  loadingEl.remove();
+  stage.insertAdjacentHTML('beforeend', '<div class="fallback">这个浏览器无法启动 WebGL，3D 模型无法显示。尺寸数据仍在右侧面板。</div>');
+  throw err;
+}
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.02;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.setClearColor(0x000000, 0);
+renderer.domElement.setAttribute('role', 'img');
+renderer.domElement.setAttribute('aria-label', '旋转夹具的三维模型，可拖动旋转');
+stage.prepend(renderer.domElement);
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(35, 1, 1, 5000);
+camera.position.set(-25, 330, 295);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(195, 10, -110);
+controls.enableDamping = true;
+controls.dampingFactor = 0.075;
+controls.screenSpacePanning = true;
+controls.minDistance = 55;
+controls.maxDistance = 1500;
+controls.maxPolarAngle = Math.PI * 0.95;
+controls.update();
+
+// ---- materials -------------------------------------------------------------
+const matBoard = new THREE.MeshStandardMaterial({
+  color: '#2f6b4f', emissive: '#2f6b4f', emissiveIntensity: 0.08,
+  transparent: true, opacity: 0.32,
+  roughness: 0.55, metalness: 0.0, side: THREE.DoubleSide, depthWrite: false
+});
+const matBase = new THREE.MeshPhysicalMaterial({
+  color: '#8aa9bc', roughness: 0.33, metalness: 0.04,
+  clearcoat: 0.45, clearcoatRoughness: 0.35, side: THREE.DoubleSide
+});
+const matColumn = new THREE.MeshStandardMaterial({
+  color: '#4f7f9a', transparent: true, opacity: 0.78,
+  roughness: 0.42, metalness: 0.02, side: THREE.DoubleSide, depthWrite: false
+});
+const matFence = new THREE.MeshStandardMaterial({ color: '#c2410c', roughness: 0.48, metalness: 0.02 });
+const matSteel = new THREE.MeshStandardMaterial({ color: '#697277', roughness: 0.30, metalness: 0.52 });
+const matSteelDark = new THREE.MeshStandardMaterial({ color: '#4f585c', roughness: 0.42, metalness: 0.42 });
+const matElement = new THREE.MeshStandardMaterial({ color: '#c9a86a', roughness: 0.50, metalness: 0.35 });
+const matWasher = new THREE.MeshStandardMaterial({ color: '#e9e6dd', roughness: 0.85, metalness: 0.0 });
+const lineMat = new THREE.LineBasicMaterial({ color: '#a9a69b', transparent: true, opacity: 0.55 });
+const gridMat = new THREE.LineBasicMaterial({ color: '#c7c3b8', transparent: true, opacity: 0.38 });
+
+// ---- lights ----------------------------------------------------------------
+const hemi = new THREE.HemisphereLight('#f7f3e9', '#2b3531', 1.15);
+scene.add(hemi);
+
+const key = new THREE.DirectionalLight('#fff6e8', 2.5);
+key.position.set(430, 620, 280);
+key.castShadow = true;
+key.shadow.mapSize.set(2048, 2048);
+key.shadow.camera.left = -430;
+key.shadow.camera.right = 430;
+key.shadow.camera.top = 430;
+key.shadow.camera.bottom = -430;
+key.shadow.camera.near = 1;
+key.shadow.camera.far = 2000;
+key.shadow.bias = -0.0004;
+key.shadow.normalBias = 0.02;
+key.target.position.set(195, 0, -110);
+scene.add(key, key.target);
+
+const fill = new THREE.DirectionalLight('#dfeaf2', 0.85);
+fill.position.set(-330, 320, 440);
+scene.add(fill);
+
+// ---- base, grid, shadow catcher -------------------------------------------
+function roundedRectShape(w, h, r, y0 = 0) {
+  const s = new THREE.Shape();
+  const x0 = 0, x1 = w, yA = y0, yB = y0 + h;
+  s.moveTo(x0 + r, yA);
+  s.lineTo(x1 - r, yA);
+  s.quadraticCurveTo(x1, yA, x1, yA + r);
+  s.lineTo(x1, yB - r);
+  s.quadraticCurveTo(x1, yB, x1 - r, yB);
+  s.lineTo(x0 + r, yB);
+  s.quadraticCurveTo(x0, yB, x0, yB - r);
+  s.lineTo(x0, yA + r);
+  s.quadraticCurveTo(x0, yA, x0 + r, yA);
+  return s;
+}
+
+// Scene mapping: x -> x, height -> y, model y (north) -> -z.  This keeps the
+// world right-handed, so a front view has A on the left and B on the right.
+const baseShape = roundedRectShape(BASE.w, BASE.h, BASE.r, 0);
+const baseGeo = new THREE.ExtrudeGeometry(baseShape, {
+  depth: BASE.t, bevelEnabled: false, curveSegments: 12, steps: 1
+});
+baseGeo.rotateX(-Math.PI / 2);
+baseGeo.translate(0, -BASE.t, 0);
+baseGeo.computeVertexNormals();
+const base = new THREE.Mesh(baseGeo, matBase);
+base.castShadow = true;
+base.receiveShadow = true;
+scene.add(base);
+base.add(new THREE.LineSegments(new THREE.EdgesGeometry(baseGeo, 24), lineMat));
+
+const gridPoints = [];
+const minX = -80, maxX = 470, minZ = -300, maxZ = 80, gridStep = 20, gridY = -BASE.t - 0.03;
+for (let x = minX; x <= maxX + 0.01; x += gridStep) {
+  gridPoints.push(x, gridY, minZ, x, gridY, maxZ);
+}
+for (let z = minZ; z <= maxZ + 0.01; z += gridStep) {
+  gridPoints.push(minX, gridY, z, maxX, gridY, z);
+}
+const gridGeo = new THREE.BufferGeometry();
+gridGeo.setAttribute('position', new THREE.Float32BufferAttribute(gridPoints, 3));
+const grid = new THREE.LineSegments(gridGeo, gridMat);
+scene.add(grid);
+
+const shadowCatcher = new THREE.Mesh(
+  new THREE.PlaneGeometry(1400, 1400),
+  new THREE.ShadowMaterial({ opacity: 0.16 })
+);
+shadowCatcher.rotation.x = -Math.PI / 2;
+shadowCatcher.position.y = -BASE.t - 0.04;
+shadowCatcher.receiveShadow = true;
+scene.add(shadowCatcher);
+
+// ---- boards ----------------------------------------------------------------
+const elementMeshes = [];
+
+function addEdges(mesh, opacity = 0.55) {
+  const edges = new THREE.LineSegments(new THREE.EdgesGeometry(mesh.geometry, 28), lineMat);
+  edges.material.transparent = true;
+  edges.material.opacity = opacity;
+  mesh.add(edges);
+}
+
+function makeBoard(origin) {
+  const group = new THREE.Group();
+  group.position.set(origin.x, CLEARANCE, -origin.y);
+
+  const board = new THREE.Mesh(new THREE.BoxGeometry(BOARD.w, BOARD.t, BOARD.h), matBoard);
+  board.position.set(BOARD.w / 2, BOARD.t / 2, -BOARD.h / 2);
+  board.receiveShadow = true;
+  group.add(board);
+  addEdges(board, 0.55);
+
+  const count = 16 * 16;
+  const elementGeo = new THREE.CylinderGeometry(1.05, 1.05, 0.55, 12);
+  const elements = new THREE.InstancedMesh(elementGeo, matElement, count);
+  const matrix = new THREE.Matrix4();
+  let index = 0;
+  for (let ix = 0; ix < 16; ix++) {
+    for (let iy = 0; iy < 16; iy++) {
+      matrix.makeTranslation(
+        ELEM_X0 + PITCH * ix,
+        BOARD.t + 0.275,
+        -(ELEM_Y0 + PITCH * iy)
+      );
+      elements.setMatrixAt(index++, matrix);
+    }
+  }
+  elements.instanceMatrix.needsUpdate = true;
+  elements.castShadow = false;
+  elements.receiveShadow = false;
+  group.add(elements);
+  elementMeshes.push(elements);
+
+  scene.add(group);
+  return group;
+}
+
+const boardA = makeBoard(A);
+const boardB = makeBoard(B);
+
+// ---- interlocking columns --------------------------------------------------
+function addColumn(column) {
+  const { x, y, w, d, through } = column;
+  const z = -y;
+  const group = new THREE.Group();
+
+  const tenon = new THREE.Mesh(new THREE.BoxGeometry(w, COL_TENON, d), matColumn);
+  tenon.position.set(x, -COL_TENON / 2, z);
+  tenon.castShadow = true;
+  group.add(tenon);
+
+  const body = new THREE.Mesh(new THREE.BoxGeometry(w, COL_H, d), matColumn);
+  body.position.set(x, COL_H / 2, z);
+  body.castShadow = true;
+  body.receiveShadow = true;
+  group.add(body);
+  addEdges(body, 0.42);
+  addEdges(tenon, 0.30);
+
+  if (through) {
+    // M3 x 55 inserted from below: head + washer under the base, reusable nut
+    // on top of the PCB.  Undo the 8 top nuts to remove a board.
+    const shaft = new THREE.Mesh(new THREE.CylinderGeometry(1.5, 1.5, 54, 16), matSteel);
+    shaft.position.set(x, 10.5, z);
+    shaft.castShadow = true;
+
+    const head = new THREE.Mesh(new THREE.CylinderGeometry(2.75, 2.75, 3.0, 24), matSteel);
+    head.position.set(x, -14.5, z);
+    head.castShadow = true;
+    const botWasher = new THREE.Mesh(new THREE.CylinderGeometry(4.0, 4.0, 1.0, 24), matWasher);
+    botWasher.position.set(x, -12.5, z);
+
+    const topNylon = new THREE.Mesh(new THREE.CylinderGeometry(4.0, 4.0, 1.5, 24), matWasher);
+    topNylon.position.set(x, 32.35, z);
+    const topWasher = new THREE.Mesh(new THREE.CylinderGeometry(4.0, 4.0, 1.0, 24), matWasher);
+    topWasher.position.set(x, 33.6, z);
+    const nut = new THREE.Mesh(new THREE.CylinderGeometry(3.2, 3.2, 3.0, 6), matSteelDark);
+    nut.position.set(x, 35.6, z);
+    nut.rotation.y = Math.PI / 6;
+    nut.castShadow = true;
+
+    group.add(shaft, head, botWasher, topNylon, topWasher, nut);
+  }
+
+  scene.add(group);
+  return group;
+}
+
+for (const column of COLUMNS) addColumn(column);
+
+// ---- interlocking fences ---------------------------------------------------
+function addFence(fence) {
+  let x, z, w, d;
+  if (fence.axis === 0) {
+    x = fence.fixed - FENCE_T;
+    z = fence.centre - FENCE_LEN / 2;
+    w = FENCE_T;
+    d = FENCE_LEN;
+  } else {
+    x = fence.centre - FENCE_LEN / 2;
+    z = fence.fixed - FENCE_T;
+    w = FENCE_LEN;
+    d = FENCE_T;
+  }
+
+  const group = new THREE.Group();
+
+  const body = new THREE.Mesh(new THREE.BoxGeometry(w, FENCE_H, d), matFence);
+  body.position.set(x + w / 2, FENCE_H / 2, -(z + d / 2));
+  body.castShadow = true;
+  body.receiveShadow = true;
+  group.add(body);
+  addEdges(body, 0.50);
+
+  const tab = new THREE.Mesh(new THREE.BoxGeometry(w, FENCE_TAB, d), matFence);
+  tab.position.set(x + w / 2, -FENCE_TAB / 2, -(z + d / 2));
+  tab.castShadow = true;
+  group.add(tab);
+  addEdges(tab, 0.30);
+
+  scene.add(group);
+  return group;
+}
+
+for (const fence of FENCES) addFence(fence);
+
+// ---- annotation data -------------------------------------------------------
+const annotationData = [
+  { key: 'seam',      pos: [190.826, 38, -120], label: 'seam',      value: '15.750', dx: 0,   dy: -6, views: ['overview', 'top', 'seam'] },
+  { key: 'gap',       pos: [190.826, 33.5, -38], label: 'gap',      value: '4.848',  dx: 24,  dy: -2, views: ['overview', 'top', 'seam'] },
+  { key: 'yoffset',   pos: [212, 36, -23],      label: 'y offset',  value: '5.250',  dx: 12,  dy: 12, views: ['overview', 'top', 'seam'] },
+  { key: 'clearance', pos: [38, 15, -8],        label: 'clearance', value: '30.000', dx: -14, dy: -2, views: ['overview', 'side'] },
+  { key: 'boardA',    pos: [104, 38, -112],     label: 'BOARD A',   value: '90° CCW', dx: 0, dy: 0, views: ['overview', 'top', 'side'] },
+  { key: 'boardB',    pos: [277, 38, -117],     label: 'BOARD B',   value: '90° CCW', dx: 0, dy: 0, views: ['overview', 'top', 'side'] }
+];
+const labels = annotationData.map((item) => {
+  const el = document.createElement('div');
+  el.className = 'label';
+  el.innerHTML = `<span>${item.label}</span><b>${item.value}</b>`;
+  labelsEl.appendChild(el);
+  return { el, pos: new THREE.Vector3(...item.pos), dx: item.dx, dy: item.dy, views: item.views };
+});
+
+// ---- theme -----------------------------------------------------------------
+function applyTheme() {
+  matBoard.color.set(token('--board'));
+  matBase.color.set(token('--acrylic'));
+  matColumn.color.set(token('--column'));
+  matFence.color.set(token('--accent'));
+  matSteel.color.set(token('--steel'));
+  matSteelDark.color.set(token('--steel-dark'));
+  matElement.color.set(token('--element'));
+  matWasher.color.set(token('--surface'));
+  lineMat.color.set(token('--line-strong'));
+  gridMat.color.set(token('--grid'));
+  hemi.color.set(token('--surface'));
+  hemi.groundColor.set(token('--bg'));
+
+  matBoard.emissive.set(token('--board'));
+  matBoard.emissiveIntensity = isDarkTheme() ? 0.16 : 0.06;
+}
+
+function isDarkTheme() {
+  const explicit = document.documentElement.dataset.theme;
+  if (explicit === 'dark') return true;
+  if (explicit === 'light') return false;
+  return window.matchMedia('(prefers-color-scheme: dark)').matches;
+}
+
+applyTheme();
+
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', applyTheme);
+new MutationObserver(applyTheme).observe(document.documentElement, {
+  attributes: true,
+  attributeFilter: ['data-theme']
+});
+
+// ---- views -----------------------------------------------------------------
+const views = {
+  overview: { pos: [-25, 330, 295], target: [195, 12, -108], up: [0, 1, 0] },
+  top:      { pos: [195, 560, -110], target: [195, 0, -110], up: [0, 0, -1] },
+  seam:     { pos: [150, 170, 40],  target: [190.8, 18, -80], up: [0, 1, 0] },
+  side:     { pos: [195, 14, 430],  target: [195, 14, -110], up: [0, 1, 0] },
+  joint:    { pos: [104, 140, 55],  target: [104, 16, -24],  up: [0, 1, 0] }
+};
+
+let tween = null;
+let activeView = 'overview';
+const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+
+function setActiveView(name) {
+  $$('.viewbar button').forEach((button) => {
+    const active = button.dataset.view === name;
+    button.classList.toggle('active', active);
+    button.setAttribute('aria-pressed', active ? 'true' : 'false');
+  });
+}
+
+function setView(name, animate = true) {
+  const view = views[name];
+  if (!view) return;
+
+  activeView = name;
+  setActiveView(name);
+  tween = null;
+  camera.up.set(...view.up);
+
+  if (name === 'top' || !animate || reduceMotion) {
+    camera.position.set(...view.pos);
+    controls.target.set(...view.target);
+    controls.update();
+    return;
+  }
+
+  tween = {
+    fromP: camera.position.clone(),
+    toP: new THREE.Vector3(...view.pos),
+    fromT: controls.target.clone(),
+    toT: new THREE.Vector3(...view.target),
+    start: performance.now(),
+    duration: 620
+  };
+}
+
+$$('.viewbar button').forEach((button) => {
+  button.addEventListener('click', () => setView(button.dataset.view));
+});
+$('#resetView').addEventListener('click', () => setView('overview'));
+
+controls.addEventListener('start', () => {
+  tween = null;
+  $$('.viewbar button').forEach((button) => {
+    button.classList.remove('active');
+    button.setAttribute('aria-pressed', 'false');
+  });
+});
+
+// ---- toggles ---------------------------------------------------------------
+$('#toggleBoards').addEventListener('change', (event) => {
+  matBoard.opacity = event.target.checked ? 0.30 : 0.92;
+  matBoard.needsUpdate = true;
+});
+
+$('#toggleElements').addEventListener('change', (event) => {
+  const visible = event.target.checked;
+  for (const mesh of elementMeshes) mesh.visible = visible;
+});
+
+$('#toggleAnnotations').addEventListener('change', (event) => {
+  labelsEl.hidden = !event.target.checked;
+});
+
+// ---- resize ----------------------------------------------------------------
+function resize() {
+  const width = Math.max(1, stage.clientWidth);
+  const height = Math.max(1, stage.clientHeight);
+  renderer.setSize(width, height, false);
+  camera.aspect = width / height;
+  camera.updateProjectionMatrix();
+}
+new ResizeObserver(resize).observe(stage);
+resize();
+
+// ---- scale bar -------------------------------------------------------------
+function updateScaleBar() {
+  const width = stage.clientWidth;
+  const height = stage.clientHeight;
+  if (!width || !height) return;
+
+  const lengths = [100, 50, 25, 10, 5];
+  let chosen = null;
+  const anchor = controls.target.clone();
+
+  for (const mm of lengths) {
+    const a = anchor.clone().project(camera);
+    const b = anchor.clone().add(new THREE.Vector3(mm, 0, 0)).project(camera);
+    const px = Math.hypot(
+      (b.x - a.x) * 0.5 * width,
+      (b.y - a.y) * 0.5 * height
+    );
+    if (px >= 24 && px <= width * 0.30) {
+      chosen = { mm, px };
+      break;
+    }
+  }
+  if (!chosen) {
+    const mm = 10;
+    const a = anchor.clone().project(camera);
+    const b = anchor.clone().add(new THREE.Vector3(mm, 0, 0)).project(camera);
+    const px = Math.max(18, Math.min(width * 0.28, Math.hypot(
+      (b.x - a.x) * 0.5 * width,
+      (b.y - a.y) * 0.5 * height
+    )));
+    chosen = { mm, px };
+  }
+
+  scaleBarEl.style.width = `${chosen.px.toFixed(1)}px`;
+  scaleLabelEl.textContent = `${chosen.mm} mm`;
+}
+
+// ---- annotation projection -------------------------------------------------
+const projected = new THREE.Vector3();
+function updateLabels() {
+  if (labelsEl.hidden) return;
+  const width = stage.clientWidth;
+  const height = stage.clientHeight;
+
+  for (const item of labels) {
+    if (activeView && item.views && !item.views.includes(activeView)) {
+      item.el.style.opacity = '0';
+      continue;
+    }
+    projected.copy(item.pos).project(camera);
+    if (projected.z > 1) {
+      item.el.style.opacity = '0';
+      continue;
+    }
+    const x = (projected.x * 0.5 + 0.5) * width;
+    const y = (-projected.y * 0.5 + 0.5) * height;
+    if (x < -60 || x > width + 60 || y < -60 || y > height + 60) {
+      item.el.style.opacity = '0';
+      continue;
+    }
+    item.el.style.left = `${(x + (item.dx || 0)).toFixed(1)}px`;
+    item.el.style.top = `${(y + (item.dy || 0)).toFixed(1)}px`;
+    item.el.style.opacity = '1';
+  }
+}
+
+// ---- render loop -----------------------------------------------------------
+let firstFrame = true;
+function animate(now) {
+  requestAnimationFrame(animate);
+
+  if (tween) {
+    const t = Math.min(1, (now - tween.start) / tween.duration);
+    const e = ease(t);
+    camera.position.lerpVectors(tween.fromP, tween.toP, e);
+    controls.target.lerpVectors(tween.fromT, tween.toT, e);
+    if (t >= 1) tween = null;
+  }
+
+  controls.update();
+  updateLabels();
+  updateScaleBar();
+  renderer.render(scene, camera);
+
+  if (firstFrame) {
+    firstFrame = false;
+    if (loadingEl) loadingEl.remove();
+  }
+}
+requestAnimationFrame(animate);
+
+// initial framing
+setView('overview', false);
+</script>

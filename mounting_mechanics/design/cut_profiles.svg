@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600mm" height="400mm" viewBox="0 0 600 400">
+<title>Interlocking fixture laser profiles (1:1, mm)</title>
+<rect width="100%" height="100%" fill="white"/>
+<g font-family="Arial, Helvetica, sans-serif" font-size="3.2" fill="#111">
+<text x="20.000" y="5.000" font-size="4.0" text-anchor="start" fill="#111" font-weight="bold">12 mm cast acrylic: BASE 390 x 220 x 12</text>
+<text x="20.000" y="155.000" font-size="3.2" text-anchor="start" fill="#111" font-weight="bold">3 mm: 6 fences 30 x 40. 10 mm: 8 corner columns 10 x 40. 6 mm: 4 mid columns 10 x 40 + gauges.</text>
+<rect x="20.000" y="150.000" width="390.000" height="220.000" rx="8.000" stroke="#111" fill="#fbfbfb" stroke-width="0.6"/>
+<rect x="36.950" y="284.975" width="3.050" height="30.050" rx="1.525" stroke="#111" fill="white" stroke-width="0.4"/>
+<rect x="36.950" y="199.975" width="3.050" height="30.050" rx="1.525" stroke="#111" fill="white" stroke-width="0.4"/>
+<rect x="108.975" y="350.000" width="30.050" height="3.050" rx="1.525" stroke="#111" fill="white" stroke-width="0.4"/>
+<rect x="210.200" y="279.725" width="3.050" height="30.050" rx="1.525" stroke="#111" fill="white" stroke-width="0.4"/>
+<rect x="210.200" y="194.725" width="3.050" height="30.050" rx="1.525" stroke="#111" fill="white" stroke-width="0.4"/>
+<rect x="282.225" y="344.750" width="30.050" height="3.050" rx="1.525" stroke="#111" fill="white" stroke-width="0.4"/>
+<rect x="38.124" y="341.754" width="10.050" height="10.050" rx="1.500" stroke="#111" fill="white" stroke-width="0.4"/>
+<rect x="38.112" y="163.058" width="10.050" height="10.050" rx="1.500" stroke="#111" fill="white" stroke-width="0.4"/>
+<rect x="200.075" y="341.754" width="10.050" height="10.050" rx="1.500" stroke="#111" fill="white" stroke-width="0.4"/>
+<rect x="200.037" y="163.058" width="10.050" height="10.050" rx="1.500" stroke="#111" fill="white" stroke-width="0.4"/>
+<rect x="118.975" y="343.175" width="10.050" height="6.050" rx="1.500" stroke="#111" fill="white" stroke-width="0.4"/>
+<rect x="118.975" y="165.075" width="10.050" height="6.050" rx="1.500" stroke="#111" fill="white" stroke-width="0.4"/>
+<rect x="211.374" y="336.504" width="10.050" height="10.050" rx="1.500" stroke="#111" fill="white" stroke-width="0.4"/>
+<rect x="211.362" y="157.808" width="10.050" height="10.050" rx="1.500" stroke="#111" fill="white" stroke-width="0.4"/>
+<rect x="373.325" y="336.504" width="10.050" height="10.050" rx="1.500" stroke="#111" fill="white" stroke-width="0.4"/>
+<rect x="373.287" y="157.808" width="10.050" height="10.050" rx="1.500" stroke="#111" fill="white" stroke-width="0.4"/>
+<rect x="292.225" y="337.925" width="10.050" height="6.050" rx="1.500" stroke="#111" fill="white" stroke-width="0.4"/>
+<rect x="292.225" y="159.825" width="10.050" height="6.050" rx="1.500" stroke="#111" fill="white" stroke-width="0.4"/>
+<text x="215.000" y="366.000" font-size="3.0" text-anchor="middle" fill="#111" font-weight="normal">BASE 390 x 220 x 12, R8 — 18 rounded slots</text>
+<rect x="20.000" y="105.000" width="30.000" height="40.000" rx="0.000" stroke="#111" fill="#fbfbfb" stroke-width="0.5"/>
+<text x="35.000" y="147.000" font-size="2.4" text-anchor="middle" fill="#111" font-weight="normal">FENCE</text>
+<rect x="60.000" y="105.000" width="30.000" height="40.000" rx="0.000" stroke="#111" fill="#fbfbfb" stroke-width="0.5"/>
+<text x="75.000" y="147.000" font-size="2.4" text-anchor="middle" fill="#111" font-weight="normal">FENCE</text>
+<rect x="100.000" y="105.000" width="30.000" height="40.000" rx="0.000" stroke="#111" fill="#fbfbfb" stroke-width="0.5"/>
+<text x="115.000" y="147.000" font-size="2.4" text-anchor="middle" fill="#111" font-weight="normal">FENCE</text>
+<rect x="140.000" y="105.000" width="30.000" height="40.000" rx="0.000" stroke="#111" fill="#fbfbfb" stroke-width="0.5"/>
+<text x="155.000" y="147.000" font-size="2.4" text-anchor="middle" fill="#111" font-weight="normal">FENCE</text>
+<rect x="180.000" y="105.000" width="30.000" height="40.000" rx="0.000" stroke="#111" fill="#fbfbfb" stroke-width="0.5"/>
+<text x="195.000" y="147.000" font-size="2.4" text-anchor="middle" fill="#111" font-weight="normal">FENCE</text>
+<rect x="220.000" y="105.000" width="30.000" height="40.000" rx="0.000" stroke="#111" fill="#fbfbfb" stroke-width="0.5"/>
+<text x="235.000" y="147.000" font-size="2.4" text-anchor="middle" fill="#111" font-weight="normal">FENCE</text>
+<rect x="20.000" y="60.000" width="10.000" height="40.000" rx="0.000" stroke="#111" fill="#fbfbfb" stroke-width="0.5"/>
+<circle cx="25.000" cy="80.000" r="1.700" stroke="#111" fill="white" stroke-width="0.35"/>
+<text x="25.000" y="102.000" font-size="2.0" text-anchor="middle" fill="#111" font-weight="normal">COL10</text>
+<rect x="35.000" y="60.000" width="10.000" height="40.000" rx="0.000" stroke="#111" fill="#fbfbfb" stroke-width="0.5"/>
+<circle cx="40.000" cy="80.000" r="1.700" stroke="#111" fill="white" stroke-width="0.35"/>
+<text x="40.000" y="102.000" font-size="2.0" text-anchor="middle" fill="#111" font-weight="normal">COL10</text>
+<rect x="50.000" y="60.000" width="10.000" height="40.000" rx="0.000" stroke="#111" fill="#fbfbfb" stroke-width="0.5"/>
+<circle cx="55.000" cy="80.000" r="1.700" stroke="#111" fill="white" stroke-width="0.35"/>
+<text x="55.000" y="102.000" font-size="2.0" text-anchor="middle" fill="#111" font-weight="normal">COL10</text>
+<rect x="65.000" y="60.000" width="10.000" height="40.000" rx="0.000" stroke="#111" fill="#fbfbfb" stroke-width="0.5"/>
+<circle cx="70.000" cy="80.000" r="1.700" stroke="#111" fill="white" stroke-width="0.35"/>
+<text x="70.000" y="102.000" font-size="2.0" text-anchor="middle" fill="#111" font-weight="normal">COL10</text>
+<rect x="80.000" y="60.000" width="10.000" height="40.000" rx="0.000" stroke="#111" fill="#fbfbfb" stroke-width="0.5"/>
+<circle cx="85.000" cy="80.000" r="1.700" stroke="#111" fill="white" stroke-width="0.35"/>
+<text x="85.000" y="102.000" font-size="2.0" text-anchor="middle" fill="#111" font-weight="normal">COL10</text>
+<rect x="95.000" y="60.000" width="10.000" height="40.000" rx="0.000" stroke="#111" fill="#fbfbfb" stroke-width="0.5"/>
+<circle cx="100.000" cy="80.000" r="1.700" stroke="#111" fill="white" stroke-width="0.35"/>
+<text x="100.000" y="102.000" font-size="2.0" text-anchor="middle" fill="#111" font-weight="normal">COL10</text>
+<rect x="110.000" y="60.000" width="10.000" height="40.000" rx="0.000" stroke="#111" fill="#fbfbfb" stroke-width="0.5"/>
+<circle cx="115.000" cy="80.000" r="1.700" stroke="#111" fill="white" stroke-width="0.35"/>
+<text x="115.000" y="102.000" font-size="2.0" text-anchor="middle" fill="#111" font-weight="normal">COL10</text>
+<rect x="125.000" y="60.000" width="10.000" height="40.000" rx="0.000" stroke="#111" fill="#fbfbfb" stroke-width="0.5"/>
+<circle cx="130.000" cy="80.000" r="1.700" stroke="#111" fill="white" stroke-width="0.35"/>
+<text x="130.000" y="102.000" font-size="2.0" text-anchor="middle" fill="#111" font-weight="normal">COL10</text>
+<rect x="150.000" y="60.000" width="10.000" height="40.000" rx="0.000" stroke="#111" fill="#fbfbfb" stroke-width="0.5"/>
+<text x="155.000" y="102.000" font-size="2.0" text-anchor="middle" fill="#111" font-weight="normal">COL6</text>
+<rect x="165.000" y="60.000" width="10.000" height="40.000" rx="0.000" stroke="#111" fill="#fbfbfb" stroke-width="0.5"/>
+<text x="170.000" y="102.000" font-size="2.0" text-anchor="middle" fill="#111" font-weight="normal">COL6</text>
+<rect x="180.000" y="60.000" width="10.000" height="40.000" rx="0.000" stroke="#111" fill="#fbfbfb" stroke-width="0.5"/>
+<text x="185.000" y="102.000" font-size="2.0" text-anchor="middle" fill="#111" font-weight="normal">COL6</text>
+<rect x="195.000" y="60.000" width="10.000" height="40.000" rx="0.000" stroke="#111" fill="#fbfbfb" stroke-width="0.5"/>
+<text x="200.000" y="102.000" font-size="2.0" text-anchor="middle" fill="#111" font-weight="normal">COL6</text>
+<rect x="20.000" y="25.000" width="4.848" height="30.000" rx="0.000" stroke="#111" fill="#fbfbfb" stroke-width="0.5"/>
+<text x="22.424" y="57.000" font-size="2.4" text-anchor="middle" fill="#111" font-weight="normal">GAP</text>
+<rect x="40.000" y="25.000" width="5.250" height="30.000" rx="0.000" stroke="#111" fill="#fbfbfb" stroke-width="0.5"/>
+<text x="42.625" y="57.000" font-size="2.4" text-anchor="middle" fill="#111" font-weight="normal">Y</text>
+<rect x="90.000" y="25.000" width="1.848" height="30.000" rx="0.000" stroke="#111" fill="#fbfbfb" stroke-width="0.5"/>
+<text x="90.924" y="57.000" font-size="2.4" text-anchor="middle" fill="#111" font-weight="normal">CLR</text>
+<rect x="60.000" y="25.000" width="20.000" height="30.000" rx="0.000" stroke="#111" fill="#fbfbfb" stroke-width="0.5"/>
+<text x="70.000" y="57.000" font-size="2.4" text-anchor="middle" fill="#111" font-weight="normal">HANDLE</text>
+<text x="20.000" y="380.000" font-size="2.4" text-anchor="start" fill="#111" font-weight="normal">Slots: fence 3.05 x 30.05; corner column 10.05 x 10.05; mid column 10.05 x 6.05. Corner column hole 3.4; PCB 3.5; slot corners R1.5 (fence R1.525). Fit 0.05. No glue, no inserts.</text>
+</g></svg>

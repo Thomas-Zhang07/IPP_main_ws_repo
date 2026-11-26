@@ -1,0 +1,1005 @@
+Article
+
+Adaptive Optimization of Non-Uniform Phased Array
+Speakers Using Particle Swarm Optimization for Enhanced
+Directivity Control
+
+Shangming Mei 1, Yihua Hu 2 and Mohammad Nasr Esfahani 1,*
+
+                                        1 School of Physics, Engineering and Technology, University of York, York YO10 5DD, UK;
+                                           sm2747@york.ac.uk
+
+                                        2 Department of Engineering, King's College London, London WC2R 2LS, UK; yihua.hu@kcl.ac.uk
+                                        * Correspondence: mohammad.nasresfahani@york.ac.uk
+
+                                        Abstract
+
+                                        Phased array speakers are often designed with uniform element spacing, which limits
+                                        beam steering capability and sidelobe control under practical aperture and hardware con-
+                                        straints. This study presents an optimization-driven modelling framework for parametric
+                                        array loudspeakers (PALs) that systematically links array layout synthesis with high-fi-
+                                        delity directivity prediction, by combining a frequency-domain convolution model with
+                                        a finite element method (FEM) pipeline. We formulate array layout synthesis as a con-
+                                        strained optimization problem and employ particle swarm optimization (PSO) to deter-
+                                        mine non-uniform element positions that suppress sidelobes while preserving mainlobe
+                                        integrity across steering angles. By integrating linear acoustic field simulation with far-
+                                        field directivity prediction, the framework serves as a computationally efficient surrogate
+                                        model suitable for iterative design under non-ideal spacing conditions. Simulation results
+                                        and laboratory measurements demonstrate that the optimized non-uniform arrays
+                                        achieve consistently lower sidelobe levels and more concentrated mainlobes than conven-
+                                        tional uniform configurations. These results validate the proposed framework as a practi-
+                                        cal and reproducible solution for steering-capable PAL design when the conventional /2
+                                        spacing constraint cannot be satisfied and establish a foundation for subsequent robust-
+                                        ness and sensitivity analyses.
+
+                                        Keywords: parametric array loudspeaker; phased array; particle swarm optimization;
+                                        sidelobe suppression; beam steering; finite element method
+
+Academic Editor: Rostand B. Tayong      1. Introduction
+
+Received: 7 November 2025                     PALs serve various applications that require precise sound field control. They are
+Revised: 8 January 2026                 characterized by high directivity and by exploiting nonlinear propagation in air to gener-
+Accepted: 13 January 2026               ate audible sound through self-demodulation of ultrasonic carriers [1­4]. A distinctive
+Published: 15 January 2026              feature of these devices is their ability to project sound in a specific direction with limited
+                                        diffraction, resulting in a narrow beam at ultrasonic frequencies [5]. This principle under-
+Copyright: © 2026 by the author.        pins their utility in directional sound systems that reduce noise while providing a clear
+Licensee MDPI, Basel, Switzerland.      auditory signal to a targeted area [6]. These devices, leveraging ultrasonic wave functions
+This article is an open access article  as carriers of audible frequencies, are especially useful in environments where ambient
+distributed under the terms and
+conditions of the Creative Commons
+Attribution (CC BY) license.
+
+Modelling 2026, 7, 20                   https://doi.org/10.3390/modelling7010020
+Modelling 2026, 7, 20                                                                                                                                                2 of 20
+
+                            noise reduction is crucial, such as public address systems, home theatres, and transporta-
+                            tion vehicles like aircraft and buses [7,8].
+
+                                  Adaptive parametric array loudspeakers extend conventional designs by using
+                            phased-array techniques to steer audio beams electronically, without mechanical rotation.
+                            This technology has been explored for applications such as active noise control and direc-
+                            tional sound reproduction. An adaptive system typically uses a linear array of ultrasonic
+                            transducers, in which beam direction is controlled by phase delays across elements [9,10].
+
+                                  To avoid grating lobes, which degrade directivity, element spacing is usually kept at
+                            half the wavelength or less. Exceeding this spacing threshold leads to spatial aliasing,
+                            where grating lobes interfere with the main lobe. Although reducing the spacing can sup-
+                            press grating lobes, meeting the half-wavelength criterion is often difficult due to trans-
+                            ducer size constraints [11­13].
+
+                                  To address the challenges posed by sidelobe interference and spatial aliasing in
+                            PALs, this study proposes an optimal sparse array technique to improve adaptive PAL
+                            design, particularly in scenarios where the Nyquist criterion cannot be met. In recent years,
+                            increasing attention has been paid to beamforming and array configuration strategies for
+                            PALs, particularly under practical constraints such as limited aperture size and non-ideal
+                            element spacing. Various approaches have been investigated, including analytical di-
+                            rectivity modelling, numerical simulation based on FEMs, and array synthesis techniques
+                            aimed at suppressing sidelobes and grating lobes. More recent studies have also explored
+                            non-paraxial modelling, steerable array configurations, and non-uniform or disordered
+                            layouts to improve directivity performance beyond the limitations of conventional uni-
+                            form arrays [4,14,15].
+
+                                  Despite these advances, the optimization of non-uniform PAL layouts remains chal-
+                            lenging due to the highly nonlinear relationship between array geometry and acoustic
+                            directivity, especially when experimental uncertainties and hardware constraints are con-
+                            sidered. This motivates the need for efficient optimization frameworks that can systemat-
+                            ically explore the design space while remaining compatible with high-fidelity numerical
+                            modelling. By employing non-uniform array configurations as shown in Figure 1, this ap-
+                            proach helps smooth the lobe structure and mitigate high sidelobe occurrences, thereby
+                            enhancing overall beamforming accuracy and signal-to-noise ratio. However, optimizing
+                            non-uniform arrays introduces greater complexity, requiring advanced computational
+                            techniques for precise element positioning.
+
+                       (a)  (b)
+
+                            Figure 1. Schematic of the parametric array loudspeaker system and the ultrasonic demodulation
+                            process in air: (a) sparse array and (b) uniform array.
+
+                                                                                                                         https://doi.org/10.3390/modelling7010020
+Modelling 2026, 7, 20                                                                                                                                           3 of 20
+
+                             To achieve this, we employ particle swarm optimization to determine the transducer
+                       positions offline, optimizing directivity across multiple steering angles. Unlike ap-
+                       proaches that assume fixed or uniformly spaced arrays, the proposed method optimizes
+                       element positions under practical spacing constraints to achieve improved sidelobe sup-
+                       pression and directional control. By dynamically optimizing the element positions, PSO
+                       enables a more flexible and efficient solution. The key contribution of this work lies in
+                       formulating the non-uniform PAL layout design as a constrained optimization problem
+                       that explicitly accounts for steering-angle dependency and practical spacing limitations,
+                       rather than assuming idealized or fixed array geometries.
+
+                             Additionally, to accurately model the acoustic field and assess the impact of different
+                       array configurations, we employ the FEM, which enables high-fidelity simulation of
+                       acoustic wave propagation. While traditional analytical models such as Westervelt and
+                       Khokhlov­Zabolotskaya­Kuznetsov (KZK) equations offer useful approximations, they
+                       are often constrained by simplifying assumptions like paraxial approximations or limited
+                       boundary conditions. In contrast, FEM offers greater flexibility for handling complex ge-
+                       ometries, boundary conditions, and near-field effects, making it well-suited for modelling
+                       the acoustic behaviour of PALs. By capturing wave interactions more accurately, FEM
+                       supports a realistic understanding of diffraction, beamforming, and directivity patterns in
+                       practical scenarios [16­18].
+
+                             Different from existing PAL optimization studies that rely solely on analytical for-
+                       mulations or fixed-spacing assumptions, the proposed approach integrates PSO-based ar-
+                       ray synthesis with FEM-based directivity evaluation, allowing optimization decisions to
+                       be guided by high-fidelity numerical modelling under realistic constraints. In this study,
+                       numerically optimized non-uniform array configurations are first identified across differ-
+                       ent steering angles and subsequently selected as reference designs for experimental vali-
+                       dation, ensuring a consistent and systematic numerical-to-experimental workflow.
+
+                             The following sections present the theoretical background of PALs, including sound
+                       pressure modelling, attenuation, and nonlinear directivity. We then introduce the optimi-
+                       zation algorithm used in this study and describe the experimental setup, measurement
+                       methods, and data analysis. Finally, we compare simulation and experimental results to
+                       evaluate performance and conclude with insights into the practical implications and lim-
+                       itations of the proposed approach.
+
+                       2. Materials and Methods
+
+                             This section describes the modelling and evaluation procedures used in this study.
+                       We first introduce the key acoustic quantities required for far-field prediction, including
+                       sound pressure, atmospheric attenuation, sound pressure level, and directivity. We then
+                       present the nonlinear (Westervelt-based) formulation and the convolution-based directiv-
+                       ity model adopted for efficient far-field estimation. Finally, we detail the optimization
+                       problem formulation and the algorithmic settings used to synthesize sparse array layouts.
+
+                       2.1. Sound Pressure Calculation
+                             In this work, we utilize the Pressure Acoustics, Frequency Domain interface from the
+
+                       Pressure Acoustics branch for modelling acoustic wave propagation in fluids. To optimize
+                       computational resources, our model is constructed in two dimensions, incorporating a
+                       line sound source which produces a cylindrical sound wave. The physics interface solves
+                       the Helmholtz equation in the frequency domain for specified frequencies or performs an
+                       eigenfrequency or mode analysis study. This interface efficiently computes pressure var-
+                       iations by solving the Helmholtz equation in the frequency domain and is particularly
+                       suited for frequency-domain simulations involving harmonic pressure field variations.
+
+                                                                                                                    https://doi.org/10.3390/modelling7010020
+Modelling 2026, 7, 20                                                                                                                                                4 of 20
+
+                                  The primary variable, the sound pressure t, encapsulates the acoustic perturbations
+                            relative to the ambient pressure. For 2D models, the default out-of-plane wave number is
+                            set to kz = 0 rad/m, indicating no variation along the z-axis, thereby simplifying the pres-
+                            sure expression in our simulations.
+
+                                  Figure 2 compares the two-dimensional and three-dimensional configurations used
+                            in this study. The primary ultrasonic field exhibits a highly directional main lobe along
+                            the beam axis and sidelobes that correspond to undesired energy leakage. In practical ap-
+                            plications, sidelobe suppression is critical because strong sidelobes may introduce audible
+                            interference outside the intended listening region.
+
+                       (a)                               (b)
+
+                            Figure 2. The linear acoustic phased array and corresponding sound field: (a) an 8-element config-
+                            uration in the two-dimensional model; (b) a 64-element configuration in the three-dimensional
+                            model. Both cases are illustrated at a representative steering angle.
+
+                                  In the simulation, a two-dimensional linear sound source is created by reducing the
+                            dimensionality of the three-dimensional model. This is achieved by using the line source
+                            on axis node to introduce a line source along the axis of symmetry in 2D components. This
+                            line source represents a radially vibrating cylinder in the limit as its radius approaches
+                            zero. The sound pressure value of any point in the calculation space can be obtained by
+                            solving the partial differential Equation (1) using the FEM.
+
+                                (-  1  (t  -  d))  -  2 t  =      4     (  -  0)  (1)
+                                                                  
+
+                                       2      =       -        2  -  2            (2)
+                                                 (
+                                                         )
+
+                            where t represents the total acoustic pressure,  is the fluid density,  is the speed of
+                            sound, d denotes the dipole domain source, complex density  = 22, complex speed
+                            of sound as  = / - . In this context, ( - 0) is the 2D delta function that intro-
+                            duces the source at the axis of symmetry, where  = 0 and  = 0, while  represents
+                            the line element along the  axis (SI unit: m). The monopole amplitude  (SI unit: N/m2)
+
+                            is determined by the type of source selected and is analogous to the 3D case for a line
+
+                            source. To include an edge source at  = 0, define it using the volume flow rate per unit
+
+                                                                     https://doi.org/10.3390/modelling7010020
+Modelling 2026, 7, 20                                                                                   5 of 20
+
+                       length  and the phase  of the source. The flow edge source then establishes the mon-
+                       opole amplitude as (3):
+
+                                                                     =           S                      (3)
+                                                                            4
+
+                             A flow edge source with strength  represents an area flow emitted from the
+                       source, modeled as a very thin cylinder with a pulsating surface. Specify  (SI unit:
+                       m2/s), the volume flow rate per unit length from the source, as the amplitude for the
+
+                       source strength in the field.
+
+                       2.2. Attenuation Coefficient
+
+                             The attenuation coefficient of sound in air is crucial in determining how sound en-
+                       ergy diminishes during propagation, depending on factors like frequency, temperature,
+                       pressure, and humidity. It directly influences sound field predictions and helps refine ap-
+                       plications such as ultrasonic and acoustic wave simulations, which can be defined as
+
+                                                                                 1
+                                                                                2
+                                                     =  2[1.84  ×  10-11      (0)   +
+
+                                                      -52 0.01275-2239.1 0.1068-3352.0              NP  (4)
+
+                       (0) (                                           2      +            2  )] ( m )
+                                                                      ,                   ,
+                                                                ,  +                ,  +
+
+                       where  is the air pressure in the propagation environment,  = 101.325 kPa is base-
+                       line ambient air pressure, T0 = 293.15 K is the standard air temperature (20 C), , and
+                       , are the oxygen relaxation frequency and nitrogen relaxation frequency, respectively
+
+                       [19,20], expressed as:
+
+                                                     ,     =    (24  +  4.04  ×  104  0.02 +            (5)
+                                                                                      0.391 + )
+
+                       ,                                =       -21     9 + 280-4.17[(0 -13-1)]         (6)
+                                                              (0)
+
+                                                                     (                           )
+
+                       In the function (6),  is the temperature and 0 = 293.15 K, absolute humidity 
+
+                       can be presented by the relative humidity hr, and the saturated water vapor pressure
+
+                       , by the following equation:
+
+                                                                      =    sat                          (7)
+                                                                                 
+
+                       sat is given by the modified Tense formula as:
+
+                                                                                    17.67t              (8)
+                                                           sat = 0.6112 × exp ( + 243.5)
+
+                       2.3. Sound Pressure Level and Directivity
+
+                             Sound Pressure Level (SPL) is a fundamental concept in acoustics used to describe
+                       the intensity of sound pressure relative to a reference pressure [21]. It is expressed in dec-
+                       ibels (dB) and is calculated using the formula which is calculated by the sound pressure
+                       t:
+
+                                                              () = 20log10 (t(ref))                     (9)
+
+                                                                                       https://doi.org/10.3390/modelling7010020
+Modelling 2026, 7, 20                                                                                6 of 20
+
+                       where ref is the reference sound pressure is 20 Pa (20  10-6 Pa). The directivity pat-
+                       tern based on SPL is calculated as the relative difference between the measured SPL at a
+                       given angle  and the SPL at a reference angle (typically the direction of maximum re-
+                       sponse, e.g.,  = 0). It is given by
+
+                             SPL() = () - (ref)                                                      (10)
+
+                       2.4. Nonlinear Acoustics (Westervelt) Directivity
+
+                             The Westervelt Equation in (11) provides a foundational framework for predicting
+                       the directivity of PALs, with directional characteristics influenced by the ultrasonic atten-
+                       uation coefficient and source frequency [22,23]. Shi and Kajikawa (2015) introduced a con-
+                       volution model that combines Westervelt directivity with ultrasonic directivity, signifi-
+                       cantly enhancing computational efficiency and far-field directivity prediction [24]. This
+                       approach is particularly effective for modelling the main lobe, though additional models
+                       may be needed for accurate sidelobe estimation [25].
+
+                             Recent advancements have refined the convolution model, which remains advanta-
+                       geous due to its speed and accuracy in far-field cases [24,25]. The model considers a cir-
+                       cular PAL on an infinitely reflective surface, where ultrasound beams interact through
+                       second-order nonlinearity to generate an audible secondary wave [19]. Both 2D and 3D
+                       representations of this setup define a Cartesian coordinate system centred at the loud-
+                       speaker array, with the z-axis aligned with the sound radiation direction [21]. In the fol-
+                       lowing, the Westervelt equation is used to derive the far-field solution for phase loud-
+                       speaker arrays, leveraging the convolution model for accurate far-field predictions.
+
+                          2  -  1  2  =  -                                   3  -      22            (11)
+                                2  2                                      4  3     04  2
+
+                       where  is the diffusivity of sound and  is the coefficient of nonlinearity, where 0
+                       represent the ambient air density,  denotes the sound pressure, which is linked to the
+                       sound attenuation coefficient .
+
+                             The Westervelt equation is employed to accurately model the behaviour of PAL un-
+                       der second-order nonlinearities in the far field. This equation uses a stepwise approach to
+                       simulate the quasi-linear solution of audio sound, which is treated as emission from an
+                       infinite virtual source with a specified sound pressure [19]. Consequently, the convolution
+                       directional model equation for the PAL sound can be derived as follows [24]:
+
+                          () = (1 2 × )()
+
+                              2                                                                      (12)
+
+                       =   1()2()( - )d
+
+                       0
+
+                       We define an integral called Westervelt's directivity as [4]:
+
+                                                                 +
+
+                           ()  (1 + 2)   [2-1 - (-)] d
+
+                                      0                                            1                 (13)
+
+                                   =  1 -  1                                 + 2          (  -  
+                                                                             2               2
+                                                                                   -1  2          )
+
+                       where k = 2/z, 1 and 2 are weighting factors; In the two-dimensional piston model, the
+                       velocity distribution of the ultrasound is uniform uj(s) = 1, s  r , where the directiv-
+                       ity of the corresponding ultrasound is () which was derived from an acoustic model
+
+                       generated by (10). Because the calculation of the distribution of the second harmonic is
+
+                       too large and huge errors will be generated by directly using the FEM to solve it, this
+                       paper uses the FEM to synthesize product directivity (1 2) and puts product directivity
+                       into (12) to obtain the directivity of the second harmonic.
+
+                                                                                   https://doi.org/10.3390/modelling7010020
+Modelling 2026, 7, 20                                                                                7 of 20
+
+                             Grating lobes occur when the inter-element spacing exceeds one wavelength. In this
+                       regime, the grating-lobe amplitude can become comparable to the main-lobe amplitude.
+                       For a linear phased array, the phase shift across the array as a function of beam angle is
+                       given by
+
+                       2                                                                             (14)
+                        = 
+
+                       Then, the steering angle can be calculated as a function of the phase shift:
+
+                                                                                                     (15)
+                        =  (2 × )
+
+                       where  is the phase shift between adjacent elements;  is the inter-element spacing;
+                       the acoustic wavelength  = c/f. In general, the inter-element spacing should be smaller
+                       than half the wavelength (4 mm at 40 kHz in air). Determining the optimal sparse array
+                       configuration is challenging due to the complex relationship between array structure and
+                       beamforming performance. The optimization method used in this study is described in
+                       the following section.
+
+                       2.5. Optimization Method
+
+                             Extensive research has been conducted on phased array position optimization, with
+                       techniques such as Teaching Learning-Based Optimization (TLBO) [26], Quantum Particle
+                       Swarm Optimization (QPSO) [27], Symbiotic Organisms Search (SOS) [28], and machine-
+                       learning-based genetic algorithms [29] being applied to improve element placement.
+                       These methods aim to generate specific beam patterns (e.g., pencil beams, flat-top beams
+                       [30]) while effectively reducing sidelobe levels. As phased array beamforming is a nonlin-
+                       ear, multivariable optimization problem, these studies offer valuable strategies that can
+                       also be extended to PAL design.
+
+                             In high-dimensional optimization tasks, PSO, Simulated Annealing (SA), and Ge-
+                       netic Algorithm (GA) are commonly used. PSO is known for its fast convergence and pop-
+                       ulation-based search, making it suitable for large-scale problems, though it requires care-
+                       ful parameter tuning to avoid premature convergence [31­33]. SA offers strong global
+                       search capability by accepting suboptimal solutions early on, but its single-solution up-
+                       dates and dependence on temperature control can reduce efficiency [34,35]. GA promotes
+                       solution diversity, helping to avoid local optima, but may suffer from slow convergence
+                       and complex tuning, especially in high-dimensional cases [36].
+
+                             The computational efficiency of the proposed PSO-based optimization framework
+                       was further evaluated through a comparative study involving PSO, GA, and SA under
+                       identical function evaluation (FE) budgets. All algorithms were applied to the same opti-
+                       mization problem: maximizing the difference between the main lobe sound pressure level
+                       and the maximum sidelobe level of an 8-element PAL steered toward a predefined angle.
+
+                             To ensure fairness in computational cost, all algorithms were allocated the same FE
+                       budget, defined as the total number of sound field calculation program (COMSOL Mul-
+                       tiphysics 6.1) calls. Specifically, a maximum of 100 FEs per run was used for each algo-
+                       rithm. Each algorithm was independently executed 30 times, starting from the same ran-
+                       domly generated initial configurations. For PSO and GA, identical initial populations
+                       were used, while SA was initialized from the same starting solution in each run. All ran-
+                       dom seeds were controlled to guarantee reproducibility.
+
+                             An eight-element two-dimensional PAL array was considered in this study. The op-
+                       timization variables were the seven inter-element gaps between adjacent ultrasonic trans-
+                       ducers, while the element length was fixed to 1 cm. The steering angle was fixed to  =
+                       75°, and all optimization algorithms aimed to maximize the difference between the main
+                       lobe sound pressure level and the highest sidelobe level (which is defined as ) in the far
+
+                                                                                                                    https://doi.org/10.3390/modelling7010020
+Modelling 2026, 7, 20                                                                                                                                           8 of 20
+
+                       field. The far-field sound pressure distribution was sampled on a two-dimensional grid,
+                       and the directivity pattern was obtained by angular averaging. The objective function is
+                       given in function (16).
+
+                             Figure 3 presents the mean convergence curves over 30 independent runs, where the
+                       shaded regions indicate one standard deviation. Particle swarm optimization and genetic
+                       algorithms achieve rapid improvement during the initial stage, exceeding 1 dB mean
+                       main-to-sidelobe improvement within the first 10 evaluations, whereas simulated anneal-
+                       ing shows slower initial progress. With increasing FE count, particle swarm optimization
+                       consistently attains the highest mean , followed by genetic algorithms, while simulated
+                       annealing converges to a lower level. After 100 evaluations, the mean  achieved by par-
+                       ticle swarm optimization is approximately 0.3­0.6 dB higher than that of the other two
+                       methods. Genetic algorithms exhibit the smallest variance across runs, indicating better
+                       repeatability, whereas simulated annealing shows larger dispersion, suggesting higher
+                       sensitivity to the initial condition and stochastic perturbations. Considering both solution
+                       quality and computational efficiency under limited evaluation budgets, particle swarm
+                       optimization is adopted for the subsequent array optimization in this work.
+
+                       Figure 3. Graph illustrating the mean convergence curves of PSO, GA, and SA over 30 independ-
+                       ent runs.
+
+                       2.6. Cost Function and Algorithm
+                             In this study, the cost function is defined as the maximum difference between the
+
+                       sound pressure of the main lobe and the highest sidelobe, with a constraint added to main-
+                       tain sufficient main lobe strength. To keep the overall aperture within practical hardware
+                       and measurement constraints, the initial sound pressure level is fixed at 1, while trans-
+                       ducer spacing varies from 0 cm to 1.3 cm. The upper bound ensures that the overall array
+                       size remains within twice the wavelength, preventing overly large configurations. The
+                       sampling approach and cost evaluation follow previously established protocols, with all
+                       arrays centred at the origin.
+
+                             To ensure that the size of the main lobe is not smaller than a fixed value, another
+                       restriction needs to be added, where SPLMain is the sound pressure level of the main lobe:
+
+                                                                                                                    https://doi.org/10.3390/modelling7010020
+Modelling 2026, 7, 20                                                                             9 of 20
+
+                       () = {() = max(Main() - Side()) if Main() > 80 dB                          (16)
+                                            large penalty                              otherwise
+
+                       where  is the Optimal Steering angle, Beam width of the main lobe  > 0 is set to cover
+                       the main lobe, Main() is the peak value of the main lobe at . the element x-axis position
+                       vector  = [1, 2, ... , ]T, and the superscript "T" denotes a matrix transpose. The peak
+                       sidelobe level (PSL) is employed in this study as a key metric to evaluate the performance
+
+                       of the array configuration. The optimization task is formulated as a global minimization
+
+                       problem, where the objective function is minimized by adjusting the transducer position
+                       . The detailed optimization procedure is outlined in Algorithm 1.
+
+                       Algorithm 1 PSO-Driven FEM Optimization
+
+                       START
+                           Initialize particle population  = [1, 2, ... , ]
+                           Set SPL = 1, spacing bounds: [0, 1.3 cm]
+
+                       FOR each iteration:
+
+                       FOR each particle  DO
+
+                       Transfer  to COMSOL FEM model
+
+                       Run FEM: compute pressure field ()
+
+                       Convert to SPL:        =  20  log10  (      )  ,  ref  = 20 Pa
+
+                                                              ref
+
+                       Extract directivity pattern ()
+
+                       Find main lobe: Main () = max()
+
+                       Find 3 highest sidelobes:     {(Sid)e   3
+
+                                                              }
+
+                                                               =1
+                       Evaluate cost: () = max(Sid)e - Main ()
+
+                       If Main () < 80 dB, apply penalty to ()
+
+                       ENDFOR
+
+                       Update particles:
+
+                                ( + 1) = () + 11( - ) + 22( - )
+                                ( + 1) = () + ( + 1)
+                       ENDFOR
+                       Return , optimal directivity pattern
+
+                             COMSOL Multiphysics 6.1 is used to solve the ultrasonic pressure field using the
+                       finite element method, while the optimization loop is implemented in MATLAB. The
+                       overall co-simulation workflow is illustrated in Figure 4. For each candidate array config-
+                       uration, COMSOL returns the pressure field, which is converted to sound pressure level
+                       and sampled along a far-field observation arc to obtain the directivity pattern. The main-
+                       lobe peak at the target steering angle and the peak sidelobe level outside a predefined
+                       main-lobe window are extracted to evaluate the cost function. MATLAB then updates the
+                       array configuration according to particle swarm optimization and passes the updated pa-
+                       rameters back to COMSOL for the next evaluation.
+
+                                                                              https://doi.org/10.3390/modelling7010020
+Modelling 2026, 7, 20  10 of 20
+
+                       Figure 4. Integration Diagram of COMSOL and MATLAB for Co-Simulation in Speaker Array Op-
+                       timization.
+
+                             The simulations are conducted in a rectangular computational domain designed to
+                       approximate the experimental environment. Absorbing (radiation) boundary conditions
+                       are applied to suppress artificial reflections from the domain boundaries. The acoustic
+                       source is modelled as an 8-element array located along the bottom boundary. In the two-
+                       dimensional model, each element is represented by an equivalent line segment corre-
+                       sponding to a circular transducer of 10 mm diameter in the three-dimensional setup. The
+                       element positions are treated as design variables and are iteratively updated by the
+                       MATLAB optimizer.
+
+                             The propagation medium is air at standard atmospheric pressure, with 50% relative
+                       humidity and a temperature of 13 °C. The finite element simulations consider linear acous-
+                       tics for the ultrasonic field; the audible demodulation process is not directly solved in the
+                       finite element model and is instead addressed through the analytical/convolution-based
+                       formulation described earlier. The optimization outcomes and convergence characteristics
+                       are reported in Section 4.
+
+                       3. Experimental Setup and Measurements
+
+                       3.1. Measurement Setup
+                             Based on the numerical optimization results in Section 4, representative non-uniform
+
+                       array configurations at steering angles of 60°, 65°, 70°, and 75° were selected for experi-
+                       mental validation. In addition, a Monte Carlo analysis was conducted for these
+
+                                                                                                                    https://doi.org/10.3390/modelling7010020
+Modelling 2026, 7, 20                                                                                      11 of 20
+
+                       representative cases to assess the sensitivity and robustness of the proposed method un-
+                       der practical uncertainties.
+
+                             All measurements were conducted in a quiet and controlled anechoic chamber to
+                       suppress background noise and minimise acoustic reflections. The array was driven by
+                       ultrasonic carrier signals at 40 kHz and 42 kHz generated by an Arduino-based controller.
+                       Sound pressure levels were captured using a calibrated measurement microphone, to-
+                       gether with a signal generator, an audio interface, and signal analysis software . The mi-
+                       crophone was positioned 2 m from the array, and the directivity patterns were obtained
+                       by sampling the measurement arc at 2.5° angular intervals. The key parameters of the
+                       experimental setup are summarized in Table 1. The recorded signals were subsequently
+                       processed to extract the directivity responses of the optimized configurations.
+
+                             The Arduino generates eight digital drive signals as binary pulse trains. These signals
+                       are output cyclically, where phase control is achieved by shifting the waveform timing
+                       and amplitude control is implemented via duty-cycle adjustment. Although square-wave
+                       excitation is used for simplicity in the digital design, the transducer resonance produces a
+                       near-sinusoidal acoustic output.
+
+                       Table 1. Key parameters of the experimental setup for measuring array directivity.
+
+                                                 Parameter                         Value
+                            Distance between speaker and microphone                  2m
+                                                                                    13 °C
+                                              Temperature T                         1 cm
+                                 Piezoelectric Transducer Diameter
+                                                                          40,000 Hz, 42,000 Hz
+                                                Frequency                    60°, 65°, 70°, 75°
+                                       Optimal Steering angle 
+
+                             Measurements were conducted in an anechoic chamber, as shown in Figure 5a. The
+                       chamber measures 3.0 m × 3.5 m and is located in a separate building to provide acoustic
+                       isolation. Foam wedges cover all surfaces to suppress reflections, and a suspended mesh
+                       floor allows access without compromising measurement quality. During testing, the array
+                       was mounted vertically on the rotary table and centred on the rotation axis. The microphone
+                       was placed 2 m from the array. The array was powered at an output voltage of 12 V.
+
+                       (a)                                           (b)
+
+                       Figure 5. (a) Anechoic chamber setup with a 2 m distance between the microphone and PAL; ambi-
+                       ent temperature maintained at 13 °C. (b) Transducer array setup: signals from the microcontroller
+                       are amplified and sent to each transducer; received acoustic signals are captured and pre-amplified
+                       for analysis.
+
+                             An Earthworks M30 microphone(Earthworks Audio, Milford, NH, USA) was used
+                       to acquire acoustic data. The microphone supports measurements up to 95 kHz. Key
+
+                                                                                                                    https://doi.org/10.3390/modelling7010020
+Modelling 2026, 7, 20                                                                                                                                          12 of 20
+
+                       specifications include a self-noise level of 20 dBA, a sensitivity of -29 dBV/Pa, and a 24­
+                       48 V phantom power supply (10 mA). Although the nominally flat response is specified
+                       below 30 kHz, the microphone was used in this study to capture ultrasonic signals at 40­
+                       42 kHz with consistent measurement settings across all cases.
+
+                       3.2. Measurement Procedure
+                             As shown in Figure 5b, the measurement procedure was carried out based on the
+
+                       experimental setup described in Section 3.1. First, the array was mounted on the rotary
+                       table and aligned with the measurement microphone along the main radiation axis at a
+                       fixed distance of 2 m. The driving signals were generated by the Arduino-based control
+                       system, where the phase and amplitude of each channel were configured according to the
+                       predefined array configuration and steering angle.
+
+                             For each test case, the array was driven with ultrasonic carriers at 40 kHz and 42 kHz.
+                       The steering angle was set by applying the corresponding phase delays to each channel.
+                       The sound pressure level was recorded by the measurement microphone while the rotary
+                       table was rotated in angular steps of 2.5°, covering the entire measurement arc.
+
+                             At each angular position, the acoustic signal was acquired and processed using the
+                       audio analysis software to extract the SPL. The resulting angular sound pressure level
+                       data were then used to construct the directivity patterns for both uniform and optimized
+                       configurations. This procedure was repeated for all selected steering angles and array con-
+                       figurations to ensure consistent comparison between simulation and experimental results.
+
+                       4. Results and Discussion
+
+                             This section presents the optimization simulations, experiments, and analysis results,
+                       with a focus on the performance improvements achieved using the PSO algorithm. The
+                       analysis includes comparisons of sound pressure levels, directivity patterns, and the im-
+                       pact of different transducer arrangements.
+
+                       4.1. Optimization Results and Convergence Behaviour
+                             Based on the optimization procedure described in Section 2, this section analyses the
+
+                       convergence behaviour and performance of the optimized array configurations. The opti-
+                       mized layouts were obtained for different steering angles by systematically adjusting the
+                       steering direction and identifying the corresponding transducer arrangement that best
+                       improves the sound pressure distribution and suppresses sidelobes. The simulation meth-
+                       odology and array topology are described in the Simulation section above. As described
+                       in Section 2, random perturbations were applied to stagnating particles to reduce the risk
+                       of premature convergence to local minima. This mechanism improved exploration and
+                       led to consistent optimization behaviour across repeated runs.
+
+                             The optimization results in Figure 6 and Table 2 show a clear dependence on the
+                       steering angle . Overall, the optimized arrays achieve larger main-lobe­to­sidelobe sep-
+                       aration at higher steering angles, indicating that non-uniform spacing can mitigate grat-
+                       ing-lobe effects within the considered steering range. Nevertheless, sparse layouts remain
+                       subject to practical limitations, and excessive steering may still lead to degraded sidelobe
+                       performance.
+
+                       https://doi.org/10.3390/modelling7010020
+Modelling 2026, 7, 20                               13 of 20
+
+                       Figure 6. Directivity patterns of an optimized array with 8 elements ( = 8), each with a width of
+                       1 cm, operating at an ultrasound frequency of 40 kHz ( = 40 kHz). The patterns are shown for
+                       optimal angles  of 60°,65°, 70° and 75°. The colour variations represent the results of three inde-
+                       pendent simulations conducted under the same conditions.
+
+                       Table 2. Array optimization results at different steering angles  and comparison with the results
+                       of the linear array.
+
+                        ( )  Optimized Array  (dB)  Uniform Array  (dB)
+                                         2.5486               -3.1203
+                         60              4.5273               -0.7920
+                         65              6.0791               1.2819
+                         70              7.1327               5.2665
+                         75
+
+                             We performed multiple runs to ensure the robustness of the optimization results. The
+                       final optimized array configurations for each steering angle are shown in Figure 7.
+
+                       Figure 7. The best array configurations obtained through optimization for different optimal angle
+                       . The array consists of 8 elements, each with a base length of 1 cm, and operates at an average
+                       ultrasound frequency of 40 kHz ( = 40 kHz).
+
+                                                                                                                    https://doi.org/10.3390/modelling7010020
+Modelling 2026, 7, 20                                                                                                                                          14 of 20
+
+                             Table 2 compares the main-lobe­sidelobe difference (, in dB) between the optimized
+                       arrays and the uniform array for steering angles  = 60°, 65°, 70°, and 75°. The improve-
+                       ment becomes more pronounced as  increases: for example,  increases from -3.12 dB
+                       (uniform) to 2.55 dB (optimized) at  = 60°, and from 5.27 dB to 7.13 dB at  = 75°. These
+                       results suggest that non-uniform spacing provides limited benefit at smaller steering an-
+                       gles but offers a clearer advantage at moderate-to-large steering angles.
+
+                             Figure 8a compares the main-lobe­sidelobe difference  (dB) of the uniform array
+                       and the optimized arrays (designed at  = 60°, 65°, 70°, and 75°) when evaluated over
+                       steering angles  = 60­75°. The uniform array exhibits a relatively stable but generally
+                       lower , indicating limited sidelobe (or grating-lobe) suppression at off-axis steering. In
+                       contrast, the optimized arrays show angle-dependent improvements, with more pro-
+                       nounced gains at higher steering angles (  70°), where larger  values indicate stronger
+                       main-lobe concentration and better sidelobe control.
+
+                       (a)  (b)
+
+                       Figure 8. (a) Comparison of the main lobe to sidelobe differences  (dB) for seven distinct array
+                       configurations, including a Uniform Array and six Optimized arrays,  = 60­75°. (b) Box-plot sum-
+                       mary of  for each configuration across all evaluated steering angles; each box depicts the interquar-
+                       tile range (IQR).
+
+                             Figure 8b summarizes  using box plots across the evaluated angles. The uniform
+                       array has a low median and a narrow interquartile range (IQR), reflecting consistent yet
+                       weaker performance. The optimized arrays generally present higher medians, demon-
+                       strating improved directivity, while exhibiting wider IQRs, suggesting increased variabil-
+                       ity associated with angle-specific optimization and the presence of multiple local optima.
+
+                       4.2. Westervelt Directivity Analysis
+
+                             Given that the signal produced by a PAL is generated through the modulation of two
+                       high-frequency signals, nonlinear effects result in the production of a new signal at a fre-
+                       quency equal to the difference between the two [37]. The product directivity is calculated
+                       using the equation 1  1, which serves as a critical step for determining Westervelt di-
+                       rectivity. The Westervelt directivity, as shown, follows the calculation based on function
+                       (11) referenced earlier. By combining the directivities of the two primary signals, this ap-
+                       proach enables estimation of the nonlinear acoustic behaviour in PALs. Using this formu-
+                       lation, we compute the Westervelt directivity for both simulated and measured results.
+
+                             From Figure 9, the optimized array exhibits a smoother directivity pattern than the
+                       uniform array. At steering angles of  = 75°, the values for the uniform array and the
+                       optimal array are quite similar. At steering angles of  = 65° and 70°, the optimal array
+
+                                                                                                                    https://doi.org/10.3390/modelling7010020
+Modelling 2026, 7, 20                                                                                                                                          15 of 20
+
+                       outperforms uniform arrays. However, at steering angles of  = 60°, the optimal array
+                       loses its high directivity, whereas both uniform arrays generate high directivity at the
+                       grating lobe angles.
+
+                                                                 (a)
+
+                                                                 (b)
+                       Figure 9. Simulated and measured Westervelt directivity of the uniform array (a) and optimal array
+                       (b) at 40 kHz and 42 kHz for steering angles  = 60, 65, 70, 75;.
+
+                             Overall, The optimal array effectively reduces sidelobes at steering angles between
+                        = 65­75° while maintaining the main-lobe directivity. At lower steering angles, the
+                       benefit becomes less pronounced because prominent grating lobes are not observed for
+
+                                                                                                                    https://doi.org/10.3390/modelling7010020
+Modelling 2026, 7, 20                                                     16 of 20
+
+                       either configuration. These results indicate that the advantage of the optimized layout lies
+                       in improving sidelobe or grating-lobe control within a practical steering range.
+
+                             Table 3 presents a comparative analysis of the directivity difference  between the
+                       main lobe and the grating lobe for both optimized and uniform arrays at  = 60°, 65°, 70°,
+                       and 75°. Both simulation and experimental results are included. The optimized arrays
+
+                       show higher main lobe-to-grating lobe differences, particularly at larger steering angles,
+                       confirming their superior directivity control. The comparison between simulated and ex-
+                       perimental data further validates the effectiveness of the proposed optimization approach
+                       in real-world implementations. The optimized array exhibits a clear improvement in main
+                       grating lobe separation for  = 65­75°, while limited benefit is observed at  = 60°, con-
+                       sistent with the directivity patterns in Figure 9.
+
+                       Table 3. Main grating lobe level difference at optimal steering angle , defined as  =
+                       max(Main() - Side()). Positive values indicate effective grating-lobe suppression.
+
+                        ( )          Experiment Data (dB)  Optimal Array
+                         60  Uniform Array                      -3.8191
+                         65                                     5.88176
+                         70       -1.966                        4.53129
+                         75        2.950                        4.47579
+                                   3.449
+                        ( )        3.538                   Optimal Array
+                         60                                     -1.539
+                         65          Simulation Data (dB)        0.917
+                         70  Uniform Array                      3.6541
+                         75                                     5.6765
+                                  -9.2042
+                                  -4.1416
+                                  1.4966
+                                  6.46171
+
+                       4.3. Monte Carlo Robustness Analysis
+
+                             To evaluate the sensitivity and robustness of the proposed method under practical
+                       uncertainties, multiple representative cases corresponding to different steering angles
+                       were investigated through Monte Carlo analysis. The analysis explicitly accounts for ele-
+                       ment-level fabrication and driving errors while keeping the array topology and steering
+                       angle fixed for each case. For each steering angle ( = 60°, 65°, 70°, and 75°), both the
+                       optimized non-uniform array and the corresponding uniform array were considered, re-
+                       sulting in eight Monte Carlo cases in total. This design enables a fair, angle-consistent
+                       comparison between each optimized configuration and its uniform counterpart.
+
+                             For each case, 100 Monte Carlo trials were performed. Position errors were modelled
+                       as independent Gaussian perturbations with a standard deviation of 0.5 mm, and ampli-
+                       tude errors were modelled as independent Gaussian fluctuations with a 20% standard
+                       deviation. The two error sources were sampled independently for each element and each
+                       trial. This setup reflects the practical requirement that the primary acoustic energy should
+                       remain concentrated near the intended steering direction rather than relying on the global
+                       maximum of the radiation pattern.
+
+                             Figure 10 shows the Monte Carlo distributions of  for all eight array configurations
+                       under random element-level uncertainties. The Monte Carlo analysis is intended to verify
+                       whether the proposed numerical model can predict the performance degradation trends
+                       observed in laboratory experiments, rather than to reproduce individual experimental
+                       measurements. The red markers indicate experimental results and are shown for refer-
+                       ence.
+
+                                                           https://doi.org/10.3390/modelling7010020
+Modelling 2026, 7, 20  17 of 20
+
+                       Figure 10. Monte Carlo distributions of  for optimized and uniform arrays at different steering
+                       angles.
+
+                             Across all steering angles, the optimized arrays consistently exhibit higher mean 
+                       values and narrower distributions than their uniform counterparts, indicating improved
+                       robustness under combined position and amplitude uncertainties. At  = 60°, both con-
+                       figurations show negative mean  values, reflecting the experimentally observed degra-
+                       dation under strong steering conditions, while the optimized array maintains a systematic
+                       performance advantage. As the steering angle increases, the predicted degradation be-
+                       comes less pronounced, and the robustness of the optimized configurations is further en-
+                       hanced.
+
+                             In all cases except optimal array  = 65°, the experimental measurements fall within
+                       or close to the corresponding Monte Carlo distributions, confirming that the proposed
+                       model successfully captures the experimentally observed degradation trends and pro-
+                       vides a statistically meaningful explanation for the discrepancies between ideal simula-
+                       tions and laboratory results.
+
+                       5. Conclusions
+
+                             This study presents a systematic optimization framework for PALs aimed at improv-
+                       ing far-field directivity under practical array constraints. By integrating a convolution-
+                       based directivity model with FEM simulations, the proposed approach enables accurate
+                       evaluation of acoustic field behaviour for non-uniform array configurations and supports
+                       efficient design iteration guided by high-fidelity numerical modelling. The framework
+                       shows consistent performance across multiple steering-angle cases and remains stable un-
+                       der stochastic perturbations, indicating robustness to practical uncertainties; the compar-
+                       ative benchmark further confirms its computational efficiency.
+
+                             PSO is adopted to synthesise array layouts because it offers a favourable balance be-
+                       tween solution quality and computational cost in high-dimensional design spaces. Both
+                       simulations and experiments show that the optimised non-uniform arrays outperform
+                       conventional uniform configurations across the tested steering range (60­75°), achieving
+                       up to a 5 dB improvement in main-lobe-to-sidelobe (or grating-lobe) separation. Simula-
+                       tions exhibit idealised patterns, while the measurements show the same trends with small
+
+                                                                                                                    https://doi.org/10.3390/modelling7010020
+Modelling 2026, 7, 20                                                            18 of 20
+
+                       deviations attributable to phase errors, transducer variability, and minor alignment devi-
+                       ations.
+
+                             The results also reveal an inherent trade-off between steering capability and grating-
+                       lobe suppression, highlighting the need for application-specific design balance. Although
+                       the experimental validation was limited to a 2 m far-field measurement distance, the pro-
+                       posed framework offers a practical and computationally efficient route to steering-capable
+                       PAL design under non-ideal spacing conditions and provides a solid basis for future ex-
+                       tensions such as improved hardware synchronization and uncertainty-aware optimiza-
+                       tion.
+
+                       Author Contributions: Conceptualization, S.M.; methodology, S.M.; software, S.M.; validation,
+                       S.M.; formal analysis, S.M.; investigation, S.M.; resources, Y.H. and M.N.E.; data curation, S.M.;
+                       writing--original draft preparation, S.M.; writing--review and editing, Y.H. and M.N.E.; visualiza-
+                       tion, S.M.; supervision, Y.H. and M.N.E.; project administration, M.N.E.; funding acquisition,
+                       M.N.E. All authors have read and agreed to the published version of the manuscript.
+
+                       Funding: This research received no external funding.
+
+                       Data Availability Statement: Restrictions apply to the availability of the underlying raw measure-
+                       ments due to third-party facility agreements and potential intellectual property protection. Data
+                       may be shared by the corresponding author upon reasonable request and subject to appropriate
+                       confidentiality safeguards.
+
+                       Acknowledgments: The authors thank the technical staff of the anechoic chamber for assistance
+                       with instrumentation and measurements.
+
+                       Conflicts of Interest: The authors declare no conflicts of interest.
+
+                       Abbreviations
+
+                       The following abbreviations are used in this manuscript:
+
+                       2D    Two-Dimensional
+                       3D    Three-Dimensional
+                       FEM   Finite Element Method
+                       FE    Function Evaluation
+                       GA    Genetic Algorithm
+                       KZK   Khokhlov­Zabolotskaya­Kuznetsov Equation
+                       PAL   Parametric Array Loudspeaker
+                       PSL   Peak Sidelobe Level
+                       PSO   Particle Swarm Optimization
+                       QPSO  Quantum-Behaved Particle Swarm Optimization
+                       SA    Simulated Annealing
+                       SOS   Symbiotic Organisms Search
+                       SPL   Sound Pressure Level
+                       TLBO  Teaching­Learning-Based Optimization
+
+References
+
+1. Mei, S.; Xu, H.; Hu, Y.; Alkahtani, M.; Wang, Y. The Parametric Array Speaker: A Review. In Proceedings of the Conference Pro-
+       ceedings of 2022 2nd International Joint Conference on Energy, Electrical and Power Engineering; Hu, C., Cao, W., Eds.; Springer
+       Nature: Singapore, 2023; pp. 1254­1271.
+
+2. Loriga, A. Nonlinear Model and Its Inverse of an Audio System. arXiv 2017, arXiv:1703.00009.
+3. Zhong, J.; Qiu, X. Acoustic Waves Generated by Parametric Array Loudspeakers; CRC Press: Boca Raton, FL, USA, 2024.
+4. Zhong, J.; Kirby, R.; Qiu, X. A Spherical Expansion for Audio Sounds Generated by a Circular Parametric Array Loudspeaker.
+
+       J. Acoust. Soc. Am. 2020, 147, 3502­3510.
+
+                                                                                 https://doi.org/10.3390/modelling7010020
+Modelling 2026, 7, 20  19 of 20
+
+5. Kumar, M.J.; Praveen, P.; Dheeraj, N.; Kumar, K. Heavy Hypersonic Dual Acoustic System. Dept. Electron. Commun. Eng., Anil
+       Neerukonda Inst. Technol. Sci.(ANITS), Sangivalasa, Bheemunipatnam Mandal, Visakhapatnam, India, B. Tech. Project Rep 2021. Avail-
+       able online: https://nriims.info/ece/Project%20Reports%202020-21%20NAAC/Sec-C/C-16.pdf (accessed on 12 January 2026).
+
+6. Zhong, J.; Kirby, R.; Karimi, M.; Zou, H. A Cylindrical Expansion of the Audio Sound for a Steerable Parametric Array Loud-
+       speaker. J. Acoust. Soc. Am. 2021, 150, 3797­3806.
+
+7. Olszewski, D.; Linhard, K. 3g-3 Optimum Array Configuration for Parametric Ultrasound Loudspeakers Using Standard Emit-
+       ters. In Proceedings of the 2006 IEEE Ultrasonics Symposium, Vancouver, BC, Canada, 3­6 October 2006; IEEE: New York, NY,
+       USA, 2006.
+
+8. Tanaka, N.; Tanaka, M. Active Noise Control Using a Steerable Parametric Array Loudspeaker. J. Acoust. Soc. Am. 2010, 127,
+       3526­3537.
+
+9. Adachi, A.; Hashiguchi, H. Application of Parametric Speakers to Radio Acoustic Sounding System. Atmos. Meas. Tech. 2019,
+       12, 5699­5715.
+
+10. Nakagawa, K.; Shi, C.; Kajikawa, Y. Beam Steering of Portable Parametric Array Loudspeaker. In Proceedings of the 2019 Asia-
+       Pacific Signal and Information Processing Association Annual Summit and Conference (APSIPA ASC), Lanzhou, China, 18­21
+       November 2019; IEEE: New York, NY, USA, 2019; pp. 1824­1827.
+
+11. Komatsuzaki, T.; Iwata, Y. Active Noise Control Using High-Directional Parametric Loudspeaker. J. Environ. Eng. 2011, 6, 140­
+       149.
+
+12. Tanaka, K.; Shi, C.; Kajikawa, Y. Binaural Active Noise Control Using Parametric Array Loudspeakers. Appl. Acoust. 2017, 116,
+       170­176.
+
+13. Tang, K.; Wang, Y.; Wang, S.; Gao, D.; Li, H.; Liang, X.; Sebbah, P.; Li, Y.; Zhang, J.; Shi, J. Hyperuniform Disordered Parametric
+       Loudspeaker Array. Phys. Rev. Appl. 2023, 19, 054035. https://doi.org/10.1103/PhysRevApplied.19.054035.
+
+14. Zhong, J.; Zou, H.; Lu, J.; Zhang, D. A Modified Convolution Model for Calculating the Far Field Directivity of a Parametric
+       Array Loudspeaker. J. Acoust. Soc. Am. 2023, 153, 1439­1451.
+
+15. Fan, F.; Zhu, Y.; Ma, W.; Qin, L.; Wu, M.; Kuang, Z.; Yang, J. A Least Squares Based Optimization Method for Grating Lobes
+       Suppression in Parametric Array Loudspeakers. Appl. Acoust. 2025, 237, 110757. https://doi.org/10.1016/j.apacoust.2025.110757.
+
+16. Ballad, E.M.; Vezirov, S.Y.; Pfleiderer, K.; Solodov, I.Y.; Busse, G. Nonlinear Modulation Technique for NDE with Air-Coupled
+       Ultrasound. Ultrasonics 2004, 42, 1031­1036.
+
+17. Ji, P.; Gan, W.-S.; Tan, E.-L.; Yang, J. Performance Analysis on Recursive Single-Sideband Amplitude Modulation for Parametric
+       Loudspeakers. In Proceedings of the 2010 IEEE International Conference on Multimedia and Expo, Singapore, 19­23 July 2010;
+       IEEE: New York, NY, USA, 2010; pp. 748­753.
+
+18. Ji, P.; Ye, C.; Tian, J. Development of a Directional Loudspeaker System for Sound Reproduction. In Proceedings of the 2007
+       IEEE International Conference on Multimedia and Expo, Beijing, China, 2­5 July 2007; IEEE: New York, NY, USA, 2007; pp.
+       591­594.
+
+19. Mu, Y.; Ji, P.; Ji, W.; Wu, M.; Yang, J. Modeling and Compensation for the Distortion of Parametric Loudspeakers Using a One-
+       Dimension Volterra Filter. IEEE/ACM Trans. Audio Speech Lang. Process. 2014, 22, 2169­2181.
+
+20. Saunders, G.A. Physical Ultrasonics. Phys. Bull. 1970, 21, 364. https://doi.org/10.1088/0031-9112/21/8/024.
+21. Gan, W.-S.; Yang, J.; Kamakura, T. A Review of Parametric Acoustic Array in Air. Appl. Acoust. 2012, 73, 1211­1219.
+22. Jamunaa, D.; Mahanti, G.K.; Hasoon, F.N. Synthesis of Phase-Only Position Optimized Reconfigurable Uniformly Excited Lin-
+
+       ear Antenna Arrays with a Single Null Placement. J. King Saud Univ. Eng. Sci. 2020, 32, 360­367.
+23. Cervenka, M.; Bednarik, M. Non-Paraxial Model for a Parametric Acoustic Array. J. Acoust. Soc. Am. 2013, 134, 933­938.
+24. Shi, C.; Kajikawa, Y. A Convolution Model for Computing the Far-Field Directivity of a Parametric Loudspeaker Array. J. Acoust.
+
+       Soc. Am. 2015, 137, 777­784.
+25. Blackstock, D.T. Fundamentals of Physical Acoustics; John Wiley & Sons: Hoboken, NJ, USA, 2000.
+26. Poli, R. Analysis of the Publications on the Applications of Particle Swarm Optimisation. J. Artif. Evol. Appl. 2008, 2008, 685175.
+
+       https://doi.org/10.1155/2008/685175.
+27. Shi, Y. Particle Swarm Optimization: Developments, Applications and Resources. In Proceedings of the Proceedings of the 2001
+
+       Congress on Evolutionary Computation (IEEE Cat. No. 01TH8546), Seoul, Republic of Korea, 27­30 May 2001; IEEE: New York,
+       NY, USA, 2001; Volume 1, pp. 81­86.
+28. Cerný, V. Thermodynamical Approach to the Traveling Salesman Problem: An Efficient Simulation Algorithm. J. Optim. Theory
+       Appl. 1985, 45, 41­51. https://doi.org/10.1007/BF00940812.
+29. Ingber, L. Simulated Annealing: Practice versus Theory. Math. Comput. Model. 1993, 18, 29­57.
+
+                                                                                                                                              https://doi.org/10.3390/modelling7010020
+Modelling 2026, 7, 20  20 of 20
+
+30. Henderson, D.; Jacobson, S.H.; Johnson, A.W. The Theory and Practice of Simulated Annealing. In Handbook of Metaheuristics;
+       Glover, F., Kochenberger, G.A., Eds.; International Series in Operations Research & Management Science; Kluwer Academic
+       Publishers: Boston, MA, USA, 2003; Volume 57, pp. 287­319, ISBN 978-1-4020-7263-5.
+
+31. Kazemian, A.; Wang, P.; Zhuang, Y.; Yi, Y. Optimization of the Silicon-Based Aperiodic Optical Phased Array Antenna. Opt.
+       Lett. 2021, 46, 801­804.
+
+32. Wang, Y.; Xu, H.; Wang, B.; Sun, M. Optimal Array Phase Center Study for Frequency-Domain Constrained Space-Time Broad-
+       band Beamforming. IEEE Access 2023, 11, 1295­1305.
+
+33. Zhang, Z.; Su, J. A Novel Optimization Approach for Phased Array Beamforming. In Proceedings of the 2020 7th International
+       Conference on Information Science and Control Engineering (ICISCE), Changsha, China, 18­20 December 2020; IEEE: New
+       York, NY, USA, 2020; pp. 2295­2297.
+
+34. Dufossé, P.; Enderli, C.; Savy, L.; Hansen, N. Phased-Array Antenna Pattern Optimization with Evolution Strategies. In Pro-
+       ceedings of the 2020 IEEE Radar Conference (radarconf20), Florence, Italy, 21­25 September 2020; IEEE: New York, NY, USA,
+       2020; pp. 1­6.
+
+35. Lee, K.C.-M.; Gan, W.-S. Bandwidth-Efficient Recursive Pth-Order Equalization for Correcting Baseband Distortion in Paramet-
+       ric Loudspeakers. IEEE Trans. Audio Speech Lang. Process. 2006, 14, 706­710.
+
+36. Shapiro, J. Genetic Algorithms in Machine Learning. In Machine Learning and Its Applications; Paliouras, G., Karkaletsis, V., Spy-
+       ropoulos, C.D., Eds.; Lecture Notes in Computer Science; Springer: Berlin/Heidelberg, Germany, 2001; Volume 2049, pp. 146­
+       168, ISBN 978-3-540-42490-1.
+
+37. Mei, S.; Hu, Y.; Alkahtani, M.; Esfahani, M.N. A Dual Convolution Model for Grating Lobe Prediction in Directivity of Para-
+       metric Array Loudspeakers. IEEE Access 2025, 13, 39183­39191.
+
+Disclaimer/Publisher's Note: The statements, opinions and data contained in all publications are solely those of the individual au-
+thor(s) and contributor(s) and not of MDPI and/or the editor(s). MDPI and/or the editor(s) disclaim responsibility for any injury to
+people or property resulting from any ideas, methods, instructions or products referred to in the content.
+
+                       https://doi.org/10.3390/modelling7010020
+

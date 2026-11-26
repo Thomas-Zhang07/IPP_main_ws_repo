@@ -1,0 +1,8 @@
+Reading pref.tcl
+
+# 2025.2
+
+# waves_old.wlf opened as dataset "waves_old"
+# do view2.do
+# ** Error: Active logfile is not in simulation mode
+# Executing ONERROR command at macro ./view2.do line 2

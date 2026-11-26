@@ -1,0 +1,231 @@
+Fibonacci Spiral Arranged Ultrasound Phased Array
+                    for Mid-Air Haptics
+
+       1st Adam Price                                                    2nd Benjamin Long
+       Ultrahaptics Ltd.                                                   Ultrahaptics Ltd.
+                                                                              Bristol, UK
+          Bristol, UK
+adam.price@ultrahaptics.com                                              ben@ultrahaptics.com
+
+   Abstract--Ultrasound phased arrays are most commonly used             pattern. For elements in an ultrasonic array the aforementioned
+in non-destructive testing and medical diagnostic applications.          straight arms result in grating lobes, making the Fibonacci
+More recently mid-air haptic technology has utilized the acoustic        spiral pattern an effective method of removing grating lobes.
+radiation force to produce skin deformations and thus recreate
+the sensation of touch. The acoustic radiation force is the time-           Another method to remove grating lobes is element spacing;
+averaged force exerted by an acoustic wave on a medium and               if the element spacing in an array is less than /2 grating lobes
+can be spatially and temporally controlled using electronically          will not be produced. Various approaches have been attempted
+steered phased ultrasonic arrays. An important problem with              to acheive this desired spacing. For example Konetzke et al. [2]
+most phased arrays has been the presence of grating lobes arising        used acoustic wave guides although this has the disadvantage
+from the periodicity of array element spacing and arrangement            of adding thickness and mounting complexity to an array.
+that are detrimental to haptic sensations. We show that by               Korobov et al. placed transducers into Fresnel zone rings
+arranging the elements of an array in a Fibonacci spiral, one            [3] with each excited out of phase, but with this design
+can suppress grating lobes. We discuss the benefits of fabricating       there was no control of the focal point position. Kazys et
+Fibonacci spiral arrays as opposed to sparse arrays. We also             al. [4] constructed an array where the piezoelectric crystals
+discuss the benefits of removing grating lobes for mid-air haptic        vibrated lengthwise along the thinnest dimension to achieve
+applications such as control panels for automotive dashboards            less than /2 spacing, however the design is not very efficient
+and immersive experiences in VR.                                         at coupling to the air. Sparse arrays are also another important
+                                                                         array design that through random positioning of elements
+   Index Terms--phased array, Fibonacci spiral, ultrasound, hap-         avoids introducing lines of symmetry [5], however as elements
+tics                                                                     are spread out more in this design the peak amplitude of a focal
+                                                                         point is dramatically diminished.
+                          I. INTRODUCTION
+                                                                                            II. LINEAR PHASED ARRAYS
+   Many engineering designs take inspiration from nature,
+from a kingfisher's beak on the front of a Japanese bullet                  The phenomenon of grating lobes can be explained and
+train to a burdock burrs' microscopic hooks on a velcro                  explored through the Huygens model, a ray tracing model
+strap. Biomimicry is a powerful tool and the arrangement                 originally used in the field of optics. In the Huygens model
+of transducers in a phased array can take inspiration from               each point on a wavefront is regarded as a source of waves
+the arrangement of seeds on a sunflower. The most efficient              expanding from that point, these wavelets are assumed to not
+packing of seeds of the same size would be a honeycomb                   go through any physical changes and to interact with each
+pattern. However as a sunflower is continuously growing new              other linearly. Starting with the simplest case of a linear phased
+seeds from the centre it needs a pattern that can evolve                 array of point sources one can characterize the beam directivity
+while still making the most economical use of space [1].                 of an array with N elements, a given spacing d, and a steering
+The arrangement that achieves this is the Fibonacci spiral.              angle S. Equation (1) defines the far field pressure at angles
+Imagine placing seeds one by one around a central axis at                from the centre of the array, normalised at the steering angle:
+angular intervals of any exact fraction of  and at an increasing
+radial distance. Eventually the pattern repeats and will be                     sin  d(sin  s  -sin  )  N
+shaped like a star with a number of straight arms equal to the                              
+denominator. Placing seeds separated by the golden angle, as             H() =                                                                          (1)
+it is irrational and does not have a denominator by definition,                        d(sin s-sin )
+both packs seeds efficiently and does not exhibit these straight                N sin             
+arms, so no lines of symmetry appear in a Fibonacci spiral
+                                                                         Although there are differences between a steering beam (con-
+   This project has received funding from the European Unions Horizon    verging waves to an angle) and a focusing beam (converging
+2020 research and innovation programme under grant agreement No 737087,  waves to a point), equation (1) can be used to illustrate
+LEVITATE Project
+
+Authorized licensed use limited to: Shanghai Jiaotong University. Downloaded on November 25,2026 at 11:28:18 UTC from IEEE Xplore. Restrictions apply.
+Fig. 1. Normalised directivity function for an evenly spaced linear array Fig. 3. Simulations of acoustic fields for a rectilinear and fibonacci spiral
+steered at angles of 0 and 30
+                                                                              array
+
+Fig. 2. Acoustic field slice for focal points 20cm above the array at 0o and  3 shows simulations of the resulting focused acoustic field
+30o from the centre                                                           from 2D rectilinear and Fibonacci spiral arrays. The absence
+                                                                              of grating lobes is clear for the Fibonacci spiral, in contrast to
+important features of array characteristics. Figure 1 shows an                the rectilinear array. Note that the apodization technique can
+example of two different steering angles (0 and 30), with a                   also be seen clearly in the rectilinear array as the grating lobes
+linear array of 16 transducers (N = 16) with an ultrasonic car-               are now more than 10 dB below the focal point level. Due to
+rier wavelength of 8.575 mm and element spacing of 10.5 mm.                   electronic connector limitations and the transducers' physical
+The main lobes appear along the steering angle, while side                    size, a small perturbation is applied to the exact Fibonacci
+lobes cover almost all of the other angles. The grating lobes                 spiral design to obtain a physical layout of 191 transducers
+have exactly the same magnitude as the main lobe. In practice                 mounted on a 16×16 cm PCB (see Figure 5).
+the amplitude directivity of the transducers will cause grating
+lobes to have lower amplitudes than the main lobe.                               Having found a design that removes grating lobes, it is im-
+                                                                              portant to check the comparative performance of the fabricated
+   Figure 2 shows the same array configuration (linear) as                    array. An optimal packing is always a regular lattice, which for
+Figure 1 along with the same two steering angle examples, but                 transducers larger in diameter than /2 would always produce
+now the array is focussing. One can see from Figure 2 how the                 grating lobes. So the best packing of elements that does not
+non-uniform directivity of a transducer affects the amplitude of              is by definition less densely populated. This results in a lower
+the grating lobes. The non-uniform directivity means grating                  output power per unit area; in this case a reduction in output
+lobes are considerably lower in amplitude when the focal point                power of approximately 25% (as the sunflower design uses
+is positioned in the middle of the array compared to when the                 191 transducers in place of 256). The reduction in density is
+focal point is angled off to one side.                                        not completely disadvantageous, as measures to heatsink the
+                                                                              transducers can be reduced for this case. A further metric for
+   A technique described in Long et al. [6] shows how one                     assessing the performance of focussing arrays is the Array
+can control the amplitudes of all the transducers in the array                Performance Indicator (API) defined in equation (2).
+to suppress grating lobes by using a minimum-norm solution.
+Its effects are similar to apodization wherein the closer the                              API  =  Volume-6 dB                                          (2)
+transducer is to the desired focus the higher the amplitude.                                             3
+
+                                                                              Holmes et al. [7] originally used the API to determine an
+
+                                                                              array's ability to detect and image a point-like reflector. Here,
+
+                                                                              we are using it to determine the array's ability to focus to
+
+                                                                              the smallest possible point in space. This point can then be
+
+                                                                              detected by a human hand as the smallest building block of
+
+                                                                              a mid-air haptic sensation. Note that Holmes et al. were only
+
+                                                                              concerned with the area the array could focus on, whereas in
+
+                                                                              mid-air haptic applications depth is also important so the API
+
+                                                                              metric has been extended to account for the focus volume.
+
+                                                                              The smaller the API value, the better the array is at focusing
+
+III. FIBONACCI SPIRAL PHASED ARRAYS                                           to a point.
+
+   A Fibonacci spiral phased     array can be created  by placing                          IV. EXPERIMENTAL INVESTIGATIONS
+the nth transducer at the polar  coordinate given by   r(n) = n
+                                                                                 A scanning laser Doppler vibrometer (SLDV) was used
+and (n) = 2n, where  = (1 + 5)/2  1.618. Figure                               to investigate grating lobe occurrence while the microphone
+
+Authorized licensed use limited to: Shanghai Jiaotong University. Downloaded on November 25,2026 at 11:28:18 UTC from IEEE Xplore. Restrictions apply.
+                                                                       Fig. 6. Experimental results of focal point profiles for rectilinear and
+                                                                       Fibonacci Spiral arrays
+
+Fig. 4. Microphone and robot arm experimental set up                   power supply and the PXIe-4310 National Instruments Analog
+                                                                       Input Module were used to acquire the data. With sound
+                                                                       pressure level being very sensitive to position a robot arm
+                                                                       (KUKA KR10 1100 sixx) was used to position the microphone
+                                                                       in various locations in the acoustic field (Figure 4).
+
+                                                                       A. Scanning Laser Doppler Vibrometry Results
+
+                                                                          Figure 5 shows the acoustic field images for the two types of
+                                                                       array; focussing to a point 5 cm off centre, 20 cm above each
+                                                                       array. A grating lobe to the top right of the image is clearly
+                                                                       visible in the rectilinear array acoustic field image. SLDV
+                                                                       images are created by using a phase reference (in this case an
+                                                                       internal electrical 40 kHz clock signal produced by the logic
+                                                                       board of the array was used) that stitches all the measurement
+                                                                       points together. Figure 5 shows the RMS velocity, but the data
+                                                                       capture can also be set with a timer and with an appropriate
+                                                                       trigger more locations of focal points can be investigated.
+                                                                       By using the phase sequence that moves a focal point in a
+                                                                       path across the array, a measurement may be triggered so the
+                                                                       changes in grating lobes with different focal point positions
+                                                                       can be observed.
+
+Fig. 5. Acoustic field images and photographs of Fibonacci Spiral and  B. Microphone Results
+Rectilinear arrays
+                                                                          Microphone measurements were taken in the acoustic
+was used to investigate the focal point profiles to determine          fields of the Fibonacci Spiral array and the Rectilinear array
+the API of each array. Although quantified sound field data            (16×16). All scans involved having the focal point centred
+may be gathered using an SLDV system, for a focussing                  20 cm above the array. The focal point was located by se-
+beam the experimental setup required becomes impractical               lecting the point of maximum pressure in the field around
+[8]. Therefore for this experiment the images obtained are 2D          the predicted position of the focus. After refining its location,
+projections of the 3D sound field. As the laser traverses the          the microphone was then scanned in millimetre increments
+acoustic field, pressure variations change the local refractive        through the focal point to determine its shape. Random fluc-
+index of the air which are then detected by the SLDV as the            tuations in the field produced errors in the measurements,
+vibration of a "virtual" surface, when the beam reflects back          temperature changes in the room are one likely cause of this
+into the device. The root-mean-squared (RMS) velocity of the           error. Error bars show ±1 standard deviation calculated from
+vibration has a known relationship to acoustic pressure [9]. For       the distribution of these fluctuations when measured at the
+the microphone measurements, a pressure field (Bru¨el & Kjær           focal point, a point 6 mm outside the focus in the horizontal
+Type 4138-L-015) microphone with a Bru¨el & Kjær Type 2829             plane and 40 mm above the focus in the vertical plane in
+                                                                       Figure 6. All plots are shown to a relative decibel scale for
+                                                                       ease of comparison. The results in Figure 6 were then used to
+                                                                       calculate an API for each array, shown in Table I.
+
+Authorized licensed use limited to: Shanghai Jiaotong University. Downloaded on November 25,2026 at 11:28:18 UTC from IEEE Xplore. Restrictions apply.
+   TABLE I                                                          grating lobes is also very important when designing haptic
+API RESULTS                                                         sensations to indicate different functions for the on-board car
+                                                                    control panel. A grating lobe can be confused for a focal point,
+Array type   API                                                    with the wrong selection made in the menu user interface.
+                                                                    For VR applications a sensation caused by a grating lobe in
+Rectilinear (16×16) 17.9                                            an unintended location can have a detrimental effect on the
+                                                                    immersion of the user.
+Fibonacci Spiral 17.2
+                                                                       For future work, we would like to assess more completely
+                           V. DISCUSSION                            changes in the API indicator through the space of all possible
+                                                                    focus positions, to understand the variance with different
+   The SLDV images provide strong evidence that the Fi-             device layouts and how this affects design choices. In con-
+bonacci spiral array successfully eliminates grating lobes. This    clusion, from a practical standpoint the Fibonacci spiral array
+is a practical solution for mid-air haptic applications where the   yields improvements in mid-air haptic systems that bring the
+presence of grating lobes can confuse the user with unwanted        technology as a whole closer to every day life.
+haptic sensations. Although sparse arrays can also eliminate
+such artefacts, in a real-world implementation where space is                               ACKNOWLEDGMENT
+at a premium, such an array would be impractical. Further, we
+have shown that the extent of the focus of a Fibonacci spiral          This project has received funding from the European Unions
+array is more compact in the z-axis, leading to an advantage        Horizon 2020 research and innovation programme under grant
+in localisation of the ultrasonic mid-air haptics. The x and y      agreement No 737087.
+axes are unchanged as these depend more on the geometric
+footprint [10], and not the transducer arrangement. This said,                                   REFERENCES
+perceptual tests, similar to Ito et al. [11], would have to be
+run to determine whether the changes in profile of the focal         [1] R. Dixon, New Scientist, 17 December 1981.
+point can be detected by the user of a mid-air haptic device.        [2] E. Konetzke et al. "Phased array transducer for emitting 40-kHz air-
+
+   As mid-air haptics becomes mainstream, it is more and                  coupled ultrasound without grating lobes, in Ultrasonics Symposium
+more necessary to understand the design space of ultrasonic               (IUS), 2015 IEEE International, pp. 14, IEEE, 2015.
+arrays and how ramifications of those design choices impact          [3] A. I. Korobov, M. Y. Izosimova, and S. A. Toschov, "Development of
+the user experience. Applications for the technology include              ultrasound focusing discrete array for air-coupled ultrasound generation,
+VR and automotive user interfaces, where its relevance has                Physics Procedia, vol. 3, no. 1, pp. 201207, 2010.
+recently been demonstrated with an experimental validation           [4] R. J. Kazys, R. Sliteris, and J. Sestoke, "Air-coupled low frequency ul-
+of a significant reduction in eyes-off-the-road glance times              trasonic transducers and arrays with PMN32% PT piezoelectric crystals,
+compared with touchscreen center console interfaces [12]. As              Sensors, vol. 17, no. 1, p. 95, 2017.
+the objective of the introduction of mid-air haptic interfaces       [5] S. G. Goss et al. "Sparse random ultrasound phased array for focal
+in this situation is to reduce distraction and increase safety,           surgery." IEEE Transactions on Ultrasonics Ferroelectrics and Frequency
+in such haptic interfaces, it would be unacceptable for grating           Control 43.6: 1111-1121, 1996.
+lobes to distract the user from their task or the road.              [6] B. Long, et al. "Rendering volumetric haptic shapes in mid-air using
+                                                                          ultrasound." ACM Transactions on Graphics (TOG) 33.6: 181, 2014.
+   In a virtual reality setting, the single differentiator between   [7] C. Holmes, B. W. Drinkwater, and P. D. Wilcox, "Post-processing of the
+success and failure is immersion. A misplaced element, stray              full matrix of ultrasonic transmitreceive array data for non-destructive
+effect or grating aberration can break the illusion. Again a              evaluation, NDT E Int., vol. 38, no. 8, pp. 701711, Dec. 2005.
+grating lobe from a rectilinear array can easily interfere with      [8] A. Torras-Rosell, S. Barrera-Figueroa, F. Jacobsen, Sound field recon-
+the experience, generating phantom haptic effects that the                struction using acousto-optic tomography, The Journal of the Acoustical
+content designer did not intend.                                          Society of America 131, 3786-3793, 2012.
+                                                                     [9] R. Malkin, T. Todd and D. Robert, "A simple method for quantitative
+                          VI. CONCLUSION                                  imaging of 2D acoustic fields using refracto-vibrometry." Journal of
+                                                                          Sound and Vibration, 2014.
+   Through simulation and experiment in this paper, the Fi-         [10] G. B. Airy, "On the diffraction of an object-glass with circular aperture."
+bonacci spiral array has been shown to eliminate grating lobes            Transactions of the Cambridge Philosophical Society 5: 283, 1835.
+while keeping the design compact. When measured the focal           [11] M. Ito, et al. "High spatial resolution midair tactile display using 70
+point shape was comparable between the Fibonacci spiral array             kHz ultrasound." International Conference on Human Haptic Sensing
+and the rectilinear array in the horizontal plane, with the               and Touch Enabled Computer Applications. Springer, Cham, 2016.
+Fibonacci spiral array yielding a smaller focus in the vertical     [12] K. Harrington et al. "Exploring the Use of Mid-Air Ultrasonic Feedback
+plane (with respect to the surface of the array).                         to Enhance Automotive User Interfaces." Proceedings of the 10th
+                                                                          International Conference on Automotive User Interfaces and Interactive
+   Its performance was checked further using the API metric               Vehicular Applications. ACM, 2018.
+that showed no appreciable differences in total focal point size
+and thus array quality between the two designs.
+
+   For automotive applications size is critical and a compact
+design that can be placed either on the dashboard or centre
+console is more desirable than a sparse array, the absence of
+
+Authorized licensed use limited to: Shanghai Jiaotong University. Downloaded on November 25,2026 at 11:28:18 UTC from IEEE Xplore. Restrictions apply.
+

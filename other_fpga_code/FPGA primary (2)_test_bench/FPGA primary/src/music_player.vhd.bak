@@ -1,0 +1,130 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
+
+-- 5.12 MHz clock, 32-bit data gate, 64 x 3-bit notes.
+-- swap rising edge -> wait 0.125 s -> play each note for 0.125 s.
+-- note value 0 -> stop; pass data_out through at all other times.
+entity music_player is
+    port (
+        clk8      : in  std_logic;
+        data_out  : in  std_logic_vector(31 downto 0);
+        swap      : in  std_logic;
+        note      : in  std_logic_vector(191 downto 0);
+        music_out : out std_logic_vector(31 downto 0)
+    );
+end entity music_player;
+
+architecture Behavioral of music_player is
+    constant NOTE_TIME : integer := 640000;  -- 0.125s at 5.12 MHz
+
+    type state_type is (S_WAIT, S_PLAY, S_DONE);
+    signal state : state_type := S_DONE;
+
+    signal time_cnt : integer range 0 to NOTE_TIME - 1 := 0;
+    signal half_cnt : integer range 0 to 16383 := 0;
+    signal i        : integer range 0 to 63 := 0;
+
+    signal current_note : std_logic_vector(2 downto 0);
+    signal half_period  : integer range 1 to 16383 := 1;
+    signal wave_high    : std_logic := '1';
+
+    -- Synchronize and edge-detect an asynchronous swap input.
+    signal swap_meta   : std_logic := '0';
+    signal swap_sync   : std_logic := '0';
+    signal swap_sync_d : std_logic := '0';
+    signal swap_rise   : std_logic;
+begin
+    process(clk8)
+    begin
+        if rising_edge(clk8) then
+            swap_meta   <= swap;
+            swap_sync   <= swap_meta;
+            swap_sync_d <= swap_sync;
+        end if;
+    end process;
+
+    swap_rise <= swap_sync and (not swap_sync_d);
+
+    -- Each note is a three-bit field in the packed 192-bit input.
+    current_note <= note(i*3+2 downto i*3);
+
+    process(current_note)
+    begin
+        case current_note is
+            when "001" => half_period <= 9771; -- 262 Hz
+            when "010" => half_period <= 8707; -- 294 Hz
+            when "011" => half_period <= 7758; -- 330 Hz
+            when "100" => half_period <= 7335; -- 349 Hz
+            when "101" => half_period <= 6531; -- 392 Hz
+            when "110" => half_period <= 5818; -- 440 Hz
+            when "111" => half_period <= 5182; -- 494 Hz
+            when others => half_period <= 1;
+        end case;
+    end process;
+
+    -- During the low half-cycle, output 32 zeros. Otherwise pass the input.
+    music_out <= (others => '0')
+        when (state = S_PLAY and wave_high = '0')
+        else data_out;
+
+    process(clk8)
+    begin
+        if rising_edge(clk8) then
+            -- A new swap rising edge restarts the entire sequence.
+            if swap_rise = '1' then
+                state     <= S_WAIT;
+                time_cnt  <= 0;
+                half_cnt  <= 0;
+                i         <= 0;
+                wave_high <= '1';
+            else
+                case state is
+                    when S_WAIT =>
+                        if time_cnt = NOTE_TIME - 1 then
+                            time_cnt  <= 0;
+                            half_cnt  <= 0;
+                            wave_high <= '1';
+
+                            if note(2 downto 0) = "000" then
+                                state <= S_DONE;
+                            else
+                                state <= S_PLAY;
+                            end if;
+                        else
+                            time_cnt <= time_cnt + 1;
+                        end if;
+
+                    when S_PLAY =>
+                        if current_note = "000" then
+                            state     <= S_DONE;
+                            wave_high <= '1';
+                        else
+                            if time_cnt = NOTE_TIME - 1 then
+                                time_cnt  <= 0;
+                                half_cnt  <= 0;
+                                wave_high <= '1';
+
+                                if i = 63 then
+                                    state <= S_DONE;
+                                else
+                                    i <= i + 1;
+                                end if;
+                            else
+                                time_cnt <= time_cnt + 1;
+                                if half_cnt = half_period - 1 then
+                                    half_cnt  <= 0;
+                                    wave_high <= not wave_high;
+                                else
+                                    half_cnt <= half_cnt + 1;
+                                end if;
+                            end if;
+                        end if;
+
+                    when S_DONE =>
+                        null;
+                end case;
+            end if;
+        end if;
+    end process;
+end architecture Behavioral;

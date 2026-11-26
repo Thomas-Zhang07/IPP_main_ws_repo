@@ -1,0 +1,999 @@
+         Received 4 July 2023; accepted 3 August 2023. Date of publication 7 August 2023; date of current version 22 August 2023.
+                                                                        Digital Object Identifier 10.1109/OJUFFC.2023.3303132
+
+  Two-Scale Sparse Spiral Array Design for
+           3D Ultrasound Imaging in Air
+
+            GIANNI ALLEVATO , CHRISTOPH HAUGWITZ (Student Member, IEEE),
+MATTHIAS RUTSCH, RAPHAEL MÜLLER , MARIUS PESAVENTO (Senior Member, IEEE),
+
+                                AND MARIO KUPNIK (Senior Member, IEEE)
+
+     Department of Electrical Engineering and Information Technology, Technische Universität Darmstadt, 64283 Darmstadt, Germany
+                                      CORRESPONDING AUTHOR: G. ALLEVATO (gianni.allevato@tu-darmstadt.de)
+
+ABSTRACT Sparse array designs are a promising approach to improve the beam pattern and imaging
+quality, especially for applications, where hardware resources are severely limited. In particular, spiral
+sunflower arrays become increasingly popular due to their excellent point-spread-function (PSF) charac-
+teristics and their simple, deterministic and scalable design. Therefore, several sunflower modifications for
+further improvement have been investigated, e.g. density tapering based on window functions adapted from
+apodization techniques. In this article, we introduce a two-scale spiral array design concept, which exploits the
+specific PSF structure of the sunflower geometry, instead of relying on window functions. The modification
+proposed combines two nested sunflower sub-arrays featuring two different spatial element densities such
+that the locations of their respective main, side and grating lobe zones differ, resulting in a balanced and
+improved composite one-way PSF in terms of main lobe width (MLW) and maximum side lobe level (MSLL)
+under far-field and narrow-band conditions. First, we provide an analysis of the unmodified classic sunflower
+geometry, describe its PSF zones and show how their locations in the PSF can be estimated based on the array
+design parameters, which finally leads to the two-scale concept. Second, we examine a specific well-matching
+combination of nested sub-arrays to discuss the advantages and limitations of the resulting PSF. Third,
+we benchmark the respective optimum arrays of the classic sunflower and density tapering strategies with the
+two-scale method, where the latter shows an improved performance of the one-way PSF in terms of MLW
+and MSLL. Fourth, the two-scale design strategy is validated using a real-world 64-element prototype for
+narrow-band ultrasound imaging in air. We conduct two experiments to analyze the resulting PSF and angular
+resolution. Overall, the results demonstrate that the proposed flexible four-parameter concept is particularly
+valuable for high frame rate imaging as well as for transmit-only and receive-only applications.
+
+INDEX TERMS Sparse array, spiral array, phased array, ultrasound, sonar, imaging.
+
+I. INTRODUCTION                                                hospital, e.g. directly at the scene of an accident or for medics
+                                                               in combat [4], [5], [6].
+O NE of the major challenges of ultrasonic 3D imaging
+       systems, as used for non-destructive testing, environ-     In both application examples, the 3D images are generated
+mental perception and medical diagnostics, is to maintain      using beamforming, so that contrast and angular resolution
+image contrast while ensuring a high angular resolution and    are typically quantified based on the maximum secondary
+fast volume rates. Bringing these competing requirements       lobe level (MSLL) and the main lobe width (MLW) obtained
+together is particularly difficult for emerging application    from the point spread function (PSF). The PSF itself is depen-
+fields, where mobility is crucial and hardware resources       dent on the beamforming technique and the array geometry
+are severely limited. These advancing technologies range       employed, both of which provide a respective computational
+from sonar systems, which provide a complementary per-         and physical starting point for improvement, where the latter
+ception sensor modality for upcoming mobile autonomous         is the focus of this article.
+robotics [1], [2], [3], up to portable medical point-of-care
+scanners, which enable life-saving diagnoses outside the          In order to realize and enhance volumetric high-frame-rate
+                                                               imaging on hardware-limited devices, a promising approach
+
+                This work is licensed under a Creative Commons Attribution 4.0 License. For more information, see https://creativecommons.org/licenses/by/4.0/
+
+VOLUME 3, 2023                                                                                                                                                  113
+is to combine low-complexity conventional beamforming                 A method for improving the general one-way PSF by modi-
+with sparse array designs. Unlike traditional fully-populated      fying the spiral sunflower array geometry, referred to as den-
+arrays, the aperiodic element positioning of sparse arrays         sity tapering, has been proposed for antenna arrays in [25].
+prevents severe MSLL degradation due to high grating lobes         Density tapering adapts the idea of weighting the element
+even if the inter-element spacings exceed half wavelength          sensitivities based on a spatial window function to reduce
+(/2) [7]. This way, large-aperture 2D arrays can be created        the side lobe level, also known as apodization [57]. However,
+for improving the MLW without requiring a drastic increase         instead of weighting the sensitivities themselves, the spatial
+in the number of elements, system complexity and cost.             density of the element distribution is altered depending on
+                                                                   the window function. This way, the MLW and MSLL can be
+   Sparse array synthesis is grouped into two categories,          fine-tuned without sacrificing overall sensitivity. In [48], den-
+i.e. stochastic and deterministic designs [8], [9]. Stochastic     sity tapered spiral arrays have been examined for ultrasound
+sparse arrays rely on a randomized element positioning paired      imaging including a comparison of multiple window func-
+with optimization schemes, e.g. genetic algorithms [10],           tions. Additionally, the authors have created two 256-element
+[11], [12], [13] or simulated annealing [14], [15], [16],          CMUT and PZT array prototypes [58], [59], [60] based on a
+[17], in order to optimize for pre-defined quality metrics.        Blackman window taper and experimentally evaluated vari-
+In contrast, deterministic methods provide a parametric            ous medical ultrasound imaging applications [49], [50], [51],
+approach, that is easily controllable and scalable, allow-         [52], [53]. In [61], Sarradj investigated another density taper-
+ing a rapid and flexible customization to satisfy application      ing approach based on a parametric window function and
+constraints [18], [19], [20], [21]. Additionally, the resulting    a non-linear least squares method for element positioning,
+geometry can be used as a seed for a further optimization pro-     enabling a flexible one-parameter control of the taper.
+cedure as it already features decent characteristics from the
+start.                                                                In this article, we introduce a two-scale sparse spiral array
+                                                                   design concept, which exploits the specific PSF structure of
+   A specific deterministic sparse array design is based on        sunflower arrays, instead of relying on window functions for
+the Fermat spiral. In particular, the sunflower pattern [22],      density tapering. The modification proposed combines two
+which results from sampling the Fermat spiral with Golden-         nested sunflower sub-arrays featuring two different spatial
+Angle increments, is highly effective at suppressing grating       element densities such that the locations of their respective
+lobes due to the aperiodic unique element positioning with         main lobe, side lobes and grating lobes, referred to as PSF
+approximately uniform spatial density [23]. These sparse spi-      zones, differ and combine favorably. As a result, the com-
+ral arrays become increasingly popular in multiple areas, such     posite array geometry has a balanced and improved one-way
+as satellite communications [24], [25], antenna arrays for         narrow-band PSF in the far-field in terms of MSLL and MLW
+radar imaging and 5G communication [26], [27], [28], [29],         compared to the previous approaches.
+optical phased arrays [30], [31], [32], [33], acoustic noise
+localization [34], [35], [36] and many ultrasound applica-            The main contributions are grouped into four categories.
+tions. The latter field includes air-coupled array technologies,   First, we provide an analysis of the PSF characteristics of
+e.g. for haptic feedback [37], highly directive proximity sens-    the unmodified classic sunflower array for different aperture
+ing in agriculture [38], [39], and in-air imaging [40], [41],      diameters and number of elements in order to introduce a
+[42], as well as medical ultrasound applications, such as          concept for estimating the PSF zone locations requiring only
+high-intensity focused ultrasound (HIFU) [43], [44], [45],         the basic array design parameters. Second, we elaborate the
+[46] and diagnostic imaging [47], [48], [49], [50], [51], [52],    two-scale array design and extend the PSF zone estimation
+[53], [54], [55]. In order to further improve the characteristics  for its sub-arrays. In addition, we investigate a specific well-
+of the spiral sunflower array, multiple modifications have         matching sub-array combination for highlighting its advan-
+been proposed.                                                     tages and limitations. Third, we benchmark the respective
+                                                                   64-element and 256-element arrays of the classic sunflower
+   In [56], the authors presented a spiral sunflower design        and density tapering strategies with the two-scale method and
+modification based on two-way line-by-line beamforming,            examine multiple optimum sub-array combinations in more
+where the transmit and receive array geometries differ.            detail. Fourth, the two-scale design strategy is validated using
+By excluding specific adjacent spiral arms in the transmit         a real-world prototype for ultrasound imaging in air, which
+and receive array pairs, the positions of the secondary lobe       consists of 64 MEMS microphones and one piezoelectric
+maxima and minima in the respective PSFs can be manip-             ultrasonic transducer. Based on this prototype, we conduct
+ulated such that they cancel out. Although this method can         two experiments to analyze the resulting PSF and angular
+effectively reduce the overall side lobe level, relying on two-    resolution.
+way line-by-line beamforming is impractical for volumetric
+imaging applications that require a minimum number of fir-            The remainder of this article is organized as follows.
+ing events to achieve high frame rates. Therefore, we focus        Section II includes the model for generating the beam patterns
+on concepts for improving the one-way PSF characteristics,         and PSF, as well as the analysis of the classic sunflower
+which are also valuable for transmit- or receive-only applica-     geometry and its PSF zone estimation. Based on this, the
+tions apart from imaging.                                          two-scale array design is introduced along with the evaluation
+
+114                                                                VOLUME 3, 2023
+Allevato et al.: Two-Scale Sparse Spiral Array Design for 3D Ultrasound Imaging in Air
+
+of a well-matching sub-array combination. Section III covers            (ul, vl) = (0, 0). The beam patterns and PSFs are generally
+the benchmarking and the optimum two-scale sub-array com-               normalized to their maximum value.
+binations. Section IV includes the real-world prototype and
+experiments for validation. Finally, we conclude and discuss            B. CHARACTERISTICS OF THE CLASSIC
+further ideas for improvement, as well as remaining questions           SUNFLOWER SPIRAL ARRAY
+in Section V.
+                                                                        The position of the m-th element of the planar classic sun-
+II. METHODS                                                             flower array rm is determined by discretely sampling the
+Here, we describe the classic sunflower array geometry and              Fermat spiral based on the models in [22] and [61] with the
+analyze the resulting PSF behavior in terms of MLW and                  design parameter V = 5, that is
+MSLL for variable aperture sizes and number of elements.
+In addition, we introduce the different PSF zones observed                                                                   
+and methods to estimate their locations which finally lead to
+the two-scale array design concept.                                                     (Rm, m) =  Rap    m  ,  2(m -    1+    V  , and  (4)
+                                                                                                                       1)
+                                                                                                          M                2
+
+                                                                                        rm = (xm, ym) = (Rm cos(m), Rm sin(m)) , (5)
+
+A. BEAM PATTERN AND POINT SPREAD                                        where Rm is the corresponding radius of the m-th element
+FUNCTION MODEL                                                          to the aperture center, m is the corresponding angle and
+                                                                        Rap = Dap/2 is the maximum aperture radius. The model
+The key factors for the following evaluations are the far-field         defines the element radii to the center Rm such that the area
+beam pattern and one-way PSF, i.e. the beam pattern with a              of the ring spanned by two successive radii is constant and
+single centered point source. The model used for their gener-
+ation is based on the normalized and discretized well-known             equivalent to the M -th part of the total aperture area, that is
+Rayleigh integral, where we assume point elements and point
+sources, as well as far-field and narrow-band conditions.                                          Am =   Rm2 - R2m-1  =  R2ap .         (6)
+Therefore, the model allows an application-independent anal-                                                                M
+ysis focused on the array element positions, as the effects of a
+particular element size, focal distance, or specific bandwidth          The design parameter V controls the number and positions
+are not included. The superimposed magnitude p for the beam             of the spiral arms created by altering the angular distance
+pattern scanning direction (u, v) = (sin() cos(), sin()) is             between two successive elements. With the parameter V = 5,
+given by                                                                this angular distance corresponds to the Golden Angle, which
+                                                                        in conjunction with the constant ring area Am, results in an
+                      L-1                                               approximately uniform spatial element density, a main char-
+                                                                        acteristic of the classic sunflower array [25]. Therefore, the
+p(u, v) = aH(u, v)              a(ul , vl ) · pel(ul , vl ) · sl , (1)  sunflower geometry depends only on two parameters, i.e. the
+                                                                        total number of elements M and the aperture diameter Dap.
+                      l=0
+                                                                           In the following, the resulting one-way PSFs for different
+where  and  are the azimuth and elevation angles, L is the              aperture diameters and three typical fixed total numbers of
+                                                                        elements are used to investigate the corresponding MSLLs
+number of point sources, l is the corresponding source index,           and the MLW at -6 dB (MLW6), both being widely used met-
+                                                                        rics for contrast and angular resolution (Fig. 1). The MLWs
+(ul, vl) and sl are the l-th source direction and magnitude,            monotonously decrease with increasing aperture diameter,
+respectively, and a(u, v)  CM×1 is the array-specific steer-            whereas being independent of the observed number of ele-
+                                                                        ments. In contrast, the MSLLs transition from a lower to a
+ing vector, whose m-th entry is given by                                higher plateau, where there is no further significant increase.
+                                                                        The level of the plateaus as well as the diameter at which the
+                am(u, v) = exp   2              .       (2)             plateau transition occurs are both dependent on the number
+                                j  (xmu + ymv)                          of elements. Therefore, if a low MSLL is desired, there is
+                                                                        an optimal aperture diameter for each M , where the MLW
+Here, M is the number of elements and (xm, ym) is the posi-             is narrowest, which is just before the transition to the higher
+tion of the m-th array element. The term pel(ul , vl ) includes         plateau.
+the directivity of the elements themselves and is negligible
+                                                                           In order to clarify the plateau-like increase in MSLL,
+if point elements are assumed, i.e. pel = 1. Otherwise,                 we examine the PSF of a 64-element array for two different
+if elements with extended sizes are considered, pel can be              aperture diameters (Fig. 2). The typical one-way PSF of the
+calculated by sampling the element aperture, as explained               classic sunflower array can be categorized into three basic
+                                                                        zones, i.e.
+in [40], that is
+
+pel(ul , vl )   =  1  K -1       2                   ,  (3)
+                   K            j  (xk ul + yk vl )
+                           exp
+
+                      k =0
+
+where K is the number of sample points, k the sample point                              1) the main lobe zone (MLZ),
+index and (xk , yk ) is the sample point position. The PSF is                           2) the side lobe zone (SLZ), where low secondary lobes are
+generated by evaluating (1) for the directions in the complete
+                                                                                            formed,
+                    
+hemisphere, i.e. u2 + v2  1 (if not stated otherwise), and
+for a single centered point source, such that L = 1, sl = 1 and
+
+VOLUME 3, 2023                                                                                                                           115
+FIGURE 1. MSLL (a) and MLW6 (b) extracted from the normalized
+PSFs of classic sunflower arrays for various aperture diameters
+
+Dap and three fixed numbers of elements M. While the MLW6
+steadily narrows with increasing aperture diameter independent
+
+of the number of elements, the MSLL features a plateau-like
+
+increase, where the transition from a low to a high plateau
+
+depends on both, the aperture diameter and the number of
+
+elements.
+
+  3) and the grating lobe zone (GLZ), where the side lobe        FIGURE 2. Two examples of 64-element classic sunflower arrays
+      level rises significantly.                                 with a large (Dap = 15 ) (a1) and a small aperture diameter
+                                                                 (Dap = 5 ) (b1) and their corresponding normalized PSFs (a2,
+The three zones are clearly evident in the radial view           b2) showing their different PSF zones. The radial view (c) shows
+[Fig. 2(c)], showing the respective maximum side lobe level
+for each concentric ring of radius Ruv = u2 + v2 centered        the respective highest side lobe levels for each concentric ring
+on the PSF origin (u, v) = (0, 0). We define the transition
+radius from MLZ to SLZ (RMLZ) at the first minimum of the        with radius Ruv = u2 + v2 centered around the PSF origin.
+main lobe. The transition radius from SLZ to GLZ (RGLZ)          With a sufficiently high element density, e.g. as in (b), a GLZ is
+is specified at the side lobe level that exceeds the first, and
+typically highest, secondary lobe in the SLZ. We found that      not formed.
+the MLZ transition RMLZ is mainly dependent on the aperture
+diameter, whereas the GLZ transition (RGLZ) depends on           most prominent inter-element spacing d^ in the correspond-
+the inter-element spacings. Therefore, enlarging or reducing     ing histogram [Fig. 3(b)], i.e. with the highest number of
+the aperture diameter with a fixed number of elements will       occurences, to estimate the position of the radius, where the
+narrow or widen the PSF zones, respectively. By maintaining      highest grating lobes are located. However, we are interested
+a sufficiently small aperture, the GLZ can be forced out of      in the SLZ to GLZ transition and observed that the mean
+the PSF, so that the MSLL decreases significantly [Fig. 2(b)].   inter-element spacing d¯ gives a good estimate, that is
+This way, the lower MSLL plateau in Fig. 1 is reached,
+although with the drawback of main lobe widening.                RGLZ  /d¯ .  (8)
+
+   The estimation of the positions of the three zones is of      Based on this relation, we found that the classic sunflower
+major interest for the array design. We found that for the       array geometry allows to directly estimate RGLZ with the
+classic sunflower array, the transition from MLZ to SLZ          basic design parameters (Dap, M ) as follows. We analyze
+RMLZ can be estimated with the well-known first-minimum-         the area associated to each element Acell,m using Voronoi
+approximation for circular apertures [62], that is               tessellation and found that it is in good agreement with the
+                                                                 M -th part of the total area just as with the circular ring area
+     RMLZ  1.22/Dap.  (7)
+                                                                   Am between two successive elements in (6). The Voronoi
+The estimation of the SLZ to GLZ transition (RGLZ) requires      cell area of each element can be approximated by a circular
+analyzing the inter-element spacings. Since most of the          disk with a diameter corresponding to the mean inter-element
+inter-element spacings of the classic sunflower array are
+different to each other, we use Delaunay triangulation [63],
+[64] to obtain the specific inter-element spacing between each
+neighboring element [Fig. 3(a)]. In [56], the authors use the
+
+116                                                                           VOLUME 3, 2023
+Allevato et al.: Two-Scale Sparse Spiral Array Design for 3D Ultrasound Imaging in Air
+
+                                                                   (±90), i.e. Rfov = 1, the GLZ transition must be at least
+
+                                                                   RGLZ                   2 for GLZ prevention. Therefore, the aperture
+                                                                                                                             
+                                                                   diameter is required to be Dap  0.5 M , so that the
+
+                                                                   mean inter-element spacing is d¯  0.5 , just as for the
+
+                                                                   half-wavelength criterion of periodic dense arrays.
+
+                                                                                        In summary, we have analyzed the MLW and the
+
+                                                                   plateau-like MSLL behavior of the classic sunflower array
+
+                                                                   resulting from its three PSF zones, whose locations can be
+
+                                                                   estimated prior to field simulation with the aperture diameter
+
+                                                                   and number of elements.
+
+FIGURE 3. Voronoi tesselation and Delaunay triangulation           C. TWO-SCALE SPIRAL ARRAY DESIGN
+
+applied to a 64-element classic sunflower array to find the        The key idea leading to the proposed two-scale array design
+                                                                   is to exploit the specific PSF zone structure of the classic sun-
+various element cells and inter-element spacing (a) and the        flower array by combining two sub-arrays featuring two dif-
+                                                                   ferent spatial element densities and aperture sizes, resulting in
+corresponding histogram of inter-element spacing values (b).       different PSF zone locations (Fig. 4). The combination of PSF
+                                                                   zones enables to improve and flexibly balance the MLW and
+The transition from MLZ to SLZ Ruv,MLZ is effectively estimated    MSLL, similar to density tapering, without being constrained
+with the overall aperture diameter Dap (c), approximately          by almost-discrete MSLL plateaus. Since we focus on the
+independent of the number element. The estimation of the           one-way beam patterns, both combined sub-arrays are used
+                                                                   only for transmitting or only for receiving, depending on
+transition radius from SLZ to GLZ Ruv,GLZ requires minor           the use case. Therefore, a combination of PSF zones cor-
+corrections dependent on the number of elements.                   responds to a complex addition, instead of a multiplication
+                                                                   as in the two-way case. Although, two dedicated classic
+spacing, resulting in the relation                                 sunflower arrays can be used to combine their specific far-
+                                                                   field PSFs, nesting an inner and outer sub-array allows for a
+                Acell,m         2     R2ap     Am.            (9)  more compact design. Assigning the sub-arrays into an inner
+                                                                   area and outer ring ensures that their element densities can
+                           d                                       be separately defined for one-way beamforming, which is
+                                                                   more complicated for two nested sub-arrays, that both start
+                           2          M     =                      from the center and cover a shared area, since the respective
+                                                                   element distances are influenced by each other. Therefore,
+                                                                   the two-scale spiral array is fully defined with four design
+                                                                   parameters, that is
+
+Therefore, the SLZ to GLZ transition RGLZ can be estimated                                            m
+by combining (8) and (9), that is
+                                                                                                 Rin      ,
+                                                                                                      Min
+                                                                                          
+
+                                                                                          
+
+                                                                                          
+
+                                                                                          
+
+                                     M                                                           for 1  m  Min,
+                      RGLZ   Dap .                                                        
+                                                    (10)                                  
+                                                                                          
+
+                                                                                        Rm =          Ra2p  - R2in  (m -  Min)           (11)
+                                                                                                              M-    Min
+We validate the approximations by determining the true                                                                          +  Ri2n
+                                                                                               
+respective transition radii of the classic sunflower arrays                                    
+                                                                                               
+                                                                                               
+                                                                                               
+                                                                                               
+
+                                                                                          
+
+                                                                                                 for Min + 1  m  M ,
+                                                                                          
+
+for different aperture diameters and number of ele-
+
+ments [Fig. 3(c),(d)]. While the RMLZ estimate is in               where Rin = Din/2 and Rap = Dap/2 are the inner and total
+                                                                   aperture radius, Min and M are the inner and total number of
+good agreement with the true radii, minor correction fac-          elements. The corresponding element position angles m and
+                                                                   the transformation into Cartesian coordinates are equivalent
+tors  hM  are   required   for  a  more  precise  estimation  of   to (4) and (5).
+
+                                                                      In order to estimate RMLZ and RGLZ for both sub-arrays
+                                                                   of the two-scale geometry, we analyze their corresponding
+RGLZ            hM      M  depending on the number of array        design models. First, the radii of the inner sub-array are
+                      Dap                                          consistent with the classic sunflower design as in (4) using
+elements, i.e. (h32, h64, h96, h128, h256) = (0.8, 0.85, 0.94,     the respective inner aperture diameter Din and inner number
+                                                                   of elements Min. Second, the model for the outer sub-array
+0.99, 1.05).                                                       radii is based on the similar design rule as in (6) of the classic
+
+In order to prevent the formation of the GLZ in the
+
+PSF, as well as in beam patterns, where a source can
+
+be located off-center in a specific field-of-view within
+          
+
+Rfov = u2 + v2, the transition to the GLZ must be chosen
+
+to be RGLZ  1 + Rfov. For example, if a source can
+
+be located in a field-of-view spanning the full hemisphere
+
+VOLUME 3, 2023                                                                                                                           117
+sunflower geometry, i.e. the area of the ring spanned by two
+successive radii Am,out =  Rm2 - Rm2 -1 is constant and
+equivalent to the area of the outer sub-array divided by the
+
+number of outer elements. Therefore, the inner and outer ring
+
+areas are given by
+
+                   Am,in    =   R2in ,                      (12)
+                               Min
+
+                   Am,out   =   (Ra2p - Ri2n) .             (13)
+                                 M - Min
+
+As a result, we obtain a composite array with only two
+
+different element densities, which are constant within each
+
+sub-array. Therefore, the two-scale array design allows to
+
+estimate the transition from SLZ to GLZ for the inner RGLZ, in
+and outer sub-array RGLZ, out in the same way as shown in
+Section II-B, that is
+
+                 
+
+     RGLZ, in     Min  and  RGLZ, out       M - Min      .  (14)
+                 Din                        D2ap - D2in
+
+The estimation of RMLZ, in and RMLZ, out of both sub-arrays is    FIGURE 4. Example two-scale 64-element array nesting a denser
+equivalent to (7) with the respective inner and total aperture    inner sub-array with a sparser outer sub-array (a) , resulting in
+diameters.                                                        an advantageous PSF zone combination demonstrated in the
+                                                                  corresponding normalized PSF (b) and its radial view (c). The
+   In summary, the ability to estimate the PSF zone locations     combined main lobe consists of a narrow peak and broad base,
+using the basic design parameters is a major advantage of the     whereas the overall side lobe level is more balanced without
+two-scale design, since a desired PSF zone combination can        distinct transitions from SLZ to GLZ.
+be specified prior to field simulation.
+                                                                     In order to emphasize the advantages and drawbacks of
+D. CHARACTERISTICS OF THE TWO-SCALE                               this particular two-scale spiral array, we examine the result-
+SPIRAL ARRAY                                                      ing beam patterns of two adjacent horizontally positioned
+                                                                  point-sources at varying angular spacings. The beam patterns
+Next, we examine a 64-element two-scale array to demon-           of the two-scale array and classic sunflower array are then
+strate the MLW and MSLL balancing and improvement.                compared, whereas both geometries are selected to have an
+We focus on a geometry that exploits a specific PSF zone          equal -6 dB MLW (MLW6) in their respective PSFs (Fig. 5).
+combination, although other advantageous combinations are         The angular spacing s between the two adjacent positioned
+possible, as shown in Section III. In particular, a GLZ-free      equal-strength point-sources is gradually increased from 0
+inner sub-array with a wide MLZ is positioned within an outer     to 20 in steps of 0.5. For each spacing s, we generate
+sparser sub-array (Fig. 4), such that                             the resulting beam patterns of the two-scale and classic
+                                                                  sunflower array using the multi-source model in (1) with
+  a) the high GLZ of the outer sparse sub-array is combined       L = 2, where the corresponding source locations are u0 =
+      with the low SLZ of the inner sub-array, and                + arcsin (s/2) and u1 = - arcsin (s/2). Based on these
+                                                                  beam patterns, we evaluate the angular resolution and the
+  b) the low SLZ of the outer sparse sub-array is paired with     minimum level between the two sources. If the minimum
+      the MLZ and first secondary lobe of the inner sub-array,    inter-source-level [Fig. 5(c)] drops below 0 dB, two distinct
+                                                                  maxima are formed, such that both sources are separable in
+resulting in two effects. First, the main lobes of both           the beam pattern and the corresponding spacing defines the
+sub-arrays accumulate to an overall higher level and form         angular resolution.
+a combined main lobe with a narrow peak and broad base.
+Second, the overall side lobe level is more balanced, such           Although both MLW6 are equal, the two-scale array can
+that there are no pronounced differences between the SLZ          separate the two sources at a smaller angular spacing (6)
+and GLZ, which otherwise typically consist of relatively low      compared to the classic sunflower array (8.5), thus providing
+and high side lobe levels. Both characteristics lead to an        a higher effective angular resolution. In addition, the MSLL
+effective reduction of the MSLL, whereas a narrow peak            of the two-scale array is significantly lower (-9.86 dB vs.
+of the combined MLW is preserved. As a result, a higher           -4.12 dB), since the high GLZs of both sources accumulate
+imaging resolution with reduced artifact formation compared       for the classic sunflower array, increasing the risk of artifact
+to the classic sunflower array is expected. Nevertheless, there   formations. In contrast, the side lobes in the beam patterns of
+is another characteristic to consider, namely the main lobe
+base level (approx. -11 dB in the example), where the narrow                                                                                                        VOLUME 3, 2023
+peak transitions into the broad base, whose effects are pointed
+out next.
+
+118
+Allevato et al.: Two-Scale Sparse Spiral Array Design for 3D Ultrasound Imaging in Air
+
+                                                                       In summary, compared to the classic sunflower array with
+                                                                    the same MLW6, the two-scale array provides a higher angu-
+                                                                    lar resolution and a more effective artifact suppression due to
+                                                                    the lower MSLL at the expense of reduced contrast between
+                                                                    closely spaced but separable sources.
+
+FIGURE 5. Comparison of the normalized one-way beam                 III. BENCHMARKING, RESULTS AND DISCUSSION
+patterns of the classic sunflower (a) and two-scale array (b),      In this section, we benchmark the two-scale array geometries
+both featuring the same MLW6 = 9, for two adjacent point            with the classic sunflower arrays and with density tapering
+sources with varying angular spacings, i.e. 10 (row 1) and 14       approaches for modifying the sunflower spiral geometry.
+(row 2). Due to the accumulation of the GLZs of both sources,       We implement two methods of density tapering for reference.
+the resulting MSLL of (a) is significantly higher compared to (b),  One is based on a fixed window function introduced in [25]
+increasing the risk of artifact formation. The minimum side lobe    and [48], where the element positions are determined itera-
+level between the two sources for various spacings (c) shows        tively. Here, we consider a Blackman window [Fig. 6(a2)],
+that the two-scale array can separate closer-spaced sources,        which has been utilized in multiple previous works, e.g. [58],
+but requires larger spacings for a higher separation contrast       [59], and [58]. The other method is described by Sarradj
+due to the broad main lobe base.                                    in [61] and relies on a configurable single-parameter (H )
+                                                                    window, based on the modified zero-th order Bessel function,
+the two-scale approach are more evenly distributed as in its        where the radii of the elements are obtained by solving a
+PSF, without particularly high or low levels, so that the MSLL      non-linear least squares problem [Fig. 6(b)]. Depending on
+is kept low. However, the higher resolution and lower MSLL          the chosen H -parameter, the Sarradj method (SAR) enables
+of the two-scale array come at a cost. Due to the wide main         to taper the element density to the center (H > 0) [Fig. 6(b2)]
+lobe base of the two-scale array, the minimum inter-source-         or to the periphery of the aperture (H < 0) [Fig. 6(b3)].
+level has a flatter, plateau-like roll-off with increasing source   The main difference of the density tapering methods to the
+spacing compared to the classic sunflower array. Conse-             two-scale array approach [Fig. 6(a3)] is that the latter does
+quently, although even closely spaced sources are separable,        not rely on window functions, originating from amplitude
+a high separation contrast requires a larger source spacing         apodization, but rather aims for an advantageous PSF zone
+compared to the classic sunflower array. The roll-off of the        combination.
+minimum inter-source level is mainly determined by the main
+lobe base level of the corresponding two-scale array PSF.              In order to highlight the similarities and differences of
+Therefore, the main lobe base level must be considered in           the design methods, we compare their density window func-
+the two-scale array design. The re-increase of the minimum          tions with respect to the non-tapered classic sunflower case.
+inter-source level for the classic sunflower array at 15 and        Therefore, we derive the equivalent density window function
+above 20 angular spacing arises due to the accumulation of          for the two-scale array, enabling to recreate the geometry
+side lobes, which is expected behavior.                             introduced in this article using the density tapering method
+                                                                    described in [25] and [48], based on the following consider-
+VOLUME 3, 2023                                                      ations. The tapering method defines the radii Rm such that
+                                                                    the ring area spanned by two successive radii weighted by
+                                                                    the density window function f (R) is constant (K ) [25], [48],
+                                                                    that is
+
+                                                                                                         Rm
+
+                                                                                                      2        f (R)R dR = K ,               (15)
+
+                                                                                                         Rm-1
+
+                                                                    where K is defined as the M -th part of the effective total
+                                                                                                               Rap
+                                                                    aperture area K                   = 2/M    0    f  (R)R  dR.  For  example,  the
+
+                                                                    equivalent density window function of the classic sunflower
+
+                                                                    array is f (R) = 1, since the ring areas Am are already
+
+                                                                    defined to be constant (6), such that
+
+                                                                                                Rm             R2m - R2m-1        =  R2ap ,
+                                                                                                                                       M
+                                                                                        2f (R)        R dR =                                 (16)
+
+                                                                                                Rm-1
+
+                                                                    where  Ra2p/M = Am = K . Since the ring areas of the
+                                                                    two-scale geometry ( Am,in, Am,out) are constant within
+                                                                    each sub-array as shown in (12) and (13), its equivalent
+
+                                                                    density window function relative to the non-tapered classic
+
+                                                                                                                                                 119
+sunflower case with equal aperture diameter is given by
+
+            Am     =  R2apMin  ,         for 0  R  Rin,
+           Am,in       Ri2nM             for Rin < R  Rap.
+         
+            Am     =  R2ap(M - Min)   ,                     (17)
+           Am,out     (R2ap - Ri2n)M
+         
+
+f (R) =
+
+         
+         
+         
+         
+
+Therefore, the equivalent density window function of the
+two-scale array consists of two discrete density levels in
+contrast to the Blackman and SAR tapering methods, which
+feature a smooth characteristic [Fig. 6(c)]. Besides that, the
+similarities of the Blackman and SAR tapering methods
+become evident in the comparison. The SAR window func-
+tions with H = 1 and H = 4 lead to a respectively weaker and
+stronger inner tapering compared to the Blackman window,
+which is approximately identical to SAR H = 2.5. In fact,
+many spiral array geometries are contained in the set of
+solutions created by the SAR method for varying H param-
+eters, including the classic sunflower array, which results
+for H = 0.
+
+A. DESIGN METHODS BENCHMARKING                                    FIGURE 6. Comparison of example geometries of the design
+                                                                  methods used for the benchmark, i.e. the classic sunflower
+For benchmarking, we generate different array geometries          array (a1), different spatial density tapering modifications based
+with a fixed number of elements (M = 64 and M =                   on a fixed Blackman window (a2) [25], [48] and the approach of
+256) based on the four design methods presented, each with        Sarradj [61] using a parametric (H) density window function (b) ,
+varying design parameters. The aperture diameter, which is        as well as the two-scale method proposed in this article (a3).
+the only variable parameter for the classic sunflower and         The SAR method allows a flexible modification by varying the H
+the Blackman density tapered array, is varied in the inter-       parameter, e.g. for peripheral tapering (b3). The density window
+val Dap  {2, 3, . . . , 60}. For each aperture diameter, the      functions (c) show the density taper relative to the non-tapered
+H -parameter of the SAR arrays are additionally varied within     classic sunflower case and emphasize the differences and
+H  {-5, -4.8, . . . , 5}. The two-scale array geometries are      similarities of the methods.
+created using any combination of Dap with the remaining two
+variable parameters, i.e. inner diameter Din and inner number        The classic sunflower arrays provide the reference baseline
+of elements Min, in the intervals Min  {1, 2, . . . , M - 1} and  for the comparison. Their characteristic MSLL plateaus at
+Din  {[1, 2, . . . , 59] | Din < Dap}. The interval boundaries    approximately -8.8 dB and -16.5 dB including their steep
+for the parameter sweep are chosen to be comparable to            transition are clearly noticeable, similar as in (Fig. 1).
+existing literature, e.g. as in [61].
+                                                                     The Blackman window density tapering approach has,
+   Subsequently, the corresponding PSF for each array geom-       to some extent, a lower MSLL for the same MLW6, partic-
+etry is formed from which the performance metrics, i.e.           ularly between 14 and 21, where a MSLL improvement
+MLW6 and MSLL, are automatically extracted. We use the            from -8.8 dB down to -11.5 dB is observed. In addition, the
+MSLL as it reflects the worst-case metric in the formation        MSLL can be further reduced below the lower plateau of the
+of side lobe artifacts. In order to consider the side lobes that  classic sunflower approach for MLWs wider than 32.
+are created by an off-center point-source located within the
+full-hemisphere field-of-view as well, we evaluate the PSF                                                                                                          VOLUME 3, 2023
+
+                 
+within Ruv = u2 + v2  2 instead of  1. For clear com-
+parison, we select and show only the optimum arrays with
+the lowest MSLL per MLW6 of each approach. Here, we do
+not consider two-scale arrays with an main lobe base level
+above -9 dB. Otherwise, the comparison would be clearly in
+favor of two-scale arrays with a narrow MLW6 but poor sepa-
+ration contrast for closely spaced sources (Section II-D). The
+MLW6 and MSLL of the selected arrays of all approaches are
+then compared (Fig. 7). First, we conside the array geometries
+using 64 elements.
+
+120
+Allevato et al.: Two-Scale Sparse Spiral Array Design for 3D Ultrasound Imaging in Air
+
+FIGURE 7. Benchmark of the four design methods showing the           Clearly, there are specific PSF zone combinations that lead
+resulting one-way PSF quality metrics of the optimum arrays of    to particularly effective improvements, while others perform
+each approach with a fixed number of elements (64 (a) and         only similarly or worse compared to previous density tapering
+256 (b)) and varying design parameters. Sources located           approaches. For example, one of the greatest improvements
+off-center in the entire hemisphere (field-of-view of ±90) are    for the 64-element geometries occurs for an MLW of 14,
+considered for MSLL evaluation. The optimum 64-element            where the MSLL of the two-scale approach (-13.4 dB) is
+arrays of the two-scale method include five different types of    significantly lower than for the classic sunflower (-8.8 dB)
+PSF zone combinations (I to V), all of which feature improved or  or SAR (-11.1 dB) method. In fact, this particular two-scale
+similar MLW and MSLL compared to the other approaches.            array utilizes the PSF zone combination (Type III) analyzed
+Similar results are obtained for 256-element arrays, although     in Section II-D. Overall, five different types (I to V) of
+the two-scale approach provides no further MSLL improvement       advantageous PSF zone combinations are observed in the set
+for main lobe widths wider than 15.                               of optimum 64-element two-scale arrays, which are examined
+                                                                  next.
+   The SAR arrays generally outperform the classic sunflower
+and Blackman window method as expected, since they are a          B. OPTIMUM TWO-SCALE ARRAY COMBINATION TYPES
+subset of the SAR geometries. The variation of the H param-
+eter enables a more flexible balancing between MLW and            The first type [Fig. 8(I)], consists of a large-aperture outer
+MSLL, e.g. with peripheral density tapering. This way, the        sub-array which includes most of the available elements, and,
+performance gaps of the Blackman approach are overcome.           therefore, predominantly determines the PSF. In contrast, the
+                                                                  contribution of the inner sparser sub-array is only supportive
+   Finally, the two-scale array design provides the low-          by adding to the relative main lobe level and by positioning
+est MSLLs for most MLWs compared to the previous                  its first secondary lobe (SL) minimum close to the first high
+approaches, although the MSLLs for rather narrow or wide          side lobe of the outer sub-array.
+MLWs (e.g. < 7 and > 31) are similar to the SAR den-
+sity tapering method. In general, similar results are obtained       Type two [Fig. 8(II)], features a more balanced distribu-
+for the 256-element array geometries, where the classic           tion of the inner and outer number of elements, although
+sunflower method shows two distinct MSLL plateaus, the            the latter is still dominant. Most importantly, the inner and
+SAR technique outperforms the Blackman approach, and the          outer aperture diameters Din and Dap differ only slightly.
+two-scale geometries provide lower or similar MSLL per            This way, a denser outer ring sub-array is formed filled by
+MLW compared to the SAR method. However, for wide                 a sparser inner sub-array. As a result, both MLWs are similar
+MLWs above 15, the two-scale approach reaches a plateau           to each other and accumulate without significant widening.
+and stops to improve the MSLL at approximately-27 dB,             The low SLZ of the sparse inner sub-array is positioned
+whereas it can be further lowered by the Blackman and SAR         near the highest side lobes of the outer array, equalizing the
+technique.                                                        overall side lobe level. In general, this type is similar to the
+                                                                  peripheral density tapering of the SAR approach, e.g. for
+VOLUME 3, 2023                                                    H = -2 [Fig. 6(b3)].
+
+                                                                     The third type [Fig. 8(III)] is the basis of the original
+                                                                  idea for the two-scale array design, outlined in the previous
+                                                                  sections. Here, the distribution of the number of elements is
+                                                                  balanced as well, with the inner sub-array being denser and
+                                                                  more populated. Basically, the densities of the inner and outer
+                                                                  sub-arrays are inverted compared to type II, resulting in a
+                                                                  different PSF zone combination, as depicted in Section II-D.
+                                                                  The MSLL is significantly reduced compared to the other
+                                                                  approaches given the same MLW6. Still, there is the drawback
+                                                                  of reduced contrast between closely spaced sources. The opti-
+                                                                  mum 256-element two-scale array geometries, which provide
+                                                                  improved results compared to the previous approaches, con-
+                                                                  sist exclusively of this type III.
+
+                                                                     In type four [Fig. 8(IV)], the PSF is primarily determined
+                                                                  by the inner denser sub-array, while few outer sparse elements
+                                                                  contribute only as support for balancing out the side lobe
+                                                                  level, forming the counterpart to type I.
+
+                                                                     Finally, in type five [Fig. 8(V)], the sub-arrays differ only
+                                                                  slightly in spatial density and therefore resemble the classic
+                                                                  sunflower array more closely compared to the previous types.
+                                                                  Nevertheless, even the small differences cause the side lobe
+                                                                  minima and maxima to balance each other out, resulting in a
+
+                                                                                                                                                                     121
+FIGURE 8. Five different types of advantageous sub-array combinations observed in the set of optimum two-scale arrays (Fig. 7).
+Type I and IV feature either a dominant outer or inner sub-array, whereas the opposite sub-array is only supportive. In II and III, the
+ratio between inner and outer elements is more balanced and the sub-arrays are of different spatial densities for exploiting the PSF
+zone combinations. In particular, type III shows significant improvements compared to other design methods as examined in the
+previous sections. The sub-arrays of type V have only minor differences in spatial densities, which nevertheless result in an
+effective positioning of the side lobe minima and maxima for a more balanced overall side lobe level.
+
+122  VOLUME 3, 2023
+Allevato et al.: Two-Scale Sparse Spiral Array Design for 3D Ultrasound Imaging in Air
+
+significantly lower MSLL compared to the classic sunflower       FIGURE 9. Benchmark of the four design methods for extended
+approach. However, compared to the previous density taper-       circular element apertures with a diameter of 0.5 . The
+ing approaches, type V provides only similar or worse results,   comparison considers spatial filtering and source positioning
+particularly for the 256-element arrays.                         in the entire hemisphere (field-of-view of ±90). As the
+                                                                 minimum realizable array aperture is constrained by the
+   In summary, considering the progression from wide to          element sizes, the MLWs show an upper limit. Due to the
+narrow MLWs, the optimum two-scale arrays feature an             element directivities, there are non-optimum array geometries,
+increasing overall aperture, as well as a shift from type I to   where the MSLL worsens with increasing MLW, which are
+V (M = 64) or type III to V (M = 256), respectively. For         included as an example for the classic and Blackman method.
+all optimum combinations, the corresponding sub-array main
+lobes accumulate to a higher level, whereas the overall side     attenuated by the element directivity. All in all, the com-
+lobe level becomes more balanced compared to the classic         parison highlights that the SAR and two-scale geometries
+sunflower approach. The most effective improvements over         perform comparably well when assuming extended element
+the existing density tapering approaches are achieved, where     apertures, whereas the latter design method provides the low-
+a dense inner sub-array is combined with a sparse outer sub-     est MSLL per MLW, as in the comparison assuming point
+array, with a balanced number of inner and outer elements,       elements (Fig. 7). The optimum two-scale array geometries
+as in type III. In contrast, for rather small apertures, where   observed correspond to the types II and III, but feature
+both sub-arrays are dense and grating lobe zones do not form     an overall larger total aperture compared to the example
+(type V), the two-scale PSF zone combination is less effec-      in (Fig.8), so that the IES of the outer or inner denser
+tive. In this case, although significant improvements over the   sub-arrays are consistently greater than 0.5 .
+classic sunflower array are achieved, the two-scale results can
+be similar or even inferior compared to the Blackman and         D. SCOPE AND LIMITATIONS OF THE STUDY
+SAR method.                                                      In this final section of the theoretical study, we high-
+                                                                 light the scope and limitations of the analysis and results.
+C. BENCHMARK WITH EXTENDED ELEMENT                               As explained in Section II, the analysis is performed
+APERTURES                                                        using a generic application-independent model, assuming
+                                                                 far-field and narrow-band conditions, i.e. continuous wave
+In the preceding analysis, unidirectional point elements         or temporally long bursts, such that the comparison is
+with infinitely small aperture sizes are assumed to provide      based on worst-case assumptions. However, in the near-
+a generic technology-independent comparison. In order to         field case, the results obtained with focused beams may
+highlight the impact of extended element apertures, in this      differ from the far-field results provided, depending on the
+section, we compare the array design methods, assuming           application-specific focal distance and region of interest.
+circular elements with a diameter of Dap,el = /2, as an          Further deviations from the comparison results are likely to
+example. Here, we consider two resulting effects. First,         occur, if high-bandwidth transducer technologies and tem-
+the minimum IES is limited to d = Dap,el, such that              porally short pulses are involved, that enable to exploit
+non-realizable array geometries featuring overlapping ele-       true-time-delay and broad-band beamforming methods for
+ments are discarded. Second, the element directivity itself      reducing side lobe levels. In addition, even larger element
+leads to a degradation of the MSLL, when spatial filtering       sizes than the example size considered can further constrain
+for peripheral directions. Regarding the latter, we consider     the realizable array geometries, so that the outcomes of the
+spatial filtering and source positioning in the entire hemi-     comparison may also vary for this reason. Consequently, the
+sphere, i.e. within a field of view of ±90, as in the preceding  results presented are not directly valid for all applications,
+comparison (Fig. 7). The element directivity is modeled as       particularly if the base conditions in terms of element size
+described in section II-A. The design parameter space inves-     and shape, bandwidth, focal distance and region of interest
+tigated is identical as described in section III-A and two       differ significantly from the model assumptions used.
+different numbers of elements are observed, i.e. M = 64 and
+M = 256.                                                            Apart from the limitations due to the generic model,
+                                                                 we emphasize that further modifications and optimization
+   As expected, the resulting MLWs show an upper limit
+because the array apertures can not become arbitrarily small                                                                                                        123
+due to the extended elements (Fig. 9). The worst-case MSLLs
+of the optimum array geometries are approximately 3 dB
+higher compared to the analysis based on point elements due
+to MSLL degradation resulting from the element directivity
+and the considered field-of-view. Furthermore, an increase
+in MLW partly leads to a degradation of the MSLL, which
+is shown as an example for the classic spiral and Blackman
+geometries. The reason is that for these non-optimum array
+geometries, the highest side lobes are located near the cen-
+ter, as the main lobe is steered to the periphery and, thus,
+
+VOLUME 3, 2023
+FIGURE 10. Two-scale array prototype for in-air imaging           FIGURE 11. Measurement setup in the anechoic chamber (a) for
+consisting of one 32.8-kHz piezoelectric ultrasonic transducer    investigating the PSF in the far-field (2 m). The target used is a
+and 64 MEMS microphones, divided into a 40-element inner and      hollow steel sphere with a diameter of 10 cm. The PSF
+24-element outer sub-array. The microphones are approximately     measured (b) and its radial view (c) are in good agreement with
+unidirectional and broad-band, whereas the transducer is          the corresponding simulation, highlighting the narrow main
+highly narrow-band (4.3%).                                        lobe peak and balanced side lobe level.
+
+procedures can certainly lead to improved solutions com-          (3.5 × 2.6 × 1 mm3) and approximately unidirectional due
+pared to those investigated within the parameter space of         to the small aperture diameter of 0.325 mm (0.03 ). The
+the study. For example, adding more than two sub-arrays           ports of the microphones are located on the bottom side and
+with different element densities can potentially provide          are guided through the PCB with a thickness of 1.6 mm by
+further improvements at the expense of a more compli-             using vias with a diameter of 0.6 mm. The microphones each
+cated array design including more parameters. Moreover, the       provide a 4-MHz 1-bit PDM signal, all of which are converted
+well-performing deterministic two-scale solutions identified      into 125-KHz 16-bit signals by an FPGA (Intel MAX10)
+can be used as initial seeds for further stochastic optimiza-     using 64 sinc-3 filters. The system architecture is based on
+tion methods. Nevertheless, these improvement strategies are      the design described in detail in our previous work [3]. The
+beyond the scope of this article and are worthy ideas for future  type III two-scale array geometry is composed of the inner
+work.                                                             denser sub-array with 40 elements and an aperture diameter
+                                                                  of 55 mm, while the outer sub-array consists of 24 elements
+IV. REAL-WORLD EXPERIMENTS                                        and spans a total aperture of 190 mm. The implementation of
+In this section, we validate the two-scale array design strategy  signal pre-processing, narrow-band receive beamforming and
+with a real-world prototype and two experiments in order to       image formation is described in detail in [65].
+investigate the PSF and the resulting angular resolution.
+                                                                     The experiments are conducted in an anechoic chamber,
+   For this, we created an air-coupled two-scale array based      where the two-scale array is positioned in front of a linear
+on type III, consisting of 64 small MEMS microphones              axis equipped with a movable slide. In order to measure the
+(Knowles SPH0641LU4H-1) featuring a digital interface.            PSF, we use a hollow steel sphere ( 10 cm) as target, which
+In addition, we utilize one piezoelectric bending-plate trans-    is mounted on a sound-absorbing fixture and positioned on
+ducer (ProWave 328ST160) with a diameter of 16 mm and             the slide at a distance of 2 m, i.e. in the far-field, centered
+a relatively low resonance frequency of 32.8 kHz to avoid         to the array. The pulse is transmitted to the sphere, its echo
+strong attenuation by the medium air (Fig. 10). The frequency     is received by all microphones and the PSF is formed at the
+response of the transducer is narrow-band (1.4 kHz, 4.3%),
+so that a temporally long excitation signal (40 cycles, 70 Vpp,                                                             
+bipolar square-wave) is required, which, however, enables         pulse maximum within the field-of-view Ruv = u2 + v2 
+the pulse to reach a relatively high sound pressure level of      1 (Fig. 11). This measurement is repeated 32 times to obtain
+123 dB at a distance of 30 cm. Therefore, the narrow-band         the average value and the standard deviation. The latter is
+assumption holds for this prototype and the experiments.          consistently below 0.1 dB and is therefore excluded for clar-
+The microphones are broadband (10 Hz to 80 kHz), compact          ity. Furthermore, the PSF measured is compared to the ideal
+                                                                  simulation based on the model in (1).
+124
+                                                                                                                                                                    VOLUME 3, 2023
+Allevato et al.: Two-Scale Sparse Spiral Array Design for 3D Ultrasound Imaging in Air
+
+                                                                    separability is achieved if the two sphere reflections form two
+                                                                    distinct local maxima in the image. As an example, four ultra-
+                                                                    sound images with different sphere spacings are provided,
+                                                                    as well as their horizontal sectional view at v = 0 (Fig. 12).
+
+                                                                       As the angular spacing between the spheres decreases,
+                                                                    the local minimum between the two reflections increases
+                                                                    in good agreement to the simulation (Fig.5). The MSLL is
+                                                                    between -10 dB (at 11.4) and -12.25 dB (at 4.6) for all
+                                                                    spacings considered. Due to the narrow main lobe peak, the
+                                                                    closest separable angular distance is 5.7, which corresponds
+                                                                    to a spacing of 10 cm between the spheres. In total, the
+                                                                    real-world experiments using the two-scale prototype created
+                                                                    confirm the results of the simulation and demonstrate that the
+                                                                    two-scale design provides a favorable trade-off between the
+                                                                    separation of closely spaced objects and a low MSLL.
+
+FIGURE 12. Measurement setup for investigating the angular          V. CONCLUSION AND OUTLOOK
+resolution (a) using two spheres. The spacing between the           The two-scale sparse spiral array is based on a determin-
+spheres is gradually reduced and the separability of the two        istic and flexible 4-parameter design method for improv-
+reflections is evaluated in the ultrasound images (b)-(e). In the   ing the one-way PSF performance in terms of MLW and
+horizontal sectional view (f), the closest separable spacing is     MSLL compared to previous sunflower geometry modifica-
+10 cm (5.7), as two distinct local maxima are formed.               tion approaches, i.e. density tapering using window func-
+                                                                    tion. The improvements are achieved by exploiting the
+   The measured and simulated PSFs are in excellent agree-          sunflower-specific PSF structures of two nested sub-arrays
+ment, with the measurement featuring a slightly higher MSLL         featuring two different spatial element densities which are
+(-12.1 dB vs. -12.6 dB) and a wider MLW (8.05 vs. 7.47)             constant within each sub-array. This way, the PSF zone loca-
+compared to the simulation. Overall, both, the balanced side        tions can be estimated prior to field simulation using the basic
+lobe level, as well as the distinctive shape of the main lobe       array design parameters, enabling to narrow the search for
+due to the combination of the two sub-arrays, are evident,          well-matched array configurations within pre-defined design
+as expected.                                                        constraints. Due to the excellent one-way PSF characteris-
+                                                                    tics, the two-scale method proposed is particularly valuable
+   In the next experiment, the achievable angular resolution        for imaging applications, where high frame rates are of
+is investigated, comparable to the simulation in (Fig. 5). For      great importance, as well as for transmit- and receive-only
+this, a horizontal mounting is positioned on the slide, onto        applications. Future work addresses the impact of addi-
+which two laterally adjacent hollow spheres ( 5 cm) are             tional density tapering on the two-scale sub-arrays, poten-
+attached, whose spacing between each other can be variably          tially enabling further improvement. In addition, we evaluate
+adjusted (Fig. 12). The sphere fixtures and the horizontal          whether the two-scale array achieves favorable results in
+mounting are covered with sound absorbers as well. The slide        the two-way beamforming mode as well, e.g. by using the
+is positioned at a fixed distance of 1 m (far-field) and the spac-  inner and outer sub-arrays separately for transmitting and
+ing between the spheres is symmetrically reduced from 20 cm         receiving. Moreover, we extend the prototype in terms of
+to 8 cm in steps of 2 cm. At each spacing, an image is formed       transducer technology and firing schemes in synergy with the
+to evaluate the separability of the two sphere reflections. The     two-scale design strategy to achieve further improvements
+                                                                    for high-frame rate imaging in air and conduct additional
+VOLUME 3, 2023                                                      experimental evaluations.
+
+                                                                    REFERENCES
+
+                                                                     [1] R. Kerstens, D. Laurijssen, and J. Steckel, ``ERTIS: A fully embedded real
+                                                                           time 3D imaging sonar sensor for robotic applications,'' in Proc. Int. Conf.
+                                                                           Robot. Autom. (ICRA), May 2019, pp. 1438­1443.
+
+                                                                     [2] J. Steckel, A. Boen, and H. Peremans, ``Broadband 3-D sonar system using
+                                                                           a sparse array for indoor navigation,'' IEEE Trans. Robot., vol. 29, no. 1,
+                                                                           pp. 161­171, Feb. 2013.
+
+                                                                     [3] G. Allevato, M. Rutsch, J. Hinrichs, M. Pesavento, and M. Kupnik,
+                                                                           ``Embedded air-coupled ultrasonic 3D sonar system with GPU accelera-
+                                                                           tion,'' in Proc. IEEE SENSORS, Oct. 2020, pp. 1­4.
+
+                                                                     [4] C. A. Andersen, S. Holden, J. Vela, M. S. Rathleff, and M. B. Jensen,
+                                                                           ``Point-of-care ultrasound in general practice: A systematic review,'' Ann.
+                                                                           Family Med., vol. 17, no. 1, pp. 61­69, Jan. 2019.
+
+                                                                                                                                                                       125
+ [5] R. Bharath, D. S. Reddy, and P. Rajalakshmi, ``A SoC-based programmable              [27] Q. Cheng, Y. Liu, H. Zhang, and Y. Hao, ``A generic spiral MIMO array
+       portable ultrasound scanning system for point-of-care applications and                    design method for short-range UWB imaging,'' IEEE Antennas Wireless
+       clinical research activities,'' Social Netw. Comput. Sci., vol. 3, no. 5, p. 349,         Propag. Lett., vol. 19, no. 5, pp. 851­855, May 2020.
+       Jun. 2022.
+                                                                                          [28] J. Wang, P. Aubry, and A. Yarovoy, ``3-D short-range imaging with irreg-
+ [6] J. H. Song, J. Lee, S. Yeo, G.-D. Kim, and T.-K. Song, ``An analytical                      ular MIMO arrays using NUFFT-based range migration algorithm,'' IEEE
+       approach to designing optimal sparse 1-D phased arrays for handheld                       Trans. Geosci. Remote Sens., vol. 58, no. 7, pp. 4730­4742, Jul. 2020.
+       ultrasound imaging,'' IEEE Trans. Ultrason., Ferroelectr., Freq. Control,
+       vol. 67, no. 7, pp. 1354­1365, Jul. 2020.                                          [29] Y. Aslan, J. Puskely, J. H. J. Janssen, M. Geurts, A. Roederer, and
+                                                                                                 A. Yarovoy, ``Thermal-aware synthesis of 5G base station antenna arrays:
+ [7] D. H. Turnbull and F. S. Foster, ``Beam steering with pulsed two-                           An overview and a sparsity-based approach,'' IEEE Access, vol. 6,
+       dimensional transducer arrays,'' IEEE Trans. Ultrason., Ferroelectr., Freq.               pp. 58868­58882, 2018.
+       Control, vol. 38, no. 4, pp. 320­333, Jul. 1991.
+                                                                                          [30] J. Liao et al., ``Beam-quality improvement with a bio-inspired sunflower
+ [8] A. Ramalli, E. Boni, E. Roux, H. Liebgott, and P. Tortoli, ``Design, imple-                 array for coherent beam combining,'' Appl. Opt., vol. 60, no. 31, p. 9713,
+       mentation, and medical applications of 2-D ultrasound sparse arrays,''                    Nov. 2021.
+       IEEE Trans. Ultrason., Ferroelectr., Freq. Control, vol. 69, no. 10,
+       pp. 2739­2755, Oct. 2022.                                                          [31] R. S. Cardoso, L. P. Oliveira, and H. E. Hernandez-Figueroa, ``Assessment
+                                                                                                 of Fermat's spiral arrays for photonic dielectric antennas,'' in Proc. 15th
+ [9] J. A. Jensen et al., ``Anatomic and functional imaging using row-column                     Eur. Conf. Antennas Propag. (EuCAP), Mar. 2021, pp. 1­4.
+       arrays,'' IEEE Trans. Ultrason., Ferroelectr., Freq. Control, vol. 69, no. 10,
+       pp. 2722­2738, Oct. 2022.                                                          [32] J. L. Pita, I. Aldaya, O. J. S. Santana, L. E. E. De Araujo, P. Dainese, and
+                                                                                                 L. H. Gabrielli, ``Side-lobe level reduction in bio-inspired optical phased-
+[10] B. Diarra et al., ``Feasibility of genetic algorithms in 2D ultrasound                      array antennas,'' Opt. Exp., vol. 25, no. 24, p. 30105, Nov. 2017.
+       array optimization,'' in Proc. IEEE Int. Ultrason. Symp. (IUS), Oct. 2018,
+       pp. 1­9.                                                                           [33] L. H. Gabrielli and H. E. Hernandez-Figueroa, ``Aperiodic antenna array
+                                                                                                 for secondary lobe suppression,'' IEEE Photon. Technol. Lett., vol. 28,
+[11] K. Chen, X. Yun, Z. He, and C. Han, ``Synthesis of sparse planar arrays                     no. 2, pp. 209­212, Jan. 15, 2016.
+       using modified real genetic algorithm,'' IEEE Trans. Antennas Propag.,
+       vol. 55, no. 4, pp. 1067­1073, Apr. 2007.                                          [34] S. Jekosch and E. Sarradj, ``An inverse microphone array method for
+                                                                                                 the estimation of a rotating source directivity,'' Acoustics, vol. 3, no. 3,
+[12] A. Austeng, S. Holm, P. K. Weber, N. Aakvaag, and K. Iranpour, ``1D                         pp. 462­472, Jun. 2021.
+       and 2D algorithmically optimized sparse arrays,'' in Proc. IEEE Ultrason.
+       Symp., Oct. 1997, pp. 1683­1686.                                                   [35] C. VanDercreek, R. Merino-Martinez, M. Snellen, and D. Simons, ``Com-
+                                                                                                 parison of cavity geometries for a microphone array in an open-jet wind-
+[13] R. L. Haupt, ``Thinned arrays using genetic algorithms,'' IEEE Trans.                       tunnel experiment,'' in Proc. 8th Berlin Beamforming Conf., Mar. 2020,
+       Antennas Propag., vol. 42, no. 7, pp. 993­999, Jul. 1994.                                 pp. 1­3.
+
+[14] E. Roux, A. Ramalli, P. Tortoli, C. Cachard, M. C. Robini, and                       [36] S. Luesutthiviboon, A. Malgoezar, M. Snellen, P. Sijtsma, and D. Simons,
+       H. Liebgott, ``2-D ultrasound sparse arrays multidepth radiation optimiza-                ``Improving source discrimination performance by using an optimized
+       tion using simulated annealing and spiral-array inspired energy func-                     acoustic array and adaptive high-resolution CLEAN-SC beamforming,''
+       tions,'' IEEE Trans. Ultrason., Ferroelectr., Freq. Control, vol. 63, no. 12,             in Proc. 7th Berlin Beamforming Conf., 2018, pp. 1­27.
+       pp. 2138­2149, Dec. 2016.
+                                                                                          [37] A. Price and B. Long, ``Fibonacci spiral arranged ultrasound phased array
+[15] C. Sciallero and A. Trucco, ``Design of a sparse planar array for optimized                 for mid-air haptics,'' in Proc. IEEE Int. Ultrason. Symp. (IUS), Oct. 2018,
+       3D medical ultrasound imaging,'' in Proc. 23rd Eur. Signal Process. Conf.                 pp. 1­4.
+       (EUSIPCO), Aug. 2015, pp. 1341­1345.
+                                                                                          [38] B. Parr, M. Legg, S. Bradley, and F. Alam, ``Occluded grape cluster
+[16] B. Diarra, M. Robini, P. Tortoli, C. Cachard, and H. Liebgott, ``Design of                  detection and vine canopy visualisation using an ultrasonic phased array,''
+       optimal 2-D nongrid sparse arrays for medical ultrasound,'' IEEE Trans.                   Sensors, vol. 21, no. 6, p. 2182, Mar. 2021.
+       Biomed. Eng., vol. 60, no. 11, pp. 3093­3102, Nov. 2013.
+                                                                                          [39] M. Legg and S. Bradley, ``Ultrasonic arrays for remote sensing of pasture
+[17] A. Trucco, ``Thinning and weighting of large planar arrays by simulated                     biomass,'' Remote Sens., vol. 12, no. 1, p. 111, Dec. 2019.
+       annealing,'' IEEE Trans. Ultrason., Ferroelectr., Freq. Control, vol. 46,
+       no. 2, pp. 347­355, Mar. 1999.                                                     [40] G. Allevato et al., ``Air-coupled ultrasonic spiral phased array for high-
+                                                                                                 precision beamforming and imaging,'' IEEE Open J. Ultrason., Ferro-
+[18] M. Karaman, I. O. Wygant, O. Oralkan, and B. T. Khuri-Yakub, ``Mini-                        electr., Freq. Control, vol. 2, pp. 40­54, 2022.
+       mally redundant 2-D array designs for 3-D medical ultrasound imaging,''
+       IEEE Trans. Med. Imag., vol. 28, no. 7, pp. 1051­1061, Jul. 2009.                  [41] G. Allevato, M. Rutsch, J. Hinrichs, E. Sarradj, M. Pesavento, and
+                                                                                                 M. Kupnik, ``Spiral air-coupled ultrasonic phased array for high resolution
+[19] A. Austeng and S. Holm, ``Sparse 2-D arrays for 3-D phased array                            3D imaging,'' in Proc. IEEE Int. Ultrason. Symp. (IUS), Sep. 2020, pp. 1­4.
+       imaging-design methods,'' IEEE Trans. Ultrason., Ferroelectr., Freq. Con-
+       trol, vol. 49, no. 8, pp. 1073­1086, Aug. 2002.                                    [42] A. R. K. Towlson, A. J. Croxford, and B. W. Drinkwater, ``Ultrasonic
+                                                                                                 nondestructive characterization of blockages and defects in underground
+[20] S. I. Nikolov and J. A. Jensen, ``Application of different spatial sampling                 pipes,'' IEEE Trans. Ultrason., Ferroelectr., Freq. Control, vol. 69, no. 8,
+       patterns for sparse array transducer design,'' Ultrasonics, vol. 37, no. 10,              pp. 2540­2554, Aug. 2022.
+       pp. 667­671, Jul. 2000.
+                                                                                          [43] X. Qu et al., ``Suppressing grating lobes for transcranial focused ultrasound
+[21] S. S. Brunke and G. R. Lockwood, ``Broad-bandwidth radiation patterns                       system by frequency-modulated excitation,'' IEEE Trans. Ultrason., Fer-
+       of sparse two-dimensional Vernier arrays,'' IEEE Trans. Ultrason., Ferro-                 roelectr., Freq. Control, vol. 68, no. 2, pp. 341­351, Feb. 2021.
+       electr., Freq. Control, vol. 44, no. 5, pp. 1101­1109, Sep. 1997.
+                                                                                          [44] C. R. Bawiec et al., ``A prototype therapy system for boiling histotripsy in
+[22] H. Vogel, ``A better way to construct the sunflower head,'' Math. Biosci.,                  abdominal targets based on a 256-element spiral array,'' IEEE Trans. Ultra-
+       vol. 44, nos. 3­4, pp. 179­189, Jun. 1979.                                                son., Ferroelectr., Freq. Control, vol. 68, no. 5, pp. 1496­1510, May 2021.
+
+[23] D. W. Boeringer, ``Phased array including a logarithmic spiral lat-                  [45] P. B. Rosnitskiy, B. A. Vysokanov, L. R. Gavrilov, O. A. Sapozhnikov,
+       tice of uniformly spaced radiating and receiving elements,'' U.S.                         and V. A. Khokhlova, ``Method for designing multielement fully popu-
+       Patent 6 433 754B1, Aug. 13, 2002.                                                        lated random phased arrays for ultrasound surgery applications,'' IEEE
+                                                                                                 Trans. Ultrason., Ferroelectr., Freq. Control, vol. 65, no. 4, pp. 630­637,
+[24] F. Vidal, H. Legay, G. Goussetis, and A. Segneri, ``A system approach to                    Apr. 2018.
+       enable digital beamforming with direct radiating arrays: The joint use of
+       precoding and sparse arrays,'' Int. J. Satell. Commun. Netw., vol. 39, no. 6,      [46] P. Ramaekers, M. de Greef, R. Berriet, C. T. W. Moonen, and M. Ries,
+       pp. 645­660, Nov. 2021.                                                                   ``Evaluation of a novel therapeutic focused ultrasound transducer based
+                                                                                                 on Fermat's spiral,'' Phys. Med. Biol., vol. 62, no. 12, pp. 5021­5045,
+[25] M. C. Viganó, G. Toso, G. Caille, C. Mangenot, and I. E. Lager, ``Sunflower                 Jun. 2017.
+       array antenna with adjustable density taper,'' Int. J. Antennas Propag.,
+       vol. 2009, pp. 1­10, Jan. 2009.                                                    [47] O. Martínez-Graullera, C. J. Martín, G. Godoy, and L. G. Ullate, ``2D
+                                                                                                 array design based on Fermat spiral for ultrasound imaging,'' Ultrasonics,
+[26] O. Christogeorgos, H. Zhang, Q. Cheng, and Y. Hao, ``Extraordinary                          vol. 50, no. 2, pp. 280­289, Feb. 2010.
+       directive emission and scanning from an array of radiation sources with
+       hyperuniform disorder,'' Phys. Rev. Appl., vol. 15, no. 1, Jan. 2021,              [48] A. Ramalli, E. Boni, A. S. Savoia, and P. Tortoli, ``Density-tapered spiral
+       Art. no. 014062.                                                                          arrays for ultrasound 3-D imaging,'' IEEE Trans. Ultrason., Ferroelectr.,
+                                                                                                 Freq. Control, vol. 62, no. 8, pp. 1580­1588, Aug. 2015.
+126
+                                                                                                                                                                                            VOLUME 3, 2023
+Allevato et al.: Two-Scale Sparse Spiral Array Design for 3D Ultrasound Imaging in Air
+
+[49] A. Ramalli et al., ``High-frame-rate tri-plane echocardiography with spiral                                     MATTHIAS RUTSCH received the B.Sc. degree
+       arrays: From simulation to real-time implementation,'' IEEE Trans. Ultra-                                     from Brandenburgische Technische Universität
+       son., Ferroelectr., Freq. Control, vol. 67, no. 1, pp. 57­69, Jan. 2020.                                      Cottbus-Senftenberg, Germany, in 2014, and the
+                                                                                                                     M.Sc. degree in electrical engineering from Tech-
+[50] A. Ramalli et al., ``Real-time 3-D spectral Doppler analysis with a sparse                                      nische Universität Darmstadt (TU Darmstadt),
+       spiral array,'' IEEE Trans. Ultrason., Ferroelectr., Freq. Control, vol. 68,                                  Germany, in 2017. Since then, he has been a
+       no. 5, pp. 1742­1751, May 2021.                                                                               Research Associate with the Measurement and
+                                                                                                                     Sensor Technology Group, TU Darmstadt. His
+[51] S. Harput et al., ``3-D super-resolution ultrasound imaging with a 2-D                                          research interests include simulation and char-
+       sparse array,'' IEEE Trans. Ultrason., Ferroelectr., Freq. Control, vol. 67,                                  acterization of duct acoustics for air-coupled
+       no. 2, pp. 269­277, Feb. 2020.                                                                                ultrasound applications.
+
+[52] L. Wei et al., ``High frame rate volumetric imaging of microbubbles using a                                     RAPHAEL MÜLLER received the M.Sc. degree
+       sparse array and spatial coherence beamforming,'' IEEE Trans. Ultrason.,                                      in electrical engineering and information technol-
+       Ferroelectr., Freq. Control, vol. 68, no. 10, pp. 3069­3081, Oct. 2021.                                       ogy from Technische Universität Darmstadt (TU
+                                                                                                                     Darmstadt), Darmstadt, Germany, in 2020. Since
+[53] R. Maffett et al., ``Unfocused field analysis of a density-tapered spiral array                                 then, he has been a Research Associate with the
+       for high-volume-rate 3-D ultrasound imaging,'' IEEE Trans. Ultrason.,                                         Communication Systems Group, TU Darmstadt.
+       Ferroelectr., Freq. Control, vol. 69, no. 10, pp. 2810­2822, Oct. 2022.                                       His research interests include multilinear algebra
+                                                                                                                     and sensor array processing, especially sparse sig-
+[54] S. Nooijens, A. Ramalli, M. Ingram, M. Fournelle, A. Bertrand, and                                              nal processing and its application to radar and
+       J. D'hooge, ``Design of a sparse ellipsoidal array for volumetric ultrasound                                  ultrasound imaging.
+       imaging of the prostate,'' in Proc. IEEE Int. Ultrason. Symp., Sep. 2020,
+       pp. 1­3.                                                                                                      MARIUS PESAVENTO (Senior Member,
+                                                                                                                     IEEE) received the Dipl-Ing. degree from Ruhr-
+[55] X. Li, A. Gachagan, and P. Murray, ``Design of 2D sparse array transducers                                      Universität Bochum, Bochum, Germany, in 1999,
+       for anomaly detection in medical phantoms,'' Sensors, vol. 20, no. 18,                                        the M.Eng. degree from McMaster Univer-
+       p. 5370, Sep. 2020.                                                                                           sity, Hamilton, ON, Canada, in 2000, and the
+                                                                                                                     Dr.-Ing. degree in electrical engineering from
+[56] H. Yoon and T.-K. Song, ``Sparse rectangular and spiral array designs for                                       Ruhr-Universität Bochum in 2005. From 2005
+       3D medical ultrasound imaging,'' Sensors, vol. 20, no. 1, p. 173, Dec. 2019.                                  to 2009, he was a Research Engineer with two
+                                                                                                                     startup companies. He was also an Assistant Pro-
+[57] T. L. Szabo, Diagnostic Ultrasound Imaging: Inside Out, 2nd ed. Amster-                                         fessor of robust signal processing and a Full
+       dam, The Netherlands: Elsevier, 2014.                                          Professor of communication systems with the Department of Electrical Engi-
+                                                                                      neering and Information Technology, Technische Universität Darmstadt,
+[58] A. Stuart Savoia et al., ``A 256-element spiral CMUT array with integrated       Darmstadt, Germany, in 2010 and 2013, respectively. His research interests
+       analog front end and transmit beamforming circuits,'' in Proc. IEEE Int.       include robust signal processing and adaptive beamforming, high-resolution
+       Ultrason. Symp. (IUS), Oct. 2018, pp. 206­212.                                 sensor array processing, multiantenna and multiuser communication sys-
+                                                                                      tems, distributed, sparse, and mixed-integer optimization techniques for
+[59] H. J. Vos et al., ``Sparse volumetric PZT array with density tapering,'' in      signal processing and communications, statistical signal processing, spectral
+       Proc. IEEE Int. Ultrason. Symp. (IUS), Oct. 2018, pp. 1­4.                     analysis, and parameter estimation.
+
+[60] L. Wei et al., ``Sparse 2-D PZT-on-PCB arrays with density taper-                                               MARIO KUPNIK (Senior Member, IEEE)
+       ing,'' IEEE Trans. Ultrason., Ferroelectr., Freq. Control, vol. 69, no. 10,                                   received the Dipl.-Ing. degree in electrical engi-
+       pp. 2798­2809, Oct. 2022.                                                                                     neering from the Graz University of Technology,
+                                                                                                                     Austria, in 2000, and the Ph.D. degree in electri-
+[61] E. Sarradj, ``A generic approach to synthesize optimal array microphone                                         cal engineering from the University of Leoben,
+       arrangements,'' in Proc. 6th Berlin Beamforming Conf., 2016, pp. 1­12.                                        Leoben, Austria, in 2004. From 2005 to 2011,
+                                                                                                                     he was a Post-Doctoral Researcher, a Research
+[62] H. L. Van Trees, Optimum Array Processing: Part IV of Detection, Esti-                                          Associate, and a Senior Research Scientist with
+       mation, and Modulation Theory. Hoboken, NJ, USA: Wiley, 2004.                                                 the Edward L. Ginzton Laboratory, Stanford Uni-
+                                                                                                                     versity, Stanford, CA, USA. From 2011 to 2014,
+[63] S. Bae, J. Park, and T.-K. Song, ``Contrast and volume rate enhancement of       he was a Full Professor of electrical engineering with the Brandenburg
+       3-D ultrasound imaging using aperiodic plane wave angles: A simulation         University of Technology, Cottbus, Germany. Since 2015, he has been a
+       study,'' IEEE Trans. Ultrason., Ferroelectr., Freq. Control, vol. 66, no. 11,  Full Professor with Technische Universität Darmstadt, Germany, where
+       pp. 1731­1748, Nov. 2019.                                                      he is currently the Head of the Measurement and Sensor Technology
+                                                                                      Group. His research interests include micromachined sensors and actuators,
+[64] S. F. Liew, H. Noh, J. Trevino, L. D. Negro, and H. Cao, ``Localized             multiphysics simulations, ferroelectrets, flowmetering of gases and liquids,
+       photonic band edge modes and orbital angular momenta of light in a             ultrasound, electroacoustics, human­machine interaction, and robotics.
+       golden-angle spiral,'' Opt. Exp., vol. 19, no. 24, p. 23631, 2011.
+
+[65] G. Allevato et al., ``Real-time 3-D imaging using an air-coupled ultrasonic
+       phased-array,'' IEEE Trans. Ultrason., Ferroelectr., Freq. Control, vol. 68,
+       no. 3, pp. 796­806, Mar. 2021.
+
+                               GIANNI ALLEVATO received the M.Sc. degree
+                               in electrical engineering from Technische Uni-
+                               verstität Darmstadt (TU Darmstadt), Germany,
+                               in 2018. Since 2018, he has been a Research Asso-
+                               ciate with the Measurement and Sensor Technol-
+                               ogy Group, TU Darmstadt. His research interests
+                               include electronics and embedded system design,
+                               array design, software development, and parallel
+                               signal processing for imaging with air-coupled
+                               ultrasonic phased arrays and its applications.
+
+                               CHRISTOPH HAUGWITZ (Student Member,
+                               IEEE) received the M.Sc. degree in electrical
+                               engineering from Technische Universität Darm-
+                               stadt (TU Darmstadt), Germany, in 2021. Since
+                               then, he has been a Research Associate with
+                               the Measurement and Sensor Technology Group,
+                               TU Darmstadt. His research interests include ultra-
+                               sonic flow metering and air-coupled ultrasonic
+                               phased arrays and its applications.
+
+VOLUME 3, 2023                                                                          127
+

@@ -1,0 +1,563 @@
+arXiv:2301.00833v2 [eess.AS] 13 Apr 2023           Hyperuniform disordered parametric loudspeaker array
+
+                                                   Kun Tang1,2, Yuqi Wang1, Shaobo Wang1, Da Gao1, Haojie Li3, Xindong
+                                                        Liang3, Patrick Sebbah4, Yibin Li2, Jin Zhang1 and Junhui Shi1
+
+                                                   1 Research Center for Humanoid Sensing, Zhejiang Lab, Hangzhou 311100, China.
+                                              2 Tianmushan Laboratory, Xixi Octagon City, Yuhang District, Hangzhou, 310023 China.
+
+                                                                        3 Taiji Laboratory for Gravitational Wave Universe,
+                                                                          School of Physics and Optoelectronic Engineering,
+
+                                                           Hangzhou Institute for Advanced Study, Hangzhou, 311100, China and
+                                               4 Department of Physics, The Jack and Pearl Resnick Institute for Advanced Technology,
+
+                                                                          Bar-Ilan University, Ramat-Gan 5290002, Israel.
+                                                                                             (Dated: April 14, 2023)
+
+                                             A steerable parametric loudspeaker array is known for its directivity and narrow beam width.
+                                          However, it often suffers from the grating lobes due to periodic array distributions. Here we propose
+                                          the array configuration of hyperuniform disorder, which is short-range random while correlated at
+                                          large scales, as a promising alternative distribution of acoustic antennas in phased arrays. Angle-
+                                          resolved measurements reveal that the proposed array suppresses grating lobes and maintains a
+                                          minimal radiation region in the vicinity of the main lobe for the primary frequency waves. These
+                                          distinctive emission features benefit the secondary frequency wave in canceling the grating lobes
+                                          regardless of the frequencies of the primary waves. Besides, the hyperuniform disordered array is
+                                          duplicatable, which facilitates extra-large array design without any additional computational efforts.
+
+                                                                 I. INTRODUCTION                       generates a low-frequency sound beam from the inter-
+                                                                                                       action of two collimated ultrasonic beams as a result of
+                                             Acoustic beamforming is a signal processing technique     nonlinear acoustic effects [20]. The high-frequency ultra-
+                                          used in acoustical arrays for directional sound emission     sonic components are commonly referred as the primary
+                                          or reception [1]. Optimal beamforming has been widely        frequencies and the low-frequency component generated
+                                          researched in the context of sensor arrays [2]. Due to       from the interaction of primary frequencies is thus re-
+                                          the reciprocity principle of acoustics, these techniques,    ferred as secondary (difference) frequency. Owing to the
+                                          e.g. design of such microphone arrays and the associ-        collimation behavior of ultrasonic beams when propa-
+                                          ated processing algorithms, can also be adopted in the       gating in air, the parametric loudspeaker overperforms
+                                          context of loudspeaker arrays [3­6] or underwater trans-     the traditional loudspeaker in terms of rendering audible
+                                          ducer arrays, bringing applications such as personal au-     sound with high directivity, especially at low frequency
+                                          dio zone generation [7, 8], physical therapies [9]. Tradi-   range [21, 22].
+                                          tional acoustic arrays have been largely based on vari-
+                                          ous geometrical arrangements (linear, circular, triangu-        To achieve broader applications, such as sound field re-
+                                          lar, spiral, and spherical form of arrays) [10­14], due to   inforcement or personal audio space realization [7, 8, 23],
+                                          mathematical simplicity. Such designs suffer from fun-       audible sound beam steering using acoustic beamform-
+                                          damental restraints, so-called diffraction limits which re-  ing techniques [1] is adopted. In a recent work [24],
+                                          sult in unwanted gratings lobes in both spatial and an-      Shi. et. al has successfully developed a steerable para-
+                                          gular domains, bringing information leakage or harmful       metric loudspeaker array (PLA) using periodic distribu-
+                                          physical heating in the off-target regions. To suppress      tions. The results show that the secondary audible wave
+                                          the grating lobes, different optimization techniques have    partially inherits the directive features from the primary
+                                          been proposed, e.g. optimizing the array of random dis-      waves. Although it is mathematically simple, the pe-
+                                          order [15, 16], or imposing spatial filters on the input     riodic configuration suffers from fundamental restraints,
+                                          signals [17]. However, the process of optimizing arrays      so-called diffraction limits which result in unwanted grat-
+                                          with many elements under certain constraints is a high-      ings lobes in both spatial and angular domains [25]. The
+                                          dimensional nonlinear problem with many design vari-         occurrence of grating lobes for secondary wave found in
+                                          ables [18]. The computational cost would be significant      the periodic distributed PLA [24] generates sound trans-
+                                          when the number of array sources increases.                  mitting towards undesired directions and causes distur-
+                                                                                                       bances, which therefore should be eliminated by recon-
+                                             The prototype of a parametric loudspeaker was con-        figuring the PLA with new configurations.
+                                          ceived by Westervelt nearly 50 years ago [19]. It is an
+                                          application of the parametric acoustic array in air, which      The concept of hyperuniform disorder (HUD) was first
+                                                                                                       introduced as an order metric for ranking point patterns
+                                           jinzhang@zhejianglab.com                                    according to their local density fluctuations [26]. Hy-
+                                           junhuishi@zhejianglab.com                                   peruniform structures cover the intermediate regime be-
+                                                                                                       tween random and periodic structures and thus exhibit
+                                                                                                       properties usually associated with both. Hyperuniform
+                                                                                                       stealthy disordered photonic (phononic) structures ex-
+                                                                                              2
+
+hibit large isotropic photonic (phononic) band gaps for      of the vanished region for the structure factor can be ex-
+the light (elastic wave) for all polarizations [27­29] and   pressed by the stealthy parameter
+possess rather unusual scattering properties for light [30]
+and sound waves [31]. Recently, the design of phased an-      = M (kc)/N d,                   (2)
+tenna arrays with hyperuniform disorder has been pro-
+posed in microwave which exhibits directive radiation for    where M (kc) is the number of linearly independent k
+large steering angles and wide operating bandwidths [25].
+The radiation patterns of 16 Vivaldi elements have been      vectors where S(k) = 0.
+examined due to the limited number of ports in the mea-         As an example, we illustrate the characteristics of the
+surement system. Due to the different nature of the HUD
+and the traditional array configurations (linear, circular,  HUD array with a point pattern consisting of 200 points
+triangular, spiral, and spherical form of arrays) [10­15],   and  = 0.5, as shown in the upper panel pf Fig. 1(a),
+we would like to apply this new concept to the design of     a being the average nearest neighbor distance among the
+the PLA to benefit from its distinctive features.            points. Fig. 1(b) depicts the structure factor of the hy-
+                                                             peruniform point pattern shown in Fig. 1(a). The cut-off
+   Here we implement the HUD distribution in the design      radius kc of the region with vanishing structure factor
+of a PLA [32, 33] to achieve high-directive rendering of     is estimated with Eq. (2) and shown in Fig. 1(b) with a
+audible sound. Owing to the fact the working frequencies     red dashed circle. We also compare its structure factor
+for airborne sound are much lower than microwaves, the       with two typical arrays which possess the same number of
+bandwidth restraint of the driving electronic systems is     points within the occupied area, e.g. the 14×14 periodic
+no longer a concern. Around 200 elements can be im-          array of 196 points and the random arrays of 200 points.
+plemented in our experimental setup with low-cost elec-      It is observed that periodically distributed peaks show
+tronic components and transducers [34, 35]. We demon-        up in the structure factor of the periodic array (middle
+strate that the proposed array suppresses grating lobes      panel) as in the diffraction pattern for a typical crystal,
+and maintains a minimal radiation region in the vicinity     which reveals high symmetry in the point pattern. In
+of the main lobe for the primary frequency waves. These      contrast, the structure factor of the random array is ho-
+distinctive sound emission features benefit the secondary    mogeneously distributed (lower panel). Thus the HUD
+waves in complete cancellation of grating lobes, regard-     point pattern with  = 0.5 displays a moderate level of
+less of the working frequencies of the primary waves [24].   ordered symmetry other than these two extremes.
+Interestingly, we found that the grating lobes of the sec-
+ondary waves even at very low frequencies, e.g. a 1kHz          The normalized far-field radiation pattern in the recip-
+audio sinusoidal signal carried by an ultrasonic beam at     rocal space of an array of identical elements distributed
+a frequency 40kHz, can be completely canceled.               according to a point pattern can be described by its array
+                                                             factor
+
+                                                                        1    N
+                                                                          |
+                                                             |A(k)|2 =  N         eik·rj |2,  (3)
+
+II. RADIATION PROPERTIES OF HUD                                              j=1
+                ACOUSTIC ARRAYS
+
+   We start with a brief explanation of radiation proper-    where N identical elements are located in the z=0 plane
+ties for the HUD acoustic array. A hyperuniform point        of a Cartesian coordinate system at positions rj. Here,
+pattern is a point pattern in real space for which the       the wavevector, k, is associated with the working wave-
+number variance 2(R) within a spherical sampling win-        length  and the position of the observer in real space,
+dow of radius R (in d dimensions) grows more slowly          which can be expressed by the corresponding elevation
+than the window volume ( Rd) for large R. This con-          and azimuth angles (, ):
+cept can be well understood within the reciprocal space,
+                                                             2
+where the structure factor S(k) for a hyperuniform point     k = sin (cos , sin ).            (4)
+pattern can be obtained through a 2D Fourier transform       
+of the point pattern in real space. The resulting struc-
+                                                                It's worth noting that despite the similarities between
+ture factor S(k) vanishes as the wave vector approaches      the arithmetic expressions of the structure factor in
+                                                             Eq. (1) and the array factor Eq. (3), the physical mean-
+zero |k|  0,
+                                                             ings of the wavevectors are different. The former k is re-
+S(k) =  1N      eik·rn |         (1)                         lated to the wavevectors in reciprocal space, whereas the
+          |
+        N                                                    latter k (Eq. (4)) is associated with the spatial position
+           n=1                                               of the observer in real space and working frequencies.
+
+where k are vectors in reciprocal space and rn are the          In Fig. 1(c)-1(d), we present the normalized magni-
+positions of the N particles.
+                                                             tude of the array factors, A(k), in decibel scale at work-
+   We furthermore consider that the structure factor S(k)    ing frequencies f0 and 3f0, where 0/2 = a, 0 is the
+is isotropic and vanishes for a finite range of wave num-    corresponding wavelength of f0. Regarding the far-field
+                                                             radiation for a periodic array, diffraction of the emitted
+bers 0 < |k|  kc for the cutoff radius kc [29]. The size     acoustic wave is due to phase differences that result in
+                                                             3
+
+FIG. 1. Structure factor & Array factor for different point patterns. (a) Schematics of a HUD pattern in real space
+with 200 points and =0.5 (upper panel), the periodic array (middle panel), and the random array (lower panel). (b) The
+normalized magnitude of the structure factor in reciprocal space with a logarithmic scale. The array factor patterns when
+f = f0 (c) and when f = 3f0 (d) and the main lobe is steered towards  = 0,  = 30 direction (e), measured from the array's
+boresight (axis of maximum radiated power), with f0 being the frequency for which the average distance between the nearest
+elements in the HUD array equals half of the operating wavelength. The angular and radial coordinates in the polar radiation
+plots correspond to the  and  angles, respectively.
+
+constructive and destructive interference [36]. According    where kc is the structure factor cutoff radius and  is
+to the Nyquist criterion in array signal processing the-     the operating wavelength. The estimated cutoff radius
+ory, no grating lobes appear at frequency f0 as shown in     exc = 31.8 obtained from Eq. (6) for the far-field radi-
+the middle panel of Fig. 1(c). As soon as the working        ation when f = 3f0 is plotted with a red dashed line in
+frequency f is larger than f0, grating lobes appear and      the upper panel of Fig. 1(d), which fits the array factor
+can be found in the direction                                calculated from Eq. (3). Assuming 0 = 0 and n = 1
+                                                             in Eq. (5), the first-order diffraction for a periodic array
+                                 (5)                         would occur in the direction  = arcsin(/a), which is
+  =  arcsin(sin 0  +  n      ),                              larger than exc since kc < 2/a (this condition is always
+                           a                                 ensured in the definition of a HUD array, otherwise the
+                                                             HUD array would collapse into a periodic array). The
+where 0 is the steering angle, n is index of grating lobes,  size of the circular exclusion region for a HUD array is
+and  is the working wavelength at frequency f . As           smaller than the angular distance of ±1-order diffrac-
+shown in the middle panel of Fig. 1(d), grating lobes        tion for a periodic array. As frequency increases, exc
+occur in the direction  = ±41.8 at frequency 3f0 and         decreases as predicted by Eq. (6), and no grating lobes
+agree with the angle predicted by Eq. (5). As frequency      occur within the exclusion region regardless of the fre-
+increases further above 3f0, more grating lobes occur and    quency (see the supplementary material of Ref. [25]).
+the grating lobes move closer to the main lobe. It's worth   We have presented 5 different HUD point patterns with
+noting that no grating lobes show up in the array factor     increasing stealthy parameter  =0.1-0.5 in Appendix A,
+for the HUD array (upper panel of Ffig. 1(e)), which is      accompanied by corresponding simulated structural fac-
+in stark contrast to the array factor for a normal peri-     tors and array factors. As  increases from 0.1 to 0.5
+odic array. Besides, one can also observe a circular region  gradually, M (kc) grows as well, which ends up with the
+with very weak radiation that surrounds the main lobe,       expansion of the circular exclusion region as predicted
+in contrast to the array factor for a random array (lower    by Eq. (6). Generally, the point pattern is considered
+panel). This circular exclusion region can act as a protec-  to be in the disordered regime when   0.5, but this
+tive layer for the main lobe and protects it from exterior   threshold value may vary with the number of points N
+interference [25]. The radius of the circular exclusion re-  [37]. The HUD point pattern with  = 0.5 still resides in
+gion is given by                                             the disordered regime and maintains a relatively broad
+
+     exc  =  arcsin  kc ,        (6)
+                     2
+                                                                                                                          4
+
+FIG. 2. Experimental setup. The fabricated 200-element                  FIG. 3. Block diagram of the PLA.
+HUD transducer array is mounted on a motorized rotary stage
+(marked by the red bending arrow) with a standing pole. The    and a HUD array with 200 elements and  = 0.5, us-
+sound intensity emitted by the transducer array at each spin-  ing 10-mm-diameter piezoelectrically actuated transduc-
+ning angle is measured by a microphone (marked by a red        ers (MA40S4S, MURATA, Japan) as the array element
+circle), which is pointed towards the center of the array and  for both configurations. The 200-element HUD trans-
+fixed at the same height and 2 meters away from the array.     ducer array along with the test environment is shown in
+Inset: enlarged view of the transducer array. All the mea-     Fig. 2. The overall size of the transducer array is around
+surements are conducted within a semi-anechoic chamber to      200×200 mm2. The far-field radiation directivity of the
+reduce the unwanted reflections from the surrounding envi-     transducer array is obtained by rotating the planar array
+ronments.                                                      and measuring the signal using a microphone placed 2m
+                                                               away from the array center.
+circular exclusion region at the same time.
+   Moreover, this unique radiation property of the             A PLA is known for its sharp directivity due to the
+
+HUD acoustic array is preserved during beam steering.          ultrasonic carrier wave. An audio signal modulated onto
+Fig. 1(e) exhibits the array factor at frequency f = 3f0
+when the main lobe is steered towards  = 0,  = 30 di-          this carrier wave is reproduced along the beam by intrin-
+rection. The radiation exclusion region surrounding the
+main lobe of the HUD array is preserved and it also acts       sic non-linearity of the air [33]. In order to steer the main
+as an indication of the steering direction (upper panel).
+This contrasts with the steered radiation pattern of the       lobe towards a specific direction, namely the elevation
+random array (lower panel), where the direction of the
+main lobe is barely distinguishable from the surround-         angle s and the azimuth angle s, we need to multiply
+ings. As for the case of the periodic array (middle panel),    the signal from each element in the array with a complex
+the presence of strong grating lobes makes it difficult to
+determine the steering direction, which is the so-called       phase wj = e-iks·rj , where ks is the steered wavevector
+spatial aliasing effect [24, 38]. Therefore, we expect the
+HUD array benefits from the advantages of both peri-           defined  as  ks  =  2  sin  (cos  ,  sin  ),  rj  is  the  position
+odic (exclusion regions) and random arrays (cancellation                           
+of grating lobes) and incorporate them into a single de-       vector of the jth array element,  being the working
+sign, thus performing better than both.
+                                                               wavelength. In the experimental setup, the phase dif-
+III. MEASURED DIRECTIVIES OF PLA WITH
+               HYPERUNIFORM DISORDER                           ferences between each element are controlled by signal
+
+   To further validate the theoretical analysis, we conduct    delays. As shown in Fig. 3, the desired audio signal is
+a series of measurements using ultrasound transducer
+arrays. The typical working frequency is in the range          first compared with a 40kHz triangle wave to generate
+of 20-100kHz and does not require wide bandwidths on
+transmission electronics, such that we can employ a much       a pulse-width modulated (PWM) signal by a compara-
+larger number of array elements than that operating at
+microwave frequencies [25]. Specifically, we fabricate         tor chip (TLV3501AIDR, TI). Then the PWM signal is
+two configurations: a periodic array with 196 elements
+                                                               input to the Field Programmable Gate Array (FPGA,
+
+                                                               EP4CE6E22C8N, Intel), which performs digital delay for
+
+                                                               the 200 channels of external PWM signal. The resolu-
+
+                                                               tion for the signal delay of each channel is 0.8 µs, which
+
+                                                               guarantees the accuracy of beam steering [39]. Each de-
+
+                                                               layed PWM signal is amplified from 5V up to 12V using a
+
+                                                               dual MOSFET (TC4427AEOA713, Microchip) driver. A
+
+                                                               serial-to-parallel chip (74HC595D,118, Nexperia) is em-
+
+                                                               ployed to reduce the number of output pins. Through
+
+                                                               the above analog modulation, the amplitude-modulated
+
+                                                               ultrasound wave has a carrier, upper and lower side-band
+
+                                                               components, which generate the audible sound in the air
+
+                                                               due to the nonlinear interaction of the carrier component
+
+                                                               and each side-band component in the ultrasound beams.
+                                                               5
+
+                                                               FIG. 5. Steered Far-field directivity patterns of PLA.
+
+                                                               Measured directivity of the secondary frequency waves at
+                                                               1kHz in the azimuth plane ( = 0) when the main lobe is
+                                                               steered towards the  = 0,  = 15 (red solid line), and the
+                                                                = 0,  = 30 (blue solid line) directions for the periodic
+
+                                                               array (a) and the HUD array (b).
+
+FIG. 4. Forward far-field directivity patterns of PLA.         (Fig. 4(a)). It comes from the nonlinear interactions of
+Measured far-field directivity in the azimuth plane ( = 0)     the grating lobes of the carrier component (f =40kHz)
+for primary frequencies 39kHz (black dashed line), 40kHz       and each side-band component (f =39kHz, 41kHz). The
+(black solid line), and 41kHz (black dotted line) for the pe-  corresponding results of the secondary frequency wave for
+riodic array (a) and the HUD array (b). The corresponding      the HUD array are given in Fig. 4(d). It's worth noting
+measured directivity of the secondary wave at 1kHz is plotted  that the grating lobes are completely canceled, even for
+in (c) and (d), respectively.                                  such a low-frequency (1kHz) secondary frequency wave
+                                                               carried by an ultrasonic beam (40kHz), which is in stark
+   Note that the proposed HUD array is short-range ran-        contrast with the periodic configurations (Fig. 4(c)).
+dom while correlated at large scales. The inter-emitter
+distance in a HUD array fluctuates locally. To avoid spa-         We also steered the main lobe of the secondary wave
+tial overlap of the transducers, we set the average near-      at frequency 1kHz towards two different directions in
+est neighbor distance (center to center) to be 12.75mm,        the azimuth plane, namely the  = 0,  = 15 and
+which is 3/2 of the wavelength at the transducer reso-          = 0,  = 30 directions. The measurement results in
+nance frequency of 40kHz and larger than the diameter          the azimuth plane ( = 0) are illustrated in Fig. 5(a)
+of the emitter (10mm). To carry out a fair comparison          for the periodic array and in Fig. 5(b) for the HUD ar-
+with the HUD array, we set the period of the periodic          ray. The far-field directivity of the secondary frequency
+array equal to 12.75mm as well. We conduct our experi-         wave for the HUD array is delineated by a main steered
+ments near the resonance frequency of the transducers f        lobe, whereas the grating lobes are completely canceled.
+= 40kHz, which is equal to 3f0. A sinusoidal wave signal       This contrasts with the radiations for the periodic array
+at frequency 1kHz is modulated to the carrier frequency        where the spatial aliasing effect takes place, e.g. steering
+of 40kHz. The measured far-field directivity patterns in       direction of the main lobe is hardly distinguished from
+the azimuth plane ( = 0) for primary frequency waves           the grating lobes. We also tested the case of a period of
+at three different frequencies, 39kHz (black dashed line),     10mm as in reference [24], where emitters are touching
+40kHz (black solid line), and 41kHz (black dotted line)        each other. Although sidelobes reduce with the reduced
+for the periodic array are illustrated in Fig. 4(a). We        period, our proposed HUD array still outperforms the pe-
+can clearly observe that the main lobe of three differ-        riodic array, as shown in Fig. 10 of Appendix C. To sum-
+ent primary frequency waves coincide in the same di-           marize the above analysis, the grating lobes of the sec-
+rection ( = 0) with each other, whereas the grating            ondary frequency wave of PLA can be completely elim-
+lobes appear in slightly shifted different directions (near    inated by a HUD array configuration, regardless of fre-
+ = arcsin 2/3 = ±41.8) because of the difference be-           quencies of the primary waves [24]. Our proposed HUD
+tween their wavenumbers. The corresponding results for         array outperforms the periodic array with a period of
+the HUD array are given in Fig. 4(b). As can be seen,          12.75mm as well as 10mm in suppressing the side
+the grating lobes of the three primary frequency waves         lobes. Moreover, the exclusion regions around the main
+are completely suppressed, and an exclusion region with        lobe are well preserved for the primary frequency waves
+minimal radiation as low as -30dB (||  31.8) can be            of the HUD array distributed PLA, although, which is
+observed surrounding the main lobe. In Fig. 4(c), we           not evident for the secondary frequency wave.
+present the measured far-field directivity patterns of the
+secondary frequency wave at f =1kHz (blue solid line)             Furthermore, extra-large acoustic arrays with a great
+for the periodic array. It's observed that, besides the        number of array elements are required in demanding ap-
+main lobe, the grating lobes occur at the direction where      plication scenarios, like high-intensity sound radiations
+the grating lobes of the primary frequency waves overlap       [40] or precise source localization [41]. Optimization
+                                                               methods proposed to improve the array performances
+                                                               [18, 42] are, however, computationally expensive dur-
+                                                              6
+
+FIG. 6. Far-field directivity patterns for large HUD          rays, this distribution originates from an order metric
+array. Simulated directivity for the large HUD array (red     (hyperuniformity) to characterize local density fluctua-
+dashed line) and measured directivity for the original HUD    tions of a point pattern. Both the simulated and mea-
+sub-array (black line) in the azimuth plane ( = 0) (a), when  sured results reveal the effectiveness of the proposed ar-
+the main lobe is steered towards the  = 0,  = 30 direction    ray for the primary frequency waves in suppressing the
+(b), at frequency f =40kHz.                                   grating lobes (like a random array) while maintaining a
+                                                              minimal radiation region around the main lobe (like a
+ing the adaption of an extra-large array. Therefore, it       periodic array), which incorporates them into a single
+is important yet necessary to demonstrate another fea-        design and performs better than both its periodic and
+ture of the HUD array, its duplicability. This behavior       random counterparts. These properties benefit the sec-
+inherits from the generation process of a HUD point pat-      ondary frequency waves in canceling the grating lobes re-
+tern where periodic boundary conditions are applied to        gardless of the frequencies of primary waves unlike in [24].
+the two-dimensional computational domain [43]. Thus a         Moreover, these HUD arrays are duplicatable to generate
+large array consisting of periodic replication of a HUD       extra-large arrays, which avoids exponentially increasing
+subarray remains hyperuniform disordered and possesses        computational costs commonly found by adopting op-
+the same distinctive emission behaviors [25]. We compare      timizing algorithms [44, 45]. The proposed approach
+the far-field directivity for primary frequency wave at       can also be employed for ultrasonic transducer arrays
+f =40kHz of a large array (800 elements) made of a 2×2        [17] working in other media, e.g. water and human tis-
+subarray with the measured far-field directivity of the       sues, which could bring potential applications in under-
+subarray (200 elements). Throughout the measurements,         sea communication and medical therapies. This design
+we found that the radiation properties of the transduc-       also opens an interesting route to bionic acoustic arrays
+ers can be well captured by the piston source model [35]      inspired by the hidden symmetry from nature [46].
+(see the agreement between the simulated and measured
+directivity for primary frequencies at f =30&40kHz in             APPENDIX A: RADIATION PROPERTY OF
+Fig. 8&9 of Appendix B). We multiply the radiation of                            HUD ARRAY AS  VARY
+an individual single element with the array factor of the
+large array, and the resulting directivity patterns are il-      In the experimental investigation and numerical analy-
+lustrated in Fig. 6. We present the case where no steering    sis presented in the main text, the stealthy parameter of
+is applied in Fig. 6(a) and the case of beam steering to-     the HUD acoustic array was chosen to be =0.5. Here,
+wards the  = 0,  = 30 direction in Fig. 6(b). As              we check the dependence on  of the radiation property.
+can be seen, for both cases, the large array of 800 ele-      As illustrated in the upper panels of Fig. 7, we present
+ments behaves similarly to the HUD subarray of 200 el-        a point pattern with the same number of points N =200,
+ements, as the main lobe is surrounded by the exclusion       but with different stealthy parameters , ranging from
+region with the absence of the grating lobes. Besides, the    0.1 to 0.5. One can observe that as  grows, the par-
+nulling in the exclusion region of the sound radiation for    ticle clustering effect disappears gradually and occupy
+the large array is much deeper than that for the original     the entire space uniformly. The structure factor S(k) is
+subarray. With infinite replications of the original sub-     calculated through a 2D Fourier transform of the point
+array, the radiation values in the exclusion region would     pattern and shown in the middle panels. As  grows, the
+approach zero as predicted by the structure factor shown      nulling region surrounding the origin k=0 where S(k)=0
+in Fig. 1. It is expected that the large array will suppress  enlarges and shows great agreement with the calculated
+the grating lobes of the secondary frequency wave as the      kc (red dashed circle). The corresponding normalized
+original HUD subarray considering the above radiation         magnitude of the array factors in decibels is plotted in
+properties for the primary frequency wave.                    the lower panels, with 0 dB meaning the maximum value.
+                                                              The working frequency is chosen to be 3f0. Similar to
+                       IV. CONCLUSIONS                        the nulling region in the structure factor, the size of the
+                                                              circular exclusion region enlarges as  grows and shows
+   In conclusion, we developed a PLA which follows a          great correspondence with the estimated exc (red dashed
+HUD array configuration. Unlike existing acoustic ar-         circle) given by Eq. (5). It indicates that the point pat-
+                                                              tern with =0.5 possesses the largest exclusion region
+                                                              and suppresses the grating lobes at the same time. Gen-
+                                                              erally speaking, the point pattern is considered to be in
+                                                              the disordered regime when  0.5. As  grows further,
+                                                              the point pattern turns into ordered and the grating lobe
+                                                              takes place like in the periodic array.
+                                                                                               7
+
+FIG. 7. Radiation property of HUD array as  vary. Schematics of HUD point patterns with different stealthy parameters
+=0.1-0.5 (upper panels); Corresponding structure factor (middle panels), where the red dashed circle indicates the cutoff radius
+
+kc (normalized by 2/a), the structure factor S(k) vanishes for 0 < |k|  kc; Corresponding array factor (lower panels), where
+the red dashed circle indicates the radius of the circular exclusion region exc.
+
+                                                              the working wavelength of 8.5mm at frequency 40kHz.
+                                                              Therefore each emitter cannot be assumed as omnidirec-
+                                                              tional and can be well modeled as a piston source [35],
+                                                              which is Fraunhofer diffraction approximation (Fourier
+                                                              transform of a disc aperture or a piston). The complex
+                                                              acoustic pressure at point r due to a piston source emit-
+                                                              ting at a single frequency can be modeled as
+
+                                                              P  (r)  =  P0A  Df ()  ei(+kd),  (7)
+                                                                                 d
+
+FIG. 8. Forward far-field directivity patterns. Simu-         where P0 is a constant that defines the transducer ampli-
+lated (black solid line) and measured (red dotted line) far-  tude power and A is the peak-to-peak amplitude of the
+field directivity patterns in the azimuth plane ( = 0) when   excitation signal. Df () is a far-field directivity function
+f =30kHz (upper panel) and f =40kHz (lower panel) for the     that depends on the angle  between the transducer nor-
+periodic transducer array (a, c) and the HUD transducer ar-   mal and r. Here, Df () = 2J1(ka sin )/ka sin , which is
+ray (b, d).                                                   the directivity function of a circular piston source, where
+                                                              J1 is a first-order Bessel function of the first kind and a
+  APPENDIX B: MEASURED AND SIMULATED                          is the piston radius. The term 1/d accounts for diver-
+  DIRECTIVITY FOR PRIMARY FREQUENCY                           gence, where d is the propagation distance in free space.
+                                                              k = 2/ is the wavenumber and  is the wavelength. 
+                                   WAVES                      is the initial phase of the piston.
+
+   The simulated far-field directivity for the primary fre-      We conduct our experiments at two different working
+quency wave of different acoustic arrays are obtained us-     frequencies f = 30kHz and 40kHz, which are larger than
+ing an analytical model, in which the total radiation pat-    2f0 (26.7kHz) and exactly 3f0. The measured and sim-
+tern of an array with identical source elements can be        ulated far-field directivity patterns in the azimuth plane
+expressed by the multiplication of the individual single      ( = 0) for the periodic array are illustrated in Fig. 8(a)
+source element with the array factor. The diameter of the     (f =30kHz) and Fig. 8(c) (f =40kHz). The corresponding
+ultrasonic transducer is around 10mm and larger than          results for the HUD array at the same working frequen-
+                                                              cies are given in Fig. 8(b) and Fig. 8(d). In both cases
+                                                              for different frequencies, the measurement and simula-
+                                                              tion results agree well with each other within the main
+                                                              lobe region. The discrepancies between the measurement
+                                                                                                                                          8
+
+                                                                 wards the  = 0,  = 15 ( = 0,  = 30) direction
+                                                                 at frequency 40kHz is reduced from -1.4dB (2dB) for the
+                                                                 periodic array to -15.4dB (-11.1dB) for the HUD array.
+
+FIG. 9. Steered far-field directivity patterns. Simulated        FIG. 10. Far-field directivity patterns of a periodic
+(black solid line) and measured (red dotted line) far-field ra-  PLA with a period of 10mm. Measured far-field directiv-
+diation patterns in the azimuth plane ( = 0) when the main       ities of the secondary frequency waves at 1kHz in the azimuth
+lobe is steered towards the  = 0,  = 15 (a, b) and the           plane ( = 0), for the forward radiation (black line in (a)),
+ = 0,  = 30 (c, d) directions when f =40kHz for the pe-          when the main lobe is steered towards the  = 0,  = 15
+riodic transducer array (a, c) and the HUD transducer array      (red line in (b)), and the  = 0,  = 30 (blue line in (b)).
+(b, d).
+                                                                 APPENDIX C: MEASURED DIRECTIVITY FOR
+and simulation data outside the main lobe region might               A PERIODIC ARRAY WITH A PERIOD OF
+be attributed to the misalignment of the motorized stage                                             10MM
+and the transducer array in the experimental setup. We
+can observe that, for both working frequencies, the HUD             We measured the far-field radiation patterns of the sec-
+transducer array suppresses the grating lobes and has            ondary frequency wave at 1kHz for a periodic array with
+significantly reduced peak side lobe level values. Specif-       a period of 10mm. As shown in Fig. 10(a), the side
+ically, the measured peak side lobe level (PSLL) value           lobes of the secondary frequency wave in the forward di-
+at frequency 30kHz (40kHz) is reduced from -9.3dB (-             rectivity (black line in Fig. 10(a)) are smaller with a re-
+3.8dB) for the periodic array to -21.8dB (-18.7dB) for           duced inter-emitter distance, whereas they are still higher
+the HUD array.                                                   than the side lobes for a HUD array (Fig. 4(d) of the main
+                                                                 text). Besides, when the main lobe is steered towards the
+   At f =40kHz, we also steered the main lobe towards             = 0,  = 15 (red line in Fig. 10(b)), the side lobes of
+two different directions in the azimuth plane, namely the        the secondary wave are within -10dB less than the main
+ = 0,  = 15 and  = 0,  = 30 directions. The                      lobe. The level increase of the grating lobe became sig-
+measurement (red dashed lines) and simulation results            nificant, and even surpass the level of the main lobe when
+(black solid lines) in the azimuth plane ( = 0) are il-          steered towards the  = 0,  = 30 direction. This is in
+lustrated in Fig. 9(a)&9(c) for the periodic array and in        stark contrast with the HUD array where the sidelobes
+Fig. 9(b)&9(d) for the HUD array, which shows great              remain at a low level (less than -20dB in Fig. 5 of the
+coincidence with each other. As predicted by the simu-           main text).
+lations for the array factor with steered directions, the
+far-field directivity pattern for the HUD array is delin-                             ACKNOWLEDGMENTS
+eated by the main beam surrounded by a weak emission
+exclusion region, whereas outside this exclusion region             The authors thank Prof. Marian Florescu for gener-
+the sidelobes are kept at a low level. This is in stark          ating the initial hyperuniform disordered point patterns.
+contrast to the far-field directivity pattern for the peri-      This research was supported by the Youth Foundation
+odic array where several grating lobes can be seen and           Project of Zhejiang Lab (Grant No. 2020MC0AA07). P.
+steering direction is hardly determined. The maximum             S. is thankful to the Israel Science Foundation (Grants
+side lobe level is even higher than the main lobe when           No. 1871/15, 2074/15, and 2630/20), and the United
+steered towards the  = 0,  = 30 direction. It's worth            States-Israel Binational Science Foundation NSF/BSF
+noting that the measured PSLL value, when steered to-            (Grant No. 2015694 and No. 2021811).
+
+[1] P. Chiariotti, M. Martarelli, and P. Castellini, Acous-          Signal Processing 120, 422 (2019).
+    tic beamforming for noise source localization ­ reviews,     [2] B. D. V. Veen and K. Buckley, Beamforming: a versatile
+    methodology and applications, Mechanical Systems and
+                                                                     approach to spatial filtering, IEEE ASSP Magazine 5, 4
+                                                                  9
+
+      (1988).                                                     [19] P. J. Westervelt, Parametric acoustic array, The Journal
+ [3] F. Olivieri, F. M. Fazi, P. A. Nelson, M. Shin, S. Fontana,        of the Acoustical Society of America 35, 535 (1963).
+
+      and L. Yue, Theoretical and experimental comparative        [20] M. Hamilton and D. Blackstock, Nonlinear Acoustics
+      analysis of beamforming methods for loudspeaker arrays            (Acoustical Society of America, 2008).
+      under given performance constraints, Journal of Sound
+      and Vibration 373, 302 (2016).                              [21] W.-S. Gan, J. Yang, and T. Kamakura, A review of para-
+ [4] M. R. Bai and Y.-H. Hsieh, Point focusing using loud-              metric acoustic array in air, Applied Acoustics 73, 1211
+      speaker arrays from the perspective of optimal beam-              (2012).
+      forming, The Journal of the Acoustical Society of Amer-
+      ica 137, 3393 (2015).                                       [22] C. Shi, Y. Kajikawa, and W.-S. Gan, An overview of
+ [5] M. F. Sim´on Ga´lvez, S. J. Elliott, and J. Cheer, A su-           directivity control methods of the parametric array loud-
+      perdirective array of phase shift sources, The Journal of         speaker, APSIPA Transactions on Signal and Information
+      the Acoustical Society of America 132, 746 (2012).                Processing 3, e20 (2014).
+ [6] E. Mab and E. W. Kellermann, Towards superdirective
+      beamforming with loudspeaker arrays (PACS: 43.60.Fg).       [23] J.-W. Choi and Y.-H. Kim, Sound field reproduction of
+ [7] S. J. Elliott, J. Cheer, J.-W. Choi, and Y. Kim, Robust-           a virtual source inside a loudspeaker array with minimal
+      ness and regularization of personal audio systems, IEEE           external radiation, IEEE Transactions on Audio, Speech,
+      Transactions on Audio, Speech, and Language Process-              and Language Processing 21, 247 (2013).
+      ing 20, 2123 (2012).
+ [8] Y. Sugibayashi, S. Kurimoto, D. Ikefuji, M. Morise,          [24] C. Shi and W.-S. Gan, Grating lobe elimination in steer-
+      and T. Nishiura, Three-dimensional acoustic sound field           able parametric loudspeaker, IEEE Transactions on Ul-
+      reproduction based on hybrid combination of multiple              trasonics, Ferroelectrics, and Frequency Control 58, 437
+      parametric loudspeakers and electrodynamic subwoofer,             (2011).
+      Applied Acoustics 73, 1282 (2012), parametric Acoustic
+      Array: Theory, Advancement and Applications.                [25] O. Christogeorgos, H. Zhang, Q. Cheng, and Y. Hao,
+ [9] I. S. Elhelf, H. Albahar, U. Shah, A. Oto, E. Cress-               Extraordinary directive emission and scanning from an
+      man, and M. Almekkawy, High intensity focused ultra-              array of radiation sources with hyperuniform disorder,
+      sound: The fundamentals, clinical applications and re-            Phys. Rev. Applied 15, 014062 (2021).
+      search trends, Diagnostic and Interventional Imaging 99,
+      349 (2018).                                                 [26] S. Torquato and F. H. Stillinger, Local density fluctua-
+[10] M. Kolundzija, C. Faller, and M. Vetterli, Baffled cir-            tions, hyperuniformity, and order metrics, Phys. Rev. E
+      cular loudspeaker array with broadband high directiv-             68, 041113 (2003).
+      ity, in 2010 IEEE International Conference on Acoustics,
+      Speech and Signal Processing (2010) pp. 73­76.              [27] M. Florescu, S. Torquato, and P. J. Steinhardt, Designer
+[11] K. Sato and Y. Haneda, Directivity control of a finite             disordered materials with large, complete photonic band
+      cylindrical loudspeaker array based on circular harmonics         gaps, Proceedings of the National Academy of Sciences
+      and longitudinal multipole expression, Acoustical Science         106, 20658 (2009).
+      and Technology 40, 93 (2019).
+[12] C. Sladeczek, D. de Beer, J. Bergner, A. Zhykhar,            [28] S. Yu, C.-W. Qiu, Y. Chong, S. Torquato, and N. Park,
+      M. Wolf, and A. Franck, High-directional beamforming              Engineered disorder in photonics, Nature Reviews Mate-
+      with a miniature loudspeaker array (2016).                        rials 6, 226 (2021).
+[13] L. W. A. Nordborg, J. Wedemann, Optimum array mi-
+      crophone configuration, in inter. noise 2000, the 29th in-  [29] G. Gkantzounis, T. Amoah, and M. Florescu, Hyperuni-
+      ternational congress and exhibition on noise control en-          form disordered phononic structures, Phys. Rev. B 95,
+      gineering, 27-30 August 2000, nice, France. (2000).               094120 (2017).
+[14] Z. Prime and C. Doolan, A comparison of popular
+      beamforming arrays, in Proceedings of ACOUSTICS             [30] P. M. Piechulla, B. Fuhrmann, E. Slivina, C. Rockstuhl,
+      2013--Victor Harbor 17­20 November 2013, Victor Har-              R. B. Wehrspohn, and A. N. Sprafke, Tailored light scat-
+      bor, Australia (2013).                                            tering through hyperuniform disorder in self-organized
+[15] E. Sarradj, A generic approach to synthesize optimal ar-           arrays of high-index nanodisks, Advanced Optical Mate-
+      ray microphone arrangements, in 6th Berlin Beamform-              rials 9, 2100186 (2021).
+      ing Conference (2016).
+[16] M. Pernot, J.-F. Aubry, M. Tanter, J.-L. Thomas, and         [31] E. Ch´eron, J.-P. Groby, V. Pagneux, S. F´elix, and
+      M. Fink, High power transcranial beam steering for ul-            V. Romero-Garc´ia, Experimental characterization of
+      trasonic brain therapy, Physics in Medicine & Biology             rigid-scatterer hyperuniform distributions for audible
+      48, 2577 (2003).                                                  acoustics, Phys. Rev. B 106, 064206 (2022).
+[17] Y. Shen, X. Zhu, F. Cai, T. Ma, F. Li, X. Xia, Y. Li,
+      C. Wang, and H. Zheng, Active acoustic metasurface:         [32] N. Tanaka and M. Tanaka, Active noise control using a
+      Complete elimination of grating lobes for high-quality            steerable parametric array loudspeaker, The Journal of
+      ultrasound focusing and controllable steering, Phys. Rev.         the Acoustical Society of America 127, 3526 (2010).
+      Applied 11, 034009 (2019).
+[18] E. Arcondoulis and Y. Liu, An iterative microphone re-       [33] S. Takeoka and Y. Yamasaki, Acoustic projector using di-
+      moval method for acoustic beamforming array design,               rectivity controllable parametric loudspeaker array, The
+      Journal of Sound and Vibration 442, 552 (2019).                   Proceedings of 20th International Congress on Acoustics,
+                                                                        ICA (2010).
+
+                                                                  [34] R. Morales, I. Ezcurdia, J. Irisarri, M. A. B. Andrade,
+                                                                        and A. Marzo, Generating airborne ultrasonic amplitude
+                                                                        patterns using an open hardware phased array, Applied
+                                                                        Sciences 11 (2021).
+
+                                                                  [35] A. Marzo, T. Corkett, and B. W. Drinkwater, Ultraino:
+                                                                        An open phased-array system for narrowband airborne
+                                                                        ultrasound transmission, IEEE Transactions on Ultra-
+                                                                        sonics, Ferroelectrics, and Frequency Control 65, 102
+                                                                        (2018).
+
+                                                                  [36] D. H. Johnson and D. E. Dudgeon, Array Signal Process-
+                                                                        ing: Concepts and Techniques (Simon & Schuster, Inc.,
+                                                                        USA, 1992).
+                                                                   10
+
+[37] O. U. Uche, F. H. Stillinger, and S. Torquato, Constraints    [42] M. Zhu and S. Zhao, An iterative approach to optimize
+      on collective density variables: Two dimensions, Phys.             loudspeaker placement for multi-zone sound field repro-
+      Rev. E 70, 046122 (2004).                                          duction, The Journal of the Acoustical Society of Amer-
+                                                                         ica 149, 3462 (2021).
+[38] R. Rabenstein and S. Spors, spatial aliasing artifacts pro-
+      duced by linear and circular loudspeaker arrays used for     [43] O. Leseur, R. Pierrat, and R. Carminati, High-density
+      wave field synthesis, journal of the audio engineering so-         hyperuniform materials can be transparent, Optica 3, 763
+      ciety (2006).                                                      (2016).
+
+[39] S. Wu, M. Wu, C. Huang, and J. Yang, Fpga-based im-           [44] R. Haupt, Thinned arrays using genetic algorithms,
+      plementation of steerable parametric loudspeaker using             IEEE Transactions on Antennas and Propagation 42, 993
+      fractional delay filter, Applied Acoustics 73, 1271 (2012),        (1994).
+      parametric Acoustic Array: Theory, Advancement and
+      Applications.                                                [45] M. Bray, D. Werner, D. Boeringer, and D. Machuga, Op-
+                                                                         timization of thinned aperiodic linear phased arrays using
+[40] P. J. Kaczkowski, K. P. Morrison, and G. W. Keilman,                genetic algorithms to reduce grating lobes during scan-
+      Broadband dual-mode hifu array for therapy monitoring              ning, IEEE Transactions on Antennas and Propagation
+      and 3d target motion estimation, in 2015 IEEE Interna-             50, 1732 (2002).
+      tional Ultrasonics Symposium (IUS) (2015) pp. 1­4.
+                                                                   [46] Y. Jiao, T. Lau, H. Hatzikirou, M. Meyer-Hermann, J. C.
+[41] C. Vanwynsberghe, P. Challande, F. Ollivier, J. Marchal,            Corbo, and S. Torquato, Avian photoreceptor patterns
+      and R. Marchiano, Geometric calibration of very large              represent a disordered hyperuniform solution to a multi-
+      microphone arrays in mismatched free field, The Journal            scale packing problem, Phys. Rev. E 89, 022721 (2014).
+      of the Acoustical Society of America 145, 215 (2019).
+
