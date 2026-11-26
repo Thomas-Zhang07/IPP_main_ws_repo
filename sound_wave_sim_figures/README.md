@@ -183,8 +183,12 @@ optimum per board count uses the robust shortlist.
 
 | boards | key | SL_cmd | SL_diag | SRANGE_0dB | DI0 | span |
 |---|---|---|---|---|---|---|
-| 2 | `pair_16.000_5.250` | +0.31 dB | −0.25 dB | 34° | 39.7 dB | 331 mm |
-| 3 | `triple_18.500_14.750_10.500_5.250` | −0.46 dB | −1.03 dB | 37° | 41.4 dB | 506 mm |
+| 2 | `pair_16.000_5.250` | +0.31 dB | −0.18 dB | 34° | 39.7 dB | 331 mm |
+| 3 | `triple_18.500_14.750_10.500_5.250` | −0.46 dB | −0.86 dB | 35° | 41.4 dB | 506 mm |
+
+These are the exact-metric re-scores of every front's top rows
+(`python -m optimum_search.rescore` → `data/search2/winners.csv`), so the
+families are comparable; the grids-only values differ by up to 2° of range.
 
 - 2-board robustness: 4-bit +0.4, mech +0.7, drift +0.3, element +1.4 dB.
 - 3-board robustness: 4-bit −0.9, mech −0.1, drift −0.7, element +0.2 dB.
@@ -205,9 +209,9 @@ The sweep covers 60–180° included angle × y offsets 0 and 5.25 mm; grating,
 broadside and the strongest sidelobe are sampled exactly, so the coarse search
 grid cannot alias narrow lobes.
 
-Best: **135° with a 5.25 mm hinge offset** — SL_cmd −0.31 dB, SL_diag −0.61,
+Best: **135° with a 5.25 mm hinge offset** — SL_cmd −0.30 dB, SL_diag −0.61,
 SRANGE₀ 31°, DI0 36.6 dB; element envelope +0.35 dB. The coplanar leader is
-`+0.31 / −0.25, 34°, 39.7` (element envelope +1.4). The V is more robust to
+`+0.31 / −0.18, 34°, 39.7` (element envelope +1.4). The V is more robust to
 the element's asymmetry but ~3 dB lower gain and 3° shorter range. Without the
 y offset the unnulled y grating caps the range at 24°. `DI0` is on-axis
 forward-hemisphere directivity, not peak DI where the command is buried.

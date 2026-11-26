@@ -63,6 +63,8 @@ def _frames(layout):
 
 
 def _element(cos_beta, variant):
+    if variant == "iso":
+        return np.ones_like(cos_beta)
     if variant == "mean":
         return transducer.amplitude(cos_beta)
     theta = np.degrees(np.arccos(np.clip(cos_beta, -1.0, 1.0)))
@@ -203,6 +205,25 @@ def plot(rows, front, path: Path) -> None:
     fig.tight_layout()
     fig.savefig(path, dpi=160, bbox_inches="tight")
     plt.close(fig)
+
+
+def render_gallery(included_deg, offset_y_m, out_dir, states=None):
+    """Full-steering PNG gallery for a V pair (same look as the leaders)."""
+    from . import gallery
+
+    layout = v_pair_offset(included_deg, offset_y_m)
+    measured = field_fn(layout, "mean")
+    iso = field_fn(layout, "iso")
+
+    def score(theta, phi):
+        dirs, _, _, _ = model.direction_grid(0.01)
+        return metrics.score_states_fn(measured, dirs, [(theta, phi)],
+                                       exact=True, step=0.006)
+
+    return gallery.render_optimum(
+        None, out_dir, states or [(0.0, 0.0), (20.0, 45.0), (35.0, 0.0),
+                                  (35.0, 45.0), (35.0, 90.0)],
+        measured_fn=measured, iso_fn=iso, label=layout.key, score_fn=score)
 
 
 def main(argv=None) -> None:

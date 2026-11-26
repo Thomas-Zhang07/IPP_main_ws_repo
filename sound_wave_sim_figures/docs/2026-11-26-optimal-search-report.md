@@ -80,7 +80,12 @@ These are the analytical null/minimax families. They are listed even when a near
 
 ## Combined comparison
 
+Like-for-like: the top rows of every front re-scored with the exact metrics
+(`sim/optimum_search/rescore.py` → `data/search2/winners.csv`), the same fine
+grid and the same DI quadrature.
+
 | boards | key | SL_cmd | SL_diag | SRANGE0 | DI0 | span mm |
 |---|---|---|---|---|---|---|
-| 2 | pair_16.000_5.250 | 0.3 | -0.3 | 34.0 | 39.7 | 331 |
-| 3 | triple_18.500_14.750_10.500_5.250 | -0.5 | -1.0 | 37.0 | 41.4 | 506 |
+| 2 | pair_16.000_5.250 | 0.31 | -0.18 | 34.0 | 39.7 | 331 |
+| 3 | triple_18.500_14.750_10.500_5.250 | -0.46 | -0.86 | 35.0 | 41.4 | 506 |
+| 2 | v135_05.25 (V 135°, y 5.25 mm) | -0.30 | -0.61 | 31.0 | 36.6 | 301 (60 deep) |

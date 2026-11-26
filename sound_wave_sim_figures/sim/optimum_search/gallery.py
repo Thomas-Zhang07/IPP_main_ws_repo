@@ -46,7 +46,7 @@ def _tag(theta, phi):
     return f"steer_{theta:02.0f}_{phi:03.0f}.png"
 
 
-def _view_levels(cand, theta, phi, du=0.008):
+def _view_levels(measured_fn, iso_fn, theta, phi, du=0.008):
     th = np.radians(np.linspace(0.0, 90.0, 61))
     ph = np.radians(np.linspace(0.0, 360.0, 180, endpoint=False))
     TH, PH = np.meshgrid(th, ph, indexing="ij")
@@ -58,8 +58,8 @@ def _view_levels(cand, theta, phi, du=0.008):
     u0, v0 = _state(theta, phi)
     command = metrics._direction(theta, phi)[None, :]
     all_dirs = np.vstack((dirs, uv, cut, command))
-    iso = np.abs(model.array_factor(cand, all_dirs, u0, v0))
-    mag = iso * model.element_amplitude(all_dirs)
+    iso = np.abs(iso_fn(all_dirs, u0, v0))
+    mag = np.abs(measured_fn(all_dirs, u0, v0))
     levels = _db(mag, mag.max())
     i, j = len(dirs), len(dirs) + len(uv)
     db2 = np.full(U2.shape, np.nan)
@@ -69,7 +69,7 @@ def _view_levels(cand, theta, phi, du=0.008):
             "isotropic": _db(iso[j:-1], iso.max())}
 
 
-def _render_3d(cand, theta, phi, path, views):
+def _render_3d(label, theta, phi, path, views):
     TH, PH, db = views["surface"]
     radius = 0.02 + 0.58 * np.clip((db - FLOOR) / (0.0 - FLOOR), 0.0, 1.0)
     x = np.sin(TH) * np.cos(PH) * radius
@@ -97,7 +97,7 @@ def _render_3d(cand, theta, phi, path, views):
     ax.view_init(elev=45.0, azim=float(phi) - 90.0)
     fig.suptitle(f"3D far-field · steer {theta:.0f}° / {phi:.0f}°",
                  fontsize=12, fontweight="bold", x=0.02, ha="left", y=0.97)
-    fig.text(0.02, 0.93, f"{cand.key}", fontsize=8.5, color=R.INK_2)
+    fig.text(0.02, 0.93, label, fontsize=8.5, color=R.INK_2)
     cax = fig.add_axes([0.93, 0.3, 0.015, 0.45])
     fig.colorbar(plt.cm.ScalarMappable(norm=norm, cmap=R.RAMP), cax=cax,
                  label="dB re peak")
@@ -105,7 +105,7 @@ def _render_3d(cand, theta, phi, path, views):
     plt.close(fig)
 
 
-def _render_polar(cand, theta, phi, path, views):
+def _render_polar(label, theta, phi, path, views):
     alpha, db = views["alpha"], views["measured"]
     radius = np.clip((db - FLOOR) / (0.0 - FLOOR), 0.0, 1.0)
     tp = np.radians(90.0 - alpha)
@@ -124,13 +124,13 @@ def _render_polar(cand, theta, phi, path, views):
     ax.plot([np.radians(90.0 - theta)], [1.06], "o", color=R.BLUE, ms=6)
     ax.set_title(f"Polar cut · steer {theta:.0f}° / {phi:.0f}°", fontsize=12,
                  fontweight="bold", pad=12)
-    fig.text(0.02, 0.05, f"{cand.key} · rings at 0, −10, −20, −30 dB",
+    fig.text(0.02, 0.05, f"{label} · rings at 0, −10, −20, −30 dB",
              fontsize=7.5, color=R.MUTED)
     fig.savefig(path, dpi=150, bbox_inches="tight")
     plt.close(fig)
 
 
-def _render_uv(cand, theta, phi, path, views):
+def _render_uv(label, theta, phi, path, views):
     u0, v0 = _state(theta, phi)
     db2 = views["uv"]
     fig, ax = plt.subplots(figsize=(5.8, 5.2))
@@ -154,7 +154,7 @@ def _render_uv(cand, theta, phi, path, views):
     plt.close(fig)
 
 
-def _render_amplitude(cand, theta, phi, path, views):
+def _render_amplitude(label, theta, phi, path, views):
     fig, ax = plt.subplots(figsize=(8.6, 4.4))
     for element, colour in (("isotropic", R.GRAY), ("measured", R.BLUE)):
         ax.plot(views["alpha"], views[element], color=colour, lw=1.15, label=element)
@@ -174,7 +174,13 @@ def _render_amplitude(cand, theta, phi, path, views):
     plt.close(fig)
 
 
-def render_optimum(cand, out_dir, states=None) -> list[dict]:
+def render_optimum(cand, out_dir, states=None, *, measured_fn=None,
+                   iso_fn=None, label=None, score_fn=None) -> list[dict]:
+    """Render a full steering gallery.
+
+    ``cand`` may be None when ``measured_fn``/``iso_fn`` are supplied (the V
+    layouts use their own exact model).
+    """
     out = Path(out_dir)
     for sub in ("3d", "polar", "uv", "amplitude"):
         folder = out / sub
@@ -182,16 +188,24 @@ def render_optimum(cand, out_dir, states=None) -> list[dict]:
         for old in folder.glob("*.png"):
             old.unlink()
     states = STEERING_STATES if states is None else states
+    if measured_fn is None:
+        measured_fn = lambda d, u, v: model.field_fast(cand, d, u, v)
+    if iso_fn is None:
+        iso_fn = lambda d, u, v: model.array_factor(cand, d, u, v)
+    if score_fn is None:
+        def score_fn(theta, phi):
+            return metrics.score_states(cand, 0.01, [(theta, phi)], dirs=dirs)
+    label = label or (getattr(cand, "key", "") if cand is not None else "")
     rows = []
     dirs, _, _, _ = model.direction_grid(0.01)
     for theta, phi in states:
         tag = _tag(theta, phi)
-        views = _view_levels(cand, theta, phi)
-        _render_3d(cand, theta, phi, out / "3d" / tag, views)
-        _render_polar(cand, theta, phi, out / "polar" / tag, views)
-        _render_uv(cand, theta, phi, out / "uv" / tag, views)
-        _render_amplitude(cand, theta, phi, out / "amplitude" / tag, views)
-        comp = metrics.score_states(cand, 0.01, [(theta, phi)], dirs=dirs)
+        views = _view_levels(measured_fn, iso_fn, theta, phi)
+        _render_3d(label, theta, phi, out / "3d" / tag, views)
+        _render_polar(label, theta, phi, out / "polar" / tag, views)
+        _render_uv(label, theta, phi, out / "uv" / tag, views)
+        _render_amplitude(label, theta, phi, out / "amplitude" / tag, views)
+        comp = score_fn(theta, phi)
         rows.append({"theta": theta, "phi": phi, **comp})
     with open(out / "metrics.csv", "w", newline="", encoding="utf-8") as fh:
         fields = ["theta", "phi", "SL_cmd", "SL_clean", "SL_near", "SL_far_s",

@@ -43,7 +43,10 @@ def test_gallery_small(tmp_path):
 
 
 def test_gallery_does_not_promote_every_view_to_zero_db():
-    views = G._view_levels(M.pair(0.016, 0.00525), 30, 45)
+    cand = M.pair(0.016, 0.00525)
+    views = G._view_levels(
+        lambda d, u, v: M.field_fast(cand, d, u, v),
+        lambda d, u, v: M.array_factor(cand, d, u, v), 30, 45)
     assert abs(views["measured"].max()) < 1e-9
     assert np.nanmax(views["uv"]) < -0.01
     assert views["surface"][2].max() < -0.5
