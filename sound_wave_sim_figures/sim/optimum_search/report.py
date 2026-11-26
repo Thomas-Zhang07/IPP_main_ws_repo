@@ -104,8 +104,7 @@ def _row_table(rows, limit=12, robust=False):
                    ("shortlist", "shortlist")]
     header = "| " + " | ".join(name for _, name in labels) + " |"
     lines = [header, "|" + "---|" * len(labels)]
-    ranked = sorted(rows, key=lambda r: r.get("shortlist",
-                                              provisional_score(r)))[:limit]
+    ranked = sorted(rows, key=shortlist_score if robust else provisional_score)[:limit]
     for r in ranked:
         cells = []
         for key, _ in labels:
@@ -148,13 +147,14 @@ def write_report(rows_2, rows_3, leaders, path: Path, references=None) -> None:
         "- The two-board minimax layout (15.75 / 2.625) trades the exact y "
         "null for −3.01 dB on all diagonals; the axial-null pair "
         "(15.75 / 5.25) keeps both axial nulls with 0 dB diagonals.",
-        "- Scoring grid du = 0.01; the top 15 are rescored at du = 0.004. "
-        "Fast and exact solvers agree to 0.00 dB at the leaders' worst "
-        "states, with about 0.2 dB sampling uncertainty on unrefined rows.",
+        "- All candidates entering the final Pareto comparison are rescored "
+        "on one du = 0.004 grid. These are sampled maxima, not continuous bounds.",
         "- The front is the non-dominated set of the top 80 refined candidates "
         "by provisional score; the coarse sweep unions its 2-D Pareto front "
         "before refinement to limit trim bias.",
-        "- Board tilt (±0.3°) is not included in the robustness ceilings; it "
+        "- Mechanical errors use fixed nominal drive phases and 100 independent-column "
+        "Latin-hypercube draws. The maximum is a sample statistic, not a bound.",
+        "- Board tilt (±0.3°) is not included in the robustness runs; it "
         "remains the top-3 exact-solver check from the design.",
         "- Mirror-equivalent 3-board layouts can appear separately; with the "
         "axisymmetric mean element they are physically identical.",

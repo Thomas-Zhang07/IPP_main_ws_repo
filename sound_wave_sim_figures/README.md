@@ -61,13 +61,18 @@ transducers.jpg          datasheet photograph — the only element source
   element's own board normal, so tilted boards tilt their element pattern.
 - **Far field:** coherent sum `Σ Aᵢ Dᵢ exp(i k u·rᵢ)` on a direction-cosine
   grid.
-- **Near field:** `Σ Aᵢ Dᵢ exp(i k |r−rᵢ|) / |r−rᵢ|`, no Fraunhofer
-  approximation.
+- **Near field (ideal piston):** `Σ Aᵢ Dᵢ exp(−i k Rᵢ) / Rᵢ`,
+  `Rᵢ = |r−rᵢ|`, with time convention `exp(+iωt)`. At large range,
+  removing the common `exp(−ikR)/R` gives the far-field sum above, including
+  for complex drive weights. This is a point-source array model, not a
+  calculation of the field on a vibrating face; the spreading denominator
+  is capped inside one emitter radius.
 - **Amplitude:** uniform on every element unless a taper is named.
 - **Phase:** mechanical arrangement only in the original study; the current
   studies apply a continuous steering ramp `exp(−i k (u₀x + v₀y))`.
-- **Levels** are relative to each pattern's peak/commanded direction;
-  absolute SPL is not modelled.
+- **Levels** are relative carrier-pressure levels, not absolute SPL, audible
+  program level, or exposure data. The datasheet supplies one magnitude cut,
+  not element phase, assembled-array calibration, mutual coupling, or room reflections.
 
 ## Transducer directivity (`sim/transducer/`)
 
@@ -104,6 +109,12 @@ share the same 80° ±12° beam; directivity work is unaffected.
 
 ## Steering study (`figures/steering/`)
 
+Open [the offline field explorer](docs/array-demo.html) in a browser.
+Choose the single board, current pair, V120, V150, search pair, or search
+triple. Drag the 3D pattern to rotate; switch between the far field and
+a 2 m microphone sphere without changing the drive. Run
+`python sim/demo.py` to rebuild from the saved layout choices.
+
 Seven setups (single, V120, V150, current pair, same-seam/y=0, concave 3,
 coplanar 3) × two element models × steering 0–70° in 5° steps. **This batch
 steers in x only**; the two-axis evidence comes from the optimal search and
@@ -116,12 +127,20 @@ measured charts. Details and metric definitions: `figures/steering/README.md`.
 
 Headline results with the measured element:
 
-- Broadside strongest sidelobe: single −24.1 dB, current pair −24.5 dB,
+- Broadside strongest sample outside 15°: single −24.1 dB, current pair −24.5 dB,
   coplanar 3-board −24.1 dB (the 15° cone in that batch is now known to hide
   the −13.1 dB near-in sidelobes; the search uses a 4° mask).
-- Under 20° steering the pair's grating sidelobe is −3.4 dB (single −1.0 dB).
-- V120/V150 do not follow a single-aperture command; their beams follow the
-  board normals. They are excluded from the coplanar optimal search.
+- At the single board's four axial broadside grating orders (54.75°), the
+  measured-element model gives −28.2 dB, versus −12.8 dB for the ideal
+  piston and 0 dB for isotropic elements. These are exact-direction samples;
+  the element envelope can shift the local peak slightly inward.
+- Under 20° steering the pair's strongest sample outside 15° is −3.5 dB
+  (single −1.0 dB).
+- V120 and V150 use all three emitter coordinates to steer a plane wave;
+  the flat layouts give the same result with or without the depth term.
+  Both compensated V layouts peak at broadside for a 0° command. Their
+  strongest samples outside 15° are −4.8 dB (V120) and −8.3 dB (V150).
+  These are forward-hemisphere, continuous-phase predictions, not SPL.
 
 ## Optimal 2-/3-board search (`sim/optimum_search/`)
 
@@ -144,9 +163,15 @@ p(u,v;u0,v0) = E(u,v) · A(kp(u−u0)/2) · A(kp(v−v0)/2)
   (θ ≤ 24.1°), `SL_near`, `SL_far`, `SL_diag` (diagonal azimuths),
   `SRANGE_0dB`/`SRANGE_-3dB` (largest contiguous steering from 0°, 1° steps,
   min over azimuths).
-- **R3 robustness:** absolute ceilings `SL_4bit` (element-level 4-bit phase,
+
+  `SL_cmd` is **not** the maximum of all physical sidelobes. At broadside
+  the current two-board pair's first x-cut sidelobe is −12.5 dB at 2.06°;
+  the search's 4° exclusion and even its 2.5° shoulder cutoff miss it.
+  The first y-cut sidelobe (−13.2 dB at 4.19°) is included. Use unmasked
+  principal cuts to assess close-in lobes before comparing board counts.
+- **R3 robustness:** sampled maxima (not worst-case guarantees) `SL_4bit` (element-level 4-bit phase,
   8 global offsets), `SL_mech` (seam/offset ±0.2 mm, board gain ±1 dB, phase
-  ±10°, 100 Latin-hypercube draws), `SL_drift` (±0.35 % k), `SL_elem`
+  ±10°, 100 Latin-hypercube draws, fixed nominal drive phases), `SL_drift` (±0.35 % k), `SL_elem`
   (mean/left/right/wide/asym element envelope).
 
 The front is non-dominated over `(SL_cmd, SL_diag, SRANGE_0dB)`, computed over
@@ -159,10 +184,10 @@ optimum per board count uses the robust shortlist.
 | boards | key | SL_cmd | SL_diag | SRANGE_0dB | DI0 | span |
 |---|---|---|---|---|---|---|
 | 2 | `pair_16.000_5.250` | +0.31 dB | −0.25 dB | 34° | 39.7 dB | 331 mm |
-| 3 | `triple_18.500_14.750_10.500_5.250` | −0.51 dB | −1.04 dB | 37° | 41.4 dB | 506 mm |
+| 3 | `triple_18.500_14.750_10.500_5.250` | −0.46 dB | −1.03 dB | 37° | 41.4 dB | 506 mm |
 
-- 2-board robustness: 4-bit +0.4, mech +0.4, drift +0.3, element +1.4 dB.
-- 3-board robustness: 4-bit −0.9, mech −0.7, drift −0.7, element +0.2 dB.
+- 2-board robustness: 4-bit +0.4, mech +0.7, drift +0.3, element +1.4 dB.
+- 3-board robustness: 4-bit −0.9, mech −0.1, drift −0.7, element +0.2 dB.
 - The analytic reference families are reported separately: the two-board
   minimax (`15.75/2.625`, −3.01 dB array factor on y/diagonals) and the axial
   nulls (`15.75/5.25`, `26.25/5.25`); the three-board seams
@@ -195,15 +220,15 @@ python -m optimum_search --gallery          # re-render from saved fronts
 
 ### Residual risks
 
-- Board tilt (±0.3°) is not in the robustness ceilings; the design's top-3
+- Board tilt (±0.3°) is not in the robustness runs; the design's top-3
   exact-solver tilt check remains outstanding.
 - Mirror-equivalent 3-board layouts can appear separately; with the
   axisymmetric mean element they are physically identical.
 - `E_asym` is an assumption about how the chart's left/right cut maps to
   azimuth.
-- Element digitization is ±1 dB (main lobe) to ±2–3 dB (50–60° skirt);
-  sub-1 dB front ordering is noise. The leaders are separated by more than
-  that (2 vs 3 boards), but near-ties are not.
+- Element digitization is estimated at ±1 dB (main lobe) to ±2–3 dB
+  (50–60° skirt); small simulated score differences do not establish a
+  hardware ranking.
 
 ## Metric conventions
 
@@ -262,13 +287,15 @@ search:
 - The historical DI integrates only the forward hemisphere; it overstates DI
   for tilted V/concave layouts whose baffles also radiate below z = 0.
 - The steering batch is x-only; y/diagonal evidence comes from the search.
-- The search is coplanar-only; tilted layouts need per-board steering phases
-  and are a separate study.
+- The optimization search is coplanar-only. The separate steering study
+  includes depth compensation on V120 and V150 but keeps the three-board
+  concave layout on its original projected drive as a control.
 - The search's front is over the top 80 refined candidates; unrefined
   candidates may be missing from the table (the coarse Pareto union limits the
   bias).
-- The gallery amplitude cut is the steering plane; other planes are in the
-  search's UV maps and leader curves.
+- Gallery cuts show only the steering plane. Regenerated galleries share
+  one sampled peak across cut, surface and map for each element model;
+  scores in the CSV use the commanded direction, not that peak.
 
 ## Documents
 
@@ -287,7 +314,7 @@ search:
 
 ## Validation (`tests/`)
 
-`python -m pytest tests -q` — 51 tests covering:
+`python -m pytest tests -q` covers:
 
 - the original model: 54.75° lobe level, pair nulls, seam/offset controls,
   geometry, near/far convergence, V normals, concave wings;

@@ -19,9 +19,12 @@ Element models:
 - **measured** — the digitized TR4010HC pattern, evaluated per element against
   that element's own board normal (tilted boards tilt their element patterns).
 
-Steering is `exp(−i k u₀ x)` across every element of the aperture. No per-board
-correction for the board tilt is applied — this is the same steering law for all
-setups, so the comparison is like-for-like.
+V120 and V150 steer using `exp(−i k (u₀x + v₀y + w₀z))`, where the
+forward command is a unit vector. This cancels the propagation phase in
+that direction even when emitter heights differ. Flat boards at z = 0
+reduce to the original x/y ramp. The 3-board concave setup retains its
+projected drive as a control. The CSVs label the drive in `phase_law`.
+The equal-phase baseline galleries are a separate experiment, not this drive.
 
 ## Files
 
@@ -36,27 +39,50 @@ metrics_all.csv
 
 Every image holds one plot; there are no montages.
 
+The images and CSVs for all seven layouts use the shared normalization.
+V120 and V150 include the depth correction described above.
+
 ## Metric definitions
 
 - **Main beam** — the local maximum in the x–z cut within ±12° of the
-  commanded steering angle. Its level is relative to the pattern's global peak.
-- **Strongest sidelobe** — the global maximum on the UV hemisphere outside a
+  commanded steering angle. The 0 dB reference is the largest sample across
+  the UV grid, fine x–z cut and 3D mesh together, not a continuous maximum.
+- **Strongest sidelobe** (CSV column name) — largest sample outside a
   15° cone around the main-beam direction. Reported with its elevation and
   azimuth, and relative to the same global peak.
 
-For the coplanar setups this follows the familiar picture: the commanded beam
-holds, and the grating lobe climbs from about −24 dB at broadside to 0 dB once
-its direction is within ~25–40° of the beam.
+For the measured single board at broadside these are three distinct features:
+the ordinary first sidelobe near 4° (inside the mask), the strongest sample
+outside 15° (−24.1 dB at 16.25°), and the level at the axial first-order
+grating direction (−28.2 dB at 54.75°). The fixed ring is a *broadside*
+reference, not a prediction of a steered lobe's position.
 
-For the tilted setups (V 120°, V 150°) the **strongest lobe is along the board
-normals, not at the commanded direction**: the main-beam level chart sits at
-−10 … −25 dB while the sidelobe chart sits at 0 dB. That is a real property of
-the geometry under a single aperture-wide phase ramp, not a plotting error. The
-concave 3-board behaves like the coplanar layouts up to ~40°, then its wings'
-lobes dominate.
+With a broadside command the corrected V120 and V150 both peak at 0°.
+The strongest sample outside 15° is −4.8 and −8.3 dB respectively with the
+datasheet-based element model. Compensation does not remove grating lobes:
+at a 20° command the margins are just 0.24 and 4.72 dB. A coherent command
+need not be the strongest direction once element directivity is included.
+
+## What a microphone at 2 m measures
+
+The steering plots use a plane-wave limit. Moving a microphone does not
+change the drive. For a 40 kHz receiver at (0, 0, 2 m), measured from the
+hinge on the array's horizontal centerline, `v_microphone_2m.csv` instead
+sums spherical paths for the **same broadside drive** and element model:
+
+| Layout | Residual path spread beyond plane-wave model | Phase spread | Pressure relative to fully coherent sum at this mic |
+|---|---:|---:|---:|
+| V120 | 6.78 mm | 285° | −7.65 dB |
+| V150 | 7.88 mm | 331° | −10.47 dB |
+
+The last column compares each layout to its **own** sum of individual
+pressure magnitudes at the mic; it is not a comparison of absolute SPL,
+a measured loss, or a change to the drive. Focusing at 2 m would be a
+different experiment. A different mic position needs its own path calculation.
 
 ## Reproduce
 
 ```powershell
 python sim/steering_study.py    # ~7 minutes, writes everything above
+python sim/steering_study.py --phase-law projected_xy --out old-drive-control
 ```

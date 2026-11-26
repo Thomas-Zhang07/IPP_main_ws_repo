@@ -10,6 +10,8 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "sim"))
 
 from optimum_search import gallery as G, model as M, report as P
+import numpy as np
+import pytest
 
 ROWS = [{"key": "pair_15.750_2.625", "n_boards": 2, "span_mm": 331.0,
          "SL_cmd": -13.0, "SL_diag": -3.0, "DI0": 38.5, "SL_clean": -13.0,
@@ -38,3 +40,22 @@ def test_gallery_small(tmp_path):
         files = list((tmp_path / sub).glob("*.png"))
         assert len(files) == 2 and files[0].stat().st_size > 1000
     assert (tmp_path / "metrics.csv").exists()
+
+
+def test_gallery_does_not_promote_every_view_to_zero_db():
+    views = G._view_levels(M.pair(0.016, 0.00525), 30, 45)
+    assert abs(views["measured"].max()) < 1e-9
+    assert np.nanmax(views["uv"]) < -0.01
+    assert views["surface"][2].max() < -0.5
+
+
+@pytest.mark.parametrize("args", [[], ["--gallery"]])
+def test_missing_search_inputs_preserve_existing_report(tmp_path, monkeypatch, args):
+    from optimum_search import run
+    doc = tmp_path / "old.md"
+    doc.write_text("both fronts")
+    monkeypatch.setattr(run, "DOC", doc)
+    monkeypatch.setattr(run, "DATA", tmp_path)
+    with pytest.raises(SystemExit):
+        run.main([*args, "--out", str(tmp_path)])
+    assert doc.read_text() == "both fronts"

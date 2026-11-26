@@ -77,15 +77,12 @@ def _finish(leaders, du_fine=0.01, du_leader=0.004, srange_du=0.02,
           for r in probes}
 
     dirs_l, _, _, _ = model.direction_grid(du_leader)
-    fine = search.score_rows([r["cand"] for r in probes[:15]],
+    fine = search.score_rows([r["cand"] for r in probes],
                              search.REFINE_STATES, dirs=dirs_l)
     for row in fine:
         row.update(metrics.report_metrics(row["cand"]))
         row["SRANGE_0dB"], row["SRANGE_-3dB"] = sr[row["key"]]
-    fine_keys = {r["key"] for r in fine}
-    merged = fine + [r for r in probes if r["key"] not in fine_keys]
-
-    front = sorted(search.pareto(merged), key=report.provisional_score)
+    front = sorted(search.pareto(fine), key=report.provisional_score)
     for row in front[:robust_top]:
         row.update(robustness.robust(row["cand"], ROBUST_STATES,
                                      n_draws=100, du=0.02))
@@ -126,8 +123,8 @@ def run_three(top_k=200, du_coarse=0.025):
             for ds2 in (-0.001, 0.0, 0.001):
                 for do2 in (-0.001, 0.0, 0.001):
                     for do3 in (-0.001, 0.0, 0.001):
-                        s1 = max(cand.seams_m[0] + ds1, search.BUILD_MIN_M)
-                        s2 = max(cand.seams_m[1] + ds2, search.BUILD_MIN_M)
+                        s1 = np.clip(cand.seams_m[0] + ds1, search.BUILD_MIN_M, search.SEAM_MAX_M)
+                        s2 = np.clip(cand.seams_m[1] + ds2, search.BUILD_MIN_M, search.SEAM_MAX_M)
                         o2 = float(np.clip(cand.offsets_m[1] + do2, 0.0,
                                            search.OFFSET_MAX_M))
                         o3 = float(np.clip(cand.offsets_m[2] + do3, 0.0,
@@ -163,9 +160,10 @@ def main(argv=None) -> None:
     ap.add_argument("--two", action="store_true")
     ap.add_argument("--three", action="store_true")
     ap.add_argument("--gallery", action="store_true")
-    ap.add_argument("--quick", action="store_true")
     ap.add_argument("--out", default=str(FIGS))
     args = ap.parse_args(argv)
+    if not (args.two or args.three or args.gallery):
+        ap.error("select --two, --three, or --gallery")
 
     out = Path(args.out)
     DATA.mkdir(parents=True, exist_ok=True)
@@ -190,10 +188,12 @@ def main(argv=None) -> None:
         report.trade_figure(front3, out / "trade_3.png",
                             "3-board trade-off")
 
-    if args.gallery and not front2 and (DATA / "front_2.csv").exists():
+    if not args.two and (DATA / "front_2.csv").exists():
         front2 = search.load_front(DATA / "front_2.csv")
-    if args.gallery and not front3 and (DATA / "front_3.csv").exists():
+    if not args.three and (DATA / "front_3.csv").exists():
         front3 = search.load_front(DATA / "front_3.csv")
+    if not (front2 or front3):
+        ap.error("no search fronts available")
     for front in (front2, front3):
         for row in front:
             row["shortlist"] = report.shortlist_score(row)

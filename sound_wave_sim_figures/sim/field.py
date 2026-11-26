@@ -2,9 +2,9 @@
 
 Every emitter is a baffled circular piston (10 mm) driven at uniform phase;
 the pressure is the coherent sum of the piston fields, with each element's
-own board normal used for its directivity.  No Fraunhofer approximation is
-made for the near field: it is a direct sum of spherical sources, so it is
-valid from the array plane outward.
+own board normal used for its directivity. The array near field uses spherical
+propagation from point elements with far-field piston directivity; it does not
+resolve the pressure distribution across an individual transducer face.
 """
 
 from __future__ import annotations
@@ -31,11 +31,11 @@ def _bessel_j1(x: np.ndarray) -> np.ndarray:
     return total
 
 
-def piston_directivity(cos_beta: np.ndarray) -> np.ndarray:
+def piston_directivity(cos_beta: np.ndarray, wavenumber: float = C.WAVE_NUMBER) -> np.ndarray:
     """Baffled 10 mm piston: 2*J1(x)/x, zero behind the board."""
     cos_beta = np.asarray(cos_beta, dtype=float)
     sin_beta = np.sqrt(np.maximum(0.0, 1.0 - cos_beta**2))
-    x = (math.pi * C.ELEMENT_DIAMETER_M / C.WAVELENGTH_M) * sin_beta
+    x = wavenumber * C.ELEMENT_RADIUS_M * sin_beta
     x = np.maximum(x, 1e-12)
     return np.where(cos_beta > 0.0, 2.0 * _bessel_j1(x) / x, 0.0)
 
@@ -47,7 +47,7 @@ def uv_grid(du: float = 0.004):
     """Direction-cosine grid over the forward hemisphere.
 
     Returns (U2, V2, mask, dirs, el_deg, az_deg, solid_angle).  The square
-    grid is |u|,|v| <= 1 with the unit disk valid; dOmega = du^2 / uz.
+    grid is |u|,|v| <= 1 with the unit disk valid.
     """
     u = np.arange(-1.0, 1.0 + du / 2.0, du)
     U2, V2 = np.meshgrid(u, u, indexing="xy")
@@ -57,7 +57,19 @@ def uv_grid(du: float = 0.004):
     dirs = np.column_stack([uu, vv, ww])
     el = np.degrees(np.arccos(np.clip(ww, -1.0, 1.0)))
     az = np.degrees(np.arctan2(vv, uu))
-    domega = du * du / np.maximum(ww, 1e-3)
+    # At fixed v, u=sqrt(1-v²) sin(t) gives dOmega=dt dv. Integrate each
+    # row's end cells to the horizon instead of dividing by w=0 there.
+    rows = np.flatnonzero(mask.any(axis=1))
+    v = u[rows]
+    dv = np.diff(np.r_[-1., (v[1:] + v[:-1]) / 2, 1.])
+    weights = []
+    for row, width in zip(rows, dv):
+        centers = u[mask[row]]
+        edges = (centers[1:] + centers[:-1]) / 2
+        radius = np.sqrt(max(0., 1 - u[row]**2))
+        angles = np.arcsin(np.clip(edges / radius, -1., 1.)) if edges.size else edges
+        weights.append(width * np.diff(np.r_[-np.pi / 2, angles, np.pi / 2]))
+    domega = np.concatenate(weights)
     return U2, V2, mask, dirs, el, az, domega
 
 
@@ -87,7 +99,7 @@ def far_field(
     for start in range(0, dirs.shape[0], chunk):
         block = dirs[start:start + chunk]
         cos_beta = block @ normals.T
-        directivity = piston_directivity(cos_beta)
+        directivity = piston_directivity(cos_beta, k)
         phase = np.exp(1j * k * (block @ positions.T))
         out[start:start + chunk] = (directivity * phase * weights).sum(axis=1)
     return out
@@ -99,20 +111,23 @@ def near_field_points(
     amplitudes: np.ndarray,
     points: np.ndarray,
     chunk: int = 2048,
+    *,
+    element_pattern=piston_directivity,
 ) -> np.ndarray:
-    """Complex pressure at arbitrary field points (M, 3)."""
+    """Complex pressure for exp(+iωt), matching the far-field phase convention."""
     out = np.empty(points.shape[0], dtype=complex)
     for start in range(0, points.shape[0], chunk):
         block = points[start:start + chunk]
         delta = block[:, None, :] - positions[None, :, :]
         r = np.linalg.norm(delta, axis=-1)
-        r = np.maximum(r, C.ELEMENT_DIAMETER_M / 2)
-        cos_beta = np.einsum("pnk,nk->pn", delta / r[:, :, None], normals)
-        directivity = piston_directivity(cos_beta)
+        direction = np.divide(delta, r[:, :, None], out=np.zeros_like(delta, dtype=float),
+                              where=r[:, :, None] > 0)
+        cos_beta = np.einsum("pnk,nk->pn", direction, normals)
+        directivity = element_pattern(cos_beta)
         out[start:start + chunk] = (
             directivity
-            * np.exp(1j * C.WAVE_NUMBER * r)
-            / r
+            * np.exp(-1j * C.WAVE_NUMBER * r)
+            / np.maximum(r, C.ELEMENT_RADIUS_M)
             * amplitudes[None, :]
         ).sum(axis=1)
     return out

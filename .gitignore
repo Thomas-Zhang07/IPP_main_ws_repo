@@ -19,6 +19,9 @@ __pycache__/
 .venv/
 venv/
 
+# --- External review checkouts (not part of the snapshot) ---
+sound_wave_sim_figures/devin/
+
 # --- Quartus / ModelSim / Questa build output (regenerable) ---
 db/
 incremental_db/

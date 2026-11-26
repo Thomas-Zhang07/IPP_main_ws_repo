@@ -27,6 +27,7 @@ Run::
 from __future__ import annotations
 
 import csv
+import argparse
 from pathlib import Path
 
 import matplotlib
@@ -85,31 +86,68 @@ def grating_deg(steer_deg: float) -> float:
 
 
 def pattern(layout, dirs: np.ndarray, u0: float, element: str,
-            chunk: int = 2048, v0: float = 0.0) -> np.ndarray:
+            chunk: int = 2048, v0: float = 0.0, *, phase_law="xyz") -> np.ndarray:
     """Complex pressure for a linear phase ramp steering to ``(u0, v0)``.
 
     The measured element factor is evaluated per element against that
     element's own normal, so tilted boards carry their own beam tilt.
     """
-    pos = layout.positions
-    nrm = layout.normals
-    steer = np.exp(-1j * C.WAVE_NUMBER * (u0 * pos[:, 0] + v0 * pos[:, 1]))
-    out = np.empty(dirs.shape[0], dtype=np.complex128)
+    return _patterns(layout, dirs, [u0], [v0], [element], chunk, phase_law)[element][:, 0]
+
+
+def _patterns(layout, dirs, u0, v0, elements, chunk=512, phase_law="xyz"):
+    """Use forward unit command vectors, or the old projected ramp as a control."""
+    if set(elements) - set(ELEMENT_LABEL):
+        raise ValueError("unknown element model")
+    pos, nrm = layout.positions, layout.normals
+    w2 = 1 - np.square(u0) - np.square(v0)
+    if np.any(w2 < -1e-12):
+        raise ValueError("command outside forward hemisphere")
+    if phase_law not in ("xyz", "projected_xy"):
+        raise ValueError("unknown steering phase law")
+    w0 = np.sqrt(np.maximum(w2, 0)) if phase_law == "xyz" else np.zeros_like(w2)
+    steer = np.exp(-1j * C.WAVE_NUMBER * (pos @ np.array([u0, v0, w0])))
+    out = {key: np.empty((len(dirs), len(u0)), dtype=complex) for key in elements}
     for s in range(0, dirs.shape[0], chunk):
         d = dirs[s:s + chunk]
-        ph = np.exp(1j * C.WAVE_NUMBER * (d @ pos.T)) * steer
-        if element == "measured":
-            ph = ph * transducer.amplitude(d @ nrm.T)
-        out[s:s + chunk] = ph.sum(axis=1)
+        ph = np.exp(1j * C.WAVE_NUMBER * (d @ pos.T))
+        for key in elements:
+            kernel = ph if key == "isotropic" else ph * transducer.amplitude(d @ nrm.T)
+            out[key][s:s + chunk] = kernel @ steer
     return out
 
 
 def cut_x(layout, u0: float, element: str):
     """x-z plane cut: elevation alpha in [-90, 90] deg from +z toward +x."""
-    alpha = np.arange(-90.0, 90.0 + CUT_STEP / 2.0, CUT_STEP)
+    alpha, dirs = _cut_grid()
+    return alpha, np.abs(pattern(layout, dirs, u0, element))
+
+
+def _cut_grid():
+    alpha = np.linspace(-90.0, 90.0, round(180.0 / CUT_STEP) + 1)
     rad = np.radians(alpha)
     dirs = np.column_stack([np.sin(rad), np.zeros_like(rad), np.cos(rad)])
-    return alpha, np.abs(pattern(layout, dirs, u0, element))
+    return alpha, dirs
+
+
+def v_microphone_check(layout, distance_m=2.0):
+    """Broadside plane-wave drive, receiver on +z from the hinge midpoint."""
+    if not np.isfinite(distance_m) or distance_m <= layout.positions[:, 2].max():
+        raise ValueError("microphone must be in front of the aperture")
+    pos = layout.positions
+    mic = np.array([[0., 0., distance_m]])
+    delta = mic - pos
+    r = np.linalg.norm(delta, axis=1)
+    weights = np.exp(-1j * C.WAVE_NUMBER * pos[:, 2])
+    pressure = field.near_field_points(pos, layout.normals, weights, mic,
+                                       element_pattern=transducer.amplitude)[0]
+    cos_beta = np.einsum("ij,ij->i", delta / r[:, None], layout.normals)
+    upper_bound = np.sum(transducer.amplitude(cos_beta) / r)
+    spread = np.ptp(r - (distance_m - pos[:, 2]))
+    return {"layout": layout.key, "mic_z_m": distance_m,
+            "curvature_spread_mm": 1e3 * spread,
+            "curvature_spread_deg": np.degrees(C.WAVE_NUMBER * spread),
+            "level_re_coherent_bound_db": 20 * np.log10(abs(pressure) / upper_bound)}
 
 
 def _local_peak(alpha, mag, center: float, halfwidth: float = MAIN_WINDOW):
@@ -124,22 +162,31 @@ def _to_db(mag: np.ndarray, peak: float) -> np.ndarray:
     return 20.0 * np.log10(np.maximum(mag / peak, 10.0 ** (FLOOR / 20.0)))
 
 
-def study():
-    U2, V2, mask, dirs, el, az, _ = field.uv_grid(DU)
+def study(phase_law=None):
+    U2, _, mask, uv_dirs, _, _, _ = field.uv_grid(DU)
+    alpha, cut_dirs = _cut_grid()
+    th, _, surface_dirs = _surface_grid()
+    dirs = np.vstack((uv_dirs, cut_dirs, surface_dirs))
+    uv_end = len(uv_dirs)
+    cut_end = uv_end + len(cut_dirs)
+    el = np.degrees(np.arccos(np.clip(dirs[:, 2], -1, 1)))
+    az = np.degrees(np.arctan2(dirs[:, 1], dirs[:, 0]))
     results, rows = {}, []
     for key, title, ctor in SETUPS:
         layout = ctor()
+        # Retain the three-board concave study as a projected-drive control.
+        drive = phase_law or ("projected_xy" if key == "07_concave3" else "xyz")
+        fields = _patterns(layout, dirs, np.sin(np.radians(STEERS)),
+                           np.zeros(len(STEERS)), ELEMENTS, phase_law=drive)
         for element in ELEMENTS:
-            for steer in STEERS:
-                u0 = steer_u0(steer)
-                fn = pattern(layout, dirs, u0, element)
-                abl = np.abs(fn)
+            for j, steer in enumerate(STEERS):
+                abl = np.abs(fields[element][:, j])
                 peak = float(abl.max())
                 db = _to_db(abl, peak)
                 db2 = np.full(U2.shape, np.nan)
-                db2[mask] = db
-                alpha, mag = cut_x(layout, u0, element)
-                cut_db = _to_db(mag, peak)
+                db2[mask] = db[:uv_end]
+                mag = abl[uv_end:cut_end]
+                cut_db = db[uv_end:cut_end]
                 main_ang, main_mag = _local_peak(alpha, mag, float(steer))
                 a = np.radians(main_ang)
                 main_dir = np.array([np.sin(a), 0.0, np.cos(a)])
@@ -147,7 +194,7 @@ def study():
                 outside = np.degrees(np.arccos(cosang)) > SIDELOBE_CONE
                 if outside.any():
                     i = int(np.argmax(np.where(outside, abl, -1.0)))
-                    side_level = float(db[i])
+                    side_level = float(20.0 * np.log10(max(abl[i] / peak, 1e-12)))
                     side_dir = dirs[i]
                     side_el, side_az = float(el[i]), float(az[i])
                 else:
@@ -158,6 +205,7 @@ def study():
                     max(main_mag, 1e-12) / max(peak, 1e-12))
                 results[(key, element, float(steer))] = {
                     "db2": db2, "alpha": alpha, "cut_db": cut_db,
+                    "surface_db": db[cut_end:].reshape(th.shape),
                     "main_dir": main_dir, "main_angle": main_ang,
                     "main_level": main_level,
                     "side_dir": side_dir, "side_level": side_level,
@@ -165,6 +213,7 @@ def study():
                 }
                 rows.append({
                     "layout": key, "layout_title": title,
+                    "phase_law": drive,
                     "element": element, "steer_deg": float(steer),
                     "main_angle_deg": main_ang,
                     "main_level_db": main_level,
@@ -180,7 +229,7 @@ def _footnote(fig, text: str) -> None:
     fig.text(0.01, 0.015, text, fontsize=7.5, color=R.MUTED, ha="left")
 
 
-def _surface(layout, element: str, steer: float):
+def _surface_grid():
     th = np.radians(np.linspace(0.0, 90.0, 61))
     ph = np.radians(np.linspace(0.0, 360.0, 180, endpoint=False))
     TH, PH = np.meshgrid(th, ph, indexing="ij")
@@ -189,11 +238,7 @@ def _surface(layout, element: str, steer: float):
         np.sin(TH).ravel() * np.sin(PH).ravel(),
         np.cos(TH).ravel(),
     ])
-    fn = pattern(layout, dirs, steer_u0(steer), element)
-    abl = np.abs(fn)
-    peak = float(abl.max())
-    db = _to_db(abl, peak).reshape(TH.shape)
-    return TH, PH, db, peak
+    return TH, PH, dirs
 
 
 def _lobe_xyz(direction, level):
@@ -204,7 +249,8 @@ def _lobe_xyz(direction, level):
 def one_3d(layout, element: str, steer: float, res: dict,
            path: Path) -> None:
     """Matches the web pages: compact lit surface, boards, grating ring."""
-    TH, PH, db, peak = _surface(layout, element, steer)
+    TH, PH, _ = _surface_grid()
+    db = res["surface_db"]
     radius = 0.02 + 0.58 * np.clip((db - FLOOR) / (0.0 - FLOOR), 0.0, 1.0)
     x = np.sin(TH) * np.cos(PH) * radius
     y = np.sin(TH) * np.sin(PH) * radius
@@ -259,7 +305,7 @@ def one_3d(layout, element: str, steer: float, res: dict,
     fig.colorbar(plt.cm.ScalarMappable(norm=norm, cmap=R.RAMP), cax=cax,
                  label="dB re peak")
     _footnote(fig, "Surface radius linear in dB above −40 dB; cyan ring = "
-                   "54.75° grating angle.")
+                   "flat-board broadside grating-angle reference.")
     fig.savefig(path, dpi=150, bbox_inches="tight")
     plt.close(fig)
 
@@ -324,7 +370,7 @@ def one_uv(res, element: str, layout, steer: float, path: Path) -> None:
     fig.text(0.02, 0.925, f"{SHORT_LABEL[element]} · {layout.title}",
              fontsize=9, color=R.INK_2, ha="left")
     fig.text(0.02, 0.05, "white cross = main beam · orange circle = strongest "
-             "sidelobe · dashed ring = λ/d",
+             "outside 15° · dashed ring = flat-board broadside λ/d",
              fontsize=7.2, color=R.MUTED, ha="left")
     fig.colorbar(im, ax=ax, shrink=0.85, label="dB re peak")
     fig.savefig(path, dpi=160, bbox_inches="tight")
@@ -350,7 +396,7 @@ def one_amplitude_case(results, element: str, layout, steer: float,
     ax.text(0.01, 0.03, SHORT_LABEL[element], transform=ax.transAxes,
             fontsize=8.5, color=colour, ha="left", va="bottom")
     fig.text(0.01, 0.005, "dotted blue = steering direction · dotted orange = "
-             "±54.75° grating directions · linear amplitude = 10^(dB/20)",
+             "±54.75° flat-board broadside reference · linear amplitude = 10^(dB/20)",
              fontsize=7.5, color=R.MUTED)
     fig.tight_layout(rect=(0, 0.035, 1, 1))
     fig.savefig(path, dpi=160, bbox_inches="tight")
@@ -375,7 +421,7 @@ def one_amplitude(results, layout, steer: float, path: Path) -> None:
     ax.set_title(f"Amplitude vs angle · {layout.title} · steer {steer:.0f}°",
                  fontsize=12, fontweight="bold", loc="left")
     fig.text(0.01, 0.02, "dotted blue = steering direction · dotted orange = "
-             "±54.75° grating directions · linear amplitude = 10^(dB/20)",
+             "±54.75° flat-board broadside reference · linear amplitude = 10^(dB/20)",
              fontsize=7.5, color=R.MUTED, ha="left")
     fig.tight_layout(rect=(0, 0.04, 1, 1))
     fig.savefig(path, dpi=160, bbox_inches="tight")
@@ -488,7 +534,7 @@ def cross_summaries(rows) -> None:
     plt.close(fig)
 
 
-CSV_FIELDS = ["layout", "element", "steer_deg", "main_angle_deg",
+CSV_FIELDS = ["layout", "element", "phase_law", "steer_deg", "main_angle_deg",
               "main_level_db", "sidelobe_el_deg", "sidelobe_az_deg",
               "sidelobe_level_db", "sidelobe_minus_main_db"]
 
@@ -502,7 +548,7 @@ def write_csv(rows, path: Path) -> None:
                         for k in CSV_FIELDS})
 
 
-def main() -> None:
+def main(phase_law=None) -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     for key, _, _ in SETUPS:
         for sub in ("isotropic/3d", "isotropic/polar", "isotropic/uv",
@@ -513,7 +559,15 @@ def main() -> None:
     (OUT / "summary_all").mkdir(parents=True, exist_ok=True)
 
     print(f"computing {len(SETUPS)} layouts x 2 cases x {len(STEERS)} angles ...")
-    results, rows = study()
+    if phase_law is None:
+        checks = [v_microphone_check(ctor()) for key, _, ctor in SETUPS
+                  if key in ("02_v150", "03_v120")]
+        if checks:
+            with (OUT / "v_microphone_2m.csv").open("w", newline="") as f:
+                writer = csv.DictWriter(f, fieldnames=checks[0].keys())
+                writer.writeheader()
+                writer.writerows(checks)
+    results, rows = study(phase_law)
     write_csv(rows, OUT / "metrics_all.csv")
 
     for key, title, _ in SETUPS:
@@ -549,4 +603,13 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser.add_argument("--phase-law", choices=("xyz", "projected_xy"),
+                        help="override the study defaults for comparison")
+    parser.add_argument("--out", type=Path, help="separate results directory")
+    args = parser.parse_args()
+    if args.phase_law and (args.out is None or args.out.resolve() == OUT.resolve()):
+        parser.error("--phase-law needs a separate --out directory")
+    if args.out is not None:
+        OUT = args.out
+    main(args.phase_law)

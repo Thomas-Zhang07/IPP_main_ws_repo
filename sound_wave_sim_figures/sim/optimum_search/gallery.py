@@ -37,8 +37,7 @@ def _plane_dirs(phi, n=721):
                                    np.sin(a) * np.sin(p), np.cos(a)])
 
 
-def _db(mag):
-    peak = float(np.max(mag))
+def _db(mag, peak):
     return 20.0 * np.log10(np.maximum(mag / max(peak, 1e-12),
                                       10.0 ** (FLOOR / 20.0)))
 
@@ -47,16 +46,31 @@ def _tag(theta, phi):
     return f"steer_{theta:02.0f}_{phi:03.0f}.png"
 
 
-def _render_3d(cand, theta, phi, path, du=0.02):
+def _view_levels(cand, theta, phi, du=0.008):
     th = np.radians(np.linspace(0.0, 90.0, 61))
     ph = np.radians(np.linspace(0.0, 360.0, 180, endpoint=False))
     TH, PH = np.meshgrid(th, ph, indexing="ij")
     dirs = np.column_stack([np.sin(TH).ravel() * np.cos(PH).ravel(),
                             np.sin(TH).ravel() * np.sin(PH).ravel(),
                             np.cos(TH).ravel()])
+    U2, _, mask, uv, _, _, _ = field.uv_grid(du)
+    alpha, cut = _plane_dirs(phi)
     u0, v0 = _state(theta, phi)
-    mag = np.abs(model.field_fast(cand, dirs, u0, v0))
-    db = _db(mag).reshape(TH.shape)
+    command = metrics._direction(theta, phi)[None, :]
+    all_dirs = np.vstack((dirs, uv, cut, command))
+    iso = np.abs(model.array_factor(cand, all_dirs, u0, v0))
+    mag = iso * model.element_amplitude(all_dirs)
+    levels = _db(mag, mag.max())
+    i, j = len(dirs), len(dirs) + len(uv)
+    db2 = np.full(U2.shape, np.nan)
+    db2[mask] = levels[i:j]
+    return {"surface": (TH, PH, levels[:i].reshape(TH.shape)), "uv": db2,
+            "alpha": alpha, "measured": levels[j:-1],
+            "isotropic": _db(iso[j:-1], iso.max())}
+
+
+def _render_3d(cand, theta, phi, path, views):
+    TH, PH, db = views["surface"]
     radius = 0.02 + 0.58 * np.clip((db - FLOOR) / (0.0 - FLOOR), 0.0, 1.0)
     x = np.sin(TH) * np.cos(PH) * radius
     y = np.sin(TH) * np.sin(PH) * radius
@@ -91,10 +105,8 @@ def _render_3d(cand, theta, phi, path, du=0.02):
     plt.close(fig)
 
 
-def _render_polar(cand, theta, phi, path):
-    alpha, dirs = _plane_dirs(phi)
-    u0, v0 = _state(theta, phi)
-    db = _db(np.abs(model.field_fast(cand, dirs, u0, v0)))
+def _render_polar(cand, theta, phi, path, views):
+    alpha, db = views["alpha"], views["measured"]
     radius = np.clip((db - FLOOR) / (0.0 - FLOOR), 0.0, 1.0)
     tp = np.radians(90.0 - alpha)
     fig = plt.figure(figsize=(6.0, 4.4))
@@ -118,12 +130,9 @@ def _render_polar(cand, theta, phi, path):
     plt.close(fig)
 
 
-def _render_uv(cand, theta, phi, path, du=0.008):
-    U2, V2, mask, dirs, _, _, _ = field.uv_grid(du)
+def _render_uv(cand, theta, phi, path, views):
     u0, v0 = _state(theta, phi)
-    db = _db(np.abs(model.field_fast(cand, dirs, u0, v0)))
-    db2 = np.full(U2.shape, np.nan)
-    db2[mask] = db
+    db2 = views["uv"]
     fig, ax = plt.subplots(figsize=(5.8, 5.2))
     im = ax.imshow(np.ma.masked_invalid(db2), origin="lower",
                    extent=[-1, 1, -1, 1], cmap=R.RAMP, vmin=FLOOR, vmax=0.0,
@@ -145,19 +154,10 @@ def _render_uv(cand, theta, phi, path, du=0.008):
     plt.close(fig)
 
 
-def _render_amplitude(cand, theta, phi, path):
-    alpha, dirs = _plane_dirs(phi)
-    u0, v0 = _state(theta, phi)
+def _render_amplitude(cand, theta, phi, path, views):
     fig, ax = plt.subplots(figsize=(8.6, 4.4))
     for element, colour in (("isotropic", R.GRAY), ("measured", R.BLUE)):
-        if element == "isotropic":
-            field = model.array_factor(cand, dirs, u0, v0)
-        else:
-            field = model.field_fast(cand, dirs, u0, v0, "mean")
-        mag = np.abs(field)
-        db = 20.0 * np.log10(np.maximum(mag / max(mag.max(), 1e-12),
-                                        10.0 ** (FLOOR / 20.0)))
-        ax.plot(alpha, db, color=colour, lw=1.15, label=element)
+        ax.plot(views["alpha"], views[element], color=colour, lw=1.15, label=element)
     ax.axvline(theta, color=R.BLUE, lw=0.9, ls=":")
     for ang in (-54.75, 54.75):
         ax.axvline(ang, color=R.ORANGE, lw=0.8, ls=":")
@@ -186,10 +186,11 @@ def render_optimum(cand, out_dir, states=None) -> list[dict]:
     dirs, _, _, _ = model.direction_grid(0.01)
     for theta, phi in states:
         tag = _tag(theta, phi)
-        _render_3d(cand, theta, phi, out / "3d" / tag)
-        _render_polar(cand, theta, phi, out / "polar" / tag)
-        _render_uv(cand, theta, phi, out / "uv" / tag)
-        _render_amplitude(cand, theta, phi, out / "amplitude" / tag)
+        views = _view_levels(cand, theta, phi)
+        _render_3d(cand, theta, phi, out / "3d" / tag, views)
+        _render_polar(cand, theta, phi, out / "polar" / tag, views)
+        _render_uv(cand, theta, phi, out / "uv" / tag, views)
+        _render_amplitude(cand, theta, phi, out / "amplitude" / tag, views)
         comp = metrics.score_states(cand, 0.01, [(theta, phi)], dirs=dirs)
         rows.append({"theta": theta, "phi": phi, **comp})
     with open(out / "metrics.csv", "w", newline="", encoding="utf-8") as fh:

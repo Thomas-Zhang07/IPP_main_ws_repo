@@ -1,4 +1,4 @@
-"""Robustness ceilings: 4-bit phase, mechanical/board-level errors, k drift
+"""Sampled robustness maxima: 4-bit phase, mechanical/board-level errors, k drift
 and the element-pattern envelope. Absolute values, not deltas."""
 
 from __future__ import annotations
@@ -67,8 +67,11 @@ def _board_field(cand, dirs, u0, v0, variant, origins, gains, phases, k=None):
     kk = C.WAVE_NUMBER if k is None else k
     u = dirs[:, 0] - u0
     v = dirs[:, 1] - v0
-    lat = np.exp(1j * kk * (u[:, None] * origins[None, :, 0]
-                            + v[:, None] * origins[None, :, 1]))
+    # The command uses nominal geometry. Unknown placement errors change
+    # propagation but do not reprogram the drive phases.
+    board_phase = (dirs[:, :2] @ origins.T
+                   - np.array([u0, v0]) @ cand.origins.T)
+    lat = np.exp(1j * kk * board_phase)
     lat = lat @ (np.asarray(gains) * np.exp(1j * np.asarray(phases)))
     return (model.element_amplitude(dirs, variant) * model.board_factor(u, k=kk)
             * model.board_factor(v, k=kk) * lat)
@@ -98,8 +101,8 @@ def _sl_mech_draw(cand, dirs, states, variant, dseams, doffsets, gains,
 
 
 def _lhs(rng, n_samples, n_dim, low, high):
-    strata = (rng.permutation(n_samples)[:, None]
-              + rng.random((n_samples, n_dim))) / n_samples
+    ranks = np.column_stack([rng.permutation(n_samples) for _ in range(n_dim)])
+    strata = (ranks + rng.random((n_samples, n_dim))) / n_samples
     return low + (high - low) * strata
 
 

@@ -33,6 +33,31 @@ def test_mech_is_finite():
     assert np.isfinite(R.sl_mech(cand, [(20.0, 0.0)], n_draws=2))
 
 
+def test_placement_error_uses_nominal_drive_phases():
+    cand = M.pair(0.01575, 0.00525)
+    nominal = R._positions(cand)
+    offsets = np.array([[0, 0], [0.0002, -0.0002]])
+    actual = nominal + np.repeat(offsets, M.FULL, axis=0)
+    d0 = R._commanded_dir(0.31, -0.2)
+    dirs = np.array([d0, [0, 0, 1], R._commanded_dir(-0.5, 0.2)])
+    gains, phases = np.array([1, 0.9]), np.array([0, 0.12])
+    weights = np.repeat(gains * np.exp(1j * phases), M.FULL)
+    phase = dirs[:, :2] @ actual.T - nominal @ d0[:2]
+    exact = (np.exp(1j * R.C.WAVE_NUMBER * phase) @ weights) * M.element_amplitude(dirs)
+    fast = R._board_field(cand, dirs, *d0[:2], "mean", cand.origins + offsets,
+                          gains, phases)
+    np.testing.assert_allclose(np.abs(fast), np.abs(exact), rtol=1e-10)
+
+
+def test_latin_hypercube_stratifies_dimensions_independently():
+    n = 32
+    draw = R._lhs(np.random.default_rng(1), n, 4, 0, 1)
+    ranks = (n * draw).astype(int).T
+    for col in ranks:
+        np.testing.assert_array_equal(np.sort(col), np.arange(n))
+    assert len(np.unique(ranks, axis=0)) == len(ranks)
+
+
 def test_drift_is_sane():
     cand = M.pair(0.01575, 0.00525)
     value = R.sl_drift(cand, [(20.0, 0.0), (35.0, 45.0)])

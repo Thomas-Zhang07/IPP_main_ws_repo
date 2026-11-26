@@ -25,6 +25,19 @@ def test_first_sidelobe_is_captured():
     assert comp["sl_near"] == pytest.approx(-13.1, abs=0.8)
 
 
+def test_fixed_mask_excludes_the_first_x_sidelobe_on_the_current_pair():
+    cand = M.pair(C.CURRENT_SEAM_M, 0.00525)
+    t = np.arange(0, 8, 0.005)
+    a = np.radians(t)
+    dirs = np.column_stack([np.sin(a), np.zeros_like(a), np.cos(a)])
+    p = np.abs(M.field_fast(cand, dirs, 0, 0))
+    peaks = np.flatnonzero((p[1:-1] > p[:-2]) & (p[1:-1] > p[2:])) + 1
+    first = peaks[0]
+    assert t[first] == pytest.approx(2.06, abs=0.02)
+    assert t[first] < X.MASK_DEG
+    assert 20 * np.log10(p[first] / p[0]) == pytest.approx(-12.48, abs=0.05)
+
+
 def test_commanded_level_is_geometry_independent():
     a = M.commanded_amp(M.pair(0.01575, 0.00525), np.sin(np.radians(20)), 0.0)
     b = M.commanded_amp(M.pair(0.01575, 0.0), np.sin(np.radians(20)), 0.0)

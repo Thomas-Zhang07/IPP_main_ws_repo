@@ -6,6 +6,7 @@ from __future__ import annotations
 import math
 import pathlib
 import sys
+import zipfile
 
 import numpy as np
 import pytest
@@ -15,6 +16,22 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1] / "sim"))
 import constants as C  # noqa: E402
 import field  # noqa: E402
 import geometry  # noqa: E402
+
+
+def test_single_board_matches_sonicsurface_pick_place():
+    repo = pathlib.Path(__file__).resolve().parents[2]
+    archive = (repo / "SonicSurface/Electronics/16x16 10mm transducers SMD PCB Gerbers"
+               / "SonicSurface1.2_2Layers_183x169.zip")
+    with zipfile.ZipFile(archive) as z:
+        lines = z.read("Project Outputs for SonicSurface/Pick Place for Main.txt").splitlines()
+    rows = [row for line in lines if len(row := line.split()) > 3 and row[1] == b"Transducer_10mm"]
+    centers = np.array([[float(x.removesuffix(b"mil")) for x in row[2:4]] for row in rows]) * 25.4e-6
+    centers -= centers.mean(axis=0)
+    model = geometry.single().positions[:, :2]
+    assert len(centers) == len(model) == 256
+    distances = np.linalg.norm(model[:, None, :] - centers[None, :, :], axis=2)
+    assert len(set(distances.argmin(axis=1))) == len(model)
+    assert distances.min(axis=1).max() < 1e-6
 
 
 def _metrics(layout, taper="uniform", du=0.008):
@@ -120,3 +137,31 @@ def test_near_field_matches_far_field_axis():
     # 1/r scaling: near/far magnitude ratio must equal 1/50
     ratio = abs(p_near[0, 0]) / abs(p_far[0])
     assert ratio == pytest.approx(1.0 / 50.0, rel=5e-3)
+
+
+def test_phased_near_field_converges_to_complex_far_field_off_axis():
+    pos = np.array([[0, 0, 0], [0.0105, 0, 0], [0, 0.0105, 0]])
+    normals = np.tile([0, 0, 1], (len(pos), 1))
+    weights = np.exp(1j * np.array([0, 1.1, -0.6]))
+    dirs = np.stack([field.dir_from_angles(24, a) for a in (0, 90, 180)])
+    radius = 100.0
+    near = field.near_field_points(pos, normals, weights, radius * dirs)
+    far = field.far_field(pos, normals, weights, dirs)
+    np.testing.assert_allclose(near * radius * np.exp(1j * C.WAVE_NUMBER * radius),
+                               far, rtol=0.001)
+
+
+def test_long_wavelength_piston_approaches_point_emitter():
+    p = field.far_field(np.zeros((1, 3)), np.array([[0, 0, 1]]),
+                        np.ones(1), np.array([field.dir_from_angles(55, 0)]),
+                        wavenumber=0.01)
+    assert abs(p[0]) == pytest.approx(1, abs=1e-8)
+
+
+@pytest.mark.parametrize("du", [0.1, 0.02, 0.012, 0.004])
+def test_uv_cells_tile_the_hemisphere(du):
+    _, _, _, dirs, _, _, omega = field.uv_grid(du)
+    assert np.all(omega > 0)
+    assert np.sum(omega) == pytest.approx(2 * np.pi, rel=1e-12)
+    # A dipole pointing along y has squared pressure v².
+    assert omega @ dirs[:, 1]**2 == pytest.approx(2 * np.pi / 3, rel=0.015)

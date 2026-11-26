@@ -94,14 +94,16 @@ def pareto2(rows, k1="SL_cmd", k2="SL_diag"):
     ordered = sorted(rows, key=lambda r: (r[k1], r[k2]))
     front, best2 = [], np.inf
     for row in ordered:
-        if row[k2] <= best2 + 1e-12:
+        tied = front and (row[k1], row[k2]) == (front[-1][k1], front[-1][k2])
+        if row[k2] < best2 or tied:
             front.append(row)
             best2 = min(best2, row[k2])
     return front
 
 
 def add_srange(rows, top_n=40, step_deg=1.0, du=0.012, dirs=None):
-    dirs, _, _, _ = model.direction_grid(du)
+    if dirs is None:
+        dirs, _, _, _ = model.direction_grid(du)
     ranked = sorted(rows, key=lambda r: r.get("SL_cmd", 0.0)
                     + 0.3 * r.get("SL_diag", 0.0))
     for row in ranked[:top_n]:

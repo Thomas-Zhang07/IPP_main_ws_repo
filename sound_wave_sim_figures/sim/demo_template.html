@@ -1,0 +1,76 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>40 kHz array field explorer</title><style>
+:root{color-scheme:light dark;--bg:#f6f7f9;--paper:#fff;--ink:#122634;--muted:#516570;--line:#d5dfe2;--accent:#006d79;--grid:#bacbd1}
+@media(prefers-color-scheme:dark){:root{--bg:#10191d;--paper:#18252c;--ink:#ecf2f3;--muted:#a5b8c1;--line:#36484f;--accent:#68c9c9;--grid:#465a66}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,sans-serif}main{max-width:1020px;margin:0 auto;padding:24px 16px}
+header{margin-bottom:18px}h1{font-size:clamp(25px,5vw,38px);letter-spacing:-.04em;line-height:1.15;margin:4px 0}h2{font-size:18px;margin:0 0 5px}p{margin:4px 0;color:var(--muted)}
+.controls,.panel{border:1px solid var(--line);background:var(--paper);padding:15px;border-radius:11px}.controls{display:flex;gap:10px;flex-wrap:wrap}label{font-size:13px;color:var(--muted);flex:1;min-width:120px}select{display:block;margin-top:4px;width:100%;padding:8px 4px;color:var(--ink);border:1px solid var(--line);border-radius:5px;background:var(--paper);font:inherit;font-weight:600}
+.grid{display:grid;grid-template-columns:1.12fr 1fr;gap:12px;margin:12px 0}.small{font-size:13px}.tag{font:600 12px/1.5 system-ui;letter-spacing:.06em;color:var(--accent)}canvas{width:100%;height:auto;display:block;touch-action:none;cursor:grab}canvas:active{cursor:grabbing}svg{display:block;width:100%;overflow:visible}svg text{font:12px system-ui;fill:var(--muted)}button{background:var(--paper);border:1px solid var(--line);border-radius:4px;color:var(--ink);padding:4px 8px}.number{font-variant-numeric:tabular-nums;font-weight:650}.note{padding-top:14px}.inset{display:flex;align-items:center;gap:14px}.inset svg{width:100px;height:65px;flex:none}
+@media(max-width:690px){main{padding:14px 10px}.grid{grid-template-columns:1fr}.controls label{flex-basis:40%}.panel{padding:12px}}
+</style></head><body><main><header><div class="tag">ACOUSTICS LAB · 40 kHz</div>
+<h1>Array field explorer</h1><p>Compare six apertures with the same drive viewed in the far field or by a microphone 2 m away.</p></header>
+<div class="controls"><label>Layout<select id="layout"></select></label>
+<label>Command in x–z<select id="angle"></select></label>
+<label>Element model<select id="model"><option value="measured">Datasheet pattern</option><option value="isotropic">Isotropic control</option></select></label>
+<label>Observation<select id="obs"><option value="far">Far field</option><option value="2m">2 m mic arc / sphere</option></select></label></div>
+<div class="grid"><section class="panel"><h2>Forward radiation pattern</h2>
+<p class="small">Drag to rotate, or focus the plot and use arrow keys. Radius shows relative pressure in dB, not distance.</p>
+<canvas id="surface" width="560" height="345" tabindex="0" aria-label="Rotatable three-dimensional forward radiation pattern"></canvas>
+<button id="reset" type="button">Reset view</button></section>
+<section class="panel"><h2>Horizontal cut</h2><p class="small">Angle from +z toward +x. Dashed line: command.</p>
+<svg id="cut" viewBox="0 0 460 258" role="img" aria-label="Relative pressure versus signed angle in degrees"></svg>
+<p id="reading" aria-live="polite" class="small"></p></section></div>
+<section class="panel inset"><svg id="boards" viewBox="0 0 120 80" role="img" aria-label="Relative board placement"></svg>
+<div><h2 id="name"></h2><p class="small" id="details"></p></div></section>
+<p class="small note"><b>Reference:</b> 0 dB is the ideal coherent sum of N on-axis unit emitters in the far field. At 2 m the plotted magnitude is 2|p|/N, using individual spherical paths, spreading and local element angles. Switching observation does not refocus the drive. The same scale is used for every view; values below −50 dB are clipped.</p>
+<p class="small">Sampling: 1.5° elevation × 3° azimuth on the surface, 0.25° in the cut, 0.2 dB display precision. Narrow off-plane peaks may be missed. The single board’s flat broadside grating orders are at ±54.75° on x and y. Results are relative simulations, not calibrated SPL.</p>
+</main><script id="payload" type="application/json">__DATA__</script><script>
+"use strict";
+const D=JSON.parse(document.getElementById("payload").textContent), $=id=>document.getElementById(id), rad=Math.PI/180;
+const lay=$("layout"), cmd=$("angle"), model=$("model"), obs=$("obs"), canvas=$("surface");
+D.layouts.forEach((g,i)=>lay.add(new Option(g.label,i)));D.commands.forEach(n=>cmd.add(new Option(n+"°",n)));
+let yaw=-40,pitch=23,values,drag,lastX,lastY;
+function col(k){return "hsl("+Math.round(208-185*k)+",66%,"+(31+23*k)+"%)"}
+function draw(){
+ const ctx=canvas.getContext("2d"),w=canvas.width,h=canvas.height,s=Math.min(w*.38,h*.69),cx=w/2,cy=h*.79;
+ const a=yaw*rad,b=pitch*rad,ca=Math.cos(a),sa=Math.sin(a),cb=Math.cos(b),sb=Math.sin(b);
+ const project=(x,y,z)=>{let side=x*ca-y*sa,depth=x*sa+y*ca;return [cx+s*side,cy+s*(sb*depth-cb*z),cb*depth+sb*z]};
+ ctx.clearRect(0,0,w,h);let points=[],faces=[];
+ for(let i=0;i<D.nt;i++){let t=Math.PI*.5*i/(D.nt-1);for(let j=0;j<D.np;j++){
+  let id=i*D.np+j,k=Math.min(1,values[id]/250),p=2*Math.PI*j/D.np;
+  points.push([...project(k*Math.sin(t)*Math.cos(p),k*Math.sin(t)*Math.sin(p),k*Math.cos(t)),k]);}}
+ for(let i=0;i<D.nt-1;i++)for(let j=0;j<D.np;j++){
+  let n=(j+1)%D.np,p=i*D.np,ids=[p+j,p+n,p+n+D.np,p+j+D.np];faces.push([ids.reduce((v,k)=>v+points[k][2],0),ids]);}
+ faces.sort((a,b)=>a[0]-b[0]);
+ for(const [,ids] of faces){ctx.beginPath();ids.forEach((id,i)=>{const [x,y]=points[id];if(i)ctx.lineTo(x,y);else ctx.moveTo(x,y)});
+  ctx.closePath();ctx.fillStyle=col(ids.reduce((v,k)=>v+points[k][3],0)/4);ctx.fill();}
+ ctx.strokeStyle=getComputedStyle(document.body).getPropertyValue("--muted");ctx.fillStyle=ctx.strokeStyle;ctx.font="13px system-ui";
+ for(const [label,x,y,z] of [["+x",1,0,0],["+y",0,1,0],["+z",0,0,1]]){
+  let pos=project(x,y,z);ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(pos[0],pos[1]);ctx.setLineDash([2,6]);ctx.stroke();ctx.setLineDash([]);ctx.fillText(label,pos[0]+3,pos[1]-3);}
+}
+function chart(cut){
+ const x=a=>44+(a+90)/180*397,y=d=>17+(1-d)/51*194;
+ let html="";for(let v=-50;v<=0;v+=10)html+='<path stroke="var(--grid)" d="M44 '+y(v)+' H441"/><text x="38" y="'+(y(v)+4)+'" text-anchor="end">'+v+'</text>';
+ for(let v=-90;v<=90;v+=30)html+='<text x="'+x(v)+'" y="233" text-anchor="middle">'+v+'°</text>';
+ let line=Array.from(cut,(v,i)=>(i?'L':'M')+x(i/4-90).toFixed(1)+' '+y(v/5-50).toFixed(1)).join('');
+ $("cut").innerHTML=html+'<path d="M'+x(+cmd.value)+' 17 V211" stroke="var(--muted)" stroke-dasharray="4 4"/><path d="'+line+'" fill="none" stroke="var(--accent)" stroke-width="1.8"/><text x="3" y="11">dB</text>';
+ const db=cut[(+cmd.value+90)*4]/5-50;
+ $("reading").innerHTML='At the command: <span class="number">'+db.toFixed(1)+' dB</span>. Strongest sampled point in this cut: <span class="number">'+(Math.max(...cut)/5-50).toFixed(1)+' dB</span>.';
+}
+function update(){
+ const g=D.layouts[+lay.value],key=[cmd.value,model.value,obs.value].join("/");
+ values=Uint8Array.from(atob(g.states[key]),c=>c.charCodeAt(0));chart(values.subarray(D.nt*D.np));draw();
+ $("name").textContent=g.label+" · "+g.emitters+" emitters";let hinge=g.key.includes("_v");
+ $("details").textContent=(hinge?"Full 3D phase; microphone sphere centered on the hinge at emitter-grid mid-height.":"Plane-wave drive; microphone sphere centered on the emitter bounding box.")+" Layout: "+g.key+". Search layouts are the saved sampled leaders, not guaranteed optima.";
+ let polys=g.boards.map(b=>b.map(([x,y,z])=>[x+.38*y,.28*y-z])),all=polys.flat(),xmin=Math.min(...all.map(p=>p[0])),xmax=Math.max(...all.map(p=>p[0])),ymin=Math.min(...all.map(p=>p[1])),ymax=Math.max(...all.map(p=>p[1]));
+ let scale=Math.min(110/(xmax-xmin),70/(ymax-ymin));$("boards").innerHTML=polys.map(poly=>'<polygon points="'+poly.map(([x,y])=>[60+(x-(xmin+xmax)/2)*scale,40+(y-(ymin+ymax)/2)*scale].join(",")).join(" ")+'" fill="var(--accent)" fill-opacity=".2" stroke="var(--accent)"/>').join("");
+}
+for(const el of [lay,cmd,model,obs])el.onchange=update;
+function rotate(dx,dy){yaw+=dx;pitch=Math.max(0,Math.min(86,pitch+dy));draw()}
+canvas.onpointerdown=e=>{drag=true;lastX=e.clientX;lastY=e.clientY;canvas.setPointerCapture(e.pointerId)};
+canvas.onpointermove=e=>{if(drag){rotate((e.clientX-lastX)*.5,(e.clientY-lastY)*.35);lastX=e.clientX;lastY=e.clientY}};
+canvas.onpointerup=canvas.onpointercancel=()=>drag=false;
+canvas.onkeydown=e=>{const d={ArrowLeft:[-7,0],ArrowRight:[7,0],ArrowUp:[0,5],ArrowDown:[0,-5]}[e.key];if(d){e.preventDefault();rotate(...d)}};
+$("reset").onclick=()=>{yaw=-40;pitch=23;draw()};update();
+</script></body></html>

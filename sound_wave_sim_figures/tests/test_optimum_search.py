@@ -33,6 +33,28 @@ def test_pareto_non_dominated():
     assert {r["k"] for r in front} == {0, 1}
 
 
+def test_fast_pareto_keeps_equal_points_but_not_weakly_dominated_ones():
+    rows = [dict(i=i, x=x, y=y) for i, (x, y) in enumerate(
+        [(1, 2), (1, 3), (1, 2), (2, 2), (3, 1)])]
+    assert {r["i"] for r in Q.pareto2(rows, "x", "y")} == {0, 2, 4}
+
+
+def test_front_compares_all_probes_at_identical_resolution(monkeypatch):
+    from optimum_search import run
+    cands = [Q.model.pair(0.012 + i * 0.00025, 0) for i in range(18)]
+    def score(cands, states, dirs):
+        return [dict(key=c.key, cand=c, SL_cmd=0, SL_diag=0, resolution=dirs)
+                for c in cands]
+    monkeypatch.setattr(Q.model, "direction_grid", lambda du: (du, None, None, None))
+    monkeypatch.setattr(Q, "score_rows", score)
+    monkeypatch.setattr(run.metrics, "report_metrics", lambda c: {})
+    monkeypatch.setattr(Q, "add_srange", lambda *a, **kw: None)
+    monkeypatch.setattr(run.robustness, "robust", lambda *a, **kw: {})
+    _, front, _ = run._finish([{"cand": c} for c in cands], du_leader=0.004)
+    assert len(front) == len(cands)
+    assert {r["resolution"] for r in front} == {0.004}
+
+
 def test_key_roundtrip_and_load(tmp_path):
     rows = [{"key": "pair_15.750_2.625", "n_boards": 2, "span_mm": 331.0,
              "SL_cmd": -1.0, "SL_diag": -3.0, "DI0": 42.0}]
